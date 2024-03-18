@@ -1,6 +1,7 @@
 package com.ombremoon.ommodtemplate;
 
 import com.ombremoon.ommodtemplate.common.init.MobInit;
+import com.ombremoon.ommodtemplate.network.ModNetworking;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,7 +22,7 @@ public class ModTemplate {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-
+        ModNetworking.registerPackets();
     }
 
     @SubscribeEvent
