@@ -1,0 +1,82 @@
+[27Mar2024 19:44:40.591] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\Bryce\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 47.2.20, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mod, enderring, --all, --output, C:\Users\Bryce\Documents\Mods\Ender-Ring\src\generated\resources, --existing, C:\Users\Bryce\Documents\Mods\Ender-Ring\src\main\resources]
+[27Mar2024 19:44:40.596] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.7 by Eclipse Adoptium; OS Windows 10 arch amd64 version 10.0
+[27Mar2024 19:44:40.706] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgedatauserdev
+[27Mar2024 19:44:40.759] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/Bryce/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23128!/ Service=ModLauncher Env=CLIENT
+[27Mar2024 19:44:41.063] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Bryce\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20.1-47.2.20\918959a037ab7191a0c45a359f4746ab76c110c3\javafmllanguage-1.20.1-47.2.20.jar is missing mods.toml file
+[27Mar2024 19:44:41.068] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Bryce\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20.1-47.2.20\c1d1efcb98e8bfcf3dbfed0d1e81b55b648b86bf\lowcodelanguage-1.20.1-47.2.20.jar is missing mods.toml file
+[27Mar2024 19:44:41.073] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Bryce\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20.1-47.2.20\efca3bee89c0085192b122d47334692b921ca7d1\mclanguage-1.20.1-47.2.20.jar is missing mods.toml file
+[27Mar2024 19:44:41.077] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Bryce\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20.1-47.2.20\12cd436f148405b50c9b16bd8f3cc6f18db89824\fmlcore-1.20.1-47.2.20.jar is missing mods.toml file
+[27Mar2024 19:44:41.209] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[27Mar2024 19:44:42.665] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[27Mar2024 19:44:42.672] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\Bryce\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, enderring, --all, --output, C:\Users\Bryce\Documents\Mods\Ender-Ring\src\generated\resources, --existing, C:\Users\Bryce\Documents\Mods\Ender-Ring\src\main\resources]
+[27Mar2024 19:44:42.984] [main/INFO] [mixin/]: Remapping refMap curios.refmap.json using C:\Users\Bryce\Documents\Mods\Ender-Ring\build\createSrgToMcp\output.srg
+[27Mar2024 19:44:42.987] [main/INFO] [mixin/]: Remapping refMap epicfight.mixins.refmap.json using C:\Users\Bryce\Documents\Mods\Ender-Ring\build\createSrgToMcp\output.srg
+[27Mar2024 19:44:43.975] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [enderring]
+[27Mar2024 19:44:45.893] [main/WARN] [mixin/]: @Final field nextHeadUpdate:[I in epicfight.mixins.json:MixinWitherBoss should be final
+[27Mar2024 19:44:45.894] [main/WARN] [mixin/]: @Final field idleHeadUpdates:[I in epicfight.mixins.json:MixinWitherBoss should be final
+[27Mar2024 19:44:48.535] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.2.20, for MC 1.20.1 with MCP 20230612.114412
+[27Mar2024 19:44:48.536] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.2.20 Initialized
+[27Mar2024 19:44:48.701] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:basic_attack
+[27Mar2024 19:44:48.702] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:air_attack
+[27Mar2024 19:44:48.712] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:roll
+[27Mar2024 19:44:48.719] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:step
+[27Mar2024 19:44:48.720] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:knockdown_wakeup
+[27Mar2024 19:44:48.732] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:guard
+[27Mar2024 19:44:48.735] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:parrying
+[27Mar2024 19:44:48.737] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:impact_guard
+[27Mar2024 19:44:48.740] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:berserker
+[27Mar2024 19:44:48.742] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:death_harvest
+[27Mar2024 19:44:48.743] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:emergency_escape
+[27Mar2024 19:44:48.744] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:endurance
+[27Mar2024 19:44:48.745] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:forbidden_strength
+[27Mar2024 19:44:48.747] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:hypervitality
+[27Mar2024 19:44:48.748] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:stamina_pillager
+[27Mar2024 19:44:48.749] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:swordmaster
+[27Mar2024 19:44:48.750] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:technician
+[27Mar2024 19:44:48.753] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:sweeping_edge
+[27Mar2024 19:44:48.754] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:dancing_edge
+[27Mar2024 19:44:48.755] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:the_guillotine
+[27Mar2024 19:44:48.756] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:grasping_spire
+[27Mar2024 19:44:48.756] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:heartpiercer
+[27Mar2024 19:44:48.758] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:steel_whirlwind
+[27Mar2024 19:44:48.759] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:battojutsu
+[27Mar2024 19:44:48.760] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:battojutsu_passive
+[27Mar2024 19:44:48.761] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:rushing_tempo
+[27Mar2024 19:44:48.761] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:relentless_combo
+[27Mar2024 19:44:48.763] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:liechtenauer
+[27Mar2024 19:44:48.763] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:sharp_stab
+[27Mar2024 19:44:48.764] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:eviscerate
+[27Mar2024 19:44:48.786] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:blade_rush
+[27Mar2024 19:44:48.787] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:wrathful_lighting
+[27Mar2024 19:44:48.787] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:tsunami
+[27Mar2024 19:44:48.788] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:everlasting_allegiance
+[27Mar2024 19:44:48.790] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:meteor_slam
+[27Mar2024 19:44:48.792] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:revelation
+[27Mar2024 19:44:48.793] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:demolition_leap
+[27Mar2024 19:44:48.793] [modloading-worker-0/INFO] [epicfight/]: Registered skill epicfight:epicfight:phantom_ascent
+[27Mar2024 19:44:49.250] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/Bryce/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.2.20_mapped_parchment_2023.06.26-1.20.1/forge-1.20.1-47.2.20_mapped_parchment_2023.06.26-1.20.1-recomp.jar%23191!/assets/.mcassetsroot' uses unexpected schema
+[27Mar2024 19:44:49.251] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/Bryce/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.2.20_mapped_parchment_2023.06.26-1.20.1/forge-1.20.1-47.2.20_mapped_parchment_2023.06.26-1.20.1-recomp.jar%23191!/data/.mcassetsroot' uses unexpected schema
+[27Mar2024 19:44:49.485] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Recipes
+[27Mar2024 19:44:49.490] [main/INFO] [net.minecraft.data.DataGenerator/]: Recipes finished after 3 ms
+[27Mar2024 19:44:49.490] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Loot Tables
+[27Mar2024 19:44:49.560] [main/INFO] [net.minecraft.data.DataGenerator/]: Loot Tables finished after 68 ms
+[27Mar2024 19:44:49.560] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Sound Definitions
+[27Mar2024 19:44:49.561] [main/INFO] [net.minecraft.data.DataGenerator/]: Sound Definitions finished after 0 ms
+[27Mar2024 19:44:49.561] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:block mod id enderring
+[27Mar2024 19:44:49.600] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:block mod id enderring finished after 39 ms
+[27Mar2024 19:44:49.600] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:item mod id enderring
+[27Mar2024 19:44:49.600] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:item mod id enderring finished after 0 ms
+[27Mar2024 19:44:49.601] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Global Loot Modifiers : enderring
+[27Mar2024 19:44:49.605] [main/INFO] [net.minecraft.data.DataGenerator/]: Global Loot Modifiers : enderring finished after 4 ms
+[27Mar2024 19:44:49.605] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
+[27Mar2024 19:44:49.612] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 7 ms
+[27Mar2024 19:44:49.613] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Tags for minecraft:damage_type mod id enderring
+[27Mar2024 19:44:49.624] [main/INFO] [net.minecraft.data.DataGenerator/]: Tags for minecraft:damage_type mod id enderring finished after 11 ms
+[27Mar2024 19:44:49.625] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: enderring
+[27Mar2024 19:44:49.644] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: enderring finished after 19 ms
+[27Mar2024 19:44:49.644] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Block States: enderring
+[27Mar2024 19:44:49.644] [main/INFO] [net.minecraft.data.DataGenerator/]: Block States: enderring finished after 0 ms
+[27Mar2024 19:44:49.644] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Languages: en_us
+[27Mar2024 19:44:49.647] [main/INFO] [net.minecraft.data.DataGenerator/]: Languages: en_us finished after 3 ms
+[27Mar2024 19:44:49.648] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 161 ms
+[27Mar2024 19:44:49.657] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 14, old count: 14, new count: 15, removed stale: 0, written: 1
