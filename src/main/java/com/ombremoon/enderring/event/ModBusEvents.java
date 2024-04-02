@@ -21,6 +21,7 @@ public class ModBusEvents {
                 EntityAttributeInit.RUNES_HELD,
                 EntityAttributeInit.VIGOR,
                 EntityAttributeInit.MIND,
+                EntityAttributeInit.ENDURANCE,
                 EntityAttributeInit.STRENGTH,
                 EntityAttributeInit.DEXTERITY,
                 EntityAttributeInit.INTELLIGENCE,

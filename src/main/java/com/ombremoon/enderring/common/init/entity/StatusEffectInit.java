@@ -18,7 +18,7 @@ public class StatusEffectInit {
 
     public static RegistryObject<MobEffect> PHYSICAL_DAMAGE_NEGATION = registerSimpleEffect("physical_damage_negation", MobEffectCategory.BENEFICIAL, 234227227);
     public static RegistryObject<MobEffect> CRIMSON_AMBER_MEDALLION = registerStatusEffect("crimson_amber_medallion", new CrimsonAmberEffect(MobEffectCategory.BENEFICIAL, 234227227).addAttributeModifier(Attributes.MAX_HEALTH, "90f5e679-991d-4f90-b60f-6c8868ea78de", 1.0F, AttributeModifier.Operation.MULTIPLY_BASE));
-    public static RegistryObject<MobEffect> SHABRIRI_WOE = registerStatusEffect("shabriri_woe", new ShabririWoeEffect(MobEffectCategory.NEUTRAL, 234227227));
+    public static RegistryObject<MobEffect> SHABRIRIS_WOE = registerStatusEffect("shabriris_woe", new ShabririWoeEffect(MobEffectCategory.NEUTRAL, 234227227));
 
     private static RegistryObject<MobEffect> registerStatusEffect(String name, MobEffect statusEffect) {
         return STATUS_EFFECTS.register(name, () -> statusEffect);

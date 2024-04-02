@@ -2,15 +2,15 @@ package com.ombremoon.enderring.network;
 
 
 import com.ombremoon.enderring.CommonClass;
+import com.ombremoon.enderring.client.gui.screen.CharacterBaseScreen;
 import com.ombremoon.enderring.network.client.ClientboundCharBaseSelectPacket;
-import com.ombremoon.enderring.network.server.ServerboundIncreaseHealthPacket;
+import com.ombremoon.enderring.network.server.ServerboundCharacterBasePacket;
+import com.ombremoon.enderring.network.server.ServerboundUpdateMainStatsPacket;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
-
-import java.util.UUID;
 
 public class ModNetworking {
     private static final String VER = "1";
@@ -24,8 +24,12 @@ public class ModNetworking {
         return instance;
     }
 
-    public void increaseHealth(UUID uuid, int increaseAmount) {
-        this.sendToServer(new ServerboundIncreaseHealthPacket(uuid, increaseAmount));
+    public void setBaseStats(CharacterBaseScreen.Base characterBase) {
+        this.sendToServer(new ServerboundCharacterBasePacket(characterBase));
+    }
+
+    public void updateMainAttributes() {
+        this.sendToServer(new ServerboundUpdateMainStatsPacket());
     }
 
     public void openCharBaseSelectScreen(Component component, ServerPlayer serverPlayer) {
@@ -35,7 +39,8 @@ public class ModNetworking {
     public static void registerPackets() {
         var id = 0;
         PACKET_CHANNEL.registerMessage(id++, ClientboundCharBaseSelectPacket.class, ClientboundCharBaseSelectPacket::encode, ClientboundCharBaseSelectPacket::new, ClientboundCharBaseSelectPacket::handle);
-        PACKET_CHANNEL.registerMessage(id++, ServerboundIncreaseHealthPacket.class, ServerboundIncreaseHealthPacket::encode, ServerboundIncreaseHealthPacket::new, ServerboundIncreaseHealthPacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ServerboundCharacterBasePacket.class, ServerboundCharacterBasePacket::encode, ServerboundCharacterBasePacket::new, ServerboundCharacterBasePacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ServerboundUpdateMainStatsPacket.class, ServerboundUpdateMainStatsPacket::encode, ServerboundUpdateMainStatsPacket::new, ServerboundUpdateMainStatsPacket::handle);
     }
 
     protected <MSG> void sendToServer(MSG message) {

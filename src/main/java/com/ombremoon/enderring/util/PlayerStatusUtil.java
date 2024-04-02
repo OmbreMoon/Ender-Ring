@@ -2,6 +2,7 @@ package com.ombremoon.enderring.util;
 
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.network.ModNetworking;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -29,13 +30,25 @@ public class PlayerStatusUtil {
         return (int) player.getAttributes().getInstance(EntityAttributeInit.RUNES_HELD.get()).getValue();
     }
 
-    public static int getPlayerStat(Player player, Attribute attribute) {
-        return (int) player.getAttributes().getInstance(attribute).getValue();
+    public static double getPlayerStat(Player player, Attribute attribute) {
+        return player.getAttributes().getInstance(attribute).getValue();
     }
 
     public static int getRunesNeeded(Player player) {
         float f = ((getRuneLevel(player) + 81) - 92) * 0.02F;
         return Mth.floor(((f + 0.1) * ((getRuneLevel(player) + 81) ^ 2)) + 1);
+    }
+
+    public static void increaseBaseStat(Player player, Attribute attribute, int increaseAmount) {
+        player.getAttributes().getInstance(attribute).setBaseValue(player.getAttributeBaseValue(attribute) + increaseAmount);
+        if (attribute == EntityAttributeInit.VIGOR.get() || attribute == EntityAttributeInit.MIND.get() || attribute == EntityAttributeInit.ENDURANCE.get()) {
+            updateMainAttributes();
+        }
+    }
+
+    public static void increaseBaseStatWithLevel(Player player, Attribute attribute, int increaseAmount) {
+        increaseBaseStat(player, attribute, increaseAmount);
+        player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get()).setBaseValue(player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get()) + increaseAmount);
     }
 
     public static void increaseRunes(Player player, int increaseAmount) {
@@ -49,7 +62,7 @@ public class PlayerStatusUtil {
         }
     }
 
-    public static void increaseStat(Player player, Attribute attribute, UUID uuid, double increaseAmount) {
+    public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount, AttributeModifier.Operation operation) {
         AttributeInstance attributeInstance = player.getAttributes().getInstance(attribute);
         AttributeModifier attributemodifier = attributeInstance.getModifier(uuid);
         if (attributemodifier != null) {
@@ -57,10 +70,14 @@ public class PlayerStatusUtil {
             attributemodifier = new AttributeModifier(uuid, attribute.getDescriptionId(), attributemodifier.getAmount() + increaseAmount, attributemodifier.getOperation());
             attributeInstance.addPermanentModifier(attributemodifier);
         } else {
-            attributemodifier = new AttributeModifier(uuid, attribute.getDescriptionId(), increaseAmount, AttributeModifier.Operation.ADDITION);
+            attributemodifier = new AttributeModifier(uuid, attribute.getDescriptionId(), increaseAmount, operation);
             attributeInstance.addPermanentModifier(attributemodifier);
         }
         addStatusAttributeModifiers(player, uuid, attributemodifier);
+    }
+
+    public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount) {
+        addStatModifier(player, attribute, uuid, increaseAmount, AttributeModifier.Operation.ADDITION);
     }
 
     public static Map<UUID, AttributeModifier> getStatusAttributeModifiers(Player player) {
@@ -69,5 +86,9 @@ public class PlayerStatusUtil {
 
     public static void addStatusAttributeModifiers(Player player, UUID uuid, AttributeModifier attributeModifier) {
         PlayerStatusProvider.get(player).addStatusAttributeModifiers(uuid, attributeModifier);
+    }
+
+    private static void updateMainAttributes() {
+        ModNetworking.getInstance().updateMainAttributes();
     }
 }

@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.datagen;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.datagen.custom.ScaledWeaponProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,6 +36,7 @@ public class ModDataGen {
         generator.addProvider(includeServer, new ModGlobalLootModifiersProvider(packOutput));
         generator.addProvider(includeServer, new DatapackRegistriesProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new ModDamageTypeTagsProvider(packOutput, lookupProviderWithOwn, existingFileHelper));
+        generator.addProvider(includeServer, new ScaledWeaponProvider(packOutput, lookupProvider));
         generator.addProvider(includeClient, new ModItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new ModBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(includeClient, new ModLangProvider(packOutput));

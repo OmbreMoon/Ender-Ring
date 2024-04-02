@@ -15,6 +15,7 @@ public class EntityAttributeInit {
     public static final RegistryObject<Attribute> RUNES_HELD = ATTRIBUTES.register("runes_held", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".runes_held", 0.0D, 0.0D, 999999999.0D).setSyncable(true));
     public static final RegistryObject<Attribute> VIGOR = ATTRIBUTES.register("vigor", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".vigor", 1.0D, 1.0D, 99.0D).setSyncable(true));
     public static final RegistryObject<Attribute> MIND = ATTRIBUTES.register("mind", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".mind", 1.0D, 1.0D, 99.0D).setSyncable(true));
+    public static final RegistryObject<Attribute> ENDURANCE = ATTRIBUTES.register("endurance", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".endurance", 1.0D, 1.0D, 99.0D).setSyncable(true));
     public static final RegistryObject<Attribute> STRENGTH = ATTRIBUTES.register("strength", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".strength", 1.0D, 1.0D, 99.0D).setSyncable(true));
     public static final RegistryObject<Attribute> DEXTERITY = ATTRIBUTES.register("dexterity", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".dexterity", 1.0D, 1.0D, 99.0D).setSyncable(true));
     public static final RegistryObject<Attribute> INTELLIGENCE = ATTRIBUTES.register("intelligence", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".intelligence", 1.0D, 1.0D, 99.0D).setSyncable(true));

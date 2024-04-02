@@ -9,6 +9,7 @@ import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -44,13 +45,22 @@ public class PlayerStatusManager {
         Player newPlayer = event.getEntity();
         if (event.isWasDeath()) {
             for (Attribute attribute : playerStats) {
+                invalidateCharacterStats(oldPlayer, newPlayer, attribute);
                 for (Map.Entry<UUID, AttributeModifier> entry : PlayerStatusUtil.getStatusAttributeModifiers(oldPlayer).entrySet()) {
                     if (attribute.getDescriptionId().equalsIgnoreCase(entry.getValue().getName()) && attribute != EntityAttributeInit.RUNES_HELD.get()) {
-                        PlayerStatusUtil.increaseStat(newPlayer, attribute, entry.getKey(), (int) entry.getValue().getAmount());
+                        PlayerStatusUtil.addStatModifier(newPlayer, attribute, entry.getKey(), (int) entry.getValue().getAmount(), entry.getValue().getOperation());
                     }
                 }
             }
         }
+    }
+
+    private static void invalidateCharacterStats(Player oldPlayer, Player newPlayer, Attribute attribute) {
+        if (attribute != EntityAttributeInit.RUNES_HELD.get()) {
+            newPlayer.getAttributes().getInstance(attribute).setBaseValue(oldPlayer.getAttributeBaseValue(attribute));
+        }
+        newPlayer.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.MAX_HEALTH));
+        newPlayer.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
     }
 
     @SubscribeEvent

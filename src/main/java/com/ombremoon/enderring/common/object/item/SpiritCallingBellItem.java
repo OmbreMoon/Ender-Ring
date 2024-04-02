@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common.object.item.magic;
+package com.ombremoon.enderring.common.object.item;
 
 import net.minecraft.world.item.Item;
 

@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common.object.item.magic;
+package com.ombremoon.enderring.common.object.item.equipment.weapon.magic;
 
 public class SealItem extends AbstractSpellCastItem {
     public SealItem(Properties properties) {

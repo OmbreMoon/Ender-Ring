@@ -1,11 +1,21 @@
-// 1.20.1	2024-03-27T19:43:34.0731685	Item Models: enderring
-12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/blocks_between_rune.json
+// 1.20.1	2024-04-02T13:22:16.7679009	Item Models: enderring
+12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/astrologer_staff.json
+99684e249981dd70bac26727994e5b0517392180 assets/enderring/models/item/bewitching_branch.json
+12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/black_knife.json
+ba27a78fd9aa5be35de110de5152d5e3de4051f7 assets/enderring/models/item/blocks_between_rune.json
+12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/blue_cloth_greaves.json
+12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/blue_cloth_leggings.json
+12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/blue_cloth_vest.json
 0b833bc8a171f86a9ee55628917dbdf614230dfa assets/enderring/models/item/boiled_prawn.json
-12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/cracked_pot.json
-12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/crimson_amber_medallion.json
+a7bf98acdb115d42d0889fb00f31c6ac94baf430 assets/enderring/models/item/cracked_pot.json
+1ac67176c4bbc21d48a0ed1a3b2813dfaf540786 assets/enderring/models/item/crimson_amber_medallion.json
+12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/dagger.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/debug.json
+12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/finger_seal.json
+12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/glintstone_staff.json
+6047830ab847c2845da2e3a6d46888d82a9ea850 assets/enderring/models/item/golden_seed.json
 dfcca729d6aca9ad4a1b1ffe8ffca99e8bd5f862 assets/enderring/models/item/raw_prawn.json
-12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/shabriris_woe.json
+09b9eff4d4032028c59e7f778aaee19a73c392a5 assets/enderring/models/item/shabriris_woe.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/spectral_steed_whistle.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/spirit_calling_bell.json
-12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/stonesword_key.json
+7ec148407e9b673f8693f870103b1e1d7a086c97 assets/enderring/models/item/stonesword_key.json
