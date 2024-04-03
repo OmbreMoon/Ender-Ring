@@ -1,5 +1,6 @@
 package com.ombremoon.enderring;
 
+import com.ombremoon.enderring.client.ModelLocations;
 import com.ombremoon.enderring.common.init.BlockInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;

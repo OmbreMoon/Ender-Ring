@@ -25,7 +25,7 @@ public class ERArmorLayer<T extends LivingEntity, M extends HumanoidModel<T>, A 
     private final ArmorMaterial armorMaterial;
     private final ResourceLocation textureLocation;
 
-    public ERArmorLayer(ArmorMaterial armorMaterial, ResourceLocation textureLocation, RenderLayerParent<T, M> pRenderer, A outerModel, A innerModel) {
+    public ERArmorLayer(RenderLayerParent<T, M> pRenderer, A outerModel, A innerModel, ResourceLocation textureLocation, ArmorMaterial armorMaterial) {
         super(pRenderer);
         this.armorMaterial = armorMaterial;
         this.textureLocation = textureLocation;

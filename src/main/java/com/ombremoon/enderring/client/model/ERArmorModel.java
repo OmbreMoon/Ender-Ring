@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.client.model.armor;
+package com.ombremoon.enderring.client.model;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;

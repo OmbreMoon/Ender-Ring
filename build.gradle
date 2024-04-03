@@ -130,6 +130,7 @@ repositories {
         name = "SmartBrainLib (SBL) Maven Repo"
         url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
     }
+    maven { url 'https://libs.azuredoom.com:4443/mods' }
 }
 
 dependencies {
@@ -141,6 +142,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:${epicfight_version}")
+    implementation fg.deobf("curse.maven:azurelib-armor-912767:4931088")
     implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-1.20:1.11")
     compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api"))
     runtimeOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}"))
