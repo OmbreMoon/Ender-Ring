@@ -1,1 +1,11 @@
-// 1.20.1	2024-03-18T13:27:45.3518131	Recipes
+// 1.20.1	2024-04-13T12:00:27.635025	Recipes
+02a25cc46436bb349a4275ee41e73fc871cf3a16 data/enderring/advancements/recipes/misc/clay_pot.json
+59d51811e9ce6931a5a4b564ae8f8f6d6eb76761 data/enderring/advancements/recipes/misc/cracked_pot.json
+f62857e2830eee0f8f70dcf94473183c3da9b283 data/enderring/advancements/recipes/misc/hardened_pot.json
+516e4f7601e4082726c5b307aa9c1abf52f24604 data/enderring/advancements/recipes/misc/holy_water.json
+85977524d88f96b2b68725bbe4cbcc1c8211ca76 data/enderring/advancements/recipes/misc/roped_holy_water.json
+7766c5af2573040db77d850ac35b052c4f516f26 data/enderring/recipes/clay_pot.json
+32857bc9e139edd84dbdc284ce3054bf82a8b069 data/enderring/recipes/cracked_pot.json
+57b62b234aa646ea7a630d7b3119f4272089e058 data/enderring/recipes/hardened_pot.json
+102a4ac15d5c62cb16aaad7bd9080b64a5db92b1 data/enderring/recipes/holy_water.json
+c01edce7822b5d0ea3e8ede71afa082f7725132d data/enderring/recipes/roped_holy_water.json

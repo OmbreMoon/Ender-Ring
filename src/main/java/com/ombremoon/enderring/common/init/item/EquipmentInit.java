@@ -23,18 +23,21 @@ public class EquipmentInit extends ItemInit {
     public static RegistryObject<Item> FINGER_SEAL = registerSealItem("finger_seal");
 
     //Armor Sets
-//    public static RegistryObject<Item> BLUE_CLOTH_COWL = registerArmorItem("blue_cloth_cowl", ArmorsInit.BLUE_CLOTH, EquipmentSlot.HEAD);
-    public static RegistryObject<Item> BLUE_CLOTH_COWL = registerItem("blue_cloth_cowl", () -> new ArmorItem(ArmorsInit.BLUE_CLOTH, ArmorItem.Type.HELMET, getItemProperties()));
-    public static RegistryObject<Item> BLUE_CLOTH_VEST = registerArmorItem("blue_cloth_vest", ArmorsInit.BLUE_CLOTH, EquipmentSlot.CHEST);
-    public static RegistryObject<Item> BLUE_CLOTH_LEGGINGS = registerArmorItem("blue_cloth_leggings", ArmorsInit.BLUE_CLOTH, EquipmentSlot.LEGS);
-    public static RegistryObject<Item> BLUE_CLOTH_GREAVES = registerArmorItem("blue_cloth_greaves", ArmorsInit.BLUE_CLOTH, EquipmentSlot.FEET);
+    public static RegistryObject<Item> BLUE_CLOTH_COWL = registerArmorItem("blue_cloth_cowl", ArmorsInit.BLUE_CLOTH, ArmorItem.Type.HELMET);
+    public static RegistryObject<Item> BLUE_CLOTH_VEST = registerArmorItem("blue_cloth_vest", ArmorsInit.BLUE_CLOTH, ArmorItem.Type.CHESTPLATE);
+    public static RegistryObject<Item> BLUE_CLOTH_LEGGINGS = registerArmorItem("blue_cloth_leggings", ArmorsInit.BLUE_CLOTH, ArmorItem.Type.LEGGINGS);
+    public static RegistryObject<Item> BLUE_CLOTH_GREAVES = registerArmorItem("blue_cloth_greaves", ArmorsInit.BLUE_CLOTH, ArmorItem.Type.BOOTS);
+
+    //AMMUNITION
+    public static RegistryObject<Item> BONE_ARROW;
+    public static RegistryObject<Item> BONE_BOLT;
 
     public static RegistryObject<Item> registerStaffItem(String name) {
         return registerItem(name, () -> new StaffItem(getItemProperties()), EQUIPMENT_LIST, HANDHELD_LIST);
     }
 
-    public static RegistryObject<Item> registerArmorItem(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlot) {
-        return registerItem(name, () -> new ModdedArmor(armorMaterial, equipmentSlot, getItemProperties()), EQUIPMENT_LIST, SIMPLE_ITEM_LIST);
+    public static RegistryObject<Item> registerArmorItem(String name, ArmorMaterial armorMaterial, ArmorItem.Type type) {
+        return registerItem(name, () -> new ModdedArmor(armorMaterial, type, getItemProperties()), EQUIPMENT_LIST, SIMPLE_ITEM_LIST);
     }
 
     public static RegistryObject<Item> registerMeleeWeapon(String name) {

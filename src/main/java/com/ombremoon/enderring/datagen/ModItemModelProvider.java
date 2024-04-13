@@ -28,7 +28,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         ItemInit.GENERAL_LIST.stream().map(RegistryObject::get).filter(item -> !Arrays.stream(EXCLUSION_LIST).toList().contains(item)).forEach(this::simpleGeneratedModel);
-        ItemInit.EQUIPMENT_LIST.stream().map(RegistryObject::get).filter(item -> !(item instanceof ModdedArmor && ((ModdedArmor) item).getEquipmentSlot() == EquipmentSlot.HEAD)).forEach(this::tempItem);
+        ItemInit.EQUIPMENT_LIST.stream().map(RegistryObject::get).forEach(this::tempItem);
         ItemInit.TALISMAN_LIST.stream().map(RegistryObject::get).forEach(this::simpleGeneratedModel);
         Arrays.stream(EXCLUSION_LIST).toList().forEach(this::tempItem);
 
@@ -64,7 +64,21 @@ public class ModItemModelProvider extends ItemModelProvider {
     private final Item[] EXCLUSION_LIST = {
             ItemInit.DEBUG.get(),
             ItemInit.SPIRIT_CALLING_BELL.get(),
-            ItemInit.TORRENT_WHISTLE.get()
+            ItemInit.TORRENT_WHISTLE.get(),
+            ItemInit.BLOCKS_BETWEEN_RUNE.get(),
+            ItemInit.BEWITCHING_BRANCH.get(),
+            ItemInit.CRAB_EGGS.get(),
+            ItemInit.LAND_OCTOPUS_OVARY.get(),
+            ItemInit.WHITE_FLESH_STRIP.get(),
+            ItemInit.INVIGORATING_CURED_MEAT.get(),
+            ItemInit.INVIGORATING_CURED_WHITE_MEAT.get(),
+            ItemInit.CLAY_POT.get(),
+            ItemInit.HARDENED_POT.get(),
+            ItemInit.HOLY_WATER.get(),
+            ItemInit.ROPED_HOLY_WATER.get(),
+            ItemInit.MISSIONARY_COOKBOOK_ONE.get(),
+            ItemInit.NOMADIC_WARRIOR_COOKBOOK_ONE.get(),
+            ItemInit.NOMADIC_WARRIOR_COOKBOOK_TWO.get()
     };
 
 }

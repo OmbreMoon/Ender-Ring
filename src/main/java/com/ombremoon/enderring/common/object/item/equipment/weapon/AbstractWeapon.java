@@ -33,15 +33,13 @@ public abstract class AbstractWeapon extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            Constants.LOG.info(String.valueOf(itemStack.getTag()));
-            ScaledWeapon weapon = this.getModifiedWeapon(itemStack);
-            Constants.LOG.info(String.valueOf(weapon.getBaseStats().getMaxUpgrades()));
+            Constants.LOG.info(String.valueOf(weapon.serializeNBT()));
 
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }
 
-    public ScaledWeapon getModifiedWeapon(ItemStack stack) {
+    /*public ScaledWeapon getModifiedWeapon(ItemStack stack) {
         CompoundTag nbt = stack.getTag();
         if (nbt != null && nbt.contains("Weapon", 10)) {
             return this.scaledWeaponCache.computeIfAbsent(nbt, item -> {
@@ -51,5 +49,5 @@ public abstract class AbstractWeapon extends Item {
             });
         }
         return this.weapon;
-    }
+    }*/
 }

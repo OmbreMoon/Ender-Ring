@@ -1,7 +1,6 @@
 package com.ombremoon.enderring.common.init.entity;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.init.MobInit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

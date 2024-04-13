@@ -1,14 +1,22 @@
 package com.ombremoon.enderring.util;
 
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
+import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.magic.AbstractSpell;
+import com.ombremoon.enderring.common.magic.SpellInstance;
+import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.network.ModNetworking;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.RegistryObject;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,6 +29,7 @@ public class PlayerStatusUtil {
     public static final UUID INTELLIGENCE = UUID.fromString("a7b53dcf-0c86-42be-a2d2-f3ab215cbf1b");
     public static final UUID FAITH = UUID.fromString("9f51d3ae-2b49-4128-8163-023a22399053");
     public static final UUID ARCANE = UUID.fromString("d30470e4-7d8b-4884-9e67-53dc0d645669");
+    public static final UUID FP = UUID.fromString("2031ddaf-832a-4a2b-a091-2ccaf65e6cbb");
 
     public static int getRuneLevel(Player player) {
         return (int) player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get()).getValue();
@@ -88,7 +97,66 @@ public class PlayerStatusUtil {
         PlayerStatusProvider.get(player).addStatusAttributeModifiers(uuid, attributeModifier);
     }
 
+    public static double getFPAmount(Player player) {
+        return PlayerStatusProvider.get(player).getFPAmount();
+    }
+
+    public static void setFPAmount(Player player, double fpAmount) {
+        PlayerStatusProvider.get(player).setFPAmount(fpAmount);
+    }
+
+    public static boolean canCastSpell(Player player, AbstractSpell abstractSpell) {
+        return getFPAmount(player) >= abstractSpell.getRequiredFP();
+    }
+
+    public static void decreaseSpellFP(Player player, SpellType<?> spellType) {
+        PlayerStatusProvider.get(player).setFPAmount(getFPAmount(player) - spellType.getSpell().getRequiredFP());
+    }
+
     private static void updateMainAttributes() {
         ModNetworking.getInstance().updateMainAttributes();
+    }
+
+    public static SpellType<?> getSpellByName(ResourceLocation resourceLocation) {
+        for (RegistryObject<SpellType<?>> registryObject : SpellInit.SPELL_TYPE.getEntries()) {
+            if (registryObject.getId().equals(resourceLocation)) {
+                return registryObject.get();
+            }
+        }
+        return null;
+    }
+
+    public static CompoundTag storeSpell(SpellType<?> spellType) {
+        CompoundTag compoundTag = new CompoundTag();
+        return storeSpell(compoundTag, spellType, "Spell");
+    }
+
+    public static CompoundTag storeSpell(CompoundTag compoundTag, SpellType<?> spellType, String tagKey) {
+        compoundTag.putString(tagKey, spellType.getResourceLocation().toString());
+        return compoundTag;
+    }
+
+    public static ResourceLocation getSpellId(CompoundTag compoundTag, String tagKey) {
+        return ResourceLocation.tryParse(compoundTag.getString(tagKey));
+    }
+
+    public static Map<AbstractSpell, SpellInstance> getActiveSpells(Player player) {
+        return PlayerStatusProvider.get(player).getActiveSpells();
+    }
+
+    public static void activateSpell(Player player, AbstractSpell abstractSpell, SpellInstance spellInstance) {
+        getActiveSpells(player).put(abstractSpell, spellInstance);
+    }
+
+    public static LinkedHashSet<SpellType<?>> getSpellSet(Player player) {
+        return PlayerStatusProvider.get(player).getSpellSet();
+    }
+
+    public static SpellType<?> getSelectedSpell(Player player) {
+        return PlayerStatusProvider.get(player).getSelectedSpell();
+    }
+
+    public static void setSelectedSpell(Player player, SpellType<?> spellType) {
+        PlayerStatusProvider.get(player).setSelectedSpell(spellType);
     }
 }

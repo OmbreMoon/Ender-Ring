@@ -18,15 +18,9 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
     }
 
     protected void registerDaggers() {
-        this.addWeapon(CommonClass.customLocation("dagger"), ScaledWeapon.Builder.create()
-                .defaultMaxUpgrades()
-                .infusable()
-                .twoHandBonus()
-                .build());
-
-        this.addWeapon(CommonClass.customLocation("black_knife"), ScaledWeapon.Builder.create()
-                .isUnique()
-                .twoHandBonus()
-                .build());
+        addWeapon(CommonClass.customLocation("dagger"), ScaledWeapon.Builder.create()
+                .defaultMaxUpgrades().infusable().twoHandBonus()
+                .weaponDamage(74, 0, 0, 0, 0)
+                .elementID(10000).build());
     }
 }

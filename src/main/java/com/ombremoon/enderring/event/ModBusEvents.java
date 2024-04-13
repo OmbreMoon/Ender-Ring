@@ -19,6 +19,7 @@ public class ModBusEvents {
         addAttributesToPlayer(event,
                 EntityAttributeInit.RUNE_LEVEL,
                 EntityAttributeInit.RUNES_HELD,
+                EntityAttributeInit.MAX_FP,
                 EntityAttributeInit.VIGOR,
                 EntityAttributeInit.MIND,
                 EntityAttributeInit.ENDURANCE,
@@ -26,7 +27,8 @@ public class ModBusEvents {
                 EntityAttributeInit.DEXTERITY,
                 EntityAttributeInit.INTELLIGENCE,
                 EntityAttributeInit.FAITH,
-                EntityAttributeInit.ARCANE);
+                EntityAttributeInit.ARCANE,
+                EntityAttributeInit.ROBUSTNESS);
     }
 
     @SafeVarargs

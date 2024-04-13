@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.common;
 
-public enum Scaling {
+public enum WeaponScaling {
     STR,
     DEX,
     INT,

@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common.init;
+package com.ombremoon.enderring.common.init.entity;
 
 import com.ombremoon.enderring.common.init.entity.EntityInit;
 import net.minecraft.world.entity.EntityType;

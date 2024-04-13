@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class ClientboundCharBaseSelectPacket {
     private final Component title;
 
-    public ClientboundCharBaseSelectPacket(Component title) {;
+    public ClientboundCharBaseSelectPacket(Component title) {
         this.title = title;
     }
 

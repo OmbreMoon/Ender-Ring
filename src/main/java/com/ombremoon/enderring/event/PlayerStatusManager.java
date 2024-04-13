@@ -4,6 +4,8 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
+import com.ombremoon.enderring.common.magic.AbstractSpell;
+import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.world.entity.Entity;
@@ -12,15 +14,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
@@ -46,11 +47,6 @@ public class PlayerStatusManager {
         if (event.isWasDeath()) {
             for (Attribute attribute : playerStats) {
                 invalidateCharacterStats(oldPlayer, newPlayer, attribute);
-                for (Map.Entry<UUID, AttributeModifier> entry : PlayerStatusUtil.getStatusAttributeModifiers(oldPlayer).entrySet()) {
-                    if (attribute.getDescriptionId().equalsIgnoreCase(entry.getValue().getName()) && attribute != EntityAttributeInit.RUNES_HELD.get()) {
-                        PlayerStatusUtil.addStatModifier(newPlayer, attribute, entry.getKey(), (int) entry.getValue().getAmount(), entry.getValue().getOperation());
-                    }
-                }
             }
         }
     }
@@ -58,6 +54,11 @@ public class PlayerStatusManager {
     private static void invalidateCharacterStats(Player oldPlayer, Player newPlayer, Attribute attribute) {
         if (attribute != EntityAttributeInit.RUNES_HELD.get()) {
             newPlayer.getAttributes().getInstance(attribute).setBaseValue(oldPlayer.getAttributeBaseValue(attribute));
+            for (Map.Entry<UUID, AttributeModifier> entry : PlayerStatusUtil.getStatusAttributeModifiers(oldPlayer).entrySet()) {
+                if (attribute.getDescriptionId().equalsIgnoreCase(entry.getValue().getName()) && attribute != EntityAttributeInit.RUNES_HELD.get()) {
+                    PlayerStatusUtil.addStatModifier(newPlayer, attribute, entry.getKey(), (int) entry.getValue().getAmount(), entry.getValue().getOperation());
+                }
+            }
         }
         newPlayer.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.MAX_HEALTH));
         newPlayer.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
@@ -65,12 +66,36 @@ public class PlayerStatusManager {
 
     @SubscribeEvent
     public static void onPlayerHurt(LivingHurtEvent event) {
-        if (!(event.getEntity() instanceof Player))
+        if (!(event.getEntity() instanceof Player player))
             return;
 
-        Player player = (Player) event.getEntity();
         if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()) && event.getSource().is(ModDamageTypes.PHYSICAL)) {
             event.setAmount(event.getAmount() * 0.85F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAbilityTick(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        Iterator<AbstractSpell> iterator = PlayerStatusUtil.getActiveSpells(player).keySet().iterator();
+
+        try {
+            while (iterator.hasNext()) {
+                AbstractSpell abstractSpell = iterator.next();
+                SpellInstance spellInstance = PlayerStatusUtil.getActiveSpells(player).get(abstractSpell);
+                if (!spellInstance.tickSpellEffect(player, player.level(), player.getOnPos(), () -> {
+                    abstractSpell.onSpellUpdate(spellInstance, player, player.level(), player.getOnPos());
+                })) {
+                    if (!player.level().isClientSide) {
+                        iterator.remove();
+                        abstractSpell.onSpellStop(spellInstance, player, player.level(), player.getOnPos());
+                    }
+                    //TODO: SUBJECT TO CHANGE
+                } else if (spellInstance.getDuration() % 600 == 0) {
+                    abstractSpell.onSpellUpdate(spellInstance, player, player.level(), player.getOnPos());
+                }
+            }
+        } catch (ConcurrentModificationException ignored) {
         }
     }
 }

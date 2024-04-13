@@ -3,10 +3,12 @@ package com.ombremoon.enderring.datagen;
 import com.google.common.collect.ImmutableMap;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.BlockInit;
+import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
+import com.ombremoon.enderring.common.magic.SpellType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -41,6 +43,7 @@ public class ModLangProvider extends LanguageProvider {
         EntityInit.ENTITIES.getEntries().forEach(this::entityLang);
         EntityAttributeInit.ATTRIBUTES.getEntries().forEach(this::attributeLang);
         StatusEffectInit.STATUS_EFFECTS.getEntries().forEach(this::effectLang);
+        SpellInit.SPELL_TYPE.getEntries().forEach(this::spellLang);
         tabLang();
     }
 
@@ -60,6 +63,10 @@ public class ModLangProvider extends LanguageProvider {
 
     protected void effectLang(RegistryObject<MobEffect> entry) {
         addEffect(entry, checkReplace(entry));
+    }
+
+    protected void spellLang(RegistryObject<SpellType<?>> entry) {
+        add(entry.get().getSpell().getDescriptionId(), checkReplace(entry));
     }
 
     protected void tabLang() {

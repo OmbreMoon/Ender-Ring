@@ -30,7 +30,7 @@ public class RuneItem extends Item {
             }
         }
 
-        pLevel.playSound((Player) null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.BELL_RESONATE, SoundSource.NEUTRAL, 1.0F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
+        pLevel.playSound((Player) null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.NEUTRAL, 1.0F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
         pPlayer.awardStat(Stats.ITEM_USED.get(this));
         pPlayer.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide());

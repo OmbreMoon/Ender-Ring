@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.init.item;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.data.ScaledWeaponManager;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.*;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
@@ -33,33 +34,56 @@ public class ItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Constants.MOD_ID);
 
-    public static RegistryObject<Item> DEBUG = registerItem("debug", () -> new DebugItem(getItemProperties()));
+    public static final RegistryObject<Item> DEBUG = registerItem("debug", () -> new DebugItem(getItemProperties()));
 
-    public static RegistryObject<Item> SPIRIT_CALLING_BELL = registerGeneralItem("spirit_calling_bell", () -> new SpiritCallingBellItem(getItemProperties()));
-    public static RegistryObject<Item> TORRENT_WHISTLE = registerGeneralItem("spectral_steed_whistle", () -> new TorrentWhistleItem(getItemProperties()));
+    public static final RegistryObject<Item> SPIRIT_CALLING_BELL = registerGeneralItem("spirit_calling_bell", () -> new SpiritCallingBellItem(getItemProperties()));
+    public static final RegistryObject<Item> TORRENT_WHISTLE = registerGeneralItem("spectral_steed_whistle", () -> new TorrentWhistleItem(getItemProperties()));
 
     //KEEPSAKES
-    public static RegistryObject<Item> CRIMSON_AMBER_MEDALLION = registerTalisman("crimson_amber_medallion", StatusEffectInit.CRIMSON_AMBER_MEDALLION);
-    public static RegistryObject<Item> BLOCKS_BETWEEN_RUNE = registerGeneralItem("blocks_between_rune", () -> new RuneItem(getItemProperties().stacksTo(1), 3000));
-    public static RegistryObject<Item> GOLDEN_SEED = registerSimpleItem("golden_seed", getItemProperties().stacksTo(16));
-    public static RegistryObject<Item> CRACKED_POT = registerSimpleItem("cracked_pot", getItemProperties().stacksTo(20));
-    public static RegistryObject<Item> STONESWORD_KEY = registerSimpleItem("stonesword_key");
-    public static RegistryObject<Item> BEWITCHING_BRANCH = registerGeneralItem("bewitching_branch", () -> new BewitchingBranchItem(getItemProperties().stacksTo(16)));
-    public static RegistryObject<Item> RAW_PRAWN = registerSimpleItem("raw_prawn", getItemProperties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).build()));
-    public static RegistryObject<Item> BOILED_PRAWN = registerSimpleItem("boiled_prawn", getItemProperties().food(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).alwaysEat().effect(() -> new MobEffectInstance(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get(), 1200), 1.0F).build()));
-    public static RegistryObject<Item> SHABRIRIS_WOE = registerTalisman("shabriris_woe", StatusEffectInit.SHABRIRIS_WOE);
+    public static final RegistryObject<Item> CRIMSON_AMBER_MEDALLION = registerTalisman("crimson_amber_medallion", StatusEffectInit.CRIMSON_AMBER_MEDALLION);
+    public static final RegistryObject<Item> BLOCKS_BETWEEN_RUNE = registerGeneralItem("blocks_between_rune", () -> new RuneItem(getItemProperties().stacksTo(1), 3000));
+    public static final RegistryObject<Item> GOLDEN_SEED = registerSimpleItem("golden_seed", getItemProperties().stacksTo(16));
+    public static final RegistryObject<Item> CRACKED_POT = registerSimpleItem("cracked_pot", getItemProperties().stacksTo(20));
+    public static final RegistryObject<Item> STONESWORD_KEY = registerSimpleItem("stonesword_key");
+    public static final RegistryObject<Item> BEWITCHING_BRANCH = registerGeneralItem("bewitching_branch", () -> new BewitchingBranchItem(getItemProperties().stacksTo(16)));
+    public static final RegistryObject<Item> RAW_PRAWN = registerSimpleItem("raw_prawn", getItemProperties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).build()));
+    public static final RegistryObject<Item> BOILED_PRAWN = registerSimpleItem("boiled_prawn", getItemProperties().food(new FoodProperties.Builder().nutrition(5).saturationMod(0.6F).alwaysEat().effect(() -> new MobEffectInstance(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get(), 1200), 1.0F).build()));
+    public static final RegistryObject<Item> SHABRIRIS_WOE = registerTalisman("shabriris_woe", StatusEffectInit.SHABRIRIS_WOE);
+
+    //CONSUMABLES
+    public static final RegistryObject<Item> HOLY_WATER = registerGeneralItem("holy_water", () -> new ThrowingPotItem(getItemProperties()));
+    public static final RegistryObject<Item> ROPED_HOLY_WATER = registerGeneralItem("roped_holy_water", () -> new RopedThrowingPotItem(getItemProperties()));
+    public static final RegistryObject<Item> INVIGORATING_CURED_MEAT = registerSimpleItem("invigorating_cured_meat", getItemProperties().food(new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(StatusEffectInit.INVIGORATING_MEAT.get(), 1200), 1.0F).build()));
+    public static final RegistryObject<Item> INVIGORATING_CURED_WHITE_MEAT = registerSimpleItem("invigorating_cured_white_meat", getItemProperties().food(new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(StatusEffectInit.INVIGORATING_MEAT.get(), 2400, 1), 1.0F).build()));
+
+    //COOKBOOKS
+    public static final RegistryObject<Item> MISSIONARY_COOKBOOK_ONE = registerCookbookItem("missionary_cookbook_one");
+    public static final RegistryObject<Item> NOMADIC_WARRIOR_COOKBOOK_ONE = registerCookbookItem("nomadic_warrior_cookbook_one");
+    public static final RegistryObject<Item> NOMADIC_WARRIOR_COOKBOOK_TWO = registerCookbookItem("nomadic_warrior_cookbook_two");
+
+    //CRAFTING MATERIALS
+    public static final RegistryObject<Item> CRAB_EGGS = registerSimpleItem("crab_eggs");
+    public static final RegistryObject<Item> LAND_OCTOPUS_OVARY = registerSimpleItem("land_octopus_ovary");
+    public static final RegistryObject<Item> WHITE_FLESH_STRIP = registerSimpleItem("white_flesh_strip");
+
+    //MISC
+    public static final RegistryObject<Item> CLAY_POT = registerSimpleItem("clay_pot");
+    public static final RegistryObject<Item> HARDENED_POT = registerSimpleItem("hardened_pot");
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerCreativeModeTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION, TALISMAN_LIST);
     public static final RegistryObject<CreativeModeTab> WEAPON = registerCreativeModeTab("equipment", ItemInit.DEBUG, EQUIPMENT_LIST, item -> item instanceof AbstractWeapon, ((item, output) -> registerScaledWeapons(output, item)));
+
+    public static RegistryObject<Item> registerCookbookItem(String name) {
+        return registerGeneralItem(name, () -> new CookbookItem(getItemProperties()));
+    }
 
     public static RegistryObject<Item> registerTalisman(String name, Supplier<MobEffect> mobEffect) {
         return registerTalisman(name, mobEffect, 0);
     }
 
     public static RegistryObject<Item> registerTalisman(String name, Supplier<MobEffect> mobEffect, int amplifier) {
-        RegistryObject<Item> registryObject = registerItem(name, () -> new TalismanItem(() -> new MobEffectInstance(mobEffect.get(), -1, amplifier), getItemProperties()), TALISMAN_LIST, SIMPLE_ITEM_LIST);
-        return registryObject;
+        return registerItem(name, () -> new TalismanItem(() -> new MobEffectInstance(mobEffect.get(), -1, amplifier), getItemProperties()), TALISMAN_LIST, SIMPLE_ITEM_LIST);
     }
 
     protected static RegistryObject<Item> registerSimpleItem(String name) {
@@ -108,8 +132,9 @@ public class ItemInit {
 
     protected static void registerScaledWeapons(CreativeModeTab.Output output, Item item) {
         AbstractWeapon weapon = (AbstractWeapon) item;
+//        weapon.setWeapon(new ScaledWeaponManager.Wrapper(null));
         ItemStack itemStack = new ItemStack(weapon);
-        itemStack.getOrCreateTag().put("Weapon", weapon.getWeapon().serializeNBT());
+//        itemStack.getOrCreateTag().put("Weapon", weapon.getWeapon().serializeNBT());
         output.accept(itemStack);
     }
 
