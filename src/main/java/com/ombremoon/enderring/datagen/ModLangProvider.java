@@ -9,6 +9,7 @@ import com.ombremoon.enderring.common.init.entity.EntityInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -45,6 +46,8 @@ public class ModLangProvider extends LanguageProvider {
         StatusEffectInit.STATUS_EFFECTS.getEntries().forEach(this::effectLang);
         SpellInit.SPELL_TYPE.getEntries().forEach(this::spellLang);
         tabLang();
+
+        add(FlaskItem.NO_TEARS, "Wondrous Physick is currently holding no Crystal Tears");
     }
 
     protected void itemLang(RegistryObject<Item> entry) {

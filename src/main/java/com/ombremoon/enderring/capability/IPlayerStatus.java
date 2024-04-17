@@ -26,4 +26,20 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
     SpellType<?> getSelectedSpell();
 
     void setSelectedSpell(SpellType<?> spellType);
+
+    boolean isSpawnedTorrent();
+
+    void setSpawnTorrent(boolean spawnTorrent);
+
+    double getTorrentHealth();
+
+    void setTorrentHealth(double torrentHealth);
+
+    int getTalismanPouches();
+
+    void increaseTalismanPouches();
+
+    int getMemoryStones();
+
+    void increaseMemoryStones();
 }

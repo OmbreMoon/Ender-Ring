@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.client;
 
 import com.ombremoon.enderring.Constants;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,8 +13,17 @@ public class ClientEvents {
     public static class ClientModBusEvents {
 
         @SubscribeEvent
-        public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            CommonClientClass.getRenderers().forEach(
+                    renderers -> event.registerEntityRenderer((EntityType<?>) renderers.type().get(), renderers.renderer())
+            );
+        }
 
+        @SubscribeEvent
+        public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+            CommonClientClass.getLayerDefinitions().forEach(
+                    layerDefinitions -> event.registerLayerDefinition(layerDefinitions.layerLocation(), layerDefinitions::supplier)
+            );
         }
 
         @SubscribeEvent

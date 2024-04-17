@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.init.entity;
 
 import com.ombremoon.enderring.common.init.entity.EntityInit;
+import com.ombremoon.enderring.common.object.entity.mob.Torrent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -16,6 +17,11 @@ public class MobInit {
     public static void init() {}
     public static final List<AttributesRegister<?>> attributeSuppliers = new ArrayList<>();
 
+    public static RegistryObject<EntityType<Torrent>> TORRENT = registerMob("torrent", Torrent::new, MobCategory.CREATURE, 1.65F, 2.0F, 10, Torrent::createTorrentAttributes);
+
+    private static <T extends Mob> RegistryObject<EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange, Supplier<AttributeSupplier.Builder> attributeSupplier) {
+        return registerMob(name, factory, category, false, width, height, clientTrackingRange, attributeSupplier);
+    }
 
     private static <T extends Mob> RegistryObject<EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> factory, MobCategory mobCategory, boolean fireImmune, float width, float height, int clientTrackingRange, Supplier<AttributeSupplier.Builder> attributeSupplier) {
         EntityType.Builder<T> builder = EntityType.Builder.of(factory, mobCategory).sized(width, height).clientTrackingRange(clientTrackingRange);

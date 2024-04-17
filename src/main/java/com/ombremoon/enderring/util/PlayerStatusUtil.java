@@ -3,6 +3,7 @@ package com.ombremoon.enderring.util;
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
@@ -109,8 +110,14 @@ public class PlayerStatusUtil {
         return getFPAmount(player) >= abstractSpell.getRequiredFP();
     }
 
+    public static void increaseFP(Player player, float fpAmount) {
+        PlayerStatusProvider.get(player).setFPAmount(Math.min(getFPAmount(player) + fpAmount, player.getAttributeValue(EntityAttributeInit.MAX_FP.get())));
+    }
+
     public static void decreaseSpellFP(Player player, SpellType<?> spellType) {
-        PlayerStatusProvider.get(player).setFPAmount(getFPAmount(player) - spellType.getSpell().getRequiredFP());
+        if (!player.hasEffect(StatusEffectInit.CERULEAN_HIDDEN.get())) {
+            PlayerStatusProvider.get(player).setFPAmount(getFPAmount(player) - spellType.getSpell().getRequiredFP());
+        }
     }
 
     private static void updateMainAttributes() {
@@ -158,5 +165,37 @@ public class PlayerStatusUtil {
 
     public static void setSelectedSpell(Player player, SpellType<?> spellType) {
         PlayerStatusProvider.get(player).setSelectedSpell(spellType);
+    }
+
+    public static boolean isTorrentSpawnedOrIncapacitated(Player player) {
+        return PlayerStatusProvider.get(player).getTorrentHealth() <= 0 || PlayerStatusProvider.get(player).isSpawnedTorrent();
+    }
+
+    public static void setTorrentSpawned(Player player, boolean isSpawned) {
+        PlayerStatusProvider.get(player).setSpawnTorrent(isSpawned);
+    }
+
+    public static double getTorrentHealth(Player player) {
+        return PlayerStatusProvider.get(player).getTorrentHealth();
+    }
+
+    public static void setTorrentHealth(Player player, double health) {
+        PlayerStatusProvider.get(player).setTorrentHealth(health);
+    }
+
+    public static double getTalismanPouches(Player player) {
+        return PlayerStatusProvider.get(player).getTalismanPouches();
+    }
+
+    public static void increaseTalismanPouches(Player player) {
+        PlayerStatusProvider.get(player).increaseTalismanPouches();
+    }
+
+    public static double getMemoryStones(Player player) {
+        return PlayerStatusProvider.get(player).getMemoryStones();
+    }
+
+    public static void increaseMemoryStones(Player player) {
+        PlayerStatusProvider.get(player).increaseMemoryStones();
     }
 }

@@ -29,11 +29,6 @@ public class ModifiedAttributeEffect extends StatusEffect {
     }
 
     @Override
-    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return true;
-    }
-
-    @Override
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         super.removeAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
         removeModifier(pLivingEntity, this.attribute, this.attributeModifier.getId());

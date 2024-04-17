@@ -24,6 +24,12 @@ public class StatusEffectInit {
     public static RegistryObject<MobEffect> SHABRIRIS_WOE = registerStatusEffect("shabriris_woe", new ShabririWoeEffect(MobEffectCategory.NEUTRAL, 234227227));
     public static RegistryObject<MobEffect> INVIGORATING_MEAT = registerStatusEffect("invigorating_cured_meat", new CuredMeatEffect(MobEffectCategory.BENEFICIAL, 234227227, EntityAttributeInit.ROBUSTNESS, new AttributeModifier(UUID.fromString("3b51a5e3-f445-494f-a8c5-9d8ccbe4462c"), "Cured Meat", 100, AttributeModifier.Operation.ADDITION)));
 
+    //CRYSTAL TEARS
+    public static RegistryObject<MobEffect> CRIMSON_CRYSTAL = registerSimpleEffect("crimson_crystal_tear", MobEffectCategory.BENEFICIAL, 234227227);
+    public static RegistryObject<MobEffect> CERULEAN_CRYSTAL = registerSimpleEffect("cerulean_crystal_tear", MobEffectCategory.BENEFICIAL, 234227227);
+    public static RegistryObject<MobEffect> OPALINE_BUBBLE = registerSimpleEffect("opaline_bubble_tear", MobEffectCategory.BENEFICIAL, 234227227);
+    public static RegistryObject<MobEffect> CERULEAN_HIDDEN = registerSimpleEffect("cerulean_hidden_tear", MobEffectCategory.BENEFICIAL, 234227227);
+
     private static RegistryObject<MobEffect> registerStatusEffect(String name, MobEffect statusEffect) {
         return STATUS_EFFECTS.register(name, () -> statusEffect);
     }

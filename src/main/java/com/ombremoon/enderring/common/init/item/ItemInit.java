@@ -1,18 +1,27 @@
 package com.ombremoon.enderring.common.init.item;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.data.ScaledWeaponManager;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.*;
+import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
+import com.ombremoon.enderring.common.object.item.equipment.SpiritCallingBellItem;
+import com.ombremoon.enderring.common.object.item.equipment.TorrentWhistleItem;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
+import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -38,6 +47,21 @@ public class ItemInit {
 
     public static final RegistryObject<Item> SPIRIT_CALLING_BELL = registerGeneralItem("spirit_calling_bell", () -> new SpiritCallingBellItem(getItemProperties()));
     public static final RegistryObject<Item> TORRENT_WHISTLE = registerGeneralItem("spectral_steed_whistle", () -> new TorrentWhistleItem(getItemProperties()));
+    public static final RegistryObject<Item> CRIMSON_FLASK = registerGeneralItem("flask_of_crimson_tears", () -> new FlaskItem(FlaskItem.Type.HP, getItemProperties()));
+    public static final RegistryObject<Item> CERULEAN_FLASK = registerGeneralItem("flask_of_cerulean_tears", () -> new FlaskItem(FlaskItem.Type.FP, getItemProperties()));
+    public static final RegistryObject<Item> WONDROUS_PHYSICK_FLASK = registerGeneralItem("flask_of_wondrous_physick", () -> new FlaskItem(FlaskItem.Type.PHYSICK, getItemProperties()));
+    public static final RegistryObject<Item> TALISMAN_POUCH = registerGeneralItem("talisman_pouch", () -> new Item(getItemProperties()) {
+        @Override
+        public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+            return increaseSlots(pLevel, pPlayer, pUsedHand, true);
+        }
+    });
+    public static final RegistryObject<Item> MEMORY_STONE = registerGeneralItem("memory_stone", () -> new Item(getItemProperties()) {
+        @Override
+        public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+            return increaseSlots(pLevel, pPlayer, pUsedHand, false);
+        }
+    });
 
     //KEEPSAKES
     public static final RegistryObject<Item> CRIMSON_AMBER_MEDALLION = registerTalisman("crimson_amber_medallion", StatusEffectInit.CRIMSON_AMBER_MEDALLION);
@@ -51,20 +75,26 @@ public class ItemInit {
     public static final RegistryObject<Item> SHABRIRIS_WOE = registerTalisman("shabriris_woe", StatusEffectInit.SHABRIRIS_WOE);
 
     //CONSUMABLES
-    public static final RegistryObject<Item> HOLY_WATER = registerGeneralItem("holy_water", () -> new ThrowingPotItem(getItemProperties()));
-    public static final RegistryObject<Item> ROPED_HOLY_WATER = registerGeneralItem("roped_holy_water", () -> new RopedThrowingPotItem(getItemProperties()));
+    public static final RegistryObject<Item> HOLY_WATER = registerGeneralItem("holy_water", () -> new ThrowingPotItem(false, getItemProperties()));
+    public static final RegistryObject<Item> ROPED_HOLY_WATER = registerGeneralItem("roped_holy_water", () -> new ThrowingPotItem(true, getItemProperties()));
     public static final RegistryObject<Item> INVIGORATING_CURED_MEAT = registerSimpleItem("invigorating_cured_meat", getItemProperties().food(new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(StatusEffectInit.INVIGORATING_MEAT.get(), 1200), 1.0F).build()));
     public static final RegistryObject<Item> INVIGORATING_CURED_WHITE_MEAT = registerSimpleItem("invigorating_cured_white_meat", getItemProperties().food(new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(StatusEffectInit.INVIGORATING_MEAT.get(), 2400, 1), 1.0F).build()));
 
     //COOKBOOKS
-    public static final RegistryObject<Item> MISSIONARY_COOKBOOK_ONE = registerCookbookItem("missionary_cookbook_one");
-    public static final RegistryObject<Item> NOMADIC_WARRIOR_COOKBOOK_ONE = registerCookbookItem("nomadic_warrior_cookbook_one");
-    public static final RegistryObject<Item> NOMADIC_WARRIOR_COOKBOOK_TWO = registerCookbookItem("nomadic_warrior_cookbook_two");
+    public static final RegistryObject<Item> MISSIONARY_COOKBOOK_ONE = registerCookbook("missionary_cookbook_one");
+    public static final RegistryObject<Item> NOMADIC_WARRIOR_COOKBOOK_ONE = registerCookbook("nomadic_warrior_cookbook_one");
+    public static final RegistryObject<Item> NOMADIC_WARRIOR_COOKBOOK_TWO = registerCookbook("nomadic_warrior_cookbook_two");
 
     //CRAFTING MATERIALS
     public static final RegistryObject<Item> CRAB_EGGS = registerSimpleItem("crab_eggs");
     public static final RegistryObject<Item> LAND_OCTOPUS_OVARY = registerSimpleItem("land_octopus_ovary");
     public static final RegistryObject<Item> WHITE_FLESH_STRIP = registerSimpleItem("white_flesh_strip");
+
+    //CRYSTAL TEARS
+    public static final RegistryObject<Item> CRIMSON_CRYSTAL = registerCrystalTear("crimson_crystal_tear", StatusEffectInit.CRIMSON_CRYSTAL, 1);
+    public static final RegistryObject<Item> CERULEAN_CRYSTAL = registerCrystalTear("cerulean_crystal_tear", StatusEffectInit.CERULEAN_CRYSTAL, 1);
+    public static final RegistryObject<Item> OPALINE_BUBBLE = registerCrystalTear("opaline_bubble_tear", StatusEffectInit.OPALINE_BUBBLE, 3600);
+    public static final RegistryObject<Item> CERULEAN_HIDDEN = registerCrystalTear("cerulean_hidden_tear", StatusEffectInit.CERULEAN_HIDDEN, 300);
 
     //MISC
     public static final RegistryObject<Item> CLAY_POT = registerSimpleItem("clay_pot");
@@ -74,7 +104,11 @@ public class ItemInit {
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerCreativeModeTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION, TALISMAN_LIST);
     public static final RegistryObject<CreativeModeTab> WEAPON = registerCreativeModeTab("equipment", ItemInit.DEBUG, EQUIPMENT_LIST, item -> item instanceof AbstractWeapon, ((item, output) -> registerScaledWeapons(output, item)));
 
-    public static RegistryObject<Item> registerCookbookItem(String name) {
+    public static RegistryObject<Item> registerCrystalTear(String name, Supplier<MobEffect> mobEffect, int duration) {
+        return registerGeneralItem(name, () -> new CrystalTearItem(mobEffect, duration, getItemProperties()));
+    }
+
+    public static RegistryObject<Item> registerCookbook(String name) {
         return registerGeneralItem(name, () -> new CookbookItem(getItemProperties()));
     }
 
@@ -136,6 +170,25 @@ public class ItemInit {
         ItemStack itemStack = new ItemStack(weapon);
 //        itemStack.getOrCreateTag().put("Weapon", weapon.getWeapon().serializeNBT());
         output.accept(itemStack);
+    }
+
+    private static InteractionResultHolder<ItemStack> increaseSlots(Level level, Player player, InteractionHand usedHand, boolean isTalisman) {
+        ItemStack itemStack = player.getItemInHand(usedHand);
+        if (!level.isClientSide) {
+            if (isTalisman) {
+                PlayerStatusUtil.increaseTalismanPouches(player);
+            } else {
+                PlayerStatusUtil.increaseMemoryStones(player);
+            }
+        }
+
+        if (!player.getAbilities().instabuild) {
+            itemStack.shrink(1);
+        }
+
+        player.awardStat(Stats.ITEM_USED.get(itemStack.getItem()));
+        player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
+        return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
     }
 
     public static Item.Properties getItemProperties() {

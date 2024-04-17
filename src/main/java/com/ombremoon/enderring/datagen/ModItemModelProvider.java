@@ -2,13 +2,9 @@ package com.ombremoon.enderring.datagen;
 
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.init.item.EquipmentInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
-import com.ombremoon.enderring.common.object.item.equipment.ModdedArmor;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -18,7 +14,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
-import java.util.function.Supplier;
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -65,6 +60,15 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.DEBUG.get(),
             ItemInit.SPIRIT_CALLING_BELL.get(),
             ItemInit.TORRENT_WHISTLE.get(),
+            ItemInit.CRIMSON_FLASK.get(),
+            ItemInit.CERULEAN_FLASK.get(),
+            ItemInit.WONDROUS_PHYSICK_FLASK.get(),
+            ItemInit.TALISMAN_POUCH.get(),
+            ItemInit.MEMORY_STONE.get(),
+            ItemInit.CRIMSON_CRYSTAL.get(),
+            ItemInit.CERULEAN_CRYSTAL.get(),
+            ItemInit.OPALINE_BUBBLE.get(),
+            ItemInit.CERULEAN_HIDDEN.get(),
             ItemInit.BLOCKS_BETWEEN_RUNE.get(),
             ItemInit.BEWITCHING_BRANCH.get(),
             ItemInit.CRAB_EGGS.get(),

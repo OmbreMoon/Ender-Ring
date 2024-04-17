@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.capability;
 
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
@@ -22,6 +23,14 @@ public class PlayerStatus implements IPlayerStatus {
     private Map<AbstractSpell, SpellInstance> activeSpells = new HashMap<>();
     private SpellType<?> selectedSpell;
     private double fpAmount;
+    private boolean isTorrentSpawned;
+    private double torrentHealth;
+    private int talismanPouches;
+    private int memoryStones;
+
+    public PlayerStatus(double torrentHealth) {
+        this.torrentHealth = torrentHealth;
+    }
 
     @Override
     public double getFPAmount() {
@@ -64,6 +73,46 @@ public class PlayerStatus implements IPlayerStatus {
     }
 
     @Override
+    public boolean isSpawnedTorrent() {
+        return this.isTorrentSpawned;
+    }
+
+    @Override
+    public void setSpawnTorrent(boolean spawnTorrent) {
+        this.isTorrentSpawned = spawnTorrent;
+    }
+
+    @Override
+    public double getTorrentHealth() {
+        return this.torrentHealth;
+    }
+
+    @Override
+    public void setTorrentHealth(double torrentHealth) {
+        this.torrentHealth = torrentHealth;
+    }
+
+    @Override
+    public int getTalismanPouches() {
+        return this.talismanPouches;
+    }
+
+    @Override
+    public void increaseTalismanPouches() {
+        this.talismanPouches = Math.min(this.talismanPouches + 1, 3);
+    }
+
+    @Override
+    public int getMemoryStones() {
+        return this.memoryStones;
+    }
+
+    @Override
+    public void increaseMemoryStones() {
+        this.memoryStones = Math.min(this.memoryStones + 1, 8);
+    }
+
+    @Override
     public CompoundTag serializeNBT() {
         CompoundTag compoundTag = new CompoundTag();
         ListTag modifierList = new ListTag();
@@ -83,6 +132,10 @@ public class PlayerStatus implements IPlayerStatus {
         }
         compoundTag.put("Modifiers", modifierList);
         compoundTag.put("Spells", spellList);
+        compoundTag.putBoolean("Torrent", this.isTorrentSpawned);
+        compoundTag.putDouble("TorrentHealth", this.torrentHealth);
+        compoundTag.putInt("TalismanPouches", this.talismanPouches);
+        compoundTag.putInt("MemoryStones", this.memoryStones);
 
         return compoundTag;
     }
@@ -109,5 +162,18 @@ public class PlayerStatus implements IPlayerStatus {
                 this.spellSet.add(PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(compoundTag, "Spell")));
             }
         }
+        if (nbt.contains("Torrent", 99)) {
+            this.isTorrentSpawned = nbt.getBoolean("Torrent");
+        }
+        if (nbt.contains("TorrentHealth", 6)) {
+            this.torrentHealth = nbt.getDouble("TorrentHealth");
+        }
+        if (nbt.contains("TalismanPouches", 3)) {
+            this.talismanPouches = nbt.getInt("TalismanPouches");
+        }
+        if (nbt.contains("MemoryStones", 3)) {
+            this.memoryStones = nbt.getInt("MemoryStones");
+        }
+        Constants.LOG.info(String.valueOf(nbt));
     }
 }

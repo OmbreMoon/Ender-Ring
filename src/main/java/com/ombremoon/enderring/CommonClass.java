@@ -2,6 +2,7 @@ package com.ombremoon.enderring;
 
 import com.ombremoon.enderring.client.ModelLocations;
 import com.ombremoon.enderring.common.init.BlockInit;
+import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
@@ -18,6 +19,7 @@ public class CommonClass {
         ItemInit.register(modEventBus);
         BlockInit.register(modEventBus);
         EntityInit.register(modEventBus);
+        MenuTypeInit.register(modEventBus);
         SpellInit.init(modEventBus);
     }
 
