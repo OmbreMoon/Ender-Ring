@@ -74,6 +74,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.CRAB_EGGS.get(),
             ItemInit.LAND_OCTOPUS_OVARY.get(),
             ItemInit.WHITE_FLESH_STRIP.get(),
+            ItemInit.GOLDEN_ROWA.get(),
             ItemInit.INVIGORATING_CURED_MEAT.get(),
             ItemInit.INVIGORATING_CURED_WHITE_MEAT.get(),
             ItemInit.CLAY_POT.get(),
@@ -86,3 +87,4 @@ public class ModItemModelProvider extends ItemModelProvider {
     };
 
 }
+
