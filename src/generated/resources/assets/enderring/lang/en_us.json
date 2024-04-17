@@ -53,5 +53,6 @@
   "itemGroup.enderring.tab": "Ender Ring",
   "itemGroup.equipment.tab": "ER Equipment",
   "itemGroup.talismans.tab": "ER Talismans",
+  "curios.identifier.talismans": "Talisman",
   "spell.enderring.glintstone_pebble": "Glintstone Pebble"
 }

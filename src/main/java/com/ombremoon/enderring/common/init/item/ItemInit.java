@@ -65,6 +65,7 @@ public class ItemInit {
     public static final RegistryObject<Item> CRAB_EGGS = registerSimpleItem("crab_eggs");
     public static final RegistryObject<Item> LAND_OCTOPUS_OVARY = registerSimpleItem("land_octopus_ovary");
     public static final RegistryObject<Item> WHITE_FLESH_STRIP = registerSimpleItem("white_flesh_strip");
+    public static final RegistryObject<Item> GOLDEN_ROWA = registerSimpleItem("golden_rowa");
 
     //MISC
     public static final RegistryObject<Item> CLAY_POT = registerSimpleItem("clay_pot");
