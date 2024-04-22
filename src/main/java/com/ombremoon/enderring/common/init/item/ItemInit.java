@@ -62,6 +62,8 @@ public class ItemInit {
             return increaseSlots(pLevel, pPlayer, pUsedHand, false);
         }
     });
+    public static final RegistryObject<Item> SACRED_TEAR = registerSimpleItem("sacred_tear", getItemProperties().stacksTo(16));
+
 
     //KEEPSAKES
     public static final RegistryObject<Item> CRIMSON_AMBER_MEDALLION = registerTalisman("crimson_amber_medallion", StatusEffectInit.CRIMSON_AMBER_MEDALLION);

@@ -138,7 +138,7 @@ public class PlayerStatusUtil {
         return storeSpell(compoundTag, spellType, "Spell");
     }
 
-    public static CompoundTag storeSpell(CompoundTag compoundTag, SpellType<?> spellType, String tagKey) {
+    private static CompoundTag storeSpell(CompoundTag compoundTag, SpellType<?> spellType, String tagKey) {
         compoundTag.putString(tagKey, spellType.getResourceLocation().toString());
         return compoundTag;
     }
@@ -197,5 +197,13 @@ public class PlayerStatusUtil {
 
     public static void increaseMemoryStones(Player player) {
         PlayerStatusProvider.get(player).increaseMemoryStones();
+    }
+
+    public static boolean getGraceSiteFlag(Player player) {
+        return PlayerStatusProvider.get(player).getGraceSiteFlag();
+    }
+
+    public static void setGraceSiteFlag(Player player, boolean flag) {
+        PlayerStatusProvider.get(player).setGraceSiteFlag(flag);
     }
 }

@@ -18,6 +18,9 @@ public class CharacterBaseScreen extends Screen {
     /** True if the scrollbar is being dragged */
     private boolean scrolling;
 
+    //TODO: ADD SCROLL FUNCTIONALITY
+    //TODO: ADD TRANSLATIONS
+
     public CharacterBaseScreen(Component pTitle) {
         super(pTitle);
     }

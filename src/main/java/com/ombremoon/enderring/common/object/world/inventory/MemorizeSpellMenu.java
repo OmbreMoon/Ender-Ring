@@ -2,8 +2,6 @@ package com.ombremoon.enderring.common.object.world.inventory;
 
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
-import com.ombremoon.enderring.common.object.item.CrystalTearItem;
-import com.ombremoon.enderring.util.CurioHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,43 +11,30 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 
-public class WondrousPhysickMenu extends AbstractContainerMenu {
+public class MemorizeSpellMenu extends AbstractContainerMenu {
 
-    public WondrousPhysickMenu(int pContainerId, Inventory inventory, FriendlyByteBuf buf) {
+    public MemorizeSpellMenu(int pContainerId, Inventory inventory, FriendlyByteBuf buf) {
         this(pContainerId, inventory);
     }
 
-    public WondrousPhysickMenu(int pContainerId, Inventory inventory) {
-        super(MenuTypeInit.WONDROUS_PHYSICK_MENU.get(), pContainerId);
-        checkContainerSize(inventory, 2);
-        Player player = inventory.player;
+    public MemorizeSpellMenu(int pContainerId, Inventory inventory) {
+        super(MenuTypeInit.MEMORIZE_SPELL_MENU.get(), pContainerId);
 
-        addMenuSlots(player);
         addPlayerSlots(inventory);
-    }
-
-    private void addMenuSlots(Player player) {
-        this.addSlot(new SlotItemHandler(CurioHelper.getCurioStacks(player, CurioHelper.FLASK), 0, 20, 36) {
-            @Override
-            public int getMaxStackSize() {
-                return 1;
-            }
-        });
     }
 
     private void addPlayerSlots(Inventory inventory) {
 
         //Hotbar
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(inventory, col, 8 + col * 18, 144));
+            this.addSlot(new Slot(inventory, col, 8 + col * 18, 142));
         }
 
         //Player Inventory
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(inventory, col + row * 9 + 9, 8 + col * 18,  86 + row * 18));
+                this.addSlot(new Slot(inventory, col + row * 9 + 9, 8 + col * 18,  84 + row * 18));
             }
         }
     }

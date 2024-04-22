@@ -1,8 +1,11 @@
 package com.ombremoon.enderring.common.object.item;
 
+import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.util.CurioHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
@@ -20,7 +23,8 @@ public class TalismanItem extends Item implements ICurioItem {
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (slotContext.identifier().equalsIgnoreCase("talismans")) {
+        LivingEntity livingEntity = slotContext.entity();
+        if (!livingEntity.hasEffect(this.getEffectInstance().getEffect())) {
             slotContext.entity().addEffect(effectInstance.get());
         }
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
@@ -28,10 +32,22 @@ public class TalismanItem extends Item implements ICurioItem {
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        LivingEntity livingEntity = slotContext.entity();
-        MobEffect mobEffect = this.getEffectInstance().getEffect();
-        mobEffect.removeAttributeModifiers(livingEntity, livingEntity.getAttributes(), this.getEffectInstance().getAmplifier());
-        livingEntity.removeEffect(mobEffect);
+        Player player = (Player) slotContext.entity();
+
+        int slots = CurioHelper.getCurioSlots(player, CurioHelper.TALISMAN);
+        int j = 0;
+        for (int i = 0; i < slots; i++) {
+            j++;
+            if (stack.getItem() == CurioHelper.getCurioStack(player, CurioHelper.TALISMAN, i).getItem()) {
+                j -= 1;
+            }
+
+            if (j == slots) {
+                MobEffect mobEffect = this.getEffectInstance().getEffect();
+                mobEffect.removeAttributeModifiers(player, player.getAttributes(), this.getEffectInstance().getAmplifier());
+                player.removeEffect(mobEffect);
+            }
+        }
         ICurioItem.super.onUnequip(slotContext, newStack, stack);
     }
 

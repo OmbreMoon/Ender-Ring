@@ -69,6 +69,7 @@ public class GoldenRowaBlock extends DoublePlantBlock {
         pBuilder.add(AGE);
         super.createBlockStateDefinition(pBuilder);
     }
+
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         int i = pState.getValue(AGE);

@@ -22,6 +22,7 @@ public class ShabririWoeEffect extends StatusEffect {
             for (Entity entity : entityList) {
                 if (entity instanceof Monster monster) {
                     monster.setLastHurtByMob(pLivingEntity);
+                    monster.setTarget(pLivingEntity);
                 }
             }
         }

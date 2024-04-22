@@ -5,10 +5,9 @@ import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
 import com.ombremoon.enderring.client.gui.screen.CharacterBaseScreen;
 import com.ombremoon.enderring.network.client.ClientboundCharBaseSelectPacket;
+import com.ombremoon.enderring.network.client.ClientboundGraceSitePacket;
 import com.ombremoon.enderring.network.client.ClientboundSyncOverlaysPacket;
-import com.ombremoon.enderring.network.server.ServerboundCharacterBasePacket;
-import com.ombremoon.enderring.network.server.ServerboundUpdateMainStatsPacket;
-import com.ombremoon.enderring.network.server.ServerboundUpdateWeaponDataPacket;
+import com.ombremoon.enderring.network.server.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkRegistry;
@@ -35,12 +34,24 @@ public class ModNetworking {
         this.sendToServer(new ServerboundUpdateMainStatsPacket());
     }
 
+    public void passTime() {
+        this.sendToServer(new ServerboundPassTimePacket());
+    }
+
+    public void openGraceSiteMenu(boolean flag) {
+        this.sendToServer(new ServerboundOpenMenuPacket(flag));
+    }
+
     public void updateWeaponData() {
         this.sendToClients(new ServerboundUpdateWeaponDataPacket());
     }
 
     public void openCharBaseSelectScreen(Component component, ServerPlayer serverPlayer) {
         this.sendToPlayer(new ClientboundCharBaseSelectPacket(component), serverPlayer);
+    }
+
+    public void openGraceSiteScreen(Component component, ServerPlayer serverPlayer) {
+        this.sendToPlayer(new ClientboundGraceSitePacket(component), serverPlayer);
     }
 
     public void syncOverlays(ServerPlayer serverPlayer) {
@@ -52,7 +63,10 @@ public class ModNetworking {
         PACKET_CHANNEL.registerMessage(id++, ServerboundCharacterBasePacket.class, ServerboundCharacterBasePacket::encode, ServerboundCharacterBasePacket::new, ServerboundCharacterBasePacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundUpdateMainStatsPacket.class, ServerboundUpdateMainStatsPacket::encode, ServerboundUpdateMainStatsPacket::new, ServerboundUpdateMainStatsPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundUpdateWeaponDataPacket.class, ServerboundUpdateWeaponDataPacket::encode, ServerboundUpdateWeaponDataPacket::new, ServerboundUpdateWeaponDataPacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ServerboundPassTimePacket.class, ServerboundPassTimePacket::encode, ServerboundPassTimePacket::new, ServerboundPassTimePacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ServerboundOpenMenuPacket.class, ServerboundOpenMenuPacket::encode, ServerboundOpenMenuPacket::new, ServerboundOpenMenuPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ClientboundCharBaseSelectPacket.class, ClientboundCharBaseSelectPacket::encode, ClientboundCharBaseSelectPacket::new, ClientboundCharBaseSelectPacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ClientboundGraceSitePacket.class, ClientboundGraceSitePacket::encode, ClientboundGraceSitePacket::new, ClientboundGraceSitePacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ClientboundSyncOverlaysPacket.class, ClientboundSyncOverlaysPacket::encode, ClientboundSyncOverlaysPacket::new, ClientboundSyncOverlaysPacket::handle);
     }
 

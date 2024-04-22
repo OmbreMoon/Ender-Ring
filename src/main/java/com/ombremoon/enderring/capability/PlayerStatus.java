@@ -27,6 +27,7 @@ public class PlayerStatus implements IPlayerStatus {
     private double torrentHealth;
     private int talismanPouches;
     private int memoryStones;
+    private boolean graceSiteFlag;
 
     public PlayerStatus(double torrentHealth) {
         this.torrentHealth = torrentHealth;
@@ -110,6 +111,16 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public void increaseMemoryStones() {
         this.memoryStones = Math.min(this.memoryStones + 1, 8);
+    }
+
+    @Override
+    public boolean getGraceSiteFlag() {
+        return this.graceSiteFlag;
+    }
+
+    @Override
+    public void setGraceSiteFlag(boolean flag) {
+        this.graceSiteFlag = flag;
     }
 
     @Override

@@ -11,7 +11,7 @@
   "attribute.name.enderring.runes_held": "Runes Held",
   "attribute.name.enderring.strength": "Strength",
   "attribute.name.enderring.vigor": "Vigor",
-  "block.enderring.golden_rowa": "Golden Rowa",
+  "block.enderring.golden_rowa_block": "Golden Rowa Block",
   "block.enderring.tarnished_golden_sunflower": "Tarnished Golden Sunflower",
   "effect.enderring.cerulean_crystal_tear": "Cerulean Crystal Tear",
   "effect.enderring.cerulean_hidden_tear": "Cerulean Hidden Tear",
@@ -48,6 +48,7 @@
   "item.enderring.flask_of_crimson_tears": "Flask Of Crimson Tears",
   "item.enderring.flask_of_wondrous_physick": "Flask Of Wondrous Physick",
   "item.enderring.glintstone_staff": "Glintstone Staff",
+  "item.enderring.golden_rowa": "Golden Rowa",
   "item.enderring.golden_seed": "Golden Seed",
   "item.enderring.hardened_pot": "Hardened Pot",
   "item.enderring.holy_water": "Holy Water",
@@ -70,6 +71,5 @@
   "itemGroup.enderring.tab": "Ender Ring",
   "itemGroup.equipment.tab": "ER Equipment",
   "itemGroup.talismans.tab": "ER Talismans",
-  "curios.identifier.talismans": "Talisman",
   "spell.enderring.glintstone_pebble": "Glintstone Pebble"
 }

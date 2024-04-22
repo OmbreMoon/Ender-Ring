@@ -19,7 +19,7 @@ public class CrystalTearItem extends Item {
     private final int duration;
 
     public CrystalTearItem(Supplier<MobEffect> mobEffect, int duration, Properties pProperties) {
-        super(pProperties);
+        super(pProperties.stacksTo(1));
         this.mobEffect = mobEffect;
         this.duration = duration;
     }

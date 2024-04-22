@@ -82,7 +82,7 @@ public class FlaskItem extends QuickAccessItem {
     private int getMaxCharges(ItemStack itemStack, Type type) {
         CompoundTag compoundTag = itemStack.getOrCreateTag();
         if (type != Type.PHYSICK) {
-            return 2 + compoundTag.getInt("FlaskLevel");
+            return Math.min(2 + compoundTag.getInt("FlaskLevel"), 14);
         }
         return 1;
     }

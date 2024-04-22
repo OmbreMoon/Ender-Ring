@@ -1,4 +1,4 @@
-// 1.20.1	2024-04-13T15:29:41.4382657	Recipes
+// 1.20.1	2024-04-17T13:06:19.6914462	Recipes
 1a1dc4237062a8014911a07d08f1db1ad1ec9b9f data/enderring/advancements/recipes/combat/bole_bolt.json
 80f29faac62f359feb63d60de948eb2a27f13080 data/enderring/advancements/recipes/combat/bone_arrow.json
 188fbc7fd880cedbfffc34dac36d595f4f6e3f2e data/enderring/advancements/recipes/food/invigorating_cured_meat.json
@@ -14,6 +14,6 @@ a6447b0675440a7773672e9803ceabe372a077dc data/enderring/recipes/bone_arrow.json
 32857bc9e139edd84dbdc284ce3054bf82a8b069 data/enderring/recipes/cracked_pot.json
 57b62b234aa646ea7a630d7b3119f4272089e058 data/enderring/recipes/hardened_pot.json
 102a4ac15d5c62cb16aaad7bd9080b64a5db92b1 data/enderring/recipes/holy_water.json
-69f736ada184f57133d867ec465ad17b63fe6b68 data/enderring/recipes/invigorating_cured_meat.json
-fed1b356aec5dc95294cace9de499b2d212deac3 data/enderring/recipes/invigorating_cured_white_meat.json
+c0402b9eb9f14c6710b0fbdbe5caad86383aeb65 data/enderring/recipes/invigorating_cured_meat.json
+2803cc5cb876334440e5dd26d5533683b0ad6f7f data/enderring/recipes/invigorating_cured_white_meat.json
 c01edce7822b5d0ea3e8ede71afa082f7725132d data/enderring/recipes/roped_holy_water.json

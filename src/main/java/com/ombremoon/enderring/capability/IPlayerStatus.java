@@ -42,4 +42,8 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
     int getMemoryStones();
 
     void increaseMemoryStones();
+
+    boolean getGraceSiteFlag();
+
+    void setGraceSiteFlag(boolean flag);
 }
