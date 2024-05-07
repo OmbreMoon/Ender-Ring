@@ -5,6 +5,7 @@ import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.*;
@@ -14,10 +15,6 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
     double getFPAmount();
 
     void setFPAmount(double fpAmount);
-
-    Map<UUID, AttributeModifier> getStatusAttributeModifiers();
-
-    void addStatusAttributeModifiers(UUID uuid, AttributeModifier attributeModifier);
 
     LinkedHashSet<SpellType<?>> getSpellSet();
 
@@ -43,7 +40,25 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
     void increaseMemoryStones();
 
-    boolean getGraceSiteFlag();
+    ItemStack getQuickAccessItem();
 
-    void setGraceSiteFlag(boolean flag);
+    void setQuickAccessItem(ItemStack itemStack);
+
+    boolean isUsingQuickAccess();
+
+    void setUsingQuickAccess(boolean usingQuickAccess);
+
+    ItemStack getCachedItem();
+
+    void setCachedItem(ItemStack cachedItem);
+
+//    int getCachedSlot();
+
+//    void setCachedSlot(int slot);
+
+    int getUseItemTicks();
+
+    void setUseItemTicks(int ticks);
+
+//    void resetTalismanPouches();
 }

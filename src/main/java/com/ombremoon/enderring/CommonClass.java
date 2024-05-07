@@ -11,6 +11,7 @@ import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 
 public class CommonClass {
 
@@ -27,5 +28,9 @@ public class CommonClass {
 
     public static ResourceLocation customLocation(String name) {
         return new ResourceLocation(Constants.MOD_ID, name);
+    }
+
+    public static boolean hasEpicFight() {
+        return ModList.get().getModContainerById("epicfight").isPresent();
     }
 }

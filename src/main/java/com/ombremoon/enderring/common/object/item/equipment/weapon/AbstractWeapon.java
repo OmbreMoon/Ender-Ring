@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.item.equipment.weapon;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.data.ScaledWeaponManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -33,7 +34,9 @@ public abstract class AbstractWeapon extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            Constants.LOG.info(String.valueOf(weapon.serializeNBT()));
+            itemStack.getTag().putInt("WeaponLevel", 25);
+            int i = itemStack.getTag().getInt("WeaponLevel");
+            Constants.LOG.info(String.valueOf(this.getWeapon().getBaseStats().getReinforceType().getReinforceScaleParam(WeaponScaling.STR, i)));
 
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);

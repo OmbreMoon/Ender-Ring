@@ -3,6 +3,7 @@ package com.ombremoon.enderring.datagen;
 import com.google.common.collect.ImmutableMap;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.BlockInit;
+import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
@@ -14,6 +15,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
@@ -30,7 +32,8 @@ public class ModLangProvider extends LanguageProvider {
     protected static final Map<String, String> REPLACE_LIST = ImmutableMap.of(
             "tnt", "TNT",
             "sus", "",
-            "shabriris", "Shabriri's"
+            "shabriris", "Shabriri's",
+            "radagons", "Radagon's"
     );
 
     public ModLangProvider(PackOutput gen) {
@@ -45,6 +48,7 @@ public class ModLangProvider extends LanguageProvider {
         EntityAttributeInit.ATTRIBUTES.getEntries().forEach(this::attributeLang);
         StatusEffectInit.STATUS_EFFECTS.getEntries().forEach(this::effectLang);
         SpellInit.SPELL_TYPE.getEntries().forEach(this::spellLang);
+        MenuTypeInit.MENU_TYPES.getEntries().forEach(this::menuLang);
         tabLang();
 
         add(FlaskItem.NO_TEARS, "Wondrous Physick is currently holding no Crystal Tears");
@@ -72,6 +76,10 @@ public class ModLangProvider extends LanguageProvider {
         add(entry.get().getSpell().getDescriptionId(), checkReplace(entry));
     }
 
+    protected void menuLang(RegistryObject<MenuType<?>> entry) {
+        add(MenuTypeInit.getDescriptionId(entry), checkReplaceMenu(entry));
+    }
+
     protected void tabLang() {
         add("itemGroup." + Constants.MOD_ID + ".tab", Constants.MOD_NAME);
         add("itemGroup.talismans.tab", Constants.ABBR_NAME + " Talismans");
@@ -80,6 +88,10 @@ public class ModLangProvider extends LanguageProvider {
 
     protected void attributeLang(RegistryObject<Attribute> entry) {
         add(entry.get().getDescriptionId(), checkReplace(entry));
+    }
+
+    protected String checkReplaceMenu(RegistryObject<MenuType<?>> registryObject) {
+        return checkReplace(registryObject).replace(" Menu", "");
     }
 
     protected String checkReplace(RegistryObject<?> registryObject) {

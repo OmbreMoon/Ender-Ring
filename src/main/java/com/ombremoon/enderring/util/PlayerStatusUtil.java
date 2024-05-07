@@ -1,5 +1,7 @@
 package com.ombremoon.enderring.util;
 
+import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.capability.IPlayerStatus;
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
@@ -15,6 +17,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.LinkedHashSet;
@@ -23,8 +27,9 @@ import java.util.UUID;
 
 public class PlayerStatusUtil {
     public static final UUID RUNES_HELD = UUID.randomUUID();
-    public static final UUID VIGOR = UUID.fromString("2489d650-cd33-4bb1-a3c5-95610555ec2c");
+    public static final String VIGOR = "2489d650-cd33-4bb1-a3c5-95610555ec2c";
     public static final UUID MIND = UUID.fromString("d8b0623b-787d-46f8-999a-66226d336f7e");
+    public static final UUID ENDURANCE = UUID.fromString("13c4e562-d177-41da-8391-f3864333d899");
     public static final UUID STRENGTH = UUID.fromString("f6a50f0d-18aa-4f8a-be95-fe6e05141be0");
     public static final UUID DEXTERITY = UUID.fromString("4a3bb0a1-95df-4c86-90f3-3db09a473747");
     public static final UUID INTELLIGENCE = UUID.fromString("a7b53dcf-0c86-42be-a2d2-f3ab215cbf1b");
@@ -51,9 +56,7 @@ public class PlayerStatusUtil {
 
     public static void increaseBaseStat(Player player, Attribute attribute, int increaseAmount) {
         player.getAttributes().getInstance(attribute).setBaseValue(player.getAttributeBaseValue(attribute) + increaseAmount);
-        if (attribute == EntityAttributeInit.VIGOR.get() || attribute == EntityAttributeInit.MIND.get() || attribute == EntityAttributeInit.ENDURANCE.get()) {
-            updateMainAttributes();
-        }
+        updateMainAttributes(true);
     }
 
     public static void increaseBaseStatWithLevel(Player player, Attribute attribute, int increaseAmount) {
@@ -61,7 +64,7 @@ public class PlayerStatusUtil {
         player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get()).setBaseValue(player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get()) + increaseAmount);
     }
 
-    public static void increaseRunes(Player player, int increaseAmount) {
+    public static void increaseRunes(Player player, double increaseAmount) {
         AttributeInstance attributeInstance = player.getAttributes().getInstance(EntityAttributeInit.RUNES_HELD.get());
         AttributeModifier attributemodifier = attributeInstance.getModifier(RUNES_HELD);
         if (attributemodifier != null) {
@@ -72,31 +75,52 @@ public class PlayerStatusUtil {
         }
     }
 
-    public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount, AttributeModifier.Operation operation) {
+    public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount, AttributeModifier.Operation operation, boolean setMax) {
         AttributeInstance attributeInstance = player.getAttributes().getInstance(attribute);
         AttributeModifier attributemodifier = attributeInstance.getModifier(uuid);
         if (attributemodifier != null) {
             attributeInstance.removeModifier(attributemodifier);
             attributemodifier = new AttributeModifier(uuid, attribute.getDescriptionId(), attributemodifier.getAmount() + increaseAmount, attributemodifier.getOperation());
-            attributeInstance.addPermanentModifier(attributemodifier);
+            attributeInstance.addTransientModifier(attributemodifier);
         } else {
             attributemodifier = new AttributeModifier(uuid, attribute.getDescriptionId(), increaseAmount, operation);
-            attributeInstance.addPermanentModifier(attributemodifier);
+            attributeInstance.addTransientModifier(attributemodifier);
         }
-        addStatusAttributeModifiers(player, uuid, attributemodifier);
+//        addStatusAttributeModifiers(player, uuid, attributemodifier);
+        updateMainAttributes(false);
     }
 
-    public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount) {
-        addStatModifier(player, attribute, uuid, increaseAmount, AttributeModifier.Operation.ADDITION);
+    public static void removeStatModifier(Player player, Attribute attribute, UUID uuid, double decreaseAmount, boolean setmax) {
+        AttributeInstance attributeInstance = player.getAttributes().getInstance(attribute);
+        AttributeModifier attributemodifier = attributeInstance.getModifier(uuid);
+        if (attributemodifier != null) {
+            attributeInstance.removeModifier(attributemodifier);
+//            removeStatusAttributeModifiers(player, uuid);
+            var amount = attributemodifier.getAmount() - decreaseAmount;
+            if (amount > 0) {
+                attributemodifier = new AttributeModifier(uuid, attribute.getDescriptionId(), amount, attributemodifier.getOperation());
+                attributeInstance.addTransientModifier(attributemodifier);
+//                addStatusAttributeModifiers(player, uuid, attributemodifier);
+            }
+        }
+        updateMainAttributes(false);
     }
 
-    public static Map<UUID, AttributeModifier> getStatusAttributeModifiers(Player player) {
+    public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount, boolean setMax) {
+        addStatModifier(player, attribute, uuid, increaseAmount, AttributeModifier.Operation.ADDITION, setMax);
+    }
+
+    /*public static Map<UUID, AttributeModifier> getStatusAttributeModifiers(Player player) {
         return PlayerStatusProvider.get(player).getStatusAttributeModifiers();
     }
 
-    public static void addStatusAttributeModifiers(Player player, UUID uuid, AttributeModifier attributeModifier) {
+    private static void addStatusAttributeModifiers(Player player, UUID uuid, AttributeModifier attributeModifier) {
         PlayerStatusProvider.get(player).addStatusAttributeModifiers(uuid, attributeModifier);
     }
+
+    private static void removeStatusAttributeModifiers(Player player, UUID uuid) {
+        PlayerStatusProvider.get(player).removeStatusAttributeModifiers(uuid);
+    }*/
 
     public static double getFPAmount(Player player) {
         return PlayerStatusProvider.get(player).getFPAmount();
@@ -120,8 +144,8 @@ public class PlayerStatusUtil {
         }
     }
 
-    private static void updateMainAttributes() {
-        ModNetworking.getInstance().updateMainAttributes();
+    private static void updateMainAttributes(boolean setMax) {
+        ModNetworking.getInstance().updateMainAttributes(setMax);
     }
 
     public static SpellType<?> getSpellByName(ResourceLocation resourceLocation) {
@@ -183,7 +207,7 @@ public class PlayerStatusUtil {
         PlayerStatusProvider.get(player).setTorrentHealth(health);
     }
 
-    public static double getTalismanPouches(Player player) {
+    public static int getTalismanPouches(Player player) {
         return PlayerStatusProvider.get(player).getTalismanPouches();
     }
 
@@ -191,7 +215,7 @@ public class PlayerStatusUtil {
         PlayerStatusProvider.get(player).increaseTalismanPouches();
     }
 
-    public static double getMemoryStones(Player player) {
+    public static int getMemoryStones(Player player) {
         return PlayerStatusProvider.get(player).getMemoryStones();
     }
 
@@ -199,11 +223,35 @@ public class PlayerStatusUtil {
         PlayerStatusProvider.get(player).increaseMemoryStones();
     }
 
-    public static boolean getGraceSiteFlag(Player player) {
-        return PlayerStatusProvider.get(player).getGraceSiteFlag();
+    public static ItemStack getQuickAccessItem(Player player) {
+        return PlayerStatusProvider.get(player).getQuickAccessItem();
     }
 
-    public static void setGraceSiteFlag(Player player, boolean flag) {
-        PlayerStatusProvider.get(player).setGraceSiteFlag(flag);
+    public static void setQuickAccessItem(Player player, ItemStack itemStack) {
+        PlayerStatusProvider.get(player).setQuickAccessItem(itemStack);
     }
+
+    public static boolean isUsingQuickAccess(Player player) {
+        return PlayerStatusProvider.get(player).isUsingQuickAccess();
+    }
+
+    public static void setUsingQuickAccess(Player player, boolean usingQuickAccess) {
+        IPlayerStatus playerStatus = PlayerStatusProvider.get(player);
+        playerStatus.setUsingQuickAccess(usingQuickAccess);
+
+        if (usingQuickAccess) {
+//            playerStatus.setCachedSlot(player.getInventory().selected);
+            playerStatus.setUseItemTicks(getQuickAccessItem(player).getUseDuration() + 1);
+            setCachedItem(player, player.getMainHandItem());
+        }
+    }
+
+    public static ItemStack getCachedItem(Player player) {
+        return PlayerStatusProvider.get(player).getCachedItem();
+    }
+
+    private static void setCachedItem(Player player, ItemStack itemStack) {
+        PlayerStatusProvider.get(player).setCachedItem(itemStack);
+    }
+
 }

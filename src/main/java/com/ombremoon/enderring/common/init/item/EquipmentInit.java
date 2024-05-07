@@ -30,7 +30,7 @@ public class EquipmentInit extends ItemInit {
 
     //AMMUNITION
     public static RegistryObject<Item> BONE_ARROW = registerBoneArrow("bone_arrow");
-    public static RegistryObject<Item> BONE_BOLT = registerBoneBolt("bole_bolt");
+    public static RegistryObject<Item> BONE_BOLT = registerBoneBolt("bone_bolt");
 
     public static RegistryObject<Item> registerStaff(String name) {
         return registerItem(name, () -> new StaffItem(getItemProperties()), EQUIPMENT_LIST, HANDHELD_LIST);

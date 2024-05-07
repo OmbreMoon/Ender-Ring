@@ -33,7 +33,7 @@ public class ServerboundCharacterBasePacket {
             if (handler instanceof ServerGamePacketListenerImpl serverGamePacketListener) {
                 final var serverPlayer = serverGamePacketListener.player;
                 setCharacterBaseStats(serverPlayer, packet.characterBase);
-                ModNetworking.getInstance().updateMainAttributes();
+                ModNetworking.getInstance().updateMainAttributes(true);
             }
         });
         ctx.get().setPacketHandled(true);

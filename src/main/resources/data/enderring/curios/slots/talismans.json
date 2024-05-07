@@ -3,5 +3,6 @@
   "size": 4,
   "icon": "curios:slot/empty_custom_slot",
   "drop_rule": "ALWAYS_KEEP",
+  "use_native_gui": false,
   "render_toggle": false
 }

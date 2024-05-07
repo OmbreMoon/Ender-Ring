@@ -2,25 +2,29 @@ package com.ombremoon.enderring.common;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
+import com.ombremoon.enderring.Constants;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class ScaledWeapon implements INBTSerializable<CompoundTag> {
     protected Base base = new Base();
     protected Damage damage = new Damage();
-    protected Scale scale = new Scale();
+    protected Scaling scaling = new Scaling();
 
     public Base getBaseStats() {
         return this.base;
     }
     public Damage getDamage() { return this.damage; }
-    public Scale getScale() { return this.scale; }
+    public Scaling getScale() { return this.scaling; }
 
     public static class Base implements INBTSerializable<CompoundTag> {
         private int maxUpgrades;
         private boolean infusable;
         private boolean twoHandBonus;
         private int elementID;
+        private ReinforceType reinforceType;
 
         @Override
         public CompoundTag serializeNBT() {
@@ -29,6 +33,9 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             nbt.putBoolean("Infusable", this.infusable);
             nbt.putBoolean("TwoHandBonus", this.twoHandBonus);
             nbt.putInt("ElementID", this.elementID);
+
+            //TODO: NEEDS TO BE CHANGED
+            nbt.putString("ReinforceType", reinforceType != null ? this.reinforceType.getTypeId().toString() : "");
             return nbt;
         }
 
@@ -46,6 +53,9 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             if (nbt.contains("ElementID", 99)) {
                 this.elementID = nbt.getInt("ElementID");
             }
+            if (nbt.contains("ReinforceType", 8)) {
+                this.reinforceType = ReinforceType.getTypeFromLocation(ResourceLocation.tryParse(nbt.getString("ReinforceType")));
+            }
         }
 
         public JsonObject toJsonObject() {
@@ -55,7 +65,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             jsonObject.addProperty("maxUpgrades", this.maxUpgrades);
             if (this.infusable) jsonObject.addProperty("infusable", true);
             if (this.twoHandBonus) jsonObject.addProperty("twoHandBonus", true);
-            jsonObject.addProperty("element", this.elementID);
+            jsonObject.addProperty("elementID", this.elementID);
+            jsonObject.addProperty("reinforceType", this.reinforceType.getTypeId().toString());
             return jsonObject;
         }
 
@@ -75,12 +86,17 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this.elementID;
         }
 
+        public ReinforceType getReinforceType() {
+            return this.reinforceType;
+        }
+
         public Base copy() {
             Base base = new Base();
             base.maxUpgrades = this.maxUpgrades;
             base.infusable = this.infusable;
             base.twoHandBonus = this.twoHandBonus;
             base.elementID = this.elementID;
+            base.reinforceType = this.reinforceType;
             return base;
         }
     }
@@ -168,38 +184,86 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         }
     }
 
-    public static class Scale implements INBTSerializable<CompoundTag> {
-        private boolean imDone;
+    public static class Scaling implements INBTSerializable<CompoundTag> {
+        private int strScale;
+        private int dexScale;
+        private int intScale;
+        private int faiScale;
+        private int arcScale;
 
         @Override
         public CompoundTag serializeNBT() {
             CompoundTag nbt = new CompoundTag();
-            nbt.putBoolean("Done", this.imDone);
+            nbt.putInt("StrScale", this.strScale);
+            nbt.putInt("DexScale", this.dexScale);
+            nbt.putInt("IntScale", this.intScale);
+            nbt.putInt("FaiScale", this.faiScale);
+            nbt.putInt("ArcScale", this.arcScale);
             return nbt;
         }
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
-            if (nbt.contains("Done", 99)) {
-                this.imDone = nbt.getBoolean("Done");
+            if (nbt.contains("StrScale", 99)) {
+                this.strScale = nbt.getInt("StrScale");
+            }
+            if (nbt.contains("DexScale", 99)) {
+                this.dexScale = nbt.getInt("DexScale");
+            }
+            if (nbt.contains("IntScale", 99)) {
+                this.intScale = nbt.getInt("IntScale");
+            }
+            if (nbt.contains("FaiScale", 99)) {
+                this.faiScale = nbt.getInt("FaiScale");
+            }
+            if (nbt.contains("ArcScale", 99)) {
+                this.arcScale = nbt.getInt("ArcScale");
             }
         }
 
         public JsonObject toJsonObject() {
-//            Preconditions.checkArgument(this.strScale >= 0, "Str scaling must be greater than or equal to 0");
+            Preconditions.checkArgument(this.strScale >= 0, "Strength scaling must be greater than or equal to 0");
+            Preconditions.checkArgument(this.dexScale >= 0, "Dexterity scaling must be greater than or equal to 0");
+            Preconditions.checkArgument(this.intScale >= 0, "Intelligence scaling must be greater than or equal to 0");
+            Preconditions.checkArgument(this.faiScale >= 0, "Faith scaling must be greater than or equal to 0");
+            Preconditions.checkArgument(this.arcScale >= 0, "Arcane scaling must be greater than or equal to 0");
             JsonObject jsonObject = new JsonObject();
-            if (this.imDone) jsonObject.addProperty("done", this.imDone);
+            if (this.strScale > 0) jsonObject.addProperty("strScale", this.strScale);
+            if (this.dexScale > 0) jsonObject.addProperty("dexScale", this.dexScale);
+            if (this.intScale > 0) jsonObject.addProperty("intScale", this.intScale);
+            if (this.faiScale > 0) jsonObject.addProperty("faiScale", this.faiScale);
+            if (this.arcScale > 0) jsonObject.addProperty("arcScale", this.arcScale);
             return jsonObject;
         }
 
-        public boolean getImDone() {
-            return this.imDone;
+        public int getStrScale() {
+            return this.strScale;
         }
 
-        public Scale copy() {
-            Scale scale = new Scale();
-            scale.imDone = this.imDone;
-            return scale;
+        public int getDexScale() {
+            return this.dexScale;
+        }
+
+        public int getIntScale() {
+            return this.intScale;
+        }
+
+        public int getFaiScale() {
+            return this.faiScale;
+        }
+
+        public int getArcScale() {
+            return this.arcScale;
+        }
+
+        public Scaling copy() {
+            Scaling scaling = new Scaling();
+            scaling.strScale = this.strScale;
+            scaling.dexScale = this.dexScale;
+            scaling.intScale = this.intScale;
+            scaling.faiScale = this.faiScale;
+            scaling.arcScale = this.arcScale;
+            return scaling;
         }
     }
 
@@ -222,6 +286,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         CompoundTag nbt = new CompoundTag();
         nbt.put("Base", this.base.serializeNBT());
         nbt.put("Damage", this.damage.serializeNBT());
+        nbt.put("Scaling", this.scaling.serializeNBT());
         return nbt;
     }
 
@@ -233,12 +298,16 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         if (nbt.contains("Damage", 10)) {
             this.damage.deserializeNBT(nbt.getCompound("Damage"));
         }
+        if (nbt.contains("Scaling", 10)) {
+            this.scaling.deserializeNBT(nbt.getCompound("Scaling"));
+        }
     }
 
     public JsonObject toJsonObject() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("base", this.base.toJsonObject());
         jsonObject.add("damage", this.damage.toJsonObject());
+        jsonObject.add("scaling", this.scaling.toJsonObject());
         return jsonObject;
     }
 
@@ -252,6 +321,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         ScaledWeapon scaledWeapon = new ScaledWeapon();
         scaledWeapon.base = this.base.copy();
         scaledWeapon.damage = this.damage.copy();
+        scaledWeapon.scaling = this.scaling.copy();
         return scaledWeapon;
     }
 
@@ -280,11 +350,6 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this;
         }
 
-        public Builder scale() {
-            this.scaledWeapon.scale.imDone = true;
-            return this;
-        }
-
         public Builder infusable() {
             this.scaledWeapon.base.infusable = true;
             return this;
@@ -301,12 +366,26 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this;
         }
 
+        public Builder reinforceType(ReinforceType reinforceType) {
+            this.scaledWeapon.base.reinforceType = reinforceType;
+            return this;
+        }
+
         public Builder weaponDamage(int physDamage, int magDamage, int fireDamage, int lightDamage, int holyDamage) {
             this.scaledWeapon.damage.physDamage = physDamage;
             this.scaledWeapon.damage.magDamage = magDamage;
             this.scaledWeapon.damage.fireDamage = fireDamage;
             this.scaledWeapon.damage.lightDamage = lightDamage;
             this.scaledWeapon.damage.holyDamage = holyDamage;
+            return this;
+        }
+
+        public Builder weaponScaling(int strScale, int dexScale, int intScale, int faiScale, int arcScale) {
+            this.scaledWeapon.scaling.strScale = strScale;
+            this.scaledWeapon.scaling.dexScale = dexScale;
+            this.scaledWeapon.scaling.intScale = intScale;
+            this.scaledWeapon.scaling.faiScale = faiScale;
+            this.scaledWeapon.scaling.arcScale = arcScale;
             return this;
         }
     }

@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.init.item;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.data.ScaledWeaponManager;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.*;
 import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
@@ -9,6 +10,7 @@ import com.ombremoon.enderring.common.object.item.equipment.TorrentWhistleItem;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -103,6 +105,12 @@ public class ItemInit {
     public static final RegistryObject<Item> CLAY_POT = registerSimpleItem("clay_pot");
     public static final RegistryObject<Item> HARDENED_POT = registerSimpleItem("hardened_pot");
 
+    //TALISMANS
+    public static final RegistryObject<Item> GREEN_TURTLE_TALISMAN = registerTalisman("green_turtle_talisman", StatusEffectInit.GREEN_TURTLE);
+    public static final RegistryObject<Item> GODFREY_ICON = registerTalisman("godfrey_icon", StatusEffectInit.GREEN_TURTLE);
+    public static final RegistryObject<Item> RADAGONS_SORESEAL = registerTalisman("radagons_soreseal", StatusEffectInit.RADAGONS_SORESEAL);
+    public static final RegistryObject<Item> SACRIFICIAL_TWIG = registerTalisman("sacrificial_twig", StatusEffectInit.SACRIFICIAL_TWIG);
+
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerCreativeModeTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION, TALISMAN_LIST);
     public static final RegistryObject<CreativeModeTab> WEAPON = registerCreativeModeTab("equipment", ItemInit.DEBUG, EQUIPMENT_LIST, item -> item instanceof AbstractWeapon, ((item, output) -> registerScaledWeapons(output, item)));
@@ -169,9 +177,10 @@ public class ItemInit {
 
     protected static void registerScaledWeapons(CreativeModeTab.Output output, Item item) {
         AbstractWeapon weapon = (AbstractWeapon) item;
-//        weapon.setWeapon(new ScaledWeaponManager.Wrapper(null));
         ItemStack itemStack = new ItemStack(weapon);
-//        itemStack.getOrCreateTag().put("Weapon", weapon.getWeapon().serializeNBT());
+        CompoundTag nbt = itemStack.getOrCreateTag();
+        nbt.put("Weapon", weapon.getWeapon().serializeNBT());
+        nbt.putInt("WeaponLevel", 0);
         output.accept(itemStack);
     }
 

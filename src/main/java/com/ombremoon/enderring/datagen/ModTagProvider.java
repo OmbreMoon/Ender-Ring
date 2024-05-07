@@ -1,6 +1,9 @@
 package com.ombremoon.enderring.datagen;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.init.TagInit;
+import com.ombremoon.enderring.common.init.item.ItemInit;
+import com.ombremoon.enderring.common.object.item.CrystalTearItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -10,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -25,7 +29,11 @@ public class ModTagProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider pProvider) {
-
+            for (Item item : ForgeRegistries.ITEMS.getValues()) {
+                if (item instanceof CrystalTearItem crystalTearItem) {
+                    populateTag(TagInit.Items.CRYSTAL_TEAR, () -> crystalTearItem);
+                }
+            }
         }
 
         public void populateTag(TagKey<Item> tag, Supplier<Item>... items){

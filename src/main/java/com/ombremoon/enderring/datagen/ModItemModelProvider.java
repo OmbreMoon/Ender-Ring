@@ -14,19 +14,28 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Predicate;
 
 public class ModItemModelProvider extends ItemModelProvider {
+    private final Predicate<Item> exclusionPredicate = item -> !Arrays.stream(EXCLUSION_LIST).toList().contains(item);
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, Constants.MOD_ID, existingFileHelper);
     }
 
     @Override
     protected void registerModels() {
-        ItemInit.GENERAL_LIST.stream().map(RegistryObject::get).filter(item -> !Arrays.stream(EXCLUSION_LIST).toList().contains(item)).forEach(this::simpleGeneratedModel);
+//        ItemInit.GENERAL_LIST.stream().map(RegistryObject::get).filter(exclusionPredicate).forEach(this::simpleGeneratedModel);
+        registerItemModels(ItemInit.GENERAL_LIST);
+        registerItemModels(ItemInit.TALISMAN_LIST);
         ItemInit.EQUIPMENT_LIST.stream().map(RegistryObject::get).forEach(this::tempItem);
-        ItemInit.TALISMAN_LIST.stream().map(RegistryObject::get).forEach(this::simpleGeneratedModel);
+//        ItemInit.TALISMAN_LIST.stream().map(RegistryObject::get).filter(exclusionPredicate).forEach(this::simpleGeneratedModel);
         Arrays.stream(EXCLUSION_LIST).toList().forEach(this::tempItem);
 
+    }
+
+    private void registerItemModels(Collection<RegistryObject<Item>> registryObjects) {
+        registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate).forEach(this::simpleGeneratedModel);
     }
 
     protected ItemModelBuilder simpleGeneratedModel(Item item) {
@@ -56,22 +65,19 @@ public class ModItemModelProvider extends ItemModelProvider {
         return ForgeRegistries.BLOCKS.getKey(item).getPath();
     }
 
-    private final Item[] EXCLUSION_LIST = {
+    static final Item[] EXCLUSION_LIST = {
             ItemInit.DEBUG.get(),
             ItemInit.SPIRIT_CALLING_BELL.get(),
             ItemInit.TORRENT_WHISTLE.get(),
-            ItemInit.CRIMSON_FLASK.get(),
+            ItemInit.SACRED_TEAR.get(),
             ItemInit.CERULEAN_FLASK.get(),
             ItemInit.WONDROUS_PHYSICK_FLASK.get(),
             ItemInit.TALISMAN_POUCH.get(),
-            ItemInit.MEMORY_STONE.get(),
             ItemInit.CRIMSON_CRYSTAL.get(),
             ItemInit.CERULEAN_CRYSTAL.get(),
-            ItemInit.OPALINE_BUBBLE.get(),
             ItemInit.CERULEAN_HIDDEN.get(),
             ItemInit.BLOCKS_BETWEEN_RUNE.get(),
             ItemInit.BEWITCHING_BRANCH.get(),
-            ItemInit.CRAB_EGGS.get(),
             ItemInit.LAND_OCTOPUS_OVARY.get(),
             ItemInit.WHITE_FLESH_STRIP.get(),
             ItemInit.GOLDEN_ROWA.get(),
@@ -83,7 +89,11 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.ROPED_HOLY_WATER.get(),
             ItemInit.MISSIONARY_COOKBOOK_ONE.get(),
             ItemInit.NOMADIC_WARRIOR_COOKBOOK_ONE.get(),
-            ItemInit.NOMADIC_WARRIOR_COOKBOOK_TWO.get()
+            ItemInit.NOMADIC_WARRIOR_COOKBOOK_TWO.get(),
+            ItemInit.GREEN_TURTLE_TALISMAN.get(),
+            ItemInit.GODFREY_ICON.get(),
+            ItemInit.RADAGONS_SORESEAL.get(),
+            ItemInit.SACRIFICIAL_TWIG.get()
     };
 
 }

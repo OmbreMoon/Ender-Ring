@@ -26,6 +26,9 @@ public class ServerboundPassTimePacket {
             if (handler instanceof ServerGamePacketListenerImpl serverGamePacketListener) {
                 final var serverPlayer = serverGamePacketListener.player;
                 final var serverLevel = (ServerLevel) serverPlayer.level();
+                /*if (serverLevel.players().size() > 1) {
+                    serverLevel.updateSleepingPlayerList();
+                }*/
                 serverLevel.setDayTime(serverLevel.getDayTime() + 12000);
             }
         });

@@ -1,6 +1,5 @@
 package com.ombremoon.enderring.common.object.item;
 
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.util.CurioHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,6 +25,9 @@ public class TalismanItem extends Item implements ICurioItem {
         LivingEntity livingEntity = slotContext.entity();
         if (!livingEntity.hasEffect(this.getEffectInstance().getEffect())) {
             slotContext.entity().addEffect(effectInstance.get());
+            if (effectInstance.get().getEffect().isInstantenous()) {
+                effectInstance.get().getEffect().applyInstantenousEffect(livingEntity, livingEntity, livingEntity, effectInstance.get().getAmplifier(), 1.0D);
+            }
         }
         ICurioItem.super.onEquip(slotContext, prevStack, stack);
     }
@@ -34,11 +36,11 @@ public class TalismanItem extends Item implements ICurioItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         Player player = (Player) slotContext.entity();
 
-        int slots = CurioHelper.getCurioSlots(player, CurioHelper.TALISMAN);
+        int slots = CurioHelper.getTalismanStacks(player).getSlots();
         int j = 0;
         for (int i = 0; i < slots; i++) {
             j++;
-            if (stack.getItem() == CurioHelper.getCurioStack(player, CurioHelper.TALISMAN, i).getItem()) {
+            if (stack.getItem() == CurioHelper.getTalismanStacks(player).getStackInSlot(i).getItem()) {
                 j -= 1;
             }
 

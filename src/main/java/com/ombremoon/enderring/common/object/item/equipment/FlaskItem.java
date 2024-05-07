@@ -17,11 +17,12 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-//TODO: RESET CHARGE ON RESPAWN
 //TODO: ADD HOVER TEXT FOR CRYSTAL TEARS
 
-public class FlaskItem extends QuickAccessItem {
+public class FlaskItem extends QuickAccessItem implements ICurioItem {
     private final Type type;
     public static final String NO_TEARS = "enderring.item.flask.error";
     private static final int SCALE_FACTOR = 15;
@@ -48,7 +49,7 @@ public class FlaskItem extends QuickAccessItem {
                         }
                     }
                     default -> {
-                        ListTag listTag = itemStack.getOrCreateTag().getList("Tears", 10);
+                        ListTag listTag = FlaskUtil.getCrystalTears(itemStack);
                         if (!listTag.isEmpty()) {
                             this.applyFlaskEffects(listTag, player);
                         } else {
@@ -70,21 +71,18 @@ public class FlaskItem extends QuickAccessItem {
         if (player != null) {
             ItemCooldowns cooldowns = player.getCooldowns();
             if (!cooldowns.isOnCooldown(this) && this.getCharges(itemStack) <= 0) {
-                cooldowns.addCooldown(this, 12000);
+                cooldowns.addCooldown(this, 168000);
             }
         }
     }
 
-    private int getCharges(ItemStack itemStack) {
-        return itemStack.getOrCreateTag().getInt("Charges");
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        ICurioItem.super.curioTick(slotContext, stack);
     }
 
-    private int getMaxCharges(ItemStack itemStack, Type type) {
-        CompoundTag compoundTag = itemStack.getOrCreateTag();
-        if (type != Type.PHYSICK) {
-            return Math.min(2 + compoundTag.getInt("FlaskLevel"), 14);
-        }
-        return 1;
+    private int getCharges(ItemStack itemStack) {
+        return itemStack.getOrCreateTag().getInt("Charges");
     }
 
     private void applyFlaskEffects(ListTag listTag, Player player) {

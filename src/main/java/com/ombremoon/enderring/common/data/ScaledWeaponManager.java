@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.ReinforceType;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
@@ -28,19 +29,23 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
 public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<AbstractWeapon, ScaledWeapon>> {
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();
     private static final JsonDeserializer<ResourceLocation> RESOURCE_LOCATION = (json, typeOfT, context) -> new ResourceLocation(json.getAsString());
-//    private static final JsonDeserializer<WeaponScaling> SCALING = (json, typeOfT, context) -> WeaponScaling.valueOf(json.getAsString());
-    private static final Gson GSON_INSTANCE = new Gson();/*Util.make(() -> {
+    private static final JsonDeserializer<ReinforceType> REINFORCE_TYPE = (json, typeOfT, context) -> ReinforceType.getTypeFromLocation(ResourceLocation.tryParse(json.getAsString()));
+    private static final Gson GSON_INSTANCE = Util.make(() -> {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(ResourceLocation.class, RESOURCE_LOCATION);
+        builder.registerTypeAdapter(ReinforceType.class, REINFORCE_TYPE);
+        builder.excludeFieldsWithModifiers(Modifier.TRANSIENT);
         return builder.create();
-    });*/
+    });
     private static List<AbstractWeapon> clientWeapons = new ArrayList<>();
     private static ScaledWeaponManager instance;
 
@@ -68,21 +73,23 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
                         return;
 
                     pResourceManager.getResource(resourceLocation).ifPresent(resource -> {
-                        try (Reader reader = resource.openAsReader()/*new BufferedReader(new InputStreamReader(resource.open(), StandardCharsets.UTF_8))*/) {
+                        try(Reader reader = new BufferedReader(new InputStreamReader(resource.open(), StandardCharsets.UTF_8))) {
                             ScaledWeapon scaledWeapon = GsonHelper.fromJson(GSON_INSTANCE, reader, ScaledWeapon.class);
-                            if (scaledWeapon != null && isValidObject(scaledWeapon)) {
+                            map.put((AbstractWeapon) item, scaledWeapon);
+                            /*if (scaledWeapon != null && isValidObject(scaledWeapon)) {
                                 map.put((AbstractWeapon) item, scaledWeapon);
                             } else {
                                 Constants.LOG.error("Couldn't load data file {} as it is missing or malformed. Using default weapon data", id);
-                            }
+                                map.putIfAbsent((AbstractWeapon) item, new ScaledWeapon());
+                            }*/
                         } catch (InvalidObjectException e) {
                             Constants.LOG.error("Missing required properties for {}", id);
                             e.printStackTrace();
                         } catch (IOException e) {
                             Constants.LOG.error("Couldn't parse data file {}", id);
-                        } catch (IllegalAccessException e) {
+                        }/* catch (IllegalAccessException e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     });
                 });
             }

@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -18,7 +19,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PlayerStatus implements IPlayerStatus {
-    private final Map<UUID, AttributeModifier> PLAYER_STATS = new Object2ObjectArrayMap<>();
     private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
     private Map<AbstractSpell, SpellInstance> activeSpells = new HashMap<>();
     private SpellType<?> selectedSpell;
@@ -27,7 +27,11 @@ public class PlayerStatus implements IPlayerStatus {
     private double torrentHealth;
     private int talismanPouches;
     private int memoryStones;
-    private boolean graceSiteFlag;
+    private ItemStack quickAccessItem;
+    private boolean usingQuickAccess;
+    private ItemStack cachedItem;
+//    private int cachedSlot;
+    private int useItemTicks;
 
     public PlayerStatus(double torrentHealth) {
         this.torrentHealth = torrentHealth;
@@ -41,16 +45,6 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public void setFPAmount(double fpAmount) {
         this.fpAmount = fpAmount;
-    }
-
-    @Override
-    public Map<UUID, AttributeModifier> getStatusAttributeModifiers() {
-        return PLAYER_STATS;
-    }
-
-    @Override
-    public void addStatusAttributeModifiers(UUID uuid, AttributeModifier attributeModifier) {
-        PLAYER_STATS.put(uuid, attributeModifier);
     }
 
     @Override
@@ -113,14 +107,55 @@ public class PlayerStatus implements IPlayerStatus {
         this.memoryStones = Math.min(this.memoryStones + 1, 8);
     }
 
+    //TODO: CHANGE TO PLAYER DEPENDENCY
     @Override
-    public boolean getGraceSiteFlag() {
-        return this.graceSiteFlag;
+    public ItemStack getQuickAccessItem() {
+        return this.quickAccessItem;
     }
 
     @Override
-    public void setGraceSiteFlag(boolean flag) {
-        this.graceSiteFlag = flag;
+    public void setQuickAccessItem(ItemStack itemStack) {
+        this.quickAccessItem = itemStack;
+    }
+
+    @Override
+    public boolean isUsingQuickAccess() {
+        return this.usingQuickAccess;
+    }
+
+    @Override
+    public void setUsingQuickAccess(boolean usingQuickAccess) {
+        this.usingQuickAccess = usingQuickAccess;
+    }
+
+    @Override
+    public ItemStack getCachedItem() {
+        return this.cachedItem;
+    }
+
+    @Override
+    public void setCachedItem(ItemStack cachedItem) {
+        this.cachedItem = cachedItem;
+    }
+
+    /*@Override
+    public int getCachedSlot() {
+        return this.cachedSlot;
+    }
+
+    @Override
+    public void setCachedSlot(int slot) {
+        this.cachedSlot = slot;
+    }*/
+
+    @Override
+    public int getUseItemTicks() {
+        return this.useItemTicks;
+    }
+
+    @Override
+    public void setUseItemTicks(int ticks) {
+        this.useItemTicks = ticks;
     }
 
     @Override
@@ -134,10 +169,6 @@ public class PlayerStatus implements IPlayerStatus {
         if (this.selectedSpell != null)
             compoundTag.putString("SelectedSpell", this.selectedSpell.getResourceLocation().toString());
 
-        for (Map.Entry<UUID, AttributeModifier> entry : PLAYER_STATS.entrySet()) {
-            AttributeModifier attributeModifier = entry.getValue();
-            modifierList.add(attributeModifier.save());
-        }
         for (SpellType<?> spellType : spellSet) {
             spellList.add(PlayerStatusUtil.storeSpell(spellType));
         }
@@ -159,13 +190,6 @@ public class PlayerStatus implements IPlayerStatus {
         if (nbt.contains("SelectedSpell", 8)) {
             this.selectedSpell = PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(nbt, "SelectedSpell"));
         }
-        if (nbt.contains("Modifiers", 9)) {
-            ListTag modifierList = nbt.getList("Modifiers", 10);
-            for (int i = 0; i < modifierList.size(); i++) {
-                AttributeModifier attributeModifier = AttributeModifier.load(modifierList.getCompound(i));
-                this.PLAYER_STATS.put(attributeModifier.getId(), attributeModifier);
-            }
-        }
         if (nbt.contains("Spells", 9)) {
             ListTag spellList = nbt.getList("Spells", 10);
             for (int i = 0; i < spellList.size(); i++) {
@@ -179,10 +203,10 @@ public class PlayerStatus implements IPlayerStatus {
         if (nbt.contains("TorrentHealth", 6)) {
             this.torrentHealth = nbt.getDouble("TorrentHealth");
         }
-        if (nbt.contains("TalismanPouches", 3)) {
+        if (nbt.contains("TalismanPouches", 99)) {
             this.talismanPouches = nbt.getInt("TalismanPouches");
         }
-        if (nbt.contains("MemoryStones", 3)) {
+        if (nbt.contains("MemoryStones", 99)) {
             this.memoryStones = nbt.getInt("MemoryStones");
         }
         Constants.LOG.info(String.valueOf(nbt));
