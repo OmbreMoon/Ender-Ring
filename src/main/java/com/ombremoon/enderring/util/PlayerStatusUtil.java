@@ -38,15 +38,15 @@ public class PlayerStatusUtil {
     public static final UUID FP = UUID.fromString("2031ddaf-832a-4a2b-a091-2ccaf65e6cbb");
 
     public static int getRuneLevel(Player player) {
-        return (int) player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get()).getValue();
+        return (int) player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get());
     }
 
     public static int getRunesHeld(Player player) {
-        return (int) player.getAttributes().getInstance(EntityAttributeInit.RUNES_HELD.get()).getValue();
+        return (int) player.getAttributeValue(EntityAttributeInit.RUNES_HELD.get());
     }
 
     public static double getPlayerStat(Player player, Attribute attribute) {
-        return player.getAttributes().getInstance(attribute).getValue();
+        return player.getAttributeValue(attribute);
     }
 
     public static int getRunesNeeded(Player player) {

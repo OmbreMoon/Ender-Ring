@@ -1,5 +1,8 @@
 package com.ombremoon.enderring.common;
 
+import com.ombremoon.enderring.common.data.WeaponDamage;
+import com.ombremoon.enderring.common.data.WeaponScaling;
+
 import java.util.*;
 
 public class AttackElement {
@@ -8,14 +11,14 @@ public class AttackElement {
     public static final AttackElement ID0 = Builder.create(10000).physical(WeaponScaling.STR, WeaponScaling.DEX).magical(WeaponScaling.INT).fire(WeaponScaling.FAI).lightning(WeaponScaling.DEX).holy(WeaponScaling.FAI).build();
 
     static {
-        registerType(ID0);
+        registerElementID(ID0);
     }
 
-    public static void registerType(AttackElement attackElement) {
+    public static void registerElementID(AttackElement attackElement) {
         attackElementMap.putIfAbsent(attackElement.getElementId(), attackElement);
     }
 
-    public static AttackElement getTypeFromLocation(int elementId) {
+    public static AttackElement getElementFromId(int elementId) {
         return attackElementMap.getOrDefault(elementId, ID0);
     }
 

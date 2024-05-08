@@ -1,6 +1,9 @@
 package com.ombremoon.enderring.common;
 
 import com.ombremoon.enderring.CommonClass;
+import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.data.WeaponDamage;
+import com.ombremoon.enderring.common.data.WeaponScaling;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.*;
@@ -19,11 +22,15 @@ public class ReinforceType {
             .baseScaling(WeaponScaling.STR, 1.8F).baseScaling(MAGICAL, 1.0F).multScaling(WeaponScaling.STR, 0.05F).multScaling(MAGICAL, 0.04F)
             .breakpointAt10(WeaponScaling.STR, 0.04F).breakpointAt10(MAGICAL, 0.03F).breakpointAt20(WeaponScaling.STR, 0.02F).breakpointAt20(MAGICAL, 0.02F).build();
 
+    public static final ReinforceType UNIQUE = Builder.create(CommonClass.customLocation("unique"))
+            .baseDamage(1.0F).multDamage(0.145F).baseScaling(1.0F).multScaling(0.08F).build();
+
     private static final Map<ResourceLocation, ReinforceType> reinforceTypeMap = new HashMap<>();
 
     static {
         registerType(DEFAULT);
         registerType(HEAVY);
+        registerType(UNIQUE);
     }
 
     public static void registerType(ReinforceType type) {

@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common;
+package com.ombremoon.enderring.common.data;
 
 public enum WeaponDamage {
     PHYSICAL,

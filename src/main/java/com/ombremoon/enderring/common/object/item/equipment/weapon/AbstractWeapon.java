@@ -2,8 +2,9 @@ package com.ombremoon.enderring.common.object.item.equipment.weapon;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
-import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.data.ScaledWeaponManager;
+import com.ombremoon.enderring.common.data.WeaponDamage;
+import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -34,9 +35,11 @@ public abstract class AbstractWeapon extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            itemStack.getTag().putInt("WeaponLevel", 25);
+            itemStack.getTag().putInt("WeaponLevel", 10);
             int i = itemStack.getTag().getInt("WeaponLevel");
-            Constants.LOG.info(String.valueOf(this.getWeapon().getBaseStats().getReinforceType().getReinforceScaleParam(WeaponScaling.STR, i)));
+//            float f = DamageUtil.getCalcCorrect(pPlayer, EntityAttributeInit.STRENGTH.get(), this.weapon);
+            Constants.LOG.info(String.valueOf(DamageUtil.getWeaponAP(this.weapon, pPlayer, i)));
+//            Constants.LOG.info(String.valueOf(weapon.getRequirements().meetsRequirements(pPlayer, this.weapon, WeaponDamage.PHYSICAL)));
 
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);

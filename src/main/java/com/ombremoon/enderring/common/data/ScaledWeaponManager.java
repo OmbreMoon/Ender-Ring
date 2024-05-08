@@ -5,9 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ReinforceType;
-import com.ombremoon.enderring.common.ScaledWeapon;
-import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.*;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.network.ModNetworking;
 import net.minecraft.Util;
@@ -39,10 +37,14 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();
     private static final JsonDeserializer<ResourceLocation> RESOURCE_LOCATION = (json, typeOfT, context) -> new ResourceLocation(json.getAsString());
     private static final JsonDeserializer<ReinforceType> REINFORCE_TYPE = (json, typeOfT, context) -> ReinforceType.getTypeFromLocation(ResourceLocation.tryParse(json.getAsString()));
+    private static final JsonDeserializer<AttackElement> ATTACK_ELEMENT = (json, typeOfT, context) -> AttackElement.getElementFromId(json.getAsInt());
+    private static final JsonDeserializer<Saturation> SATURATION = (json, typeOfT, context) -> Saturation.getSaturationById(json.getAsInt());
     private static final Gson GSON_INSTANCE = Util.make(() -> {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(ResourceLocation.class, RESOURCE_LOCATION);
         builder.registerTypeAdapter(ReinforceType.class, REINFORCE_TYPE);
+        builder.registerTypeAdapter(AttackElement.class, ATTACK_ELEMENT);
+        builder.registerTypeAdapter(Saturation.class, SATURATION);
         builder.excludeFieldsWithModifiers(Modifier.TRANSIENT);
         return builder.create();
     });

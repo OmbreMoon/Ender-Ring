@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common;
+package com.ombremoon.enderring.common.data;
 
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import net.minecraft.world.entity.ai.attributes.Attribute;

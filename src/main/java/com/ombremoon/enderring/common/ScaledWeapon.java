@@ -1,30 +1,40 @@
 package com.ombremoon.enderring.common;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.data.WeaponDamage;
+import com.ombremoon.enderring.common.data.WeaponScaling;
+import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ScaledWeapon implements INBTSerializable<CompoundTag> {
     protected Base base = new Base();
     protected Damage damage = new Damage();
     protected Scaling scaling = new Scaling();
+    protected Requirements requirements = new Requirements();
 
     public Base getBaseStats() {
         return this.base;
     }
     public Damage getDamage() { return this.damage; }
     public Scaling getScale() { return this.scaling; }
+    public Requirements getRequirements() { return this.requirements; }
 
     public static class Base implements INBTSerializable<CompoundTag> {
         private int maxUpgrades;
         private boolean infusable;
         private boolean twoHandBonus;
-        private int elementID;
+        private AttackElement elementID;
         private ReinforceType reinforceType;
+        private Saturation[] saturations;
 
         @Override
         public CompoundTag serializeNBT() {
@@ -32,9 +42,10 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             nbt.putInt("MaxUpgrades", this.maxUpgrades);
             nbt.putBoolean("Infusable", this.infusable);
             nbt.putBoolean("TwoHandBonus", this.twoHandBonus);
-            nbt.putInt("ElementID", this.elementID);
 
             //TODO: NEEDS TO BE CHANGED
+            nbt.putIntArray("Saturations", saturations != null ? Arrays.stream(this.saturations).mapToInt(Saturation::ordinal).toArray() : new int[]{0, 0, 0, 0, 0});
+            nbt.putInt("ElementID", elementID != null ? this.elementID.getElementId() : 10000);
             nbt.putString("ReinforceType", reinforceType != null ? this.reinforceType.getTypeId().toString() : "");
             return nbt;
         }
@@ -51,10 +62,13 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
                 this.twoHandBonus = nbt.getBoolean("TwoHandBonus");
             }
             if (nbt.contains("ElementID", 99)) {
-                this.elementID = nbt.getInt("ElementID");
+                this.elementID = AttackElement.getElementFromId(nbt.getInt("ElementID"));
             }
             if (nbt.contains("ReinforceType", 8)) {
                 this.reinforceType = ReinforceType.getTypeFromLocation(ResourceLocation.tryParse(nbt.getString("ReinforceType")));
+            }
+            if (nbt.contains("Saturations", 11)) {
+                this.saturations = createSaturationArray(nbt.getIntArray("Saturations"));
             }
         }
 
@@ -65,8 +79,15 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             jsonObject.addProperty("maxUpgrades", this.maxUpgrades);
             if (this.infusable) jsonObject.addProperty("infusable", true);
             if (this.twoHandBonus) jsonObject.addProperty("twoHandBonus", true);
-            jsonObject.addProperty("elementID", this.elementID);
+            jsonObject.addProperty("elementID", this.elementID.getElementId());
             jsonObject.addProperty("reinforceType", this.reinforceType.getTypeId().toString());
+
+            JsonArray jsonArray = new JsonArray(5);
+            for (Saturation saturation1 : this.saturations) {
+                jsonArray.add(saturation1.ordinal());
+            }
+            jsonObject.add("saturations", jsonArray);
+
             return jsonObject;
         }
 
@@ -82,12 +103,16 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this.twoHandBonus;
         }
 
-        public int getElementID() {
+        public AttackElement getElementID() {
             return this.elementID;
         }
 
         public ReinforceType getReinforceType() {
             return this.reinforceType;
+        }
+
+        public Saturation[] getSaturations() {
+            return this.saturations;
         }
 
         public Base copy() {
@@ -97,6 +122,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             base.twoHandBonus = this.twoHandBonus;
             base.elementID = this.elementID;
             base.reinforceType = this.reinforceType;
+            base.saturations = this.saturations;
             return base;
         }
     }
@@ -171,6 +197,16 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
 
         public int getHolyDamage() {
             return this.holyDamage;
+        }
+
+        public Map<WeaponDamage, Integer> getDamageMap() {
+            Map<WeaponDamage, Integer> damageMap = new TreeMap<>();
+            if (this.physDamage > 0) damageMap.put(WeaponDamage.PHYSICAL, this.physDamage);
+            if (this.magDamage > 0) damageMap.put(WeaponDamage.MAGICAL, this.magDamage);
+            if (this.fireDamage > 0) damageMap.put(WeaponDamage.FIRE, this.fireDamage);
+            if (this.lightDamage > 0) damageMap.put(WeaponDamage.LIGHTNING, this.lightDamage);
+            if (this.holyDamage > 0) damageMap.put(WeaponDamage.HOLY, this.holyDamage);
+            return damageMap;
         }
 
         public Damage copy() {
@@ -256,6 +292,16 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this.arcScale;
         }
 
+        public Map<WeaponScaling, Integer> getScalingMap() {
+            Map<WeaponScaling, Integer> scalingMap = new TreeMap<>();
+            if (this.strScale > 0) scalingMap.put(WeaponScaling.STR, this.strScale);
+            if (this.dexScale > 0) scalingMap.put(WeaponScaling.DEX, this.dexScale);
+            if (this.intScale > 0) scalingMap.put(WeaponScaling.INT, this.intScale);
+            if (this.faiScale > 0) scalingMap.put(WeaponScaling.FAI, this.faiScale);
+            if (this.arcScale > 0) scalingMap.put(WeaponScaling.ARC, this.arcScale);
+            return scalingMap;
+        }
+
         public Scaling copy() {
             Scaling scaling = new Scaling();
             scaling.strScale = this.strScale;
@@ -264,6 +310,109 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             scaling.faiScale = this.faiScale;
             scaling.arcScale = this.arcScale;
             return scaling;
+        }
+    }
+
+    public static class Requirements implements INBTSerializable<CompoundTag> {
+        private int strReq;
+        private int dexReq;
+        private int intReq;
+        private int faiReq;
+        private int arcReq;
+
+        @Override
+        public CompoundTag serializeNBT() {
+            CompoundTag nbt = new CompoundTag();
+            nbt.putInt("StrReq", this.strReq);
+            nbt.putInt("DexReq", this.dexReq);
+            nbt.putInt("IntReq", this.intReq);
+            nbt.putInt("FaiReq", this.faiReq);
+            nbt.putInt("ArcReq", this.arcReq);
+            return nbt;
+        }
+
+        @Override
+        public void deserializeNBT(CompoundTag nbt) {
+            if (nbt.contains("StrReq", 99)) {
+                this.strReq = nbt.getInt("StrReq");
+            }
+            if (nbt.contains("DexReq", 99)) {
+                this.dexReq = nbt.getInt("DexReq");
+            }
+            if (nbt.contains("IntReq", 99)) {
+                this.intReq = nbt.getInt("IntReq");
+            }
+            if (nbt.contains("FaiReq", 99)) {
+                this.faiReq = nbt.getInt("FaiReq");
+            }
+            if (nbt.contains("ArcReq", 99)) {
+                this.arcReq = nbt.getInt("ArcReq");
+            }
+        }
+
+        public JsonObject toJsonObject() {
+            Preconditions.checkArgument(this.strReq >= 0, "Strength requirement must be greater than or equal to 0");
+            Preconditions.checkArgument(this.dexReq >= 0, "Dexterity requirement must be greater than or equal to 0");
+            Preconditions.checkArgument(this.intReq >= 0, "Intelligence requirement must be greater than or equal to 0");
+            Preconditions.checkArgument(this.faiReq >= 0, "Faith requirement must be greater than or equal to 0");
+            Preconditions.checkArgument(this.arcReq >= 0, "Arcane requirement must be greater than or equal to 0");
+            JsonObject jsonObject = new JsonObject();
+            if (this.strReq > 0) jsonObject.addProperty("strReq", this.strReq);
+            if (this.dexReq > 0) jsonObject.addProperty("dexReq", this.dexReq);
+            if (this.intReq > 0) jsonObject.addProperty("intReq", this.intReq);
+            if (this.faiReq > 0) jsonObject.addProperty("faiReq", this.faiReq);
+            if (this.arcReq > 0) jsonObject.addProperty("arcReq", this.arcReq);
+            return jsonObject;
+        }
+
+        public int getStrReq() {
+            return this.strReq;
+        }
+
+        public int getDexReq() {
+            return this.dexReq;
+        }
+
+        public int getIntReq() {
+            return this.intReq;
+        }
+
+        public int getFaiReq() {
+            return this.faiReq;
+        }
+
+        public int getArcReq() {
+            return this.arcReq;
+        }
+
+        public Map<WeaponScaling, Integer> getReqMap() {
+            Map<WeaponScaling, Integer> reqMap = new TreeMap<>();
+            if (this.strReq > 0) reqMap.put(WeaponScaling.STR, this.strReq);
+            if (this.dexReq > 0) reqMap.put(WeaponScaling.DEX, this.dexReq);
+            if (this.intReq > 0) reqMap.put(WeaponScaling.INT, this.intReq);
+            if (this.faiReq > 0) reqMap.put(WeaponScaling.FAI, this.faiReq);
+            if (this.arcReq > 0) reqMap.put(WeaponScaling.ARC, this.arcReq);
+            return reqMap;
+        }
+
+        public boolean meetsRequirements(Player player, ScaledWeapon weapon, WeaponDamage weaponDamage) {
+            final var list = weapon.getBaseStats().getElementID().getListMap().get(weaponDamage);
+            for (var scaling : list) {
+                if (PlayerStatusUtil.getPlayerStat(player, scaling.getAttribute()) < getReqMap().get(scaling)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public Requirements copy() {
+            Requirements requirements = new Requirements();
+            requirements.strReq = this.strReq;
+            requirements.dexReq = this.dexReq;
+            requirements.intReq = this.intReq;
+            requirements.faiReq = this.faiReq;
+            requirements.arcReq = this.arcReq;
+            return requirements;
         }
     }
 
@@ -287,6 +436,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         nbt.put("Base", this.base.serializeNBT());
         nbt.put("Damage", this.damage.serializeNBT());
         nbt.put("Scaling", this.scaling.serializeNBT());
+        nbt.put("Requirements", this.requirements.serializeNBT());
         return nbt;
     }
 
@@ -301,6 +451,9 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         if (nbt.contains("Scaling", 10)) {
             this.scaling.deserializeNBT(nbt.getCompound("Scaling"));
         }
+        if (nbt.contains("Requirements", 10)) {
+            this.requirements.deserializeNBT(nbt.getCompound("Requirements"));
+        }
     }
 
     public JsonObject toJsonObject() {
@@ -308,6 +461,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         jsonObject.add("base", this.base.toJsonObject());
         jsonObject.add("damage", this.damage.toJsonObject());
         jsonObject.add("scaling", this.scaling.toJsonObject());
+        jsonObject.add("requirements", this.requirements.toJsonObject());
         return jsonObject;
     }
 
@@ -317,11 +471,16 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         return weapon;
     }
 
+    private static Saturation[] createSaturationArray(int[] array) {
+        return Arrays.stream(array).mapToObj(Saturation::getSaturationById).toArray(Saturation[]::new);
+    }
+
     public ScaledWeapon copy() {
         ScaledWeapon scaledWeapon = new ScaledWeapon();
         scaledWeapon.base = this.base.copy();
         scaledWeapon.damage = this.damage.copy();
         scaledWeapon.scaling = this.scaling.copy();
+        scaledWeapon.requirements = this.requirements.copy();
         return scaledWeapon;
     }
 
@@ -345,7 +504,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this;
         }
 
-        public Builder elementID(int elementId) {
+        public Builder elementID(AttackElement elementId) {
             this.scaledWeapon.base.elementID = elementId;
             return this;
         }
@@ -371,6 +530,16 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this;
         }
 
+        public Builder saturation(int physSat, int magSat, int fireSat, int lightSat, int holySat) {
+            this.scaledWeapon.base.saturations = createSaturationArray(new int[]{physSat, magSat, fireSat, lightSat, holySat});
+            return this;
+        }
+
+        public Builder saturation(Saturation physSat, Saturation magSat, Saturation fireSat, Saturation lightSat, Saturation holySat) {
+            this.scaledWeapon.base.saturations = new Saturation[]{physSat, magSat, fireSat, lightSat, holySat};
+            return this;
+        }
+
         public Builder weaponDamage(int physDamage, int magDamage, int fireDamage, int lightDamage, int holyDamage) {
             this.scaledWeapon.damage.physDamage = physDamage;
             this.scaledWeapon.damage.magDamage = magDamage;
@@ -386,6 +555,15 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             this.scaledWeapon.scaling.intScale = intScale;
             this.scaledWeapon.scaling.faiScale = faiScale;
             this.scaledWeapon.scaling.arcScale = arcScale;
+            return this;
+        }
+
+        public Builder weaponRequirements(int strReq, int dexReq, int intReq, int faiReq, int arcReq) {
+            this.scaledWeapon.requirements.strReq = strReq;
+            this.scaledWeapon.requirements.dexReq = dexReq;
+            this.scaledWeapon.requirements.intReq = intReq;
+            this.scaledWeapon.requirements.faiReq = faiReq;
+            this.scaledWeapon.requirements.arcReq = arcReq;
             return this;
         }
     }

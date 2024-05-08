@@ -36,7 +36,10 @@ public class DebugItem extends Item {
                 ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
 //                ModNetworking.getInstance().syncOverlays((ServerPlayer) pPlayer);
 //                ModNetworking.getInstance().openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
-                Constants.LOG.info(String.valueOf(pPlayer.getAttributeValue(EntityAttributeInit.VIGOR.get())));
+//                PlayerStatusUtil.increaseBaseStat(pPlayer, EntityAttributeInit.FAITH.get(), -1);
+                Constants.LOG.info(String.valueOf(pPlayer.getAttributeValue(EntityAttributeInit.STRENGTH.get())));
+                Constants.LOG.info(String.valueOf(pPlayer.getAttributeValue(EntityAttributeInit.DEXTERITY.get())));
+                Constants.LOG.info(String.valueOf(pPlayer.getAttributeValue(EntityAttributeInit.FAITH.get())));
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         }
