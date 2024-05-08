@@ -1,0 +1,27 @@
+{
+  "base": {
+    "elementID": 10000,
+    "infusable": true,
+    "maxUpgrades": 25,
+    "reinforceType": "enderring:default",
+    "saturations": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "twoHandBonus": true
+  },
+  "damage": {
+    "physDamage": 74
+  },
+  "requirements": {
+    "dexReq": 9,
+    "strReq": 5
+  },
+  "scaling": {
+    "dexScale": 65,
+    "strScale": 35
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "base": {
+    "elementID": 10000,
+    "maxUpgrades": 10,
+    "reinforceType": "enderring:unique",
+    "saturations": [
+      0,
+      0,
+      0,
+      0,
+      4
+    ],
+    "twoHandBonus": true
+  },
+  "damage": {
+    "holyDamage": 65,
+    "physDamage": 66
+  },
+  "requirements": {
+    "dexReq": 12,
+    "faiReq": 18,
+    "strReq": 8
+  },
+  "scaling": {
+    "dexScale": 55,
+    "faiScale": 35,
+    "strScale": 10
+  }
+}

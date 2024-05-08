@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "enderring:bone_arrow"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "read_nomadic_cookbook_one": {
+      "conditions": {
+        "item": {
+          "items": [
+            "enderring:nomadic_warrior_cookbook_one"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "requirements": [
+    [
+      "read_nomadic_cookbook_one",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "enderring:bone_arrow"
+    ]
+  },
+  "sends_telemetry_event": false
+}

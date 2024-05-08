@@ -1,0 +1,15 @@
+{
+  "type": "enderring:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/buried_treasure"
+    },
+    {
+      "chance": 1.0,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "firstItem": "enderring:cracked_pot",
+  "secondItem": "minecraft:air"
+}

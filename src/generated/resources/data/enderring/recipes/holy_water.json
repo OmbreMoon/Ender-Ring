@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "enderring:cracked_pot"
+    },
+    [
+      {
+        "item": "minecraft:red_mushroom"
+      },
+      {
+        "item": "minecraft:brown_mushroom"
+      }
+    ],
+    {
+      "item": "enderring:tarnished_golden_sunflower"
+    }
+  ],
+  "result": {
+    "item": "enderring:holy_water"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "enderring:clay_pot"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "read_missionary_cookbook_one": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:clay_ball"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "read_missionary_cookbook_one",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "enderring:clay_pot"
+    ]
+  },
+  "sends_telemetry_event": false
+}

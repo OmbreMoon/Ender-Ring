@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "enderring:golden_rowa_block"
+    },
+    "*": {
+      "item": "enderring:crab_eggs"
+    },
+    "X": {
+      "item": "enderring:white_flesh_strip"
+    },
+    "^": {
+      "item": "enderring:land_octopus_ovary"
+    }
+  },
+  "pattern": [
+    "*#^",
+    "#X#"
+  ],
+  "result": {
+    "item": "enderring:invigorating_cured_white_meat"
+  },
+  "show_notification": true
+}

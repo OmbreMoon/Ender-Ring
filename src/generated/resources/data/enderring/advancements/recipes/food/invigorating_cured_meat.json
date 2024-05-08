@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "enderring:invigorating_cured_meat"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "read_nomadic_cookbook_two": {
+      "conditions": {
+        "item": {
+          "items": [
+            "enderring:nomadic_warrior_cookbook_two"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "requirements": [
+    [
+      "read_nomadic_cookbook_two",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "enderring:invigorating_cured_meat"
+    ]
+  },
+  "sends_telemetry_event": false
+}
