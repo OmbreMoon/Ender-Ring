@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.magic;
 
+import com.ombremoon.enderring.common.ScaledWeapon;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -7,16 +8,18 @@ import net.minecraft.world.level.Level;
 
 public class SpellInstance {
     private static final int INFINITE_DURATION = -1;
+    private final ScaledWeapon weapon;
     private final SpellType<?> spellType;
     private int duration;
 
-    public SpellInstance(SpellType<?> spellType) {
-        this(spellType, spellType.getSpell().getDuration());
+    public SpellInstance(SpellType<?> spellType, ScaledWeapon weapon) {
+        this(spellType, spellType.getSpell().getDuration(), weapon);
     }
 
-    public SpellInstance(SpellType<?> spellType, int duration) {
+    public SpellInstance(SpellType<?> spellType, int duration, ScaledWeapon weapon) {
         this.spellType = spellType;
         this.duration = duration;
+        this.weapon = weapon;
     }
 
     public boolean updateSpell(SpellInstance spellInstance) {
@@ -37,6 +40,10 @@ public class SpellInstance {
 
     public int getDuration() {
         return this.duration;
+    }
+
+    public ScaledWeapon getWeapon() {
+        return this.weapon;
     }
 
     public boolean tickSpellEffect(Player player, Level level, BlockPos blockPos, Runnable onExpired) {
@@ -66,7 +73,7 @@ public class SpellInstance {
 
     public void activateSpellEffect(Player player, Level level, BlockPos blockPos) {
         if (this.hasRemainingDuration()) {
-            this.getSpell().activateSpellEffect(player, level, blockPos);
+            this.getSpell().tickSpellEffect(player, level, blockPos);
         }
     }
 
@@ -82,7 +89,7 @@ public class SpellInstance {
             return false;
         } else {
             SpellInstance spellInstance = (SpellInstance) obj;
-            return this.duration == spellInstance.duration && this.spellType.equals(spellInstance.spellType);
+            return this.spellType.equals(spellInstance.spellType);
         }
     }
 }

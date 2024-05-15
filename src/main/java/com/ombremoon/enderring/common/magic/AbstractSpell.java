@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.magic;
 
+import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.Util;
@@ -13,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractSpell {
+    protected static int DEFAULT_CAST_TIME = 1;
     private final SpellType<?> spellType;
     private final MagicType magicType;
+    private ScaledWeapon weapon;
     private final int duration;
     private final int requiredFP;
     private final int requiredInt;
@@ -31,6 +34,8 @@ public abstract class AbstractSpell {
         this.requiredInt = requiredInt;
         this.requiredFai = requiredFai;
         this.requiredArc = requiredArc;
+
+        this.createReqList(requiredInt, requiredFai, requiredArc);
     }
 
     public SpellType<?> getSpellType() {
@@ -61,6 +66,18 @@ public abstract class AbstractSpell {
         return this.requiredArc;
     }
 
+    public List<Integer> getRequiredStats() {
+        return this.requiredStats;
+    }
+
+    public ScaledWeapon getWeapon() {
+        return this.weapon;
+    }
+
+    public void setWeapon(ScaledWeapon weapon) {
+        this.weapon = weapon;
+    }
+
     public boolean isInstantSpell() {
         return true;
     }
@@ -69,9 +86,7 @@ public abstract class AbstractSpell {
         return false;
     }
 
-    public int getCastTime() {
-        return 20;
-    }
+    public abstract int getCastTime();
 
     public ResourceLocation getId() {
         return SpellInit.REGISTRY.get().getKey(this.spellType);
@@ -92,7 +107,7 @@ public abstract class AbstractSpell {
         return Component.translatable(this.getDescriptionId());
     }
 
-    public abstract void activateSpellEffect(Player player, Level level, BlockPos blockPos);
+    public abstract void tickSpellEffect(Player player, Level level, BlockPos blockPos);
 
     public abstract void onSpellStart(SpellInstance spellInstance, Player player, Level level, BlockPos blockPos);
 
@@ -108,18 +123,20 @@ public abstract class AbstractSpell {
         return true;
     }
 
-    public boolean activateSpellEffect(SpellInstance spellInstance, Player player, Level level, BlockPos blockPos) {
+    public void activateSpellEffect(SpellInstance spellInstance, Player player, Level level, BlockPos blockPos) {
         AbstractSpell spell = spellInstance.getSpell();
         SpellInstance currentSpellInstance = PlayerStatusUtil.getActiveSpells(player).get(spell);
         if (currentSpellInstance == null) {
             PlayerStatusUtil.activateSpell(player, spell, spellInstance);
             spell.onSpellStart(spellInstance, player, level, blockPos);
-            return true;
         } else if (currentSpellInstance.updateSpell(spellInstance)) {
             currentSpellInstance.getSpell().onSpellUpdate(currentSpellInstance, player, level, blockPos);
-            return true;
-        } else {
-            return false;
         }
+    }
+
+    private void createReqList(int requiredInt, int requiredFai, int requiredArc) {
+        this.requiredStats.add(requiredInt);
+        this.requiredStats.add(requiredFai);
+        this.requiredStats.add(requiredArc);
     }
 }

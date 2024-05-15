@@ -20,7 +20,12 @@ public class GlintstonePebbleSpell extends AbstractSorcery {
     }
 
     @Override
-    public void activateSpellEffect(Player player, Level level, BlockPos blockPos) {
+    public int getCastTime() {
+        return DEFAULT_CAST_TIME;
+    }
+
+    @Override
+    public void tickSpellEffect(Player player, Level level, BlockPos blockPos) {
 
     }
 

@@ -2,48 +2,44 @@ package com.ombremoon.enderring.common.object.world.inventory;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
+import com.ombremoon.enderring.common.init.item.ItemInit;
+import com.ombremoon.enderring.util.FlaskUtil;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class SacredTearMenu extends UpgradeFlaskMenu {
+    private static final int MAX_LEVEL = 12;
+
     public SacredTearMenu(int pContainerId, Inventory inventory, FriendlyByteBuf buf) {
-        this(pContainerId, inventory);
+        this(pContainerId, inventory, inventory.player);
     }
 
-    public SacredTearMenu(int pContainerId, Inventory inventory) {
-        super(MenuTypeInit.SACRED_TEAR_MENU.get(), pContainerId, inventory);
-    }
-
-    @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(pIndex);
-
-        if (slot != null && slot.hasItem()) {
-            int slotSize = this.slots.size();
-            ItemStack itemstack1 = slot.getItem();
-            itemstack = itemstack1.copy();
-            if (pIndex < pPlayer.getInventory().items.size()) {
-                if (!this.moveItemStackTo(itemstack1, pPlayer.getInventory().items.size(), slotSize, false))
-                    return ItemStack.EMPTY;
-            } else if (!this.moveItemStackTo(itemstack1, 0, pPlayer.getInventory().items.size(), false)) {
-                return ItemStack.EMPTY;
-            }
-            if (itemstack1.isEmpty()) slot.set(ItemStack.EMPTY); else slot.setChanged();
-        }
-        return itemstack;
+    public SacredTearMenu(int pContainerId, Inventory inventory, Player player) {
+        super(MenuTypeInit.SACRED_TEAR_MENU.get(), pContainerId, inventory, player);
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return true;
+    protected Type setSeedOrTear() {
+        return Type.TEAR;
     }
 
     @Override
-    protected int setUpgradeType() {
-        return 1;
+    protected Item getUpgradeItem() {
+        return ItemInit.SACRED_TEAR.get();
+    }
+
+    @Override
+    protected void upgradeFlask(ItemStack itemStack) {
+        itemStack.getOrCreateTag().putInt("FlaskLevel", FlaskUtil.getFlaskLevel(itemStack) + 1);
+    }
+
+    @Override
+    protected boolean canUpgradeFlask(ItemStack itemStack, Container container) {
+        return super.canUpgradeFlask(itemStack, container) && FlaskUtil.getFlaskLevel(itemStack) < MAX_LEVEL;
     }
 }

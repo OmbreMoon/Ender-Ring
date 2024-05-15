@@ -2,8 +2,10 @@ package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.entity.MobInit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -34,5 +36,10 @@ public class ModBusEvents {
     @SafeVarargs
     private static void addAttributesToPlayer(EntityAttributeModificationEvent event, Supplier<Attribute>... attributes) {
         Arrays.stream(attributes).map(Supplier::get).forEach(attribute -> event.add(EntityType.PLAYER, attribute));
+    }
+
+    @SubscribeEvent
+    public static void onEntityAttributeRegister(EntityAttributeCreationEvent e) {
+        MobInit.attributeSuppliers.forEach(p -> e.put(p.entityTypeSupplier().get(), p.attributeSupplier().get().build()));
     }
 }

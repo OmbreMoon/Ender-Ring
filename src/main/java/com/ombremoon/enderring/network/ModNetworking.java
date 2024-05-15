@@ -3,10 +3,10 @@ package com.ombremoon.enderring.network;
 
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
-import com.ombremoon.enderring.client.gui.screen.CharacterBaseScreen;
-import com.ombremoon.enderring.network.client.ClientboundCharBaseSelectPacket;
+import com.ombremoon.enderring.client.gui.screen.StarterScreen;
 import com.ombremoon.enderring.network.client.ClientboundGraceSitePacket;
-import com.ombremoon.enderring.network.client.ClientboundSyncOverlaysPacket;
+import com.ombremoon.enderring.network.client.ClientboundOriginSelectPacket;
+import com.ombremoon.enderring.network.client.ClientboundSyncCapabiltyPacket;
 import com.ombremoon.enderring.network.client.ClientboundUseQuickAccessPacket;
 import com.ombremoon.enderring.network.server.*;
 import net.minecraft.network.chat.Component;
@@ -27,8 +27,8 @@ public class ModNetworking {
         return instance;
     }
 
-    public void setBaseStats(CharacterBaseScreen.Base characterBase) {
-        this.sendToServer(new ServerboundCharacterBasePacket(characterBase));
+    public static void setPlayerOrigin(StarterScreen.Base characterBase, StarterScreen.Keepsake keepsake, boolean confirmFlag) {
+        sendServer(new ServerboundPlayerOriginPacket(characterBase, keepsake, confirmFlag));
     }
 
     public void updateMainAttributes(boolean setMax) {
@@ -55,20 +55,16 @@ public class ModNetworking {
         this.sendToServer(new ServerboundUseQuickAccessPacket());
     }
 
-    public void updateWeaponData() {
-        this.sendToClients(new ServerboundUpdateWeaponDataPacket());
-    }
-
-    public void openCharBaseSelectScreen(Component component, ServerPlayer serverPlayer) {
-        this.sendToPlayer(new ClientboundCharBaseSelectPacket(component), serverPlayer);
+    public void selectOrigin(Component component, ServerPlayer serverPlayer) {
+        this.sendToPlayer(new ClientboundOriginSelectPacket(component), serverPlayer);
     }
 
     public void openGraceSiteScreen(Component component, ServerPlayer serverPlayer) {
         this.sendToPlayer(new ClientboundGraceSitePacket(component), serverPlayer);
     }
 
-    public void syncOverlays(ServerPlayer serverPlayer) {
-        this.sendToPlayer(new ClientboundSyncOverlaysPacket(PlayerStatusProvider.get(serverPlayer).serializeNBT()), serverPlayer);
+    public static void syncCap(ServerPlayer serverPlayer) {
+        sendPlayer(new ClientboundSyncCapabiltyPacket(PlayerStatusProvider.get(serverPlayer).serializeNBT()), serverPlayer);
     }
 
     public void useQuickAccessItem(int ticks, ServerPlayer serverPlayer) {
@@ -77,7 +73,7 @@ public class ModNetworking {
 
     public static void registerPackets() {
         var id = 0;
-        PACKET_CHANNEL.registerMessage(id++, ServerboundCharacterBasePacket.class, ServerboundCharacterBasePacket::encode, ServerboundCharacterBasePacket::new, ServerboundCharacterBasePacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ServerboundPlayerOriginPacket.class, ServerboundPlayerOriginPacket::encode, ServerboundPlayerOriginPacket::new, ServerboundPlayerOriginPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundUpdateMainStatsPacket.class, ServerboundUpdateMainStatsPacket::encode, ServerboundUpdateMainStatsPacket::new, ServerboundUpdateMainStatsPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundUpdateWeaponDataPacket.class, ServerboundUpdateWeaponDataPacket::encode, ServerboundUpdateWeaponDataPacket::new, ServerboundUpdateWeaponDataPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundPassTimePacket.class, ServerboundPassTimePacket::encode, ServerboundPassTimePacket::new, ServerboundPassTimePacket::handle);
@@ -85,21 +81,29 @@ public class ModNetworking {
         PACKET_CHANNEL.registerMessage(id++, ServerboundCycleQuickAccessPacket.class, ServerboundCycleQuickAccessPacket::encode, ServerboundCycleQuickAccessPacket::new, ServerboundCycleQuickAccessPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundUseQuickAccessPacket.class, ServerboundUseQuickAccessPacket::encode, ServerboundUseQuickAccessPacket::new, ServerboundUseQuickAccessPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundOpenGraceMenuPacket.class, ServerboundOpenGraceMenuPacket::encode, ServerboundOpenGraceMenuPacket::new, ServerboundOpenGraceMenuPacket::handle);
-        PACKET_CHANNEL.registerMessage(id++, ClientboundCharBaseSelectPacket.class, ClientboundCharBaseSelectPacket::encode, ClientboundCharBaseSelectPacket::new, ClientboundCharBaseSelectPacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ClientboundOriginSelectPacket.class, ClientboundOriginSelectPacket::encode, ClientboundOriginSelectPacket::new, ClientboundOriginSelectPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ClientboundGraceSitePacket.class, ClientboundGraceSitePacket::encode, ClientboundGraceSitePacket::new, ClientboundGraceSitePacket::handle);
-        PACKET_CHANNEL.registerMessage(id++, ClientboundSyncOverlaysPacket.class, ClientboundSyncOverlaysPacket::encode, ClientboundSyncOverlaysPacket::new, ClientboundSyncOverlaysPacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ClientboundSyncCapabiltyPacket.class, ClientboundSyncCapabiltyPacket::encode, ClientboundSyncCapabiltyPacket::new, ClientboundSyncCapabiltyPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ClientboundUseQuickAccessPacket.class, ClientboundUseQuickAccessPacket::encode, ClientboundUseQuickAccessPacket::new, ClientboundUseQuickAccessPacket::handle);
     }
 
     protected <MSG> void sendToServer(MSG message) {
-        ModNetworking.PACKET_CHANNEL.sendToServer(message);
+        PACKET_CHANNEL.sendToServer(message);
+    }
+
+    protected static  <MSG> void sendServer(MSG message) {
+        PACKET_CHANNEL.sendToServer(message);
     }
 
     protected <MSG> void sendToPlayer(MSG message, ServerPlayer serverPlayer) {
-        ModNetworking.PACKET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), message);
+        PACKET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), message);
+    }
+
+    protected static <MSG> void sendPlayer(MSG message, ServerPlayer serverPlayer) {
+        PACKET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), message);
     }
 
     protected <MSG> void sendToClients(MSG message) {
-        ModNetworking.PACKET_CHANNEL.send(PacketDistributor.ALL.noArg(), message);
+        PACKET_CHANNEL.send(PacketDistributor.ALL.noArg(), message);
     }
 }

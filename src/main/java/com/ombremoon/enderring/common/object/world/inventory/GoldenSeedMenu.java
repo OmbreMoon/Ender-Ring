@@ -1,49 +1,45 @@
 package com.ombremoon.enderring.common.object.world.inventory;
 
 import com.ombremoon.enderring.common.init.MenuTypeInit;
+import com.ombremoon.enderring.common.init.item.ItemInit;
+import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
+import com.ombremoon.enderring.util.FlaskUtil;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class GoldenSeedMenu extends UpgradeFlaskMenu {
+    private static final int MAX_CHARGES = 14;
+
     public GoldenSeedMenu(int pContainerId, Inventory inventory, FriendlyByteBuf buf) {
-        this(pContainerId, inventory);
+        this(pContainerId, inventory, inventory.player);
     }
 
-    public GoldenSeedMenu(int pContainerId, Inventory inventory) {
-        super(MenuTypeInit.GOLDEN_SEED_MENU.get(), pContainerId, inventory);
-    }
-
-    @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(pIndex);
-
-        if (slot != null && slot.hasItem()) {
-            int slotSize = this.slots.size();
-            ItemStack itemstack1 = slot.getItem();
-            itemstack = itemstack1.copy();
-            if (pIndex < pPlayer.getInventory().items.size()) {
-                if (!this.moveItemStackTo(itemstack1, pPlayer.getInventory().items.size(), slotSize, false))
-                    return ItemStack.EMPTY;
-            } else if (!this.moveItemStackTo(itemstack1, 0, pPlayer.getInventory().items.size(), false)) {
-                return ItemStack.EMPTY;
-            }
-            if (itemstack1.isEmpty()) slot.set(ItemStack.EMPTY); else slot.setChanged();
-        }
-        return itemstack;
+    public GoldenSeedMenu(int pContainerId, Inventory inventory, Player player) {
+        super(MenuTypeInit.GOLDEN_SEED_MENU.get(), pContainerId, inventory, player);
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return true;
+    protected Type setSeedOrTear() {
+        return Type.SEED;
     }
 
     @Override
-    protected int setUpgradeType() {
-        return 0;
+    protected Item getUpgradeItem() {
+        return ItemInit.GOLDEN_SEED.get();
+    }
+
+    @Override
+    protected void upgradeFlask(ItemStack itemStack) {
+        itemStack.getOrCreateTag().putInt("MaxCharges", FlaskUtil.getMaxCharges(itemStack) + 1);
+        FlaskUtil.setCharges(itemStack, FlaskUtil.getMaxCharges(itemStack));
+    }
+
+    @Override
+    protected boolean canUpgradeFlask(ItemStack itemStack, Container container) {
+        return super.canUpgradeFlask(itemStack, container) && FlaskUtil.getMaxCharges(itemStack) < MAX_CHARGES;
     }
 }

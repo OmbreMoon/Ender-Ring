@@ -1,7 +1,6 @@
 package com.ombremoon.enderring.common.object.item;
 
-import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.init.SpellInit;
+import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.event.FirstSpawnEvent;
 import com.ombremoon.enderring.network.ModNetworking;
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.RegistryObject;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
@@ -30,19 +28,29 @@ public class DebugItem extends Item {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             if (pPlayer.isCrouching()) {
-                ModNetworking.getInstance().openCharBaseSelectScreen(FirstSpawnEvent.CHARACTER_BASE, (ServerPlayer) pPlayer);
-                PlayerStatusUtil.setSelectedSpell(pPlayer, SpellInit.GLINTSTONE_PEBBLE.get());
+                ModNetworking.getInstance().openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
             } else {
+                ModNetworking.getInstance().selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
                 ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-//                ModNetworking.getInstance().syncOverlays((ServerPlayer) pPlayer);
-//                ModNetworking.getInstance().openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
-//                PlayerStatusUtil.increaseBaseStat(pPlayer, EntityAttributeInit.FAITH.get(), -1);
-                Constants.LOG.info(String.valueOf(pPlayer.getAttributeValue(EntityAttributeInit.STRENGTH.get())));
-                Constants.LOG.info(String.valueOf(pPlayer.getAttributeValue(EntityAttributeInit.DEXTERITY.get())));
-                Constants.LOG.info(String.valueOf(pPlayer.getAttributeValue(EntityAttributeInit.FAITH.get())));
+//                PlayerStatusUtil.increaseBaseStat(pPlayer, EntityAttributeInit.VIGOR.get(), 16, true);
+//                PlayerStatusUtil.setQuickAccessItem(pPlayer, FlaskUtil.getPhysick(pPlayer));
+                this.displayPlayerStats(pPlayer);
+//                DamageSource damageSource = new DamageSource(pLevel.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ModDamageTypes.PHYSICAL));
+//                pPlayer.hurt(damageSource, 1000.0F);
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         }
+
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
+    }
+
+    private void displayPlayerStats(Player player) {
+        player.sendSystemMessage(Component.literal("HP: " + player.getHealth()));
+        player.sendSystemMessage(Component.literal("VIGOR: " + PlayerStatusUtil.getPlayerStat(player, EntityAttributeInit.VIGOR.get())));
+        player.sendSystemMessage(Component.literal("MIND: " + PlayerStatusUtil.getPlayerStat(player, EntityAttributeInit.MIND.get())));
+        player.sendSystemMessage(Component.literal("END: " + PlayerStatusUtil.getPlayerStat(player, EntityAttributeInit.ENDURANCE.get())));
+        for (WeaponScaling weaponScaling : WeaponScaling.values()) {
+            player.sendSystemMessage(Component.literal(weaponScaling.toString() + ": " + PlayerStatusUtil.getPlayerStat(player, weaponScaling.getAttribute())));
+        }
     }
 }

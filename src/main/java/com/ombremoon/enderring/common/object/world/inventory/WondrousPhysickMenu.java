@@ -3,15 +3,18 @@ package com.ombremoon.enderring.common.object.world.inventory;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.TagInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
+import com.ombremoon.enderring.common.object.item.CrystalTearItem;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.FlaskUtil;
 import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -49,6 +52,7 @@ public class WondrousPhysickMenu extends AbstractContainerMenu {
 
         this.addDataSlot(this.insertSlot).set(0);
         this.addDataSlot(this.extractSlot).set(0);
+        this.addDataSlot(this.slotCache).set(FlaskUtil.getPhysickSlot(player));
         this.fillFlaskSlot(player);
     }
 
@@ -123,10 +127,7 @@ public class WondrousPhysickMenu extends AbstractContainerMenu {
     private void fillFlaskSlot(Player player) {
         if (FlaskUtil.hasPhysickInSlot(player)) {
             ItemStack itemStack = FlaskUtil.getPhysick(player);
-            this.slotCache.set(FlaskUtil.getPhysickSlot(player));
             this.setItem(2, this.incrementStateId(), itemStack);
-        } else {
-            this.slotCache.set(INVALID);
         }
     }
 
@@ -143,7 +144,7 @@ public class WondrousPhysickMenu extends AbstractContainerMenu {
     }
 
     private boolean canInsertTear(ItemStack itemStack) {
-        return !this.hasFilledFlask(itemStack) && this.getCrystalTearCount() > 0 && this.getCrystalTearCount() <= (MAX_TEARS - this.getFlaskSize()) && !FlaskUtil.hasDuplicateTears(itemStack, this.crystalTearSlots);
+        return !this.hasFilledFlask(itemStack) && this.getCrystalTearCount() > 0 && this.getCrystalTearCount() <= (MAX_TEARS - this.getFlaskSize()) && !this.hasDuplicateTears(itemStack);
     }
 
     public int getSlotCache() {
@@ -223,6 +224,25 @@ public class WondrousPhysickMenu extends AbstractContainerMenu {
         return 0;
     }
 
+    private boolean hasDuplicateTears(ItemStack flaskStack) {
+        ListTag listTag = FlaskUtil.getCrystalTears(flaskStack);
+        Container container = this.crystalTearSlots;
+        for (int i = 0; i < listTag.size(); i++) {
+            CompoundTag compoundTag = listTag.getCompound(i);
+            MobEffect mobEffect = ForgeRegistries.MOB_EFFECTS.getValue(FlaskUtil.getEffectId(compoundTag));
+            for (int j = 0; j < 2; j++) {
+                ItemStack itemStack = container.getItem(i);
+                if (!itemStack.isEmpty()) {
+                    CrystalTearItem item = (CrystalTearItem) itemStack.getItem();
+                    if (mobEffect == item.getMobEffect()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return container.getItem(0).getItem() == container.getItem(1).getItem();
+    }
+
     @Override
     public void removed(Player pPlayer) {
         super.removed(pPlayer);
@@ -236,12 +256,12 @@ public class WondrousPhysickMenu extends AbstractContainerMenu {
             if (pPlayer.isAlive()) {
                 if (pContainer.getItem(2).is(ItemInit.WONDROUS_PHYSICK_FLASK.get())) {
                     ItemStack itemStack = pContainer.getItem(2).copy();
-                    if (this.getSlotCache() != INVALID || (this.getSlotCache() == INVALID && CurioHelper.findFirstEmptySlot(pPlayer) != INVALID)) {
+                    if (this.getSlotCache() != INVALID) {
+                        CurioHelper.populateSlot(pPlayer, this.getSlotCache(), itemStack);
+                    } else if (this.getSlotCache() == INVALID && CurioHelper.findFirstEmptySlot(pPlayer) != INVALID) {
                         CurioHelper.populateSlot(pPlayer, itemStack);
-                        pContainer.removeItem(2, 1);
-                    } else {
-                        super.clearContainer(pPlayer, pContainer);
                     }
+                    pContainer.removeItem(2, 1);
                 }
             }
         }

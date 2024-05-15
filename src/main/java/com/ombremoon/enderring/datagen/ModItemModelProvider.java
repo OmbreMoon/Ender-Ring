@@ -2,6 +2,7 @@ package com.ombremoon.enderring.datagen;
 
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.init.item.EquipmentInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -19,23 +20,26 @@ import java.util.function.Predicate;
 
 public class ModItemModelProvider extends ItemModelProvider {
     private final Predicate<Item> exclusionPredicate = item -> !Arrays.stream(EXCLUSION_LIST).toList().contains(item);
+    private final Predicate<Item> exclusionPredicate1 = item -> !Arrays.stream(EXCLUSION_LIST_1).toList().contains(item);
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, Constants.MOD_ID, existingFileHelper);
     }
 
     @Override
     protected void registerModels() {
-//        ItemInit.GENERAL_LIST.stream().map(RegistryObject::get).filter(exclusionPredicate).forEach(this::simpleGeneratedModel);
         registerItemModels(ItemInit.GENERAL_LIST);
         registerItemModels(ItemInit.TALISMAN_LIST);
-        ItemInit.EQUIPMENT_LIST.stream().map(RegistryObject::get).forEach(this::tempItem);
-//        ItemInit.TALISMAN_LIST.stream().map(RegistryObject::get).filter(exclusionPredicate).forEach(this::simpleGeneratedModel);
+        registerTempModels(ItemInit.EQUIPMENT_LIST);
         Arrays.stream(EXCLUSION_LIST).toList().forEach(this::tempItem);
 
     }
 
-    private void registerItemModels(Collection<RegistryObject<Item>> registryObjects) {
+    private void registerItemModels(Collection<RegistryObject<? extends Item>> registryObjects) {
         registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate).forEach(this::simpleGeneratedModel);
+    }
+
+    private void registerTempModels(Collection<RegistryObject<? extends Item>> registryObjects) {
+        registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate1).forEach(this::tempItem);
     }
 
     protected ItemModelBuilder simpleGeneratedModel(Item item) {
@@ -70,7 +74,6 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.SPIRIT_CALLING_BELL.get(),
             ItemInit.TORRENT_WHISTLE.get(),
             ItemInit.SACRED_TEAR.get(),
-            ItemInit.CERULEAN_FLASK.get(),
             ItemInit.WONDROUS_PHYSICK_FLASK.get(),
             ItemInit.TALISMAN_POUCH.get(),
             ItemInit.CRIMSON_CRYSTAL.get(),
@@ -94,6 +97,10 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.GODFREY_ICON.get(),
             ItemInit.RADAGONS_SORESEAL.get(),
             ItemInit.SACRIFICIAL_TWIG.get()
+    };
+
+    static final Item[] EXCLUSION_LIST_1 = {
+            EquipmentInit.GLINTSTONE_STAFF.get()
     };
 
 }

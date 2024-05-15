@@ -34,17 +34,18 @@ public class ServerboundCycleQuickAccessPacket {
             final var handler = context.getNetworkManager().getPacketListener();
             if (handler instanceof ServerGamePacketListenerImpl serverGamePacketListener) {
                 ServerPlayer serverPlayer = serverGamePacketListener.player;
-                ItemStack itemStack = (PlayerStatusUtil.getQuickAccessItem(serverPlayer) != null && !PlayerStatusUtil.getQuickAccessItem(serverPlayer).isEmpty()) ? PlayerStatusUtil.getQuickAccessItem(serverPlayer) : CurioHelper.findFirstNonEmptyStack(serverPlayer);
-                cycle(serverPlayer, itemStack);
+                int currentSlot = PlayerStatusUtil.getQuickAccessSlot(serverPlayer);
+                cycle(serverPlayer, currentSlot);
+
                 Constants.LOG.info(String.valueOf(PlayerStatusUtil.getQuickAccessItem(serverPlayer)));
             }
         });
         ctx.get().setPacketHandled(true);
     }
 
-    private static <T extends ItemStack> void cycle(ServerPlayer serverPlayer, T currentItem) {
-        ItemStack itemStack = findNextItemInList(createItemList(serverPlayer), currentItem);
-        PlayerStatusUtil.setQuickAccessItem(serverPlayer, itemStack);
+    private static <T extends Integer> void cycle(ServerPlayer serverPlayer, T currentItem) {
+        int slot = findNextItemInList(createItemList(serverPlayer), currentItem);
+        PlayerStatusUtil.setQuickAccessSlot(serverPlayer, slot);
     }
 
     private static <T> T findNextItemInList(Collection<T> itemList, T currentItem) {
@@ -61,12 +62,12 @@ public class ServerboundCycleQuickAccessPacket {
         return iterator.next();
     }
 
-    private static Collection<ItemStack> createItemList(Player player) {
-        List<ItemStack> itemList = new ArrayList<>();
+    private static Collection<Integer> createItemList(Player player) {
+        List<Integer> itemList = new ArrayList<>();
         IDynamicStackHandler stackHandler = CurioHelper.getQuickAccessStacks(player);
         for (int i = 0; i < stackHandler.getSlots() - 1; i++) {
             if (!stackHandler.getStackInSlot(i).isEmpty()) {
-                itemList.add(stackHandler.getStackInSlot(i));
+                itemList.add(i);
             }
         }
         return itemList;

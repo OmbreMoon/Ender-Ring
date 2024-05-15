@@ -2,6 +2,7 @@ package com.ombremoon.enderring.datagen;
 
 import com.google.common.collect.ImmutableMap;
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.client.gui.screen.StarterScreen;
 import com.ombremoon.enderring.common.init.BlockInit;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.SpellInit;
@@ -50,8 +51,9 @@ public class ModLangProvider extends LanguageProvider {
         SpellInit.SPELL_TYPE.getEntries().forEach(this::spellLang);
         MenuTypeInit.MENU_TYPES.getEntries().forEach(this::menuLang);
         tabLang();
+        originLang();
 
-        add(FlaskItem.NO_TEARS, "Wondrous Physick is currently holding no Crystal Tears");
+        manualEntries();
     }
 
     protected void itemLang(RegistryObject<Item> entry) {
@@ -88,6 +90,27 @@ public class ModLangProvider extends LanguageProvider {
 
     protected void attributeLang(RegistryObject<Attribute> entry) {
         add(entry.get().getDescriptionId(), checkReplace(entry));
+    }
+
+    protected void originLang() {
+        Arrays.stream(StarterScreen.Base.values()).toList().forEach(this::originLang);
+    }
+
+    private void originLang(StarterScreen.Base entry) {
+        add(Constants.MOD_ID + ".origin." + entry.getName(), checkReplace(entry.getName()));
+    }
+
+    protected void manualEntries() {
+        add(Constants.MOD_ID + ".menu.character_origin", "Origin");
+        add(Constants.MOD_ID + ".menu.keepsake", "Keepsake");
+        add(Constants.MOD_ID + ".menu.starter_confirm", "Confirm Character");
+        add(Constants.MOD_ID + ".menu.confirm", "Confirm");
+        add(Constants.MOD_ID + ".flask.potency", "Potency");
+        add(Constants.MOD_ID + ".flask.charges", "Charges");
+        add(Constants.MOD_ID + ".flask.empty_tear", "Empty");
+        add(Constants.MOD_ID + ".flask.tear_1", "1st Crystal Tear Slot");
+        add(Constants.MOD_ID + ".flask.tear_2", "2nd Crystal Tear Slot");
+        add(FlaskItem.NO_TEARS, "Wondrous Physick is currently holding no Crystal Tears");
     }
 
     protected String checkReplaceMenu(RegistryObject<MenuType<?>> registryObject) {

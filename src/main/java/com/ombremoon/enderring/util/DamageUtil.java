@@ -2,11 +2,12 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ReinforceType;
-import com.ombremoon.enderring.common.Saturation;
+import com.ombremoon.enderring.common.data.ReinforceType;
+import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.ScaledWeapon;
-import com.ombremoon.enderring.common.data.WeaponDamage;
-import com.ombremoon.enderring.common.data.WeaponScaling;
+import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.*;
@@ -38,6 +39,25 @@ public class DamageUtil {
 
     public static float getHolyAP(ScaledWeapon weapon, Player player, int weaponLevel) {
         return weapon.getDamage().getHolyDamage() > 0 ? calculateDamage(weapon, player, weaponLevel, WeaponDamage.HOLY) : 0.0F;
+    }
+
+    public static float getSorceryScaling(ScaledWeapon weapon, Player player, int weaponLevel) {
+        return calculateMagicScaling(weapon, player, weaponLevel, WeaponDamage.MAGICAL);
+    }
+
+    public static float getIncantScaling(ScaledWeapon weapon, Player player, int weaponLevel) {
+        return calculateMagicScaling(weapon, player, weaponLevel, WeaponDamage.HOLY);
+    }
+
+    private static float calculateMagicScaling(ScaledWeapon weapon, Player player, int weaponLevel, WeaponDamage weaponDamage) {
+        final var list = weapon.getBaseStats().getElementID().getListMap().get(weaponDamage);
+        float f = 0;
+        for (var scaling : list) {
+            float scaleVal = getScalingUpgrade(weapon, scaling, weaponLevel);
+            double attrVal = PlayerStatusUtil.getPlayerStat(player, scaling.getAttribute());
+            f += scaleVal * getSaturationValue(attrVal, weapon, weaponDamage) * 100;
+        }
+        return 100 + f;
     }
 
     public static float calculateDamage(ScaledWeapon weapon, Player player, int weaponLevel, WeaponDamage weaponDamage) {

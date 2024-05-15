@@ -1,8 +1,8 @@
 package com.ombremoon.enderring.util;
 
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.capability.IPlayerStatus;
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
+import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
@@ -12,17 +12,18 @@ import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.network.ModNetworking;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PlayerStatusUtil {
@@ -49,19 +50,19 @@ public class PlayerStatusUtil {
         return player.getAttributeValue(attribute);
     }
 
-    public static int getRunesNeeded(Player player) {
-        float f = ((getRuneLevel(player) + 81) - 92) * 0.02F;
+    private static int getRuneNeeded(Player player) {
+        float f = Math.max(((getRuneLevel(player) + 81) - 92) * 0.02F, 0);
         return Mth.floor(((f + 0.1) * ((getRuneLevel(player) + 81) ^ 2)) + 1);
     }
 
-    public static void increaseBaseStat(Player player, Attribute attribute, int increaseAmount) {
-        player.getAttributes().getInstance(attribute).setBaseValue(player.getAttributeBaseValue(attribute) + increaseAmount);
-        updateMainAttributes(true);
+    public static void increaseBaseStat(Player player, Attribute attribute, int increaseAmount, boolean setMax) {
+        Objects.requireNonNull(player.getAttributes().getInstance(attribute)).setBaseValue(player.getAttributeBaseValue(attribute) + increaseAmount);
+        updateMainAttributes(setMax);
     }
 
     public static void increaseBaseStatWithLevel(Player player, Attribute attribute, int increaseAmount) {
-        increaseBaseStat(player, attribute, increaseAmount);
-        player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get()).setBaseValue(player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get()) + increaseAmount);
+        increaseBaseStat(player, attribute, increaseAmount, true);
+        Objects.requireNonNull(player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get())).setBaseValue(player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get()) + increaseAmount);
     }
 
     public static void increaseRunes(Player player, double increaseAmount) {
@@ -86,41 +87,26 @@ public class PlayerStatusUtil {
             attributemodifier = new AttributeModifier(uuid, attribute.getDescriptionId(), increaseAmount, operation);
             attributeInstance.addTransientModifier(attributemodifier);
         }
-//        addStatusAttributeModifiers(player, uuid, attributemodifier);
-        updateMainAttributes(false);
+        updateMainAttributes(setMax);
     }
 
-    public static void removeStatModifier(Player player, Attribute attribute, UUID uuid, double decreaseAmount, boolean setmax) {
+    public static void removeStatModifier(Player player, Attribute attribute, UUID uuid, double decreaseAmount, boolean setMax) {
         AttributeInstance attributeInstance = player.getAttributes().getInstance(attribute);
         AttributeModifier attributemodifier = attributeInstance.getModifier(uuid);
         if (attributemodifier != null) {
             attributeInstance.removeModifier(attributemodifier);
-//            removeStatusAttributeModifiers(player, uuid);
             var amount = attributemodifier.getAmount() - decreaseAmount;
             if (amount > 0) {
                 attributemodifier = new AttributeModifier(uuid, attribute.getDescriptionId(), amount, attributemodifier.getOperation());
                 attributeInstance.addTransientModifier(attributemodifier);
-//                addStatusAttributeModifiers(player, uuid, attributemodifier);
             }
         }
-        updateMainAttributes(false);
+        updateMainAttributes(setMax);
     }
 
     public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount, boolean setMax) {
         addStatModifier(player, attribute, uuid, increaseAmount, AttributeModifier.Operation.ADDITION, setMax);
     }
-
-    /*public static Map<UUID, AttributeModifier> getStatusAttributeModifiers(Player player) {
-        return PlayerStatusProvider.get(player).getStatusAttributeModifiers();
-    }
-
-    private static void addStatusAttributeModifiers(Player player, UUID uuid, AttributeModifier attributeModifier) {
-        PlayerStatusProvider.get(player).addStatusAttributeModifiers(uuid, attributeModifier);
-    }
-
-    private static void removeStatusAttributeModifiers(Player player, UUID uuid) {
-        PlayerStatusProvider.get(player).removeStatusAttributeModifiers(uuid);
-    }*/
 
     public static double getFPAmount(Player player) {
         return PlayerStatusProvider.get(player).getFPAmount();
@@ -128,10 +114,13 @@ public class PlayerStatusUtil {
 
     public static void setFPAmount(Player player, double fpAmount) {
         PlayerStatusProvider.get(player).setFPAmount(fpAmount);
+        if (player instanceof ServerPlayer serverPlayer) {
+            ModNetworking.syncCap(serverPlayer);
+        }
     }
 
-    public static boolean canCastSpell(Player player, AbstractSpell abstractSpell) {
-        return getFPAmount(player) >= abstractSpell.getRequiredFP();
+    public static boolean canCastSpell(Player player, AbstractSpell abstractSpell, ScaledWeapon weapon) {
+        return getFPAmount(player) >= abstractSpell.getRequiredFP() && weapon.getRequirements().meetsRequirements(player);
     }
 
     public static void increaseFP(Player player, float fpAmount) {
@@ -159,11 +148,11 @@ public class PlayerStatusUtil {
 
     public static CompoundTag storeSpell(SpellType<?> spellType) {
         CompoundTag compoundTag = new CompoundTag();
-        return storeSpell(compoundTag, spellType, "Spell");
+        return storeSpell(compoundTag, spellType);
     }
 
-    private static CompoundTag storeSpell(CompoundTag compoundTag, SpellType<?> spellType, String tagKey) {
-        compoundTag.putString(tagKey, spellType.getResourceLocation().toString());
+    private static CompoundTag storeSpell(CompoundTag compoundTag, SpellType<?> spellType) {
+        compoundTag.putString("Spell", spellType.getResourceLocation().toString());
         return compoundTag;
     }
 
@@ -189,6 +178,9 @@ public class PlayerStatusUtil {
 
     public static void setSelectedSpell(Player player, SpellType<?> spellType) {
         PlayerStatusProvider.get(player).setSelectedSpell(spellType);
+        if (player instanceof ServerPlayer serverPlayer) {
+            ModNetworking.syncCap(serverPlayer);
+        }
     }
 
     public static boolean isTorrentSpawnedOrIncapacitated(Player player) {
@@ -213,6 +205,9 @@ public class PlayerStatusUtil {
 
     public static void increaseTalismanPouches(Player player) {
         PlayerStatusProvider.get(player).increaseTalismanPouches();
+        if (player instanceof ServerPlayer serverPlayer) {
+            ModNetworking.syncCap(serverPlayer);
+        }
     }
 
     public static int getMemoryStones(Player player) {
@@ -221,14 +216,24 @@ public class PlayerStatusUtil {
 
     public static void increaseMemoryStones(Player player) {
         PlayerStatusProvider.get(player).increaseMemoryStones();
+        if (player instanceof ServerPlayer serverPlayer) {
+            ModNetworking.syncCap(serverPlayer);
+        }
     }
 
     public static ItemStack getQuickAccessItem(Player player) {
-        return PlayerStatusProvider.get(player).getQuickAccessItem();
+        return CurioHelper.getQuickAccessStack(player, getQuickAccessSlot(player));
     }
 
-    public static void setQuickAccessItem(Player player, ItemStack itemStack) {
-        PlayerStatusProvider.get(player).setQuickAccessItem(itemStack);
+    public static int getQuickAccessSlot(Player player) {
+        return PlayerStatusProvider.get(player).getQuickAccessSlot();
+    }
+
+    public static void setQuickAccessSlot(Player player, int slot) {
+        PlayerStatusProvider.get(player).setQuickAccessSlot(slot);
+        if (player instanceof ServerPlayer serverPlayer) {
+            ModNetworking.syncCap(serverPlayer);
+        }
     }
 
     public static boolean isUsingQuickAccess(Player player) {

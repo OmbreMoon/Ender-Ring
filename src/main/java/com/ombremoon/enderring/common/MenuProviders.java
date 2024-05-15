@@ -44,7 +44,7 @@ public class MenuProviders {
         @Nullable
         @Override
         public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-            return new SacredTearMenu(pContainerId, pPlayerInventory);
+            return new SacredTearMenu(pContainerId, pPlayerInventory, pPlayer);
         }
     };
 
@@ -57,7 +57,7 @@ public class MenuProviders {
         @Nullable
         @Override
         public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-            return new GoldenSeedMenu(pContainerId, pPlayerInventory);
+            return new GoldenSeedMenu(pContainerId, pPlayerInventory, pPlayer);
         }
     };
 }

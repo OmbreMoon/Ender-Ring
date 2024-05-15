@@ -5,6 +5,7 @@ import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -40,9 +41,9 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
     void increaseMemoryStones();
 
-    ItemStack getQuickAccessItem();
+    int getQuickAccessSlot();
 
-    void setQuickAccessItem(ItemStack itemStack);
+    void setQuickAccessSlot(int slot);
 
     boolean isUsingQuickAccess();
 

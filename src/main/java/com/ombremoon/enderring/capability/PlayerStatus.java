@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
@@ -24,17 +25,17 @@ public class PlayerStatus implements IPlayerStatus {
     private SpellType<?> selectedSpell;
     private double fpAmount;
     private boolean isTorrentSpawned;
-    private double torrentHealth;
+    private double torrentHealth = 77;
     private int talismanPouches;
     private int memoryStones;
     private ItemStack quickAccessItem;
+    private int quickAccessSlot;
     private boolean usingQuickAccess;
     private ItemStack cachedItem;
-//    private int cachedSlot;
     private int useItemTicks;
 
-    public PlayerStatus(double torrentHealth) {
-        this.torrentHealth = torrentHealth;
+    public PlayerStatus(Player player) {
+//        player.getEntityData().define();
     }
 
     @Override
@@ -107,15 +108,14 @@ public class PlayerStatus implements IPlayerStatus {
         this.memoryStones = Math.min(this.memoryStones + 1, 8);
     }
 
-    //TODO: CHANGE TO PLAYER DEPENDENCY
     @Override
-    public ItemStack getQuickAccessItem() {
-        return this.quickAccessItem;
+    public int getQuickAccessSlot() {
+        return this.quickAccessSlot;
     }
 
     @Override
-    public void setQuickAccessItem(ItemStack itemStack) {
-        this.quickAccessItem = itemStack;
+    public void setQuickAccessSlot(int slot) {
+        this.quickAccessSlot = slot;
     }
 
     @Override
@@ -138,16 +138,6 @@ public class PlayerStatus implements IPlayerStatus {
         this.cachedItem = cachedItem;
     }
 
-    /*@Override
-    public int getCachedSlot() {
-        return this.cachedSlot;
-    }
-
-    @Override
-    public void setCachedSlot(int slot) {
-        this.cachedSlot = slot;
-    }*/
-
     @Override
     public int getUseItemTicks() {
         return this.useItemTicks;
@@ -161,7 +151,7 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag compoundTag = new CompoundTag();
-        ListTag modifierList = new ListTag();
+        CompoundTag itemStackTag = new CompoundTag();
         ListTag spellList = new ListTag();
 
         compoundTag.putDouble("FP", this.fpAmount);
@@ -172,12 +162,12 @@ public class PlayerStatus implements IPlayerStatus {
         for (SpellType<?> spellType : spellSet) {
             spellList.add(PlayerStatusUtil.storeSpell(spellType));
         }
-        compoundTag.put("Modifiers", modifierList);
         compoundTag.put("Spells", spellList);
         compoundTag.putBoolean("Torrent", this.isTorrentSpawned);
         compoundTag.putDouble("TorrentHealth", this.torrentHealth);
         compoundTag.putInt("TalismanPouches", this.talismanPouches);
         compoundTag.putInt("MemoryStones", this.memoryStones);
+        compoundTag.putInt("SelectedSlot", this.quickAccessSlot);
 
         return compoundTag;
     }
@@ -208,6 +198,9 @@ public class PlayerStatus implements IPlayerStatus {
         }
         if (nbt.contains("MemoryStones", 99)) {
             this.memoryStones = nbt.getInt("MemoryStones");
+        }
+        if (nbt.contains("SelectedSlot", 99)) {
+            this.quickAccessSlot = nbt.getInt("SelectedSlot");
         }
         Constants.LOG.info(String.valueOf(nbt));
     }

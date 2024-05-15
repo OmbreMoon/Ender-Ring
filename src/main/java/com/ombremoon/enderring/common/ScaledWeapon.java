@@ -3,8 +3,10 @@ package com.ombremoon.enderring.common;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.ombremoon.enderring.common.data.WeaponDamage;
-import com.ombremoon.enderring.common.data.WeaponScaling;
+import com.ombremoon.enderring.common.data.AttackElement;
+import com.ombremoon.enderring.common.data.ReinforceType;
+import com.ombremoon.enderring.common.data.Saturation;
+import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -43,10 +45,9 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             nbt.putBoolean("Infusable", this.infusable);
             nbt.putBoolean("TwoHandBonus", this.twoHandBonus);
 
-            //TODO: NEEDS TO BE CHANGED
-            nbt.putIntArray("Saturations", saturations != null ? Arrays.stream(this.saturations).mapToInt(Saturation::ordinal).toArray() : new int[]{0, 0, 0, 0, 0});
-            nbt.putInt("ElementID", elementID != null ? this.elementID.getElementId() : 10000);
-            nbt.putString("ReinforceType", reinforceType != null ? this.reinforceType.getTypeId().toString() : "");
+            nbt.putIntArray("Saturations", this.saturations != null ? Arrays.stream(this.saturations).mapToInt(Saturation::ordinal).toArray() : new int[]{0, 0, 0, 0, 0});
+            nbt.putInt("ElementID", this.elementID != null ? this.elementID.getElementId() : AttackElement.DEFAULT_ID);
+            nbt.putString("ReinforceType", this.reinforceType != null ? this.reinforceType.getTypeId().toString() : ReinforceType.DEFAULT.getTypeId().toString());
             return nbt;
         }
 
@@ -206,6 +207,16 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             if (this.fireDamage > 0) damageMap.put(WeaponDamage.FIRE, this.fireDamage);
             if (this.lightDamage > 0) damageMap.put(WeaponDamage.LIGHTNING, this.lightDamage);
             if (this.holyDamage > 0) damageMap.put(WeaponDamage.HOLY, this.holyDamage);
+            return damageMap;
+        }
+
+        public Map<WeaponDamage, Float> getScaledDamageMap(ScaledWeapon weapon, Player player, int weaponLevel) {
+            Map<WeaponDamage, Float> damageMap = new TreeMap<>();
+            if (DamageUtil.getPhysicalAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.PHYSICAL, DamageUtil.getPhysicalAP(weapon, player, weaponLevel));
+            if (DamageUtil.getMagicalAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.MAGICAL, DamageUtil.getMagicalAP(weapon, player, weaponLevel));
+            if (DamageUtil.getFireAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.FIRE, DamageUtil.getFireAP(weapon, player, weaponLevel));
+            if (DamageUtil.getLightningAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.LIGHTNING, DamageUtil.getLightningAP(weapon, player, weaponLevel));
+            if (DamageUtil.getHolyAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.HOLY, DamageUtil.getHolyAP(weapon, player, weaponLevel));
             return damageMap;
         }
 
@@ -399,6 +410,15 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             final var list = weapon.getBaseStats().getElementID().getListMap().get(weaponDamage);
             for (var scaling : list) {
                 if (PlayerStatusUtil.getPlayerStat(player, scaling.getAttribute()) < getReqMap().get(scaling)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public boolean meetsRequirements(Player player) {
+            for (var entry : this.getReqMap().entrySet()) {
+                if (PlayerStatusUtil.getPlayerStat(player, entry.getKey().getAttribute()) < entry.getValue()) {
                     return false;
                 }
             }

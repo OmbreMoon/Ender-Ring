@@ -35,14 +35,6 @@ public class FlaskUtil {
     }
 
     public static int getPhysickSlot(Player player) {
-        /*IDynamicStackHandler stackHandler = CurioHelper.getQuickAccessStacks(player);
-        for (int i = 0; i < stackHandler.getSlots() - 1; i++) {
-            ItemStack itemStack = stackHandler.getStackInSlot(i);
-            if (itemStack.is(ItemInit.WONDROUS_PHYSICK_FLASK.get())) {
-                return i;
-            }
-        }
-        return 10;*/
         return CurioHelper.getItemSlot(player, ItemInit.WONDROUS_PHYSICK_FLASK.get());
     }
 
@@ -55,31 +47,22 @@ public class FlaskUtil {
     }
 
     public static ItemStack getPhysick(Player player) {
-        return CurioHelper.getQuickAccessStacks(player).getStackInSlot(FlaskUtil.getPhysickSlot(player));
+        return CurioHelper.getQuickAccessStacks(player).getStackInSlot(getPhysickSlot(player));
     }
 
     public static ItemStack getCrimsonFlask(Player player) {
-        return CurioHelper.getQuickAccessStacks(player).getStackInSlot(FlaskUtil.getCrimsonSlot(player));
+        return CurioHelper.getQuickAccessStacks(player).getStackInSlot(getCrimsonSlot(player));
     }
 
     public static ItemStack getCeruleanFlask(Player player) {
-        return CurioHelper.getQuickAccessStacks(player).getStackInSlot(FlaskUtil.getCeruleanSlot(player));
+        return CurioHelper.getQuickAccessStacks(player).getStackInSlot(getCeruleanSlot(player));
     }
 
     public static boolean hasPhysickInSlot(Player player) {
-//        return CurioHelper.getQuickAccessStacks(player).getStackInSlot(FlaskUtil.getPhysickSlot(player)) != ItemStack.EMPTY;
         return getPhysickSlot(player) != 10;
     }
 
-    public static boolean hasCrimsonInSlot(Player player) {
-        return getCrimsonSlot(player) != 10;
-    }
-
-    public static boolean hasCeruleanInSlot(Player player) {
-        return getCeruleanSlot(player) != 10;
-    }
-
-    public static void setCrystalTears(Container container,  ItemStack itemStack) {
+    public static void setCrystalTears(Container container, ItemStack itemStack) {
         ListTag listTag = getCrystalTears(itemStack);
 
         for (int i = 0; i < 2; i++) {
@@ -97,32 +80,29 @@ public class FlaskUtil {
         }
     }
 
-    public static boolean hasDuplicateTears(ItemStack flaskStack, Container container) {
-        ListTag listTag = getCrystalTears(flaskStack);
-        for (int i = 0; i < listTag.size(); i++) {
-            CompoundTag compoundTag = listTag.getCompound(i);
-            MobEffect mobEffect = ForgeRegistries.MOB_EFFECTS.getValue(getEffectId(compoundTag));
-            for (int j = 0; j < 2; j++) {
-                ItemStack itemStack = container.getItem(i);
-                if (!itemStack.isEmpty()) {
-                    CrystalTearItem item = (CrystalTearItem) itemStack.getItem();
-                    if (mobEffect == item.getMobEffect()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return container.getItem(0).getItem() == container.getItem(1).getItem();
+    public static int getFlaskLevel(ItemStack itemStack) {
+        return itemStack.getOrCreateTag().getInt("FlaskLevel");
+    }
+
+    public static int getCharges(ItemStack itemStack) {
+        return itemStack.getOrCreateTag().getInt("Charges");
     }
 
     public static void setCharges(ItemStack itemStack, int charges) {
         itemStack.getOrCreateTag().putInt("Charges", charges);
     }
 
+    public static int getMaxCharges(ItemStack itemStack) {
+        return itemStack.getOrCreateTag().getInt("MaxCharges");
+    }
+
+    public static void setMaxCharges(ItemStack itemStack, int charges) {
+        itemStack.getOrCreateTag().putInt("MaxCharges", charges);
+    }
+
     public static int getMaxCharges(ItemStack itemStack, FlaskItem.Type type) {
-        CompoundTag compoundTag = itemStack.getOrCreateTag();
         if (type != FlaskItem.Type.PHYSICK) {
-            return Math.min(2 + compoundTag.getInt("FlaskLevel"), 14);
+            return Math.min(2 + getMaxCharges(itemStack), 14);
         }
         return 1;
     }

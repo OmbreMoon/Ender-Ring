@@ -39,8 +39,10 @@ public class ServerboundUseQuickAccessPacket {
         ItemStack itemStack = PlayerStatusUtil.getQuickAccessItem(serverPlayer);
 
         if (!PlayerStatusUtil.isUsingQuickAccess(serverPlayer)) {
-            PlayerStatusUtil.setUsingQuickAccess(serverPlayer, true);
-            serverPlayer.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
+            if (!itemStack.isEmpty()) {
+                PlayerStatusUtil.setUsingQuickAccess(serverPlayer, true);
+                serverPlayer.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
+            }
         } else {
             ItemStack cachedStack = PlayerStatusUtil.getCachedItem(serverPlayer);
             PlayerStatusUtil.setUsingQuickAccess(serverPlayer, false);

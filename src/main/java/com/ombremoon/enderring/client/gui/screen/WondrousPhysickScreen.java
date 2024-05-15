@@ -3,6 +3,7 @@ package com.ombremoon.enderring.client.gui.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.common.object.world.inventory.WondrousPhysickMenu;
+import com.ombremoon.enderring.util.RenderUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -47,9 +48,7 @@ public class WondrousPhysickScreen extends AbstractContainerScreen<WondrousPhysi
 
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, WONDROUS_PHYSICK);
+        RenderUtil.setupScreen(WONDROUS_PHYSICK);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         pGuiGraphics.blit(WONDROUS_PHYSICK, x, y, 0, 0, imageWidth, imageHeight);

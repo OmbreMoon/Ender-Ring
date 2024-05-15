@@ -2,6 +2,7 @@ package com.ombremoon.enderring.client;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.KeyBinds;
+import com.ombremoon.enderring.client.gui.QuickAccessOverlay;
 import com.ombremoon.enderring.client.gui.screen.*;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.object.world.inventory.GoldenSeedMenu;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -57,6 +59,11 @@ public class ClientEvents {
             MenuScreens.register(MenuTypeInit.MEMORIZE_SPELL_MENU.get(), MemorizeSpellScreen::new);
             MenuScreens.register(MenuTypeInit.GOLDEN_SEED_MENU.get(), GoldenSeedScreen::new);
             MenuScreens.register(MenuTypeInit.SACRED_TEAR_MENU.get(), SacredTearScreen::new);
+        }
+
+        @SubscribeEvent
+        public static void registerGUIOverlays(RegisterGuiOverlaysEvent event) {
+            event.registerAboveAll("quick_access", QuickAccessOverlay.QUICK_ACCESS_OVERLAY);
         }
     }
 

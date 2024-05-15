@@ -30,7 +30,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
 public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<AbstractWeapon, ScaledWeapon>> {
@@ -78,20 +77,12 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
                         try(Reader reader = new BufferedReader(new InputStreamReader(resource.open(), StandardCharsets.UTF_8))) {
                             ScaledWeapon scaledWeapon = GsonHelper.fromJson(GSON_INSTANCE, reader, ScaledWeapon.class);
                             map.put((AbstractWeapon) item, scaledWeapon);
-                            /*if (scaledWeapon != null && isValidObject(scaledWeapon)) {
-                                map.put((AbstractWeapon) item, scaledWeapon);
-                            } else {
-                                Constants.LOG.error("Couldn't load data file {} as it is missing or malformed. Using default weapon data", id);
-                                map.putIfAbsent((AbstractWeapon) item, new ScaledWeapon());
-                            }*/
                         } catch (InvalidObjectException e) {
                             Constants.LOG.error("Missing required properties for {}", id);
                             e.printStackTrace();
                         } catch (IOException e) {
                             Constants.LOG.error("Couldn't parse data file {}", id);
-                        }/* catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }*/
+                        }
                     });
                 });
             }
@@ -147,27 +138,6 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
         return false;
     }
 
-    public Map<ResourceLocation, ScaledWeapon> getRegisteredWeapons() {
-        return this.registeredWeapons;
-    }
-
-    public static <T> boolean isValidObject(T t) throws IllegalAccessException, InvalidObjectException {
-        Field[] fields = t.getClass().getDeclaredFields();
-        for(Field field : fields) {
-
-            field.setAccessible(true);
-
-            if(field.get(t) == null) {
-                throw new InvalidObjectException("Missing required property: " + field.getName());
-            }
-
-            if(!field.getType().isPrimitive() && field.getType() != String.class && !field.getType().isEnum()) {
-                return isValidObject(field.get(t));
-            }
-        }
-        return true;
-    }
-
     public static class Wrapper {
         private ScaledWeapon weapon;
 
@@ -185,20 +155,6 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
         ScaledWeaponManager manager = new ScaledWeaponManager();
         event.addListener(manager);
         ScaledWeaponManager.instance = manager;
-    }
-
-    @SubscribeEvent
-    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!event.getEntity().level().isClientSide) return;
-        if (!(event.getEntity() instanceof Player)) return;
-        ModNetworking.getInstance().updateWeaponData();
-    }
-
-    @SubscribeEvent
-    public static void onDatapackSync(OnDatapackSyncEvent event) {
-        if (event.getPlayer() == null) {
-            ModNetworking.getInstance().updateWeaponData();
-        }
     }
 
     @SubscribeEvent

@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 public class CommonClientClass {
     public static <T extends Entity> List<Renderers> getRenderers() {
         return List.of(
-                new Renderers(MobInit.TORRENT, (context) -> new TorrentRenderer(context, new TorrentModel<>(context.bakeLayer(TorrentModel.LAYER_LOCATION)), "torrent"))
+                new Renderers(MobInit.TORRENT, (context) -> new TorrentRenderer(context, new TorrentModel<>(context.bakeLayer(TorrentModel.LAYER_LOCATION))))
         );
     }
 

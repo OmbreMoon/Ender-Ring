@@ -3,9 +3,11 @@ package com.ombremoon.enderring.capability;
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
 import com.ombremoon.enderring.common.init.entity.MobInit;
+import com.ombremoon.enderring.network.ModNetworking;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -20,8 +22,12 @@ public class PlayerStatusProvider implements ICapabilityProvider, INBTSerializab
     public static final Capability<IPlayerStatus> PLAYER_STATUS = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation CAPABILITY_LOCATION = CommonClass.customLocation("player_status");
 
-    private IPlayerStatus playerStatus = new PlayerStatus(77.0D);
+    private IPlayerStatus playerStatus;
     private final LazyOptional<IPlayerStatus> optional = LazyOptional.of(() -> playerStatus);
+
+    public PlayerStatusProvider(Player player) {
+        this.playerStatus = new PlayerStatus(player);
+    }
 
     public static @NotNull IPlayerStatus get(Player player) {
         return player.getCapability(PLAYER_STATUS).orElseThrow(NullPointerException::new);

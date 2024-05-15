@@ -5,6 +5,7 @@ import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -73,8 +74,11 @@ public class QuickAccessMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player pPlayer) {
         super.removed(pPlayer);
-        ItemStack itemStack = PlayerStatusUtil.getQuickAccessItem(pPlayer);
-        PlayerStatusUtil.setQuickAccessItem(pPlayer, itemStack != null ? itemStack : CurioHelper.findFirstNonEmptyStack(pPlayer));
+        if (pPlayer instanceof ServerPlayer serverPlayer) {
+            ItemStack itemStack = PlayerStatusUtil.getQuickAccessItem(serverPlayer);
+            if (itemStack.isEmpty())
+                PlayerStatusUtil.setQuickAccessSlot(serverPlayer, CurioHelper.findFirstNonEmptySlot(serverPlayer));
+        }
     }
 
     @Override

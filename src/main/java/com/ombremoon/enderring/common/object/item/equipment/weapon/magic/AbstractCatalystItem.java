@@ -1,11 +1,12 @@
 package com.ombremoon.enderring.common.object.item.equipment.weapon.magic;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -19,18 +20,19 @@ import net.minecraft.world.level.Level;
 
 //TODO: Add spells cast stat
 
-public class AbstractSpellCastItem extends AbstractWeapon {
+public class AbstractCatalystItem extends MeleeWeapon {
     private final MagicType magicType;
 
-    public AbstractSpellCastItem(MagicType magicType, Properties properties) {
-        super(properties);
+    public AbstractCatalystItem(MagicType magicType, Properties properties) {
+        super(-2.3F, properties);
         this.magicType = magicType;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
-        if (pUsedHand == InteractionHand.MAIN_HAND && PlayerStatusUtil.getSelectedSpell(pPlayer) != null) {
+        SpellType<?> spell = PlayerStatusUtil.getSelectedSpell(pPlayer);
+        if (pUsedHand == InteractionHand.MAIN_HAND && spell != null && spell.getSpell().getMagicType() == this.magicType) {
             return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
         }
         return InteractionResultHolder.pass(itemStack);
@@ -40,33 +42,35 @@ public class AbstractSpellCastItem extends AbstractWeapon {
     public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
         super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
         if (stack.getTag() != null) {
-            stack.getTag().putString("Spell", PlayerStatusUtil.getSelectedSpell(player) != null ? PlayerStatusUtil.getSelectedSpell(player).getResourceLocation().toString() : "Empty");
+            SpellType<?> spellType = PlayerStatusUtil.getSelectedSpell(player);
+            stack.getTag().putString("Spell", spellType != null ? spellType.getResourceLocation().toString() : "Empty");
             return;
         }
 
-        Constants.LOG.info("Shouldn't be running every tick!");
+        Constants.LOG.warn("Shouldn't be running every tick!");
         stack.getOrCreateTag();
     }
 
     @Override
     public int getUseDuration(ItemStack pStack) {
-        return 1;
+        return PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(pStack.getTag(), "Spell")).getSpell().getCastTime();
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
         Player player = pLivingEntity instanceof Player ? (Player) pLivingEntity : null;
         SpellType<?> spellType = PlayerStatusUtil.getSelectedSpell(player);
+        ScaledWeapon weapon = this.getWeapon();
         if (!pLevel.isClientSide && spellType != null) {
             AbstractSpell spell = spellType.getSpell();
-            if (spell.getMagicType() == this.magicType && PlayerStatusUtil.canCastSpell(player, spell)) {
-                spell.activateSpellEffect(new SpellInstance(spellType), player, pLevel, pLivingEntity.getOnPos());
+            if (PlayerStatusUtil.canCastSpell(player, spell, weapon)) {
+                spell.activateSpellEffect(new SpellInstance(spellType, this.getWeapon()), player, pLevel, pLivingEntity.getOnPos());
             }
         }
 
         if (player != null) {
             player.awardStat(Stats.ITEM_USED.get(this));
-            if (!player.getAbilities().instabuild && spellType != null && PlayerStatusUtil.canCastSpell(player, spellType.getSpell())) {
+            if (!player.getAbilities().instabuild && spellType != null && PlayerStatusUtil.canCastSpell(player, spellType.getSpell(), weapon)) {
                 PlayerStatusUtil.decreaseSpellFP(player, spellType);
             }
         }
@@ -74,7 +78,7 @@ public class AbstractSpellCastItem extends AbstractWeapon {
         if (player != null && spellType != null) {
             AbstractSpell spell = spellType.getSpell();
             ItemCooldowns cooldowns = player.getCooldowns();
-            if (!cooldowns.isOnCooldown(this) && PlayerStatusUtil.canCastSpell(player, spell)) {
+            if (!cooldowns.isOnCooldown(this) && PlayerStatusUtil.canCastSpell(player, spell, weapon)) {
                 cooldowns.addCooldown(this, spell.isInstantSpell() ? 10 : spell.getCastTime());
             }
         }

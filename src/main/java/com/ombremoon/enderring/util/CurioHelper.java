@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.util;
 
+import com.ombremoon.enderring.common.init.item.ItemInit;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,16 +23,20 @@ public class CurioHelper {
         return getCurioStacks(player, TALISMAN);
     }
 
+    public static ItemStack getQuickAccessStack(Player player, int slot) {
+        return getQuickAccessStacks(player).getStackInSlot(slot);
+    }
+
     public static ItemStack findFirstNonEmptyStack(Player player) {
         return getQuickAccessStacks(player).getStackInSlot(findFirstNonEmptySlot(player));
     }
 
     public static int findFirstNonEmptySlot(Player player) {
-        return findFirstNonEmptySlot(CurioHelper.getQuickAccessStacks(player));
+        return findFirstNonEmptySlot(getQuickAccessStacks(player));
     }
 
     private static int findFirstNonEmptySlot(IDynamicStackHandler stackHandler) {
-        for (int i = 0; i < stackHandler.getSlots(); i++) {
+        for (int i = 0; i < stackHandler.getSlots() - 1; i++) {
             if (!stackHandler.getStackInSlot(i).isEmpty()) {
                 return i;
             }
@@ -61,6 +66,17 @@ public class CurioHelper {
             }
         }
         return 10;
+    }
+
+    public static int getItemSlot(Player player, ItemStack itemStack) {
+        IDynamicStackHandler stackHandler = CurioHelper.getQuickAccessStacks(player);
+        for (int i = 0; i < stackHandler.getSlots() - 1; i++) {
+            ItemStack currentStack = stackHandler.getStackInSlot(i);
+            if (currentStack.equals(itemStack, false)) {
+                return i;
+            }
+        }
+        return findFirstNonEmptySlot(stackHandler);
     }
 
     public static void populateSlot(Player player, ItemStack itemStack) {

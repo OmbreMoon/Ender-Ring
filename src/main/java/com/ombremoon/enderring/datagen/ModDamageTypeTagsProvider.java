@@ -21,5 +21,8 @@ public class ModDamageTypeTagsProvider extends TagsProvider<DamageType> {
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(DamageTypeTags.BYPASSES_ARMOR)
                 .add(ModDamageTypes.PHYSICAL);
+
+        tag(DamageTypeTags.BYPASSES_RESISTANCE)
+                .add(ModDamageTypes.PHYSICAL);
     }
 }

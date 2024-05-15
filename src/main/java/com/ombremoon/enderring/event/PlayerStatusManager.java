@@ -14,6 +14,7 @@ import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.FlaskUtil;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
@@ -43,10 +45,18 @@ public class PlayerStatusManager {
     @SubscribeEvent
     public static void onAttachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player player) {
-            if (!player.getCapability(PlayerStatusProvider.PLAYER_STATUS).isPresent()) {
-                var provider = new PlayerStatusProvider();
+            var provider = new PlayerStatusProvider(player);
+            if (!PlayerStatusProvider.isPresent(player)) {
+                var cap = provider.getCapability(PlayerStatusProvider.PLAYER_STATUS).orElse(null);
                 event.addCapability(PlayerStatusProvider.CAPABILITY_LOCATION, provider);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        if (event.getLevel() instanceof ServerLevel && event.getEntity() instanceof ServerPlayer player) {
+            ModNetworking.syncCap(player);
         }
     }
 
@@ -58,6 +68,7 @@ public class PlayerStatusManager {
         Player oldPlayer = event.getOriginal();
         Player newPlayer = event.getEntity();
         if (event.isWasDeath()) {
+            PlayerStatusProvider.get(newPlayer).deserializeNBT(PlayerStatusProvider.get(oldPlayer).serializeNBT());
 
             if (oldPlayer.hasEffect(StatusEffectInit.SACRIFICIAL_TWIG.get())) {
                 double runeAmount = PlayerStatusUtil.getRunesHeld(oldPlayer);
@@ -117,9 +128,6 @@ public class PlayerStatusManager {
                             iterator.remove();
                             abstractSpell.onSpellStop(spellInstance, player, player.level(), player.getOnPos());
                         }
-                        //TODO: SUBJECT TO CHANGE
-                    } else if (spellInstance.getDuration() % 600 == 0) {
-                        abstractSpell.onSpellUpdate(spellInstance, player, player.level(), player.getOnPos());
                     }
                 }
             } catch (ConcurrentModificationException ignored) {
@@ -140,7 +148,6 @@ public class PlayerStatusManager {
 
         if (PlayerStatusUtil.isUsingQuickAccess(player)) {
             IPlayerStatus playerStatus = PlayerStatusProvider.get(player);
-            int i = itemStack.getUseDuration();
             if (itemStack != ItemStack.EMPTY) {
                 int j = playerStatus.getUseItemTicks();
                 if (j >= 0) {

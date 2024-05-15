@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 public class TorrentRenderer extends MobRenderer<Torrent, TorrentModel<Torrent>> {
     private static ResourceLocation TEXTURE_LOCATION = CommonClass.customLocation("textures/entity/mob/torrent.png");
 
-    public TorrentRenderer(EntityRendererProvider.Context pContext, TorrentModel<Torrent> pModel, String name) {
+    public TorrentRenderer(EntityRendererProvider.Context pContext, TorrentModel<Torrent> pModel) {
         super(pContext, pModel, 0.7F);
     }
 

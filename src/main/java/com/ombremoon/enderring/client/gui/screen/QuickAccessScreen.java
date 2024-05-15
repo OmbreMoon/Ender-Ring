@@ -3,6 +3,7 @@ package com.ombremoon.enderring.client.gui.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.common.object.world.inventory.QuickAccessMenu;
+import com.ombremoon.enderring.util.RenderUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -19,9 +20,7 @@ public class QuickAccessScreen extends AbstractContainerScreen<QuickAccessMenu> 
 
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, QUICK_ACCESS);
+        RenderUtil.setupScreen(QUICK_ACCESS);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         pGuiGraphics.blit(QUICK_ACCESS, x, y, 0, 0, imageWidth, imageHeight);

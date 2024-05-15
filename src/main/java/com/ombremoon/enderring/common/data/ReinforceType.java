@@ -1,9 +1,8 @@
-package com.ombremoon.enderring.common;
+package com.ombremoon.enderring.common.data;
 
 import com.ombremoon.enderring.CommonClass;
-import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.data.WeaponDamage;
-import com.ombremoon.enderring.common.data.WeaponScaling;
+import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.WeaponScaling;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.*;
@@ -22,6 +21,9 @@ public class ReinforceType {
             .baseScaling(WeaponScaling.STR, 1.8F).baseScaling(MAGICAL, 1.0F).multScaling(WeaponScaling.STR, 0.05F).multScaling(MAGICAL, 0.04F)
             .breakpointAt10(WeaponScaling.STR, 0.04F).breakpointAt10(MAGICAL, 0.03F).breakpointAt20(WeaponScaling.STR, 0.02F).breakpointAt20(MAGICAL, 0.02F).build();
 
+    public static final ReinforceType PURE_CATALYST_FRONT = Builder.create(CommonClass.customLocation("pure_catalyst_front"))
+            .baseDamage(1.0F).multDamage(0.03F).baseScaling(1.0F).multScaling(0.08F).build();
+
     public static final ReinforceType UNIQUE = Builder.create(CommonClass.customLocation("unique"))
             .baseDamage(1.0F).multDamage(0.145F).baseScaling(1.0F).multScaling(0.08F).build();
 
@@ -30,6 +32,7 @@ public class ReinforceType {
     static {
         registerType(DEFAULT);
         registerType(HEAVY);
+        registerType(PURE_CATALYST_FRONT);
         registerType(UNIQUE);
     }
 
@@ -86,22 +89,14 @@ public class ReinforceType {
     private float getMultScaleAmount(WeaponScaling weaponScaling, int weaponLevel) {
         if (hasBreakpoints(weaponScaling)) {
             if (weaponLevel > 20) {
-                return this.breakpoint20Map.computeIfAbsent(weaponScaling, scaling -> {
-                    return this.breakpoint10Map.get(weaponScaling);
-                });
+                return this.breakpoint20Map.getOrDefault(weaponScaling, this.breakpoint10Map.get(weaponScaling));
             } else if (weaponLevel > 10) {
-                return this.breakpoint10Map.computeIfAbsent(weaponScaling, scaling -> {
-                    return this.multScaling.get(weaponScaling);
-                });
+                return this.breakpoint10Map.getOrDefault(weaponScaling, this.multScaling.get(weaponScaling));
             } else {
-                return this.multScaling.computeIfAbsent(weaponScaling, scaling -> {
-                    return 0.0F;
-                });
+                return this.multScaling.getOrDefault(weaponScaling, 0.0F);
             }
         } else {
-            return this.multScaling.computeIfAbsent(weaponScaling, scaling -> {
-                return 0.0F;
-            });
+            return this.multScaling.getOrDefault(weaponScaling, 0.0F);
         }
     }
 

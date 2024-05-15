@@ -1,8 +1,6 @@
 package com.ombremoon.enderring.network.client;
 
-import com.ombremoon.enderring.client.gui.screen.CharacterBaseScreen;
 import com.ombremoon.enderring.client.gui.screen.GraceSiteScreen;
-import mod.azure.azurelibarmor.core.math.functions.limit.Min;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
