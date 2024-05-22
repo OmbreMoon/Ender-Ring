@@ -30,9 +30,13 @@ public class DebugItem extends Item {
             if (pPlayer.isCrouching()) {
                 ModNetworking.getInstance().openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
             } else {
-                ModNetworking.getInstance().selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
+//                ModNetworking.getInstance().selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
                 ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-//                PlayerStatusUtil.increaseBaseStat(pPlayer, EntityAttributeInit.VIGOR.get(), 16, true);
+                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.STRENGTH.get(), 35, true);
+                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.DEXTERITY.get(), 24, true);
+                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.INTELLIGENCE.get(), 53, true);
+                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.FAITH.get(), 40, true);
+                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.ARCANE.get(), 25, true);
 //                PlayerStatusUtil.setQuickAccessItem(pPlayer, FlaskUtil.getPhysick(pPlayer));
                 this.displayPlayerStats(pPlayer);
 //                DamageSource damageSource = new DamageSource(pLevel.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ModDamageTypes.PHYSICAL));

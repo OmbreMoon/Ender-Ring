@@ -8,6 +8,7 @@ import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
+import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -32,6 +33,8 @@ public class AbstractCatalystItem extends MeleeWeapon {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         SpellType<?> spell = PlayerStatusUtil.getSelectedSpell(pPlayer);
+        itemStack.getTag().putInt("WeaponLevel", 10);
+        pPlayer.sendSystemMessage(Component.literal(String.valueOf(itemStack.getOrCreateTag().getInt("WeaponLevel"))));
         if (pUsedHand == InteractionHand.MAIN_HAND && spell != null && spell.getSpell().getMagicType() == this.magicType) {
             return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
         }
@@ -53,7 +56,8 @@ public class AbstractCatalystItem extends MeleeWeapon {
 
     @Override
     public int getUseDuration(ItemStack pStack) {
-        return PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(pStack.getTag(), "Spell")).getSpell().getCastTime();
+        SpellType<?> spellType = PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(pStack.getTag(), "Spell"));
+        return spellType != null ? spellType.getSpell().getCastTime() : 1;
     }
 
     @Override

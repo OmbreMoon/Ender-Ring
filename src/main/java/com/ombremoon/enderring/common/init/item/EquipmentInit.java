@@ -52,6 +52,7 @@ public class EquipmentInit extends ItemInit {
 
     //Halberds
     public static final RegistryObject<HalberdWeapon> HALBERD = registerHalberd("halberd");
+    public static final RegistryObject<HalberdWeapon> GUARDIAN_SWORDSPEAR = registerHalberd("guardian_swordspear");
 
     //Katanas
     public static final RegistryObject<KatanaWeapon> UCHIGATANA = registerKatana("uchigatana");

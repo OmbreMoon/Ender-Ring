@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.compat;
+package com.ombremoon.enderring.compat.jei;
 
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.Constants;

@@ -25,6 +25,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+//TODO: ADD SCROLL FUNCTIONALITY
+//TODO: ADD KEEPSAKE DESCRIPTIONS
+//TODO: ADD ORIGIN RENDERS
+
 public class StarterScreen extends Screen {
     private static final Component KEEPSAKE = Component.translatable(Constants.MOD_ID + ".menu.keepsake");
     private static final Component CONFIRMATION = Component.translatable(Constants.MOD_ID + ".menu.starter_confirm");
@@ -50,7 +54,6 @@ public class StarterScreen extends Screen {
          */
         private boolean scrolling;
 
-        //TODO: ADD SCROLL FUNCTIONALITY
 
         public CharacterBaseScreen(Component pTitle) {
             super(pTitle);
@@ -230,6 +233,9 @@ public class StarterScreen extends Screen {
             List<ItemStack> stackList = StreamSupport.stream(this.minecraft.player.getArmorSlots().spliterator(), false).filter(itemStack -> !itemStack.isEmpty()).collect(Collectors.toList());
             for (int l = 0; l < stackList.size(); l++) {
                 pGuiGraphics.renderItem(stackList.get(l), i + 82 + (l * 18), j + 77);
+                if (this.isHovering(82 + (l * 18), 77, 16, 16, pMouseX, pMouseY)) {
+                    this.renderTooltip(pGuiGraphics, stackList.get(l), pMouseX, pMouseY);
+                }
             }
         }
 

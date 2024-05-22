@@ -5,6 +5,7 @@ import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.ScaledWeaponManager;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +18,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import yesman.epicfight.gameasset.EpicFightSkills;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.WeaponCapability;
+import yesman.epicfight.world.capabilities.item.WeaponTypeReloadListener;
+import yesman.epicfight.world.capabilities.provider.ItemCapabilityProvider;
 
 import java.util.Arrays;
 import java.util.WeakHashMap;
@@ -40,14 +46,11 @@ public class AbstractWeapon extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            int i = itemStack.getOrCreateTag().getInt("WeaponLevel");
-            itemStack.getTag().putInt("WeaponLevel", 13);
-            /*CompoundTag nbt = itemStack.getTag().getCompound("Weapon");
-            nbt.getCompound("Damage").putInt("PhysDamage", 71);
-            nbt.getCompound("Base").putString("ReinforceType", ReinforceType.HEAVY.getTypeId().toString());
-            nbt.getCompound("Base").putIntArray("Saturations",  Arrays.stream(new Saturation[]{Saturation.HEAVY, Saturation.DEFAULT, Saturation.DEFAULT, Saturation.DEFAULT, Saturation.DEFAULT}).mapToInt(Saturation::ordinal).toArray());
-            nbt.getCompound("Scaling").putInt("StrScale", 55);
-            nbt.getCompound("Scaling").putInt("DexScale", 0);*/
+            CapabilityItem w = ItemCapabilityProvider.get(this);
+            if (w instanceof ExtendedWeaponCapability extendedWeaponCapability) {
+//                extendedWeaponCapability.swapAshOfWar(itemStack, EpicFightSkills.SWEEPING_EDGE);
+                Constants.LOG.info(String.valueOf(extendedWeaponCapability.getAshOfWar(itemStack)));
+            }
             Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
 
         }

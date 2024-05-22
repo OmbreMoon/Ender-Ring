@@ -60,6 +60,11 @@ public class PlayerStatusUtil {
         updateMainAttributes(setMax);
     }
 
+    public static void setBaseStat(Player player, Attribute attribute, int bastStat, boolean setMax) {
+        Objects.requireNonNull(player.getAttributes().getInstance(attribute)).setBaseValue(bastStat);
+        updateMainAttributes(setMax);
+    }
+
     public static void increaseBaseStatWithLevel(Player player, Attribute attribute, int increaseAmount) {
         increaseBaseStat(player, attribute, increaseAmount, true);
         Objects.requireNonNull(player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get())).setBaseValue(player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get()) + increaseAmount);

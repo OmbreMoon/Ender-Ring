@@ -1,15 +1,13 @@
 package com.ombremoon.enderring;
 
-import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.entity.MobInit;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillCategories;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedStyles;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCategories;
 import com.ombremoon.enderring.event.FirstSpawnEvent;
 import com.ombremoon.enderring.network.ModNetworking;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,10 +15,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import yesman.epicfight.skill.SkillCategory;
+import yesman.epicfight.skill.SkillSlot;
+import yesman.epicfight.world.capabilities.item.Style;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
-
-import java.util.Arrays;
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
 @Mod(Constants.MOD_ID)
@@ -32,7 +30,10 @@ public class EnderRing {
         MinecraftForge.EVENT_BUS.register(this);
         CommonClass.init(modEventBus);
 
-
+        SkillCategory.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, ExtendedSkillCategories.class);
+        SkillSlot.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, ExtendedSkillSlots.class);
+        Style.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, ExtendedStyles.class);
+        WeaponCategory.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, ExtendedWeaponCategories.class);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

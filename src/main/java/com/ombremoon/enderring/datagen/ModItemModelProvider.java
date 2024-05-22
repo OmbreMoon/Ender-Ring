@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 
 public class ModItemModelProvider extends ItemModelProvider {
     private final Predicate<Item> exclusionPredicate = item -> !Arrays.stream(EXCLUSION_LIST).toList().contains(item);
+    private final Predicate<Item> equipExclusionPredicate = item -> !Arrays.stream(EQUIP_EXCLUSION_LIST).toList().contains(item);
     private final Predicate<Item> exclusionPredicate1 = item -> !Arrays.stream(EXCLUSION_LIST_1).toList().contains(item);
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, Constants.MOD_ID, existingFileHelper);
@@ -29,8 +30,9 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         registerItemModels(ItemInit.GENERAL_LIST);
         registerItemModels(ItemInit.TALISMAN_LIST);
-        registerTempModels(ItemInit.EQUIPMENT_LIST);
+        registerEquipModels(ItemInit.EQUIPMENT_LIST);
         Arrays.stream(EXCLUSION_LIST).toList().forEach(this::tempItem);
+        Arrays.stream(EQUIP_EXCLUSION_LIST).toList().forEach(this::tempItem);
 
     }
 
@@ -38,7 +40,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate).forEach(this::simpleGeneratedModel);
     }
 
-    private void registerTempModels(Collection<RegistryObject<? extends Item>> registryObjects) {
+    private void registerEquipModels(Collection<RegistryObject<? extends Item>> registryObjects) {
+        registryObjects.stream().map(RegistryObject::get).filter(equipExclusionPredicate).filter(exclusionPredicate1).forEach(this::simpleHandHeldModel);
+    }
+
+    private void registerTempHandModels(Collection<RegistryObject<? extends Item>> registryObjects) {
         registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate1).forEach(this::tempItem);
     }
 
@@ -50,9 +56,18 @@ public class ModItemModelProvider extends ItemModelProvider {
         return simpleModel(item, mcLoc("item/handheld"));
     }
 
+    protected ItemModelBuilder tempHandHeldModel(Item item) {
+        return tempModel(item, mcLoc("item/handheld"));
+    }
+
     protected ItemModelBuilder simpleModel(Item item, ResourceLocation parent) {
         String name = getName(item);
         return singleTexture(name, parent, "layer0", modLoc("item/" + name));
+    }
+
+    protected ItemModelBuilder tempModel(Item item, ResourceLocation parent) {
+        String name = getName(item);
+        return singleTexture("temp", parent, "layer0", modLoc("item/" + name));
     }
 
     protected ItemModelBuilder tempItem(Item item) {
@@ -96,11 +111,46 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.GREEN_TURTLE_TALISMAN.get(),
             ItemInit.GODFREY_ICON.get(),
             ItemInit.RADAGONS_SORESEAL.get(),
-            ItemInit.SACRIFICIAL_TWIG.get()
+            ItemInit.SACRIFICIAL_TWIG.get(),
+    };
+
+    static final Item[] EQUIP_EXCLUSION_LIST = {
+            EquipmentInit.DAGGER.get(),
+            EquipmentInit.GREAT_KNIFE.get(),
+            EquipmentInit.BLACK_KNIFE.get(),
+            EquipmentInit.SHORT_SWORD.get(),
+            EquipmentInit.LONGSWORD.get(),
+            EquipmentInit.BROADSWORD.get(),
+            EquipmentInit.ESTOC.get(),
+            EquipmentInit.BATTLE_AXE.get(),
+            EquipmentInit.CLUB.get(),
+            EquipmentInit.SHORT_SPEAR.get(),
+            EquipmentInit.HALBERD.get(),
+            EquipmentInit.UCHIGATANA.get(),
+            EquipmentInit.SHORTBOW.get(),
+            EquipmentInit.LONGBOW.get(),
+            EquipmentInit.ASTROLOGER_STAFF.get(),
+            EquipmentInit.FINGER_SEAL.get(),
+            EquipmentInit.LARGE_LEATHER_SHIELD.get(),
+            EquipmentInit.BUCKLER.get(),
+            EquipmentInit.SCRIPTURE_WOODEN_SHIELD.get(),
+            EquipmentInit.RIFT_SHIELD.get(),
+            EquipmentInit.BLUE_CREST_HEATER_SHIELD.get(),
+            EquipmentInit.HEATER_SHIELD.get(),
+            EquipmentInit.RICKETY_SHIELD.get(),
+            EquipmentInit.RED_THORN_ROUNDSHIELD.get(),
+            EquipmentInit.BLUE_CLOTH_COWL.get(),
+            EquipmentInit.BLUE_CLOTH_VEST.get(),
+            EquipmentInit.BLUE_CLOTH_LEGGINGS.get(),
+            EquipmentInit.BLUE_CLOTH_GREAVES.get(),
+            EquipmentInit.BONE_ARROW.get(),
+            EquipmentInit.BONE_BOLT.get(),
     };
 
     static final Item[] EXCLUSION_LIST_1 = {
-            EquipmentInit.GLINTSTONE_STAFF.get()
+            EquipmentInit.GLINTSTONE_STAFF.get(),
+            EquipmentInit.GUARDIAN_SWORDSPEAR.get(),
+            EquipmentInit.RIVETED_WOODEN_SHIELD.get()
     };
 
 }

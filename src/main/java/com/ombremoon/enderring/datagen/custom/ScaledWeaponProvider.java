@@ -17,6 +17,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
     @Override
     protected void registerWeapons() {
         registerDaggers();
+        registerHalberds();
         registerCatalysts();
     }
 
@@ -34,6 +35,15 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponDamage(66, 0, 0, 0, 65)
                 .weaponScaling(10, 55, 0, 35, 0)
                 .weaponRequirements(8, 12, 0, 18, 0).build());
+    }
+
+    protected void registerHalberds() {
+        addWeapon(CommonClass.customLocation("guardian_swordspear"), ScaledWeapon.Builder.create()
+                .defaultMaxUpgrades().infusable().twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.DEFAULT)
+                .saturation(0, 0, 0, 0, 0)
+                .weaponDamage(139, 0, 0, 0, 0)
+                .weaponScaling(5, 64, 0, 0, 0)
+                .weaponRequirements(17, 16, 0, 0, 0).build());
     }
 
     protected void registerCatalysts() {

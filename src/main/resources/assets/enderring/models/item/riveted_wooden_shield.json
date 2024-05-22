@@ -1,0 +1,54 @@
+{
+	"parent": "builtin/entity",
+	"texture_size": [64, 64],
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"0": "enderring:item/riveted_wooden_shield"
+	},
+	"elements": [
+		{
+			"name": "plate",
+			"from": [2, 0, 5],
+			"to": [14, 12, 6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0.25, 0.25, 3.25, 3.25], "texture": "#0"},
+				"east": {"uv": [0, 0.25, 0.25, 3.25], "texture": "#0"},
+				"south": {"uv": [3.5, 0.25, 6.5, 3.25], "texture": "#0"},
+				"west": {"uv": [3.25, 0.25, 3.5, 3.25], "texture": "#0"},
+				"up": {"uv": [3.25, 0.25, 0.25, 0], "texture": "#0"},
+				"down": {"uv": [6.25, 0, 3.25, 0.25], "texture": "#0"}
+			}
+		},
+		{
+			"name": "handle",
+			"from": [7, 3, 6],
+			"to": [9, 9, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [8, 1.5, 8.5, 3], "texture": "#0"},
+				"east": {"uv": [6.5, 1.5, 8, 3], "texture": "#0"},
+				"south": {"uv": [10, 1.5, 10.5, 3], "texture": "#0"},
+				"west": {"uv": [8.5, 1.5, 10, 3], "texture": "#0"},
+				"up": {"uv": [8.5, 1.5, 8, 0], "texture": "#0"},
+				"down": {"uv": [9, 0, 8.5, 1.5], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "plate",
+			"origin": [8, 11, 7],
+			"color": 0,
+			"nbt": "{}",
+			"children": [0]
+		},
+		{
+			"name": "handle",
+			"origin": [8, 11, 7],
+			"color": 0,
+			"nbt": "{}",
+			"children": [1]
+		}
+	]
+}
