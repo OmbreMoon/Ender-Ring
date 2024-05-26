@@ -1,5 +1,5 @@
-// 1.20.1	2024-05-18T20:14:19.5432286	Item Models: enderring
-12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/astrologer_staff.json
+// 1.20.1	2024-05-25T01:24:35.0937221	Item Models: enderring
+f447ed4217c5c858ffe0cb5f4d4b4020d8bcb999 assets/enderring/models/item/astrologers_staff.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/battle_axe.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/bewitching_branch.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/black_knife.json
@@ -25,7 +25,7 @@ a7bf98acdb115d42d0889fb00f31c6ac94baf430 assets/enderring/models/item/cracked_po
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/dagger.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/debug.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/estoc.json
-12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/finger_seal.json
+b555a0daeea88d95aa7f565f8f7327dacd54fa73 assets/enderring/models/item/finger_seal.json
 fe3f3f5f9cead05ad6dabc521be56abfa7d8fd48 assets/enderring/models/item/flask_of_cerulean_tears.json
 62f905acbc0e80a4137eb2f06105e0e2d1894adf assets/enderring/models/item/flask_of_crimson_tears.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/flask_of_wondrous_physick.json
@@ -49,7 +49,7 @@ fe3f3f5f9cead05ad6dabc521be56abfa7d8fd48 assets/enderring/models/item/flask_of_c
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/nomadic_warrior_cookbook_one.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/nomadic_warrior_cookbook_two.json
 a4ed10a6ac466ce87c8744df9e76a39dfb3642f9 assets/enderring/models/item/opaline_bubble_tear.json
-12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/radagons_soreseal.json
+4094d6fb0bea27700f31303781e862d8804f0c1f assets/enderring/models/item/radagons_soreseal.json
 dfcca729d6aca9ad4a1b1ffe8ffca99e8bd5f862 assets/enderring/models/item/raw_prawn.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/red_thorn_roundshield.json
 12eac1f3cae59336ec01c51a7c39e04c8c70fbdf assets/enderring/models/item/rickety_shield.json

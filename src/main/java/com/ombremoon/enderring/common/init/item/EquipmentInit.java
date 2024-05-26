@@ -62,7 +62,7 @@ public class EquipmentInit extends ItemInit {
     public static final RegistryObject<BowWeapon> LONGBOW = registerBow("longbow");
 
     //Catalysts
-    public static final RegistryObject<StaffItem> ASTROLOGER_STAFF = registerStaff("astrologer_staff");
+    public static final RegistryObject<StaffItem> ASTROLOGER_STAFF = registerStaff("astrologers_staff");
     public static final RegistryObject<StaffItem> GLINTSTONE_STAFF = registerStaff("glintstone_staff");
     public static final RegistryObject<SealItem> FINGER_SEAL = registerSeal("finger_seal");
 

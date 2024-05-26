@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "enderring:item/temp_texture"
+    "layer0": "enderring:item/finger_seal"
   }
 }

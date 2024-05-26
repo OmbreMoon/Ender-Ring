@@ -2,9 +2,9 @@ package com.ombremoon.enderring.common.object.item.equipment.weapon;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
-import com.ombremoon.enderring.common.data.ReinforceType;
-import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.ScaledWeaponManager;
+import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.core.BlockPos;
@@ -18,14 +18,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import yesman.epicfight.gameasset.EpicFightSkills;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
-import yesman.epicfight.world.capabilities.item.WeaponCapability;
-import yesman.epicfight.world.capabilities.item.WeaponTypeReloadListener;
 import yesman.epicfight.world.capabilities.provider.ItemCapabilityProvider;
-
-import java.util.Arrays;
-import java.util.WeakHashMap;
 
 public class AbstractWeapon extends Item {
     private ScaledWeapon weapon = new ScaledWeapon();
@@ -47,10 +43,13 @@ public class AbstractWeapon extends Item {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             CapabilityItem w = ItemCapabilityProvider.get(this);
-            if (w instanceof ExtendedWeaponCapability extendedWeaponCapability) {
-//                extendedWeaponCapability.swapAshOfWar(itemStack, EpicFightSkills.SWEEPING_EDGE);
-                Constants.LOG.info(String.valueOf(extendedWeaponCapability.getAshOfWar(itemStack)));
+            ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
+            if (w instanceof ExtendedWeaponCapability weaponCapability) {
+                weaponCapability.swapAshOfWar(itemStack, SkillInit.SWEEPING_EDGE_NEW);
+                playerPatch.getSkill(ExtendedSkillSlots.ASH_OF_WAR).setSkill(weaponCapability.getAshOfWar(itemStack));
+                Constants.LOG.info(String.valueOf(playerPatch.getSkill(ExtendedSkillSlots.ASH_OF_WAR).getSkill()));
             }
+//            itemStack.getOrCreateTag().putString("AshOfWar", EpicFightSkills.SWEEPING_EDGE.getRegistryName().toString());
             Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
 
         }
@@ -66,7 +65,7 @@ public class AbstractWeapon extends Item {
     }
 
     public int getWeaponLevel(ItemStack itemStack) {
-        return itemStack.getTag().getInt("WeaponLevel");
+        return itemStack.getOrCreateTag().getInt("WeaponLevel");
     }
 
     public ScaledWeapon getModifiedWeapon(ItemStack stack) {

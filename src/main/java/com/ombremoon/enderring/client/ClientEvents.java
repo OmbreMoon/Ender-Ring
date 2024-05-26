@@ -1,11 +1,9 @@
 package com.ombremoon.enderring.client;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.KeyBinds;
 import com.ombremoon.enderring.client.gui.QuickAccessOverlay;
 import com.ombremoon.enderring.client.gui.screen.*;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
-import com.ombremoon.enderring.common.object.world.inventory.GoldenSeedMenu;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.client.Minecraft;
@@ -50,6 +48,8 @@ public class ClientEvents {
             event.register(KeyBinds.OPEN_QUICK_ACCESS_BINDING);
             event.register(KeyBinds.CYCLE_QUICK_ACCESS_BINDING);
             event.register(KeyBinds.USE_QUICK_ACCESS_BINDING);
+            event.register(KeyBinds.HEAVY_ATTACK_BINDING);
+            event.register(KeyBinds.ASH_OF_WAR_BINDING);
         }
 
         @SubscribeEvent

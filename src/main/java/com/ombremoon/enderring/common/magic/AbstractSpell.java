@@ -15,9 +15,9 @@ import java.util.List;
 
 public abstract class AbstractSpell {
     protected static int DEFAULT_CAST_TIME = 1;
+    protected int castTime = DEFAULT_CAST_TIME;
     private final SpellType<?> spellType;
     private final MagicType magicType;
-    private ScaledWeapon weapon;
     private final int duration;
     private final int requiredFP;
     private final int requiredInt;
@@ -70,14 +70,6 @@ public abstract class AbstractSpell {
         return this.requiredStats;
     }
 
-    public ScaledWeapon getWeapon() {
-        return this.weapon;
-    }
-
-    public void setWeapon(ScaledWeapon weapon) {
-        this.weapon = weapon;
-    }
-
     public boolean isInstantSpell() {
         return true;
     }
@@ -86,7 +78,9 @@ public abstract class AbstractSpell {
         return false;
     }
 
-    public abstract int getCastTime();
+    public int getCastTime() {
+        return this.castTime;
+    }
 
     public ResourceLocation getId() {
         return SpellInit.REGISTRY.get().getKey(this.spellType);

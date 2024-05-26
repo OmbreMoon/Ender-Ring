@@ -1,7 +1,9 @@
 package com.ombremoon.enderring.common.object.item;
 
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
 import com.ombremoon.enderring.event.FirstSpawnEvent;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.FlaskUtil;
@@ -10,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,15 +35,15 @@ public class DebugItem extends Item {
             } else {
 //                ModNetworking.getInstance().selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
                 ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.STRENGTH.get(), 35, true);
-                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.DEXTERITY.get(), 24, true);
-                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.INTELLIGENCE.get(), 53, true);
-                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.FAITH.get(), 40, true);
-                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.ARCANE.get(), 25, true);
-//                PlayerStatusUtil.setQuickAccessItem(pPlayer, FlaskUtil.getPhysick(pPlayer));
+                Constants.LOG.info(String.valueOf(playerPatch.getSkill(ExtendedSkillSlots.ASH_OF_WAR).getSkill()));
+//                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.STRENGTH.get(), 35, true);
+//                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.DEXTERITY.get(), 24, true);
+//                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.INTELLIGENCE.get(), 53, true);
+//                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.FAITH.get(), 40, true);
+//                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.ARCANE.get(), 25, true);
                 this.displayPlayerStats(pPlayer);
-//                DamageSource damageSource = new DamageSource(pLevel.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ModDamageTypes.PHYSICAL));
-//                pPlayer.hurt(damageSource, 1000.0F);
+                pPlayer.getAttribute(Attributes.MAX_HEALTH).setBaseValue(24);
+                pPlayer.setHealth(pPlayer.getMaxHealth());
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         }

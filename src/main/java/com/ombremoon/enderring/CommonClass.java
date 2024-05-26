@@ -1,6 +1,5 @@
 package com.ombremoon.enderring;
 
-import com.ombremoon.enderring.client.ModelLocations;
 import com.ombremoon.enderring.common.init.BlockInit;
 import com.ombremoon.enderring.common.init.LootModifiersInit;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
@@ -9,6 +8,7 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
+import com.ombremoon.enderring.compat.epicfight.skills.SkillDataKeyInit;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -23,7 +23,8 @@ public class CommonClass {
         EntityInit.register(modEventBus);
         MenuTypeInit.register(modEventBus);
         LootModifiersInit.register(modEventBus);
-        SpellInit.init(modEventBus);
+        SpellInit.register(modEventBus);
+        SkillDataKeyInit.register(modEventBus);
     }
 
     public static ResourceLocation customLocation(String name) {

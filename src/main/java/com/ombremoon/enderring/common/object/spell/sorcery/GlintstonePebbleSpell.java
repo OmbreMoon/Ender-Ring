@@ -2,21 +2,19 @@ package com.ombremoon.enderring.common.object.spell.sorcery;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.SpellInit;
-import com.ombremoon.enderring.common.magic.AbstractSpell;
-import com.ombremoon.enderring.common.magic.MagicType;
-import com.ombremoon.enderring.common.magic.SpellInstance;
-import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.common.magic.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class GlintstonePebbleSpell extends AbstractSorcery {
+public class GlintstonePebbleSpell extends ProjectileSpell {
+
     public GlintstonePebbleSpell() {
-        this(SpellInit.GLINTSTONE_PEBBLE.get(), 10, 7, 10);
+        this(SpellInit.GLINTSTONE_PEBBLE.get(), MagicType.SORCERY, 10, 7, 10, 0, 0);
     }
 
-    public GlintstonePebbleSpell(SpellType<?> spellType, int duration, int requiredFP, int requiredInt) {
-        super(spellType, duration, requiredFP, requiredInt);
+    public GlintstonePebbleSpell(SpellType<?> spellType, MagicType magicType, int duration, int requiredFP, int requiredInt, int requiredFai, int requiredArc) {
+        super(spellType, magicType, duration, requiredFP, requiredInt, requiredFai, requiredArc);
     }
 
     @Override

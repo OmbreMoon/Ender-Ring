@@ -34,7 +34,8 @@ public class ModLangProvider extends LanguageProvider {
             "tnt", "TNT",
             "sus", "",
             "shabriris", "Shabriri's",
-            "radagons", "Radagon's"
+            "radagons", "Radagon's",
+            "astrologers", "Astrologer's"
     );
 
     public ModLangProvider(PackOutput gen) {

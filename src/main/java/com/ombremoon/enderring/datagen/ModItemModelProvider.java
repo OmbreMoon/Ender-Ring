@@ -110,7 +110,6 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.NOMADIC_WARRIOR_COOKBOOK_TWO.get(),
             ItemInit.GREEN_TURTLE_TALISMAN.get(),
             ItemInit.GODFREY_ICON.get(),
-            ItemInit.RADAGONS_SORESEAL.get(),
             ItemInit.SACRIFICIAL_TWIG.get(),
     };
 
@@ -129,8 +128,6 @@ public class ModItemModelProvider extends ItemModelProvider {
             EquipmentInit.UCHIGATANA.get(),
             EquipmentInit.SHORTBOW.get(),
             EquipmentInit.LONGBOW.get(),
-            EquipmentInit.ASTROLOGER_STAFF.get(),
-            EquipmentInit.FINGER_SEAL.get(),
             EquipmentInit.LARGE_LEATHER_SHIELD.get(),
             EquipmentInit.BUCKLER.get(),
             EquipmentInit.SCRIPTURE_WOODEN_SHIELD.get(),

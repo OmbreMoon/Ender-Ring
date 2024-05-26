@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.compat.epicfight.world.capabilities.item;
 
+import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.SkillCategory;
 import yesman.epicfight.skill.SkillSlot;
 

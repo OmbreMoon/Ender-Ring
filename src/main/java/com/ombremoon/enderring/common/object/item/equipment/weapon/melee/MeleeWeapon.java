@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
 public class MeleeWeapon extends AbstractWeapon {
-private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public MeleeWeapon(float attackSpeed, Properties pProperties) {
         super(pProperties);

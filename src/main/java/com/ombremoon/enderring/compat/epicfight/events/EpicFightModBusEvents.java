@@ -12,6 +12,6 @@ public class EpicFightModBusEvents {
 
     @SubscribeEvent
     public static void onWeaponCapabilityRegister(WeaponCapabilityPresetRegistryEvent event) {
-        event.getTypeEntry().put(CommonClass.customLocation("test"), ExtendedWeaponCapabilityPresets.TEST);
+        event.getTypeEntry().put(CommonClass.customLocation("test"), ExtendedWeaponCapabilityPresets.STRAIGHT_SWORD);
     }
 }
