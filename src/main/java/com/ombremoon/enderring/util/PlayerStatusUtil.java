@@ -117,15 +117,13 @@ public class PlayerStatusUtil {
         return PlayerStatusProvider.get(player).getFPAmount();
     }
 
-    public static void setFPAmount(Player player, double fpAmount) {
+    public static void setFPAmount(ServerPlayer player, double fpAmount) {
         PlayerStatusProvider.get(player).setFPAmount(fpAmount);
-        if (player instanceof ServerPlayer serverPlayer) {
-            ModNetworking.syncCap(serverPlayer);
-        }
+        ModNetworking.syncCap(player);
     }
 
     public static boolean canCastSpell(Player player, AbstractSpell abstractSpell, ScaledWeapon weapon) {
-        return getFPAmount(player) >= abstractSpell.getRequiredFP() && weapon.getRequirements().meetsRequirements(player);
+        return getFPAmount(player) >= abstractSpell.getFpCost() && weapon.getRequirements().meetsRequirements(player);
     }
 
     public static void increaseFP(Player player, float fpAmount) {
@@ -134,7 +132,7 @@ public class PlayerStatusUtil {
 
     public static void decreaseSpellFP(Player player, SpellType<?> spellType) {
         if (!player.hasEffect(StatusEffectInit.CERULEAN_HIDDEN.get())) {
-            PlayerStatusProvider.get(player).setFPAmount(getFPAmount(player) - spellType.getSpell().getRequiredFP());
+            PlayerStatusProvider.get(player).setFPAmount(getFPAmount(player) - spellType.getSpell().getFpCost());
         }
     }
 
@@ -181,11 +179,9 @@ public class PlayerStatusUtil {
         return PlayerStatusProvider.get(player).getSelectedSpell();
     }
 
-    public static void setSelectedSpell(Player player, SpellType<?> spellType) {
+    public static void setSelectedSpell(ServerPlayer player, SpellType<?> spellType) {
         PlayerStatusProvider.get(player).setSelectedSpell(spellType);
-        if (player instanceof ServerPlayer serverPlayer) {
-            ModNetworking.syncCap(serverPlayer);
-        }
+        ModNetworking.syncCap(player);
     }
 
     public static boolean isTorrentSpawnedOrIncapacitated(Player player) {
@@ -208,22 +204,18 @@ public class PlayerStatusUtil {
         return PlayerStatusProvider.get(player).getTalismanPouches();
     }
 
-    public static void increaseTalismanPouches(Player player) {
+    public static void increaseTalismanPouches(ServerPlayer player) {
         PlayerStatusProvider.get(player).increaseTalismanPouches();
-        if (player instanceof ServerPlayer serverPlayer) {
-            ModNetworking.syncCap(serverPlayer);
-        }
+        ModNetworking.syncCap(player);
     }
 
     public static int getMemoryStones(Player player) {
         return PlayerStatusProvider.get(player).getMemoryStones();
     }
 
-    public static void increaseMemoryStones(Player player) {
+    public static void increaseMemoryStones(ServerPlayer player) {
         PlayerStatusProvider.get(player).increaseMemoryStones();
-        if (player instanceof ServerPlayer serverPlayer) {
-            ModNetworking.syncCap(serverPlayer);
-        }
+        ModNetworking.syncCap(player);
     }
 
     public static ItemStack getQuickAccessItem(Player player) {
@@ -234,11 +226,9 @@ public class PlayerStatusUtil {
         return PlayerStatusProvider.get(player).getQuickAccessSlot();
     }
 
-    public static void setQuickAccessSlot(Player player, int slot) {
+    public static void setQuickAccessSlot(ServerPlayer player, int slot) {
         PlayerStatusProvider.get(player).setQuickAccessSlot(slot);
-        if (player instanceof ServerPlayer serverPlayer) {
-            ModNetworking.syncCap(serverPlayer);
-        }
+        ModNetworking.syncCap(player);
     }
 
     public static boolean isUsingQuickAccess(Player player) {

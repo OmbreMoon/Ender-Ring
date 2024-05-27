@@ -34,6 +34,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -114,7 +116,11 @@ public class PlayerStatusManager {
     @SubscribeEvent
     public static void onAbilityTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
+
+        if (player.level().isClientSide) return;
+
         if (PlayerStatusProvider.isPresent(player)) {
+            ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
             Iterator<AbstractSpell> iterator = PlayerStatusUtil.getActiveSpells(player).keySet().iterator();
 
             try {
@@ -122,11 +128,11 @@ public class PlayerStatusManager {
                     AbstractSpell abstractSpell = iterator.next();
                     SpellInstance spellInstance = PlayerStatusUtil.getActiveSpells(player).get(abstractSpell);
                     if (!spellInstance.tickSpellEffect(player, player.level(), player.getOnPos(), () -> {
-                        abstractSpell.onSpellUpdate(spellInstance, player, player.level(), player.getOnPos());
+                        abstractSpell.onSpellUpdate(spellInstance, serverPlayerPatch, spellInstance.getWeapon(), player.level(), player.getOnPos());
                     })) {
                         if (!player.level().isClientSide) {
                             iterator.remove();
-                            abstractSpell.onSpellStop(spellInstance, player, player.level(), player.getOnPos());
+                            abstractSpell.onSpellStop(spellInstance, serverPlayerPatch, spellInstance.getWeapon(), player.level(), player.getOnPos());
                         }
                     }
                 }

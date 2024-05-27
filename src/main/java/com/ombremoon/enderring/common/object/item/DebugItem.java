@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.item;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
 import com.ombremoon.enderring.event.FirstSpawnEvent;
@@ -30,20 +31,19 @@ public class DebugItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
+            ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
             if (pPlayer.isCrouching()) {
                 ModNetworking.getInstance().openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
             } else {
 //                ModNetworking.getInstance().selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
                 ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-                Constants.LOG.info(String.valueOf(playerPatch.getSkill(ExtendedSkillSlots.ASH_OF_WAR).getSkill()));
 //                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.STRENGTH.get(), 35, true);
 //                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.DEXTERITY.get(), 24, true);
 //                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.INTELLIGENCE.get(), 53, true);
 //                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.FAITH.get(), 40, true);
 //                PlayerStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.ARCANE.get(), 25, true);
                 this.displayPlayerStats(pPlayer);
-                pPlayer.getAttribute(Attributes.MAX_HEALTH).setBaseValue(24);
-                pPlayer.setHealth(pPlayer.getMaxHealth());
+                Constants.LOG.info(String.valueOf(SpellInit.GLINTSTONE_PEBBLE.get().getSpell().getFpCost()));
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         }

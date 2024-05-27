@@ -11,6 +11,7 @@ import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -187,10 +188,11 @@ public class ItemInit {
     private static InteractionResultHolder<ItemStack> increaseSlots(Level level, Player player, InteractionHand usedHand, boolean isTalisman) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (!level.isClientSide) {
+            ServerPlayer serverPlayer = (ServerPlayer) player;
             if (isTalisman) {
-                PlayerStatusUtil.increaseTalismanPouches(player);
+                PlayerStatusUtil.increaseTalismanPouches(serverPlayer);
             } else {
-                PlayerStatusUtil.increaseMemoryStones(player);
+                PlayerStatusUtil.increaseMemoryStones(serverPlayer);
             }
         }
 

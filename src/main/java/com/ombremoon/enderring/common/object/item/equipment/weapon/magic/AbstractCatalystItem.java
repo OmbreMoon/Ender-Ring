@@ -18,6 +18,8 @@ import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 //TODO: Add spells cast stat
 
@@ -66,9 +68,10 @@ public class AbstractCatalystItem extends MeleeWeapon {
         SpellType<?> spellType = PlayerStatusUtil.getSelectedSpell(player);
         ScaledWeapon weapon = this.getWeapon();
         if (!pLevel.isClientSide && spellType != null) {
+            ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
             AbstractSpell spell = spellType.getSpell();
-            if (PlayerStatusUtil.canCastSpell(player, spell, weapon)) {
-                spell.activateSpellEffect(new SpellInstance(spellType, this.getWeapon()), player, pLevel, pLivingEntity.getOnPos());
+            if (playerPatch != null && PlayerStatusUtil.canCastSpell(player, spell, weapon)) {
+                spell.activateSpellEffect(new SpellInstance(spellType, this.getModifiedWeapon(pStack)), playerPatch, pLevel, pLivingEntity.getOnPos());
             }
         }
 

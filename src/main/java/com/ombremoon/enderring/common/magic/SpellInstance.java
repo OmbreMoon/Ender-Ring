@@ -5,6 +5,8 @@ import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class SpellInstance {
     private static final int INFINITE_DURATION = -1;
@@ -73,7 +75,8 @@ public class SpellInstance {
 
     public void activateSpellEffect(Player player, Level level, BlockPos blockPos) {
         if (this.hasRemainingDuration()) {
-            this.getSpell().tickSpellEffect(player, level, blockPos);
+            ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
+            this.getSpell().tickSpellEffect(playerPatch, this.getWeapon(), level, blockPos);
         }
     }
 

@@ -11,18 +11,30 @@ import net.minecraftforge.registries.RegistryObject;
 public class EntityAttributeInit {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, Constants.MOD_ID);
 
-    public static final RegistryObject<Attribute> RUNE_LEVEL = ATTRIBUTES.register("rune_level", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".rune_level", 1.0D, 1.0D, 713.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> RUNES_HELD = ATTRIBUTES.register("runes_held", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".runes_held", 0.0D, 0.0D, 999999999.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> MAX_FP = ATTRIBUTES.register("max_fp", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".max_fp", 1.0D, 1.0D, 450.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> VIGOR = ATTRIBUTES.register("vigor", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".vigor", 1.0D, 1.0D, 99.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> MIND = ATTRIBUTES.register("mind", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".mind", 1.0D, 1.0D, 99.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> ENDURANCE = ATTRIBUTES.register("endurance", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".endurance", 1.0D, 1.0D, 99.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> STRENGTH = ATTRIBUTES.register("strength", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".strength", 1.0D, 1.0D, 99.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> DEXTERITY = ATTRIBUTES.register("dexterity", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".dexterity", 1.0D, 1.0D, 99.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> INTELLIGENCE = ATTRIBUTES.register("intelligence", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".intelligence", 1.0D, 1.0D, 99.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> FAITH = ATTRIBUTES.register("faith", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".faith", 1.0D, 1.0D, 99.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> ARCANE = ATTRIBUTES.register("arcane", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".arcane", 1.0D, 1.0D, 99.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> ROBUSTNESS = ATTRIBUTES.register("robustness", () -> new RangedAttribute("attribute.name." + Constants.MOD_ID + ".robustness", 1.0D, 1.0D, 230.0D).setSyncable(true));
+    public static final RegistryObject<Attribute> RUNE_LEVEL = registerAttribute("rune_level", 1.0D, 1.0D, 713.0D, true);
+    public static final RegistryObject<Attribute> RUNES_HELD = registerAttribute("runes_held", 0.0D, 0.0D, 999999999.0D, true);
+    public static final RegistryObject<Attribute> MAX_FP = registerAttribute("max_fp", 1.0D, 1.0D, 450.0D, true);
+
+    public static final RegistryObject<Attribute> VIGOR = registerAttribute("vigor", 1.0D, 1.0D, 99.0D, true);
+    public static final RegistryObject<Attribute> MIND = registerAttribute("mind", 1.0D, 1.0D, 99.0D, true);
+    public static final RegistryObject<Attribute> ENDURANCE = registerAttribute("endurance", 1.0D, 1.0D, 99.0D, true);
+    public static final RegistryObject<Attribute> STRENGTH = registerAttribute("strength", 1.0D, 1.0D, 99.0D, true);
+    public static final RegistryObject<Attribute> DEXTERITY = registerAttribute("dexterity", 1.0D, 1.0D, 99.0D, true);
+    public static final RegistryObject<Attribute> INTELLIGENCE = registerAttribute("intelligence", 1.0D, 1.0D, 99.0D, true);
+    public static final RegistryObject<Attribute> FAITH = registerAttribute("faith", 1.0D, 1.0D, 99.0D, true);
+    public static final RegistryObject<Attribute> ARCANE = registerAttribute("arcane", 1.0D, 1.0D, 99.0D, true);
+
+    public static final RegistryObject<Attribute> ROBUSTNESS = registerAttribute("robustness", 1.0D, 0.0D, 230.0D, true);
+
+    public static final RegistryObject<Attribute> PHYS_DAMAGE = registerAttribute("physical_damage", 1.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> MAGIC_DAMAGE = registerAttribute("magic_damage", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> FIRE_DAMAGE = registerAttribute("fire_damage", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> LIGHT_DAMAGE = registerAttribute("lightning_damage", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> HOLY_DAMAGE = registerAttribute("holy_damage", 0.0D, 0.0D, 5120.0D, true);
+
+    public static RegistryObject<Attribute> registerAttribute(String name, double defaultVal, double minVal, double maxVal, boolean syncable) {
+        return ATTRIBUTES.register(name, () -> new RangedAttribute("attributes.name." + Constants.MOD_ID + "." + name, defaultVal, minVal, maxVal).setSyncable(syncable));
+    }
 
     public static void register(IEventBus modEventBus) {
         ATTRIBUTES.register(modEventBus);
