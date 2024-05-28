@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.item.equipment.weapon;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.data.ScaledWeaponManager;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
@@ -10,6 +11,7 @@ import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,12 +46,7 @@ public class AbstractWeapon extends Item {
         if (!pLevel.isClientSide) {
             CapabilityItem w = ItemCapabilityProvider.get(this);
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            if (w instanceof ExtendedWeaponCapability weaponCapability) {
-                weaponCapability.swapAshOfWar(itemStack, SkillInit.SWEEPING_EDGE_NEW);
-                playerPatch.getSkill(ExtendedSkillSlots.ASH_OF_WAR).setSkill(weaponCapability.getAshOfWar(itemStack));
-                Constants.LOG.info(String.valueOf(playerPatch.getSkill(ExtendedSkillSlots.ASH_OF_WAR).getSkill()));
-            }
-//            itemStack.getOrCreateTag().putString("AshOfWar", EpicFightSkills.SWEEPING_EDGE.getRegistryName().toString());
+            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
             Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
 
         }
@@ -58,9 +55,7 @@ public class AbstractWeapon extends Item {
 
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        Player player = ((Player) pAttacker);
-        player.sendSystemMessage(Component.literal(String.valueOf(DamageUtil.getWeaponAP(this.getModifiedWeapon(pStack), player, this.getWeaponLevel(pStack)))));
-        player.sendSystemMessage(Component.literal(String.valueOf(this.getModifiedWeapon(pStack).getDamage().getScaledDamageMap(this.getModifiedWeapon(pStack), player, this.getWeaponLevel(pStack)))));
+
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 

@@ -188,6 +188,7 @@ public class StarterScreen extends Screen {
             this.topPos = (this.height - imageHeight) / 2;
 
             this.addRenderableWidget(Button.builder(FirstSpawnEvent.CHARACTER_ORIGIN, pButton -> {
+                //TODO: CLEAR EQUIP SLOTS
                 this.minecraft.setScreen(new CharacterBaseScreen(KEEPSAKE));
             }).pos(this.leftPos + 81, this.topPos + 5).size(86, 18).build());
             this.addRenderableWidget(Button.builder(KEEPSAKE, pButton -> {

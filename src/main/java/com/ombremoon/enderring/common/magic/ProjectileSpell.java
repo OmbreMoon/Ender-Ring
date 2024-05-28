@@ -16,14 +16,6 @@ public abstract class ProjectileSpell extends AbstractSpell {
         super(spellType, builder);
     }
 
-    public static ProjectileSpell.Builder createGlinstonePebbleBuilder() {
-        return createProjectileBuilder()
-                .setMagicType(MagicType.SORCERY)
-                .setDuration(10)
-                .setFPCost(7)
-                .setRequirements(WeaponScaling.INT, 10);
-    }
-
     public static class Builder extends AbstractSpell.Builder<ProjectileSpell> {
 
         public Builder() {
@@ -46,6 +38,11 @@ public abstract class ProjectileSpell extends AbstractSpell {
 
         public Builder setDuration(int duration) {
             this.duration = duration;
+            return this;
+        }
+
+        public Builder setMotionValue(int motionValue) {
+            this.motionValue = motionValue;
             return this;
         }
     }

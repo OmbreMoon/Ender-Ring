@@ -1,11 +1,12 @@
 package com.ombremoon.enderring.util;
 
 import com.ombremoon.enderring.capability.IPlayerStatus;
+import com.ombremoon.enderring.capability.PlayerStatus;
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
 import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
@@ -55,19 +56,19 @@ public class PlayerStatusUtil {
         return Mth.floor(((f + 0.1) * ((getRuneLevel(player) + 81) ^ 2)) + 1);
     }
 
+    public static void increaseBaseStatWithLevel(Player player, Attribute attribute, int increaseAmount) {
+        increaseBaseStat(player, attribute, increaseAmount, true);
+        Objects.requireNonNull(player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get())).setBaseValue(player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get()) + increaseAmount);
+    }
+
     public static void increaseBaseStat(Player player, Attribute attribute, int increaseAmount, boolean setMax) {
-        Objects.requireNonNull(player.getAttributes().getInstance(attribute)).setBaseValue(player.getAttributeBaseValue(attribute) + increaseAmount);
-        updateMainAttributes(setMax);
+        setBaseStat(player, attribute, (int) (player.getAttributeValue(attribute) + increaseAmount), setMax);
     }
 
     public static void setBaseStat(Player player, Attribute attribute, int bastStat, boolean setMax) {
         Objects.requireNonNull(player.getAttributes().getInstance(attribute)).setBaseValue(bastStat);
+        updateDefense(player, attribute);
         updateMainAttributes(setMax);
-    }
-
-    public static void increaseBaseStatWithLevel(Player player, Attribute attribute, int increaseAmount) {
-        increaseBaseStat(player, attribute, increaseAmount, true);
-        Objects.requireNonNull(player.getAttributes().getInstance(EntityAttributeInit.RUNE_LEVEL.get())).setBaseValue(player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get()) + increaseAmount);
     }
 
     public static void increaseRunes(Player player, double increaseAmount) {
@@ -113,31 +114,71 @@ public class PlayerStatusUtil {
         addStatModifier(player, attribute, uuid, increaseAmount, AttributeModifier.Operation.ADDITION, setMax);
     }
 
-    public static double getFPAmount(Player player) {
-        return PlayerStatusProvider.get(player).getFPAmount();
+    public static double getFP(Player player) {
+        return PlayerStatusProvider.get(player).getFP();
     }
 
-    public static void setFPAmount(ServerPlayer player, double fpAmount) {
-        PlayerStatusProvider.get(player).setFPAmount(fpAmount);
+    public static void setFP(ServerPlayer player, float fpAmount) {
+        PlayerStatusProvider.get(player).setFP(fpAmount);
         ModNetworking.syncCap(player);
     }
 
-    public static boolean canCastSpell(Player player, AbstractSpell abstractSpell, ScaledWeapon weapon) {
-        return getFPAmount(player) >= abstractSpell.getFpCost() && weapon.getRequirements().meetsRequirements(player);
+    public static double getMaxFP(Player player) {
+        return PlayerStatusProvider.get(player).getMaxFP();
+    }
+
+    public static boolean canCastSpell(Player player, AbstractSpell abstractSpell, ScaledWeapon weapon, boolean forceConsume) {
+        return consumeSpellFP(player, abstractSpell.getSpellType(), forceConsume) && weapon.getRequirements().meetsRequirements(player);
     }
 
     public static void increaseFP(Player player, float fpAmount) {
-        PlayerStatusProvider.get(player).setFPAmount(Math.min(getFPAmount(player) + fpAmount, player.getAttributeValue(EntityAttributeInit.MAX_FP.get())));
+        PlayerStatusProvider.get(player).setFP((float) Math.min(getFP(player) + fpAmount, player.getAttributeValue(EntityAttributeInit.MAX_FP.get())));
     }
 
-    public static void decreaseSpellFP(Player player, SpellType<?> spellType) {
-        if (!player.hasEffect(StatusEffectInit.CERULEAN_HIDDEN.get())) {
-            PlayerStatusProvider.get(player).setFPAmount(getFPAmount(player) - spellType.getSpell().getFpCost());
+    public static boolean consumeSpellFP(Player player, SpellType<?> spellType, boolean forceConsume) {
+        return PlayerStatusProvider.get(player).consumeFP(spellType.getSpell().getFpCost(), forceConsume);
+    }
+
+    public static float getPhysDefense(Player player) {
+        return PlayerStatusProvider.get(player).getPhysDefense();
+    }
+
+    public static float getMagicDefense(Player player) {
+        return PlayerStatusProvider.get(player).getMagicDefense();
+    }
+
+    public static float getFireDefense(Player player) {
+        return PlayerStatusProvider.get(player).getFireDefense();
+    }
+
+    public static float getLightDefense(Player player) {
+        return PlayerStatusProvider.get(player).getLightDefense();
+    }
+
+    public static float getHolyDefense(Player player) {
+        return PlayerStatusProvider.get(player).getHolyDefense();
+    }
+
+    private static void updateDefense(Player player, Attribute attribute) {
+        if (!isMainAttribute(attribute)) {
+            for (WeaponDamage weaponDamage : WeaponDamage.values()) {
+                if (weaponDamage != WeaponDamage.LIGHTNING) {
+                    if (weaponDamage.getWeaponScaling().getAttribute() == attribute) {
+                        player.getEntityData().set(weaponDamage.getDataAccessor(), DamageUtil.calculateDefense(player, weaponDamage));
+                    }
+                } else {
+                        player.getEntityData().set(PlayerStatus.LIGHTNING_DEF, DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING));
+                }
+            }
         }
     }
 
     private static void updateMainAttributes(boolean setMax) {
-        ModNetworking.getInstance().updateMainAttributes(setMax);
+        ModNetworking.updateMainAttributes(setMax);
+    }
+
+    public static boolean isMainAttribute(Attribute attribute) {
+        return attribute == EntityAttributeInit.VIGOR.get() || attribute == EntityAttributeInit.MIND.get() || attribute == EntityAttributeInit.ENDURANCE.get();
     }
 
     public static SpellType<?> getSpellByName(ResourceLocation resourceLocation) {

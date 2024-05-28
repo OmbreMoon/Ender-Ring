@@ -20,9 +20,24 @@ public class ModDamageTypeTagsProvider extends TagsProvider<DamageType> {
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(DamageTypeTags.BYPASSES_ARMOR)
-                .add(ModDamageTypes.PHYSICAL);
+                .add(ModDamageTypes.PHYSICAL)
+                .add(ModDamageTypes.MAGICAL)
+                .add(ModDamageTypes.FIRE)
+                .add(ModDamageTypes.LIGHTNING)
+                .add(ModDamageTypes.HOLY);
 
         tag(DamageTypeTags.BYPASSES_RESISTANCE)
-                .add(ModDamageTypes.PHYSICAL);
+                .add(ModDamageTypes.PHYSICAL)
+                .add(ModDamageTypes.MAGICAL)
+                .add(ModDamageTypes.FIRE)
+                .add(ModDamageTypes.LIGHTNING)
+                .add(ModDamageTypes.HOLY);
+
+        tag(DamageTypeTags.BYPASSES_COOLDOWN)
+                .add(ModDamageTypes.PHYSICAL)
+                .add(ModDamageTypes.MAGICAL)
+                .add(ModDamageTypes.FIRE)
+                .add(ModDamageTypes.LIGHTNING)
+                .add(ModDamageTypes.HOLY);
     }
 }

@@ -5,22 +5,25 @@ import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.magic.*;
-import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-public class GlintstonePebbleSpell extends ProjectileSpell {
+public class GlintstonePebbleSorcery extends ProjectileSpell {
 
-//    public GlintstonePebbleSpell() {
-//        this(SpellInit.GLINTSTONE_PEBBLE.get(), MagicType.SORCERY, 10, 7, 10, 0, 0);
-//    }
+    public static ProjectileSpell.Builder createGlinstonePebbleBuilder() {
+        return createProjectileBuilder()
+                .setMagicType(MagicType.SORCERY)
+                .setDuration(10)
+                .setFPCost(7)
+                .setRequirements(WeaponScaling.INT, 10);
+    }
 
-    public GlintstonePebbleSpell(ProjectileSpell.Builder builder) {
+    public GlintstonePebbleSorcery(ProjectileSpell.Builder builder) {
         this(SpellInit.GLINTSTONE_PEBBLE.get(), builder);
     }
 
-    public GlintstonePebbleSpell(SpellType<?> spellType, ProjectileSpell.Builder builder) {
+    public GlintstonePebbleSorcery(SpellType<?> spellType, ProjectileSpell.Builder builder) {
         super(spellType, builder);
     }
 
@@ -30,7 +33,7 @@ public class GlintstonePebbleSpell extends ProjectileSpell {
     }
 
     @Override
-    public void tickSpellEffect(ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
+    public void tickSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
 
     }
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.ombremoon.enderring.common.data.AttackElement;
 import com.ombremoon.enderring.common.data.ReinforceType;
-import com.ombremoon.enderring.common.data.Saturation;
+import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -36,7 +36,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         private boolean twoHandBonus;
         private AttackElement elementID;
         private ReinforceType reinforceType;
-        private Saturation[] saturations;
+        private Saturations[] saturations;
 
         @Override
         public CompoundTag serializeNBT() {
@@ -45,7 +45,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             nbt.putBoolean("Infusable", this.infusable);
             nbt.putBoolean("TwoHandBonus", this.twoHandBonus);
 
-            nbt.putIntArray("Saturations", this.saturations != null ? Arrays.stream(this.saturations).mapToInt(Saturation::ordinal).toArray() : new int[]{0, 0, 0, 0, 0});
+            nbt.putIntArray("Saturations", this.saturations != null ? Arrays.stream(this.saturations).mapToInt(Saturations::ordinal).toArray() : new int[]{0, 0, 0, 0, 0});
             nbt.putInt("ElementID", this.elementID != null ? this.elementID.getElementId() : AttackElement.DEFAULT_ID);
             nbt.putString("ReinforceType", this.reinforceType != null ? this.reinforceType.getTypeId().toString() : ReinforceType.DEFAULT.getTypeId().toString());
             return nbt;
@@ -84,7 +84,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             jsonObject.addProperty("reinforceType", this.reinforceType.getTypeId().toString());
 
             JsonArray jsonArray = new JsonArray(5);
-            for (Saturation saturation1 : this.saturations) {
+            for (Saturations saturation1 : this.saturations) {
                 jsonArray.add(saturation1.ordinal());
             }
             jsonObject.add("saturations", jsonArray);
@@ -112,7 +112,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this.reinforceType;
         }
 
-        public Saturation[] getSaturations() {
+        public Saturations[] getSaturations() {
             return this.saturations;
         }
 
@@ -491,8 +491,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         return weapon;
     }
 
-    private static Saturation[] createSaturationArray(int[] array) {
-        return Arrays.stream(array).mapToObj(Saturation::getSaturationById).toArray(Saturation[]::new);
+    private static Saturations[] createSaturationArray(int[] array) {
+        return Arrays.stream(array).mapToObj(Saturations::getSaturationById).toArray(Saturations[]::new);
     }
 
     public ScaledWeapon copy() {
@@ -555,8 +555,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this;
         }
 
-        public Builder saturation(Saturation physSat, Saturation magSat, Saturation fireSat, Saturation lightSat, Saturation holySat) {
-            this.scaledWeapon.base.saturations = new Saturation[]{physSat, magSat, fireSat, lightSat, holySat};
+        public Builder saturation(Saturations physSat, Saturations magSat, Saturations fireSat, Saturations lightSat, Saturations holySat) {
+            this.scaledWeapon.base.saturations = new Saturations[]{physSat, magSat, fireSat, lightSat, holySat};
             return this;
         }
 

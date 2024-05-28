@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.magic;
 
 import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.util.DamageUtil;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -12,15 +13,17 @@ public class SpellInstance {
     private static final int INFINITE_DURATION = -1;
     private final ScaledWeapon weapon;
     private final SpellType<?> spellType;
+    private final float magicScaling;
     private int duration;
 
-    public SpellInstance(SpellType<?> spellType, ScaledWeapon weapon) {
-        this(spellType, spellType.getSpell().getDuration(), weapon);
+    public SpellInstance(SpellType<?> spellType, ScaledWeapon weapon, float magicScaling) {
+        this(spellType, weapon, magicScaling, spellType.getSpell().getDuration());
     }
 
-    public SpellInstance(SpellType<?> spellType, int duration, ScaledWeapon weapon) {
+    public SpellInstance(SpellType<?> spellType, ScaledWeapon weapon, float magicScaling, int duration) {
         this.spellType = spellType;
         this.duration = duration;
+        this.magicScaling = magicScaling;
         this.weapon = weapon;
     }
 
@@ -42,6 +45,10 @@ public class SpellInstance {
 
     public int getDuration() {
         return this.duration;
+    }
+
+    public float getMagicScaling() {
+        return this.magicScaling;
     }
 
     public ScaledWeapon getWeapon() {
@@ -76,7 +83,7 @@ public class SpellInstance {
     public void activateSpellEffect(Player player, Level level, BlockPos blockPos) {
         if (this.hasRemainingDuration()) {
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
-            this.getSpell().tickSpellEffect(playerPatch, this.getWeapon(), level, blockPos);
+            this.getSpell().tickSpellEffect(this, playerPatch, this.getWeapon(), level, blockPos);
         }
     }
 

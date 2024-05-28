@@ -1,5 +1,9 @@
 {
   "values": [
-    "enderring:physical"
+    "enderring:physical",
+    "enderring:magical",
+    "enderring:fire",
+    "enderring:lightning",
+    "enderring:holy"
   ]
 }

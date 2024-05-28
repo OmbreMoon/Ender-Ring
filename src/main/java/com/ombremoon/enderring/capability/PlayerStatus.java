@@ -1,29 +1,36 @@
 package com.ombremoon.enderring.capability;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class PlayerStatus implements IPlayerStatus {
+    public static final EntityDataAccessor<Float> FP = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> PHYSICAL_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> MAGICAL_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> FIRE_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> LIGHTNING_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> HOLY_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    private final Player player;
     private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
     private Map<AbstractSpell, SpellInstance> activeSpells = new HashMap<>();
     private SpellType<?> selectedSpell;
-    private double fpAmount;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
     private int talismanPouches;
@@ -35,17 +42,94 @@ public class PlayerStatus implements IPlayerStatus {
     private int useItemTicks;
 
     public PlayerStatus(Player player) {
-//        player.getEntityData().define();
+        this.player = player;
+        player.getEntityData().define(FP, 0.0F);
+        player.getEntityData().define(PHYSICAL_DEF, 0.0F);
+        player.getEntityData().define(MAGICAL_DEF, 0.0F);
+        player.getEntityData().define(FIRE_DEF, 0.0F);
+        player.getEntityData().define(LIGHTNING_DEF, 0.0F);
+        player.getEntityData().define(HOLY_DEF, 0.0F);
     }
 
     @Override
-    public double getFPAmount() {
-        return this.fpAmount;
+    public float getMaxFP() {
+        AttributeInstance maxFP = this.player.getAttribute(EntityAttributeInit.MAX_FP.get());
+        return (float)(maxFP == null ? 0.0 : maxFP.getValue());
     }
 
     @Override
-    public void setFPAmount(double fpAmount) {
-        this.fpAmount = fpAmount;
+    public boolean consumeFP(float amount, boolean forceConsume) {
+        float currentFP = this.getFP();
+        if (currentFP < amount) {
+            return false;
+        } else if (this.player.hasEffect(StatusEffectInit.CERULEAN_HIDDEN.get()) || this.player.getAbilities().instabuild) {
+            return true;
+        } else {
+            if (forceConsume)
+                this.setFP(currentFP - amount);
+            return true;
+        }
+    }
+
+    @Override
+    public float getFP() {
+        return this.getMaxFP() == 0.0F ? 0.0F : this.player.getEntityData().get(FP);
+    }
+
+    @Override
+    public void setFP(float value) {
+        float fpAmount = Math.max(Math.min(value, this.getMaxFP()), 0.0F);
+        this.player.getEntityData().set(FP, fpAmount);
+    }
+
+    @Override
+    public float getPhysDefense() {
+        return this.player.getEntityData().get(PHYSICAL_DEF);
+    }
+
+    @Override
+    public void setPhysDefense(float physDefense) {
+        this.player.getEntityData().set(PHYSICAL_DEF, physDefense);
+    }
+
+    @Override
+    public float getMagicDefense() {
+        return this.player.getEntityData().get(MAGICAL_DEF);
+    }
+
+    @Override
+    public void setMagicDefense(float magicDefense) {
+        this.player.getEntityData().set(MAGICAL_DEF, magicDefense);
+    }
+
+    @Override
+    public float getFireDefense() {
+        return this.player.getEntityData().get(FIRE_DEF);
+    }
+
+    @Override
+    public void setFireDefense(float fireDefense) {
+        this.player.getEntityData().set(FIRE_DEF, fireDefense);
+    }
+
+    @Override
+    public float getLightDefense() {
+        return this.player.getEntityData().get(LIGHTNING_DEF);
+    }
+
+    @Override
+    public void setLightDefense(float lightDefense) {
+        this.player.getEntityData().set(LIGHTNING_DEF, lightDefense);
+    }
+
+    @Override
+    public float getHolyDefense() {
+        return this.player.getEntityData().get(HOLY_DEF);
+    }
+
+    @Override
+    public void setHolyDefense(float holyDefense) {
+        this.player.getEntityData().set(LIGHTNING_DEF, holyDefense);
     }
 
     @Override
@@ -151,10 +235,7 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag compoundTag = new CompoundTag();
-        CompoundTag itemStackTag = new CompoundTag();
         ListTag spellList = new ListTag();
-
-        compoundTag.putDouble("FP", this.fpAmount);
 
         if (this.selectedSpell != null)
             compoundTag.putString("SelectedSpell", this.selectedSpell.getResourceLocation().toString());
@@ -174,9 +255,6 @@ public class PlayerStatus implements IPlayerStatus {
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        if (nbt.contains("FP", 99)) {
-            this.fpAmount = nbt.getDouble("FP");
-        }
         if (nbt.contains("SelectedSpell", 8)) {
             this.selectedSpell = PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(nbt, "SelectedSpell"));
         }

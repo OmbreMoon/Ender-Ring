@@ -51,7 +51,7 @@ public class ServerboundPlayerOriginPacket {
                 if (!packet.confirmFlag) {
                     setCharacterBaseStats(serverPlayer, packet.characterBase);
                     handleArmorUpdate(serverPlayer, packet.characterBase);
-                    ModNetworking.getInstance().updateMainAttributes(true);
+                    ModNetworking.updateMainAttributes(true);
                 } else {
                     handleOriginConfirm(serverPlayer, packet.characterBase, packet.keepsake);
                 }

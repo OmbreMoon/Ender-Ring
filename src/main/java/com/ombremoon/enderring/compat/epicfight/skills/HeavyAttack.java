@@ -1,5 +1,7 @@
 package com.ombremoon.enderring.compat.epicfight.skills;
 
+import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.compat.epicfight.util.ItemUtil;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillCategories;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
@@ -9,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PlayerRideableJumping;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -87,6 +90,7 @@ public class HeavyAttack extends Skill {
         ExtendedWeaponCapability cap = ItemUtil.getWeaponCapability(executer);
         StaticAnimation animation = null;
         ServerPlayer serverPlayer = executer.getOriginal();
+        ItemStack itemStack = serverPlayer.getItemInHand(InteractionHand.MAIN_HAND);
         SkillContainer skillContainer = executer.getSkill(this);
         SkillDataManager dataManager = skillContainer.getDataManager();
         int comboCounter = dataManager.getDataValue(SkillDataKeyInit.COMBO_COUNTER.get());
@@ -110,6 +114,12 @@ public class HeavyAttack extends Skill {
                 comboCounter %= comboSize - 2;
             }
 
+            /*if (itemStack.getItem() instanceof MeleeWeapon) {
+                Constants.LOG.info(String.valueOf(comboCounter));
+                List<Float> motionValues = cap.getHeavyAutoMotionValues(executer);
+                itemStack.getOrCreateTag().putFloat("MotionValue", motionValues.get(comboCounter));
+            }*/
+
             animation = combo.get(comboCounter);
             comboCounter = dashAttack ? 0 : comboCounter + 1;
         }
@@ -121,6 +131,7 @@ public class HeavyAttack extends Skill {
         }
 
         executer.updateEntityState();
+        itemStack.getOrCreateTag().putFloat("MotionValue", 1.6F);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.magic;
 
 import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.CommonClass;
+import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
@@ -28,6 +29,7 @@ public abstract class AbstractSpell {
     protected final Set<Pair<WeaponScaling, Integer>> requiredStats;
     protected final int fpCost;
     protected final int duration;
+    protected final float motionValue;
     private String descriptionId;
 
     public static Builder<AbstractSpell> createBuilder() {
@@ -40,6 +42,11 @@ public abstract class AbstractSpell {
         this.requiredStats = builder.requiredStats;
         this.fpCost = builder.fpCost;
         this.duration = builder.duration;
+        this.motionValue = builder.motionValue;
+    }
+
+    public SpellType<?> getSpellType() {
+        return this.spellType;
     }
 
     public MagicType getMagicType() {
@@ -101,7 +108,7 @@ public abstract class AbstractSpell {
         return null;
     }
 
-    public abstract void tickSpellEffect(ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos);
+    public abstract void tickSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos);
 
     public abstract void onSpellStart(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos);
 
@@ -130,16 +137,11 @@ public abstract class AbstractSpell {
     }
 
     public static class Builder<T extends AbstractSpell> {
-        protected Supplier<SpellType<T>> spellType;
         protected MagicType magicType;
         protected Set<Pair<WeaponScaling, Integer>> requiredStats = new LinkedHashSet<>();
         protected int duration = 1;
         protected int fpCost;
-
-        public Builder<T> setSpellType(Supplier<SpellType<T>> spellType) {
-            this.spellType = spellType;
-            return this;
-        }
+        protected float motionValue;
 
         public Builder<T> setMagicType(MagicType magicType) {
             this.magicType = magicType;
@@ -158,6 +160,11 @@ public abstract class AbstractSpell {
 
         public Builder<T> setRequirements(WeaponScaling weaponScaling, int statReq) {
             this.createReqList(weaponScaling, statReq);
+            return this;
+        }
+
+        public Builder<T> setMotionValue(float motionValue) {
+            this.motionValue = motionValue;
             return this;
         }
 

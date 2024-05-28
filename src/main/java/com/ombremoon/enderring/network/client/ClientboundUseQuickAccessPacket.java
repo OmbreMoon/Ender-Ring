@@ -36,7 +36,7 @@ public class ClientboundUseQuickAccessPacket {
                 useItem(playerStatus, minecraft, true);
                 if (packet.ticks <= 0) {
                     useItem(playerStatus, minecraft, false);
-                    ModNetworking.getInstance().useQuickAccessItem();
+                    ModNetworking.useQuickAccessItem();
                 }
             }
         });

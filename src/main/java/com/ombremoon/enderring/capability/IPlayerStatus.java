@@ -13,9 +13,33 @@ import java.util.*;
 
 public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
-    double getFPAmount();
+    float getMaxFP();
 
-    void setFPAmount(double fpAmount);
+    float getFP();
+
+    void setFP(float fpAmount);
+
+    boolean consumeFP(float amount, boolean forceConsume);
+
+    float getPhysDefense();
+
+    void setPhysDefense(float physDefense);
+
+    float getMagicDefense();
+
+    void setMagicDefense(float magicDefense);
+
+    float getFireDefense();
+
+    void setFireDefense(float fireDefense);
+
+    float getLightDefense();
+
+    void setLightDefense(float lightDefense);
+
+    float getHolyDefense();
+
+    void setHolyDefense(float holyDefense);
 
     LinkedHashSet<SpellType<?>> getSpellSet();
 

@@ -28,47 +28,49 @@ public class ModNetworking {
     }
 
     public static void setPlayerOrigin(StarterScreen.Base characterBase, StarterScreen.Keepsake keepsake, boolean confirmFlag) {
-        sendServer(new ServerboundPlayerOriginPacket(characterBase, keepsake, confirmFlag));
+        sendToServer(new ServerboundPlayerOriginPacket(characterBase, keepsake, confirmFlag));
     }
 
-    public void updateMainAttributes(boolean setMax) {
-        this.sendToServer(new ServerboundUpdateMainStatsPacket(setMax));
+    //TODO: CHECK FOR SIDEDNESS
+    //TODO: CHANGE TO SATURATION SYSTEM
+    public static void updateMainAttributes(boolean setMax) {
+        sendToServer(new ServerboundUpdateMainStatsPacket(setMax));
     }
 
-    public void passTime() {
-        this.sendToServer(new ServerboundPassTimePacket());
+    public static void passTime() {
+        sendToServer(new ServerboundPassTimePacket());
     }
 
-    public void openGraceSiteMenu(int menuFlag) {
-        this.sendToServer(new ServerboundOpenGraceMenuPacket(menuFlag));
+    public static void openGraceSiteMenu(int menuFlag) {
+        sendToServer(new ServerboundOpenGraceMenuPacket(menuFlag));
     }
 
-    public void openQuickAccessMenu() {
-        this.sendToServer(new ServerboundOpenQuickAccessPacket());
+    public static void openQuickAccessMenu() {
+        sendToServer(new ServerboundOpenQuickAccessPacket());
     }
 
-    public void cycleQuickAccessItem() {
-        this.sendToServer(new ServerboundCycleQuickAccessPacket());
+    public static void cycleQuickAccessItem() {
+        sendToServer(new ServerboundCycleQuickAccessPacket());
     }
 
-    public void useQuickAccessItem() {
-        this.sendToServer(new ServerboundUseQuickAccessPacket());
+    public static void useQuickAccessItem() {
+        sendToServer(new ServerboundUseQuickAccessPacket());
     }
 
-    public void selectOrigin(Component component, ServerPlayer serverPlayer) {
-        this.sendToPlayer(new ClientboundOriginSelectPacket(component), serverPlayer);
+    public static void selectOrigin(Component component, ServerPlayer serverPlayer) {
+        sendToPlayer(new ClientboundOriginSelectPacket(component), serverPlayer);
     }
 
-    public void openGraceSiteScreen(Component component, ServerPlayer serverPlayer) {
-        this.sendToPlayer(new ClientboundGraceSitePacket(component), serverPlayer);
+    public static void openGraceSiteScreen(Component component, ServerPlayer serverPlayer) {
+        sendToPlayer(new ClientboundGraceSitePacket(component), serverPlayer);
     }
 
     public static void syncCap(ServerPlayer serverPlayer) {
-        sendPlayer(new ClientboundSyncCapabiltyPacket(PlayerStatusProvider.get(serverPlayer).serializeNBT()), serverPlayer);
+        sendToPlayer(new ClientboundSyncCapabiltyPacket(PlayerStatusProvider.get(serverPlayer).serializeNBT()), serverPlayer);
     }
 
-    public void useQuickAccessItem(int ticks, ServerPlayer serverPlayer) {
-        this.sendToPlayer(new ClientboundUseQuickAccessPacket(ticks), serverPlayer);
+    public static void useQuickAccessItem(int ticks, ServerPlayer serverPlayer) {
+        sendToPlayer(new ClientboundUseQuickAccessPacket(ticks), serverPlayer);
     }
 
     public static void registerPackets() {
@@ -87,23 +89,15 @@ public class ModNetworking {
         PACKET_CHANNEL.registerMessage(id++, ClientboundUseQuickAccessPacket.class, ClientboundUseQuickAccessPacket::encode, ClientboundUseQuickAccessPacket::new, ClientboundUseQuickAccessPacket::handle);
     }
 
-    protected <MSG> void sendToServer(MSG message) {
+    protected static <MSG> void sendToServer(MSG message) {
         PACKET_CHANNEL.sendToServer(message);
     }
 
-    protected static  <MSG> void sendServer(MSG message) {
-        PACKET_CHANNEL.sendToServer(message);
-    }
-
-    protected <MSG> void sendToPlayer(MSG message, ServerPlayer serverPlayer) {
+    protected static <MSG> void sendToPlayer(MSG message, ServerPlayer serverPlayer) {
         PACKET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), message);
     }
 
-    protected static <MSG> void sendPlayer(MSG message, ServerPlayer serverPlayer) {
-        PACKET_CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), message);
-    }
-
-    protected <MSG> void sendToClients(MSG message) {
+    protected static  <MSG> void sendToClients(MSG message) {
         PACKET_CHANNEL.send(PacketDistributor.ALL.noArg(), message);
     }
 }

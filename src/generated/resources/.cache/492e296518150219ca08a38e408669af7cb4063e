@@ -1,3 +1,4 @@
-// 1.20.1	2024-05-14T10:17:36.3284243	Tags for minecraft:damage_type mod id enderring
-dbe02be8d82a77b4f132a3e8a9b2d28836b37d51 data/minecraft/tags/damage_type/bypasses_armor.json
-dbe02be8d82a77b4f132a3e8a9b2d28836b37d51 data/minecraft/tags/damage_type/bypasses_resistance.json
+// 1.20.1	2024-05-27T13:17:46.6678972	Tags for minecraft:damage_type mod id enderring
+346c4ef0413ae3854aedaf3a942b58d22bbb22b1 data/minecraft/tags/damage_type/bypasses_armor.json
+346c4ef0413ae3854aedaf3a942b58d22bbb22b1 data/minecraft/tags/damage_type/bypasses_cooldown.json
+346c4ef0413ae3854aedaf3a942b58d22bbb22b1 data/minecraft/tags/damage_type/bypasses_resistance.json

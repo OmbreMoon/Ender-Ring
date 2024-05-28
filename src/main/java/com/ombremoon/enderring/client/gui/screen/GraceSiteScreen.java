@@ -40,7 +40,7 @@ public class GraceSiteScreen {
 
         private void generateButtons() {
             this.addRenderableWidget(Button.builder(Component.translatable("menu.enderring.pass_time"), pButton -> {
-                ModNetworking.getInstance().passTime();
+                ModNetworking.passTime();
                 this.minecraft.setScreen((Screen) null);
                 this.minecraft.mouseHandler.grabMouse();
             }).pos(this.width / 2 - 187, this.height / 2 - 59).width(98).build());
@@ -152,7 +152,7 @@ public class GraceSiteScreen {
 
     private static Button openMenuButton(Component pMessage, int menuFlag, int yOffset, Screen screen) {
         return Button.builder(pMessage, (p_280817_) -> {
-            ModNetworking.getInstance().openGraceSiteMenu(menuFlag);
+            ModNetworking.openGraceSiteMenu(menuFlag);
         }).width(98).pos(screen.width / 2 - 187, screen.height / 2 - yOffset).build();
     }
 }

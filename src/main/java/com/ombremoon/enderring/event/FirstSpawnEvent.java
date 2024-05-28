@@ -25,7 +25,7 @@ public class FirstSpawnEvent {
         var player = (ServerPlayer) entity;
         ModFunctions.enqueueCollectiveTask(level.getServer(), () -> {
             if (ModFunctions.isJoiningWorldForTheFirstTime(player, Constants.MOD_ID, false)) {
-                ModNetworking.getInstance().selectOrigin(CHARACTER_ORIGIN, player);
+                ModNetworking.selectOrigin(CHARACTER_ORIGIN, player);
             }
         }, 5);
     }

@@ -74,14 +74,14 @@ public class ClientEvents {
         public static void onKeyInput(InputEvent.Key event) {
             Player player = Minecraft.getInstance().player;
             if (KeyBinds.OPEN_QUICK_ACCESS_BINDING.consumeClick()) {
-                ModNetworking.getInstance().openQuickAccessMenu();
+                ModNetworking.openQuickAccessMenu();
             }
             if (KeyBinds.CYCLE_QUICK_ACCESS_BINDING.consumeClick()) {
-                ModNetworking.getInstance().cycleQuickAccessItem();
+                ModNetworking.cycleQuickAccessItem();
             }
             if (KeyBinds.USE_QUICK_ACCESS_BINDING.consumeClick()) {
                 if (!PlayerStatusUtil.isUsingQuickAccess(player))
-                    ModNetworking.getInstance().useQuickAccessItem();
+                    ModNetworking.useQuickAccessItem();
             }
         }
 

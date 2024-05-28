@@ -2,13 +2,14 @@ package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.capability.IPlayerStatus;
+import com.ombremoon.enderring.capability.PlayerStatus;
 import com.ombremoon.enderring.capability.PlayerStatusProvider;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
-import com.ombremoon.enderring.common.object.item.equipment.QuickAccessItem;
+import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
@@ -19,7 +20,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -37,7 +37,9 @@ import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
@@ -58,6 +60,7 @@ public class PlayerStatusManager {
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
         if (event.getLevel() instanceof ServerLevel && event.getEntity() instanceof ServerPlayer player) {
+            player.getEntityData().set(PlayerStatus.FP, (float) PlayerStatusUtil.getMaxFP(player));
             ModNetworking.syncCap(player);
         }
     }
@@ -86,12 +89,13 @@ public class PlayerStatusManager {
 
             for (Attribute attribute : playerStats) {
                 if (attribute != EntityAttributeInit.RUNES_HELD.get()) {
-                    newPlayer.getAttributes().getInstance(attribute).setBaseValue(oldPlayer.getAttributeBaseValue(attribute));
+                    PlayerStatusUtil.setBaseStat(newPlayer, attribute, (int) oldPlayer.getAttributeBaseValue(attribute), true);
+//                    newPlayer.getAttributes().getInstance(attribute).setBaseValue(oldPlayer.getAttributeBaseValue(attribute));
                 }
             }
             newPlayer.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.MAX_HEALTH));
-            newPlayer.getAttributes().getInstance(Attributes.ATTACK_DAMAGE).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
-            ModNetworking.getInstance().updateMainAttributes(true);
+            newPlayer.getEntityData().set(PlayerStatus.FP, (float) newPlayer.getAttributeValue(EntityAttributeInit.MAX_FP.get()));
+            ModNetworking.updateMainAttributes(true);
         }
     }
 
@@ -150,7 +154,7 @@ public class PlayerStatusManager {
         ItemStack itemStack = player.getMainHandItem();
 
         if (!PlayerStatusProvider.isPresent(player)) return;
-        if (itemStack == PlayerStatusUtil.getCachedItem(player) || !(itemStack.getItem() instanceof QuickAccessItem)) return;
+        if (itemStack == PlayerStatusUtil.getCachedItem(player) || !(itemStack.getItem() instanceof IQuickAccess)) return;
 
         if (PlayerStatusUtil.isUsingQuickAccess(player)) {
             IPlayerStatus playerStatus = PlayerStatusProvider.get(player);
@@ -158,7 +162,7 @@ public class PlayerStatusManager {
                 int j = playerStatus.getUseItemTicks();
                 if (j >= 0) {
                     playerStatus.setUseItemTicks(Math.max(j - 1, 0));
-                    ModNetworking.getInstance().useQuickAccessItem(playerStatus.getUseItemTicks(), (ServerPlayer) player);
+                    ModNetworking.useQuickAccessItem(playerStatus.getUseItemTicks(), (ServerPlayer) player);
                 }
             }/* else if (itemStack != ItemStack.EMPTY) {
                 itemStack.use(player.level(), player, InteractionHand.MAIN_HAND);

@@ -26,23 +26,37 @@ import yesman.epicfight.world.capabilities.item.Style;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 public class ExtendedWeaponCapability extends WeaponCapability {
     protected final Map<Style, List<StaticAnimation>> heavyAutoAttackMotions;
+    protected final Map<Style, List<Float>> autoMotionValues;
+    protected final Map<Style, List<Float>> heavyAutoMotionValues;
     Skill ashOfWar;
 
     protected ExtendedWeaponCapability(CapabilityItem.Builder builder) {
         super(builder);
         ExtendedWeaponCapability.Builder weaponBuilder = (ExtendedWeaponCapability.Builder)builder;
         this.heavyAutoAttackMotions = weaponBuilder.heavyAutoAttackMotionMap;
+        this.autoMotionValues = weaponBuilder.autoMotionValues;
+        this.heavyAutoMotionValues = weaponBuilder.heavyAutoMotionValues;
         this.ashOfWar = weaponBuilder.defaultAshOfWar;
     }
 
     public final List<StaticAnimation> getHeavyAutoAttackMotion(PlayerPatch<?> playerPatch) {
         return this.heavyAutoAttackMotions.get(this.getStyle(playerPatch));
+    }
+
+    public final List<Float> getAutoMotionValues(PlayerPatch<?> playerPatch) {
+        return this.autoMotionValues.get(this.getStyle(playerPatch));
+    }
+
+    public List<Float> getHeavyAutoMotionValues(PlayerPatch<?> playerPatch) {
+        return this.heavyAutoMotionValues.get(this.getStyle(playerPatch));
     }
 
     public Skill getAshOfWar(ItemStack itemStack) {
@@ -84,13 +98,18 @@ public class ExtendedWeaponCapability extends WeaponCapability {
     }
 
     public static class Builder extends WeaponCapability.Builder {
-        Map<Style, List<StaticAnimation>> heavyAutoAttackMotionMap;
-        Skill defaultAshOfWar;
+        private final Map<Style, List<StaticAnimation>> heavyAutoAttackMotionMap;
+        private final Map<Style, List<Float>> autoMotionValues;
+        private final Map<Style, List<Float>> heavyAutoMotionValues;
+        private Skill defaultAshOfWar;
 
         protected Builder() {
             this.constructor(ExtendedWeaponCapability::new);
             this.defaultAshOfWar = null;
             this.heavyAutoAttackMotionMap = Maps.newHashMap();
+            this.autoMotionValues = Maps.newHashMap();
+            this.heavyAutoMotionValues = Maps.newHashMap();
+
         }
 
         @Override
@@ -179,6 +198,16 @@ public class ExtendedWeaponCapability extends WeaponCapability {
 
         public Builder newHeavyCombo(Style style, StaticAnimation... animation) {
             this.heavyAutoAttackMotionMap.put(style, Lists.newArrayList(animation));
+            return this;
+        }
+
+        public Builder motionValues(Style style, Float... motionValues) {
+            this.autoMotionValues.put(style, Lists.newArrayList(motionValues));
+            return this;
+        }
+
+        public Builder heavyMotionValues(Style style, Float... heavyMotionValues) {
+            this.autoMotionValues.put(style, Lists.newArrayList(heavyMotionValues));
             return this;
         }
 

@@ -32,6 +32,12 @@ public class EntityAttributeInit {
     public static final RegistryObject<Attribute> LIGHT_DAMAGE = registerAttribute("lightning_damage", 0.0D, 0.0D, 5120.0D, true);
     public static final RegistryObject<Attribute> HOLY_DAMAGE = registerAttribute("holy_damage", 0.0D, 0.0D, 5120.0D, true);
 
+    public static final RegistryObject<Attribute> PHYS_NEGATE = registerAttribute("physical_negation", 1.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> MAGIC_NEGATE = registerAttribute("magic_negation", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> FIRE_NEGATE = registerAttribute("fire_negation", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> LIGHT_NEGATE = registerAttribute("lightning_negation", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> HOLY_NEGATE = registerAttribute("holy_negation", 0.0D, 0.0D, 5120.0D, true);
+
     public static RegistryObject<Attribute> registerAttribute(String name, double defaultVal, double minVal, double maxVal, boolean syncable) {
         return ATTRIBUTES.register(name, () -> new RangedAttribute("attributes.name." + Constants.MOD_ID + "." + name, defaultVal, minVal, maxVal).setSyncable(syncable));
     }

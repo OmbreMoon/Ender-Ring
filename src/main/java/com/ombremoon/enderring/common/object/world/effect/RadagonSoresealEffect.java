@@ -20,14 +20,14 @@ public class RadagonSoresealEffect extends ModifiedAttributeEffect {
     @Override
     public void applyInstantenousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, int pAmplifier, double pHealth) {
         boolean flag = pLivingEntity.getHealth() < pLivingEntity.getMaxHealth();
-        ModNetworking.getInstance().updateMainAttributes(!flag);
+        ModNetworking.updateMainAttributes(!flag);
     }
 
     @Override
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         super.removeAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
         boolean flag = pLivingEntity.getHealth() < pLivingEntity.getMaxHealth();
-        ModNetworking.getInstance().updateMainAttributes(!flag);
+        ModNetworking.updateMainAttributes(!flag);
     }
 
     @Override

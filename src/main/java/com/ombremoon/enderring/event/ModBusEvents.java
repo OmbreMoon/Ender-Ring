@@ -30,7 +30,17 @@ public class ModBusEvents {
                 EntityAttributeInit.INTELLIGENCE,
                 EntityAttributeInit.FAITH,
                 EntityAttributeInit.ARCANE,
-                EntityAttributeInit.ROBUSTNESS);
+                EntityAttributeInit.ROBUSTNESS,
+                EntityAttributeInit.PHYS_DAMAGE,
+                EntityAttributeInit.MAGIC_DAMAGE,
+                EntityAttributeInit.FIRE_DAMAGE,
+                EntityAttributeInit.LIGHT_DAMAGE,
+                EntityAttributeInit.HOLY_DAMAGE,
+                EntityAttributeInit.PHYS_NEGATE,
+                EntityAttributeInit.MAGIC_NEGATE,
+                EntityAttributeInit.FIRE_NEGATE,
+                EntityAttributeInit.LIGHT_NEGATE,
+                EntityAttributeInit.HOLY_NEGATE);
     }
 
     @SafeVarargs

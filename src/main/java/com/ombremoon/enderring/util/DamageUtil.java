@@ -1,20 +1,29 @@
 package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
-import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.common.data.ReinforceType;
-import com.ombremoon.enderring.common.data.Saturation;
+import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import java.util.*;
 
 //TODO: ADD DAMAGE CALCULATION EVENTS
 
 public class DamageUtil {
+    private static final int STAT_SCALE = ConfigHandler.STAT_SCALE.get();
 
     public static float getWeaponAP(ScaledWeapon weapon, Player player, int weaponLevel) {
         return getPhysicalAP(weapon, player, weaponLevel) + getMagicalAP(weapon, player, weaponLevel) + getFireAP(weapon, player, weaponLevel)
@@ -49,18 +58,28 @@ public class DamageUtil {
         return calculateMagicScaling(weapon, player, weaponLevel, WeaponDamage.HOLY);
     }
 
-    private static float calculateMagicScaling(ScaledWeapon weapon, Player player, int weaponLevel, WeaponDamage weaponDamage) {
-        final var list = weapon.getBaseStats().getElementID().getListMap().get(weaponDamage);
-        float f = 0;
-        for (var scaling : list) {
-            float scaleVal = getScalingUpgrade(weapon, scaling, weaponLevel);
-            double attrVal = PlayerStatusUtil.getPlayerStat(player, scaling.getAttribute());
-            f += scaleVal * getSaturationValue(attrVal, weapon, weaponDamage) * 100;
-        }
-        return 100 + f;
+    public static void conditionallyHurt(ItemStack itemStack, AbstractWeapon abstractWeapon, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity) {
+        conditionallyHurt(itemStack, abstractWeapon, scaledWeapon, attackEntity, targetEntity, 1.0F);
     }
 
-    public static float calculateDamage(ScaledWeapon weapon, Player player, int weaponLevel, WeaponDamage weaponDamage) {
+    public static void conditionallyHurt(ItemStack itemStack, AbstractWeapon abstractWeapon, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
+        for (WeaponDamage weaponDamage : WeaponDamage.values()) {
+            DamageSource damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType());
+            if (attackEntity instanceof Player player) {
+                float typeDamage = weaponDamage.getDamageFunction().apply(scaledWeapon, player, abstractWeapon.getWeaponLevel(itemStack));
+                if (typeDamage > 0) {
+                    typeDamage = Math.max(typeDamage, 1.0F);
+                    targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage);
+                }
+            }
+        }
+    }
+
+    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType) {
+        return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType));
+    }
+
+    private static float calculateDamage(ScaledWeapon weapon, Player player, int weaponLevel, WeaponDamage weaponDamage) {
         float damage = getDamageUpgrade(weapon, weaponDamage, weaponLevel);
         float f = 0;
         if (weapon.getRequirements().meetsRequirements(player, weapon, weaponDamage)) {
@@ -70,10 +89,29 @@ public class DamageUtil {
                     f += damage * getScalingUpgrade(weapon, entry.getKey(), weaponLevel) * entry.getValue();
                 }
             }
-            return damage + f;
+            return (damage + f) / STAT_SCALE;
         } else {
-            return damage + (damage * -0.4F);
+            return (damage + (damage * -0.4F)) / STAT_SCALE;
         }
+    }
+
+    public static float calculateMagicScaling(ScaledWeapon weapon, Player player, int weaponLevel, WeaponDamage weaponDamage) {
+        final var list = weapon.getBaseStats().getElementID().getListMap().get(weaponDamage);
+        float f = 0;
+        for (var scaling : list) {
+            float scaleVal = getScalingUpgrade(weapon, scaling, weaponLevel);
+            double attrVal = PlayerStatusUtil.getPlayerStat(player, scaling.getAttribute());
+            f += scaleVal * getSaturationValue(attrVal, weapon, weaponDamage, false) * 100;
+        }
+        return 100 + f;
+    }
+
+    public static float calculateDefense(Player player, WeaponDamage weaponDamage) {
+        float f = 0;
+        if (weaponDamage != WeaponDamage.LIGHTNING) {
+            f += getSaturationValue(weaponDamage.getSaturation(), PlayerStatusUtil.getPlayerStat(player, weaponDamage.getWeaponScaling().getAttribute()), false);
+        }
+        return (100 * (f + getSaturationValue(Saturations.RUNE_DEFENSE, PlayerStatusUtil.getPlayerStat(player, EntityAttributeInit.RUNE_LEVEL.get()), true))) / STAT_SCALE;
     }
 
     private static float getDamageUpgrade(ScaledWeapon weapon, WeaponDamage weaponDamage, int weaponLevel) {
@@ -97,7 +135,7 @@ public class DamageUtil {
                 if (scaling.contains(weaponScaling)) {
                     double d0 = PlayerStatusUtil.getPlayerStat(player, weaponScaling.getAttribute());
                     Map<WeaponScaling, Float> map = new TreeMap<>() {{
-                        put(weaponScaling, getSaturationValue(d0, weapon, weaponDamage));
+                        put(weaponScaling, getSaturationValue(d0, weapon, weaponDamage, false));
                     }};
                     saturationMaps.add(map);
                 }
@@ -106,10 +144,13 @@ public class DamageUtil {
         return saturationMaps;
     }
 
-    public static float getSaturationValue(double attributeValue, ScaledWeapon weapon, WeaponDamage weaponDamage) {
-        Saturation saturation = getSaturation(weapon, weaponDamage);
+    private static float getSaturationValue(double attributeValue, ScaledWeapon weapon, WeaponDamage weaponDamage, boolean runeSaturation) {
+        return getSaturationValue(getSaturation(weapon, weaponDamage), attributeValue, runeSaturation);
+    }
+
+    private static float getSaturationValue(Saturations saturation, double attributeValue, boolean runeSaturation) {
         int i = getStatIndex(saturation, attributeValue);
-        float ratio = getSaturationRatio(saturation, i, attributeValue);
+        float ratio = getSaturationRatio(saturation, i, attributeValue, runeSaturation);
 
         double expMin = saturation.getExp()[i];
         double growth;
@@ -124,17 +165,18 @@ public class DamageUtil {
         return (float) (growMin + ((growMax - growMin) * growth)) / 100;
     }
 
-    private static float getSaturationRatio(Saturation saturation, int index, double attributeValue) {
+    private static float getSaturationRatio(Saturations saturation, int index, double attributeValue, boolean runeSaturation) {
         int statMin = saturation.getStat()[index];
         int statMax = saturation.getStat()[index + 1];
-        return (float) ((attributeValue - statMin) / (statMax - statMin));
+        int i = runeSaturation ? 79 : 0;
+        return (float) ((attributeValue + i - statMin) / (statMax - statMin));
     }
 
-    private static Saturation getSaturation(ScaledWeapon weapon, WeaponDamage weaponDamage) {
+    private static Saturations getSaturation(ScaledWeapon weapon, WeaponDamage weaponDamage) {
         return weapon.getBaseStats().getSaturations()[weaponDamage.ordinal()];
     }
 
-    private static int getStatIndex(Saturation saturation, double playerAttribute) {
+    private static int getStatIndex(Saturations saturation, double playerAttribute) {
         List<Integer> list = Lists.reverse(Arrays.stream(saturation.getStat()).boxed().toList());
         for (int i : list) {
             if (playerAttribute > i) {

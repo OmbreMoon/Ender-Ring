@@ -1,6 +1,5 @@
 package com.ombremoon.enderring.mixin;
 
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.KeyBinds;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
 import net.minecraft.client.KeyMapping;
@@ -21,7 +20,6 @@ import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerP
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.skill.SkillSlot;
 
-import java.security.Key;
 import java.util.Map;
 import java.util.function.BiFunction;
 

@@ -1,7 +1,6 @@
 package com.ombremoon.enderring.network.server;
 
 import com.ombremoon.enderring.CommonClass;
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,15 +9,11 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.network.NetworkEvent;
-import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import java.util.function.Supplier;
-
-import static yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch.STAMINA;
 
 public class ServerboundUpdateMainStatsPacket {
     private final boolean setMax;
@@ -125,19 +120,15 @@ public class ServerboundUpdateMainStatsPacket {
         return flag;
     }
 
-    private static void updateMainStats(ServerPlayer serverPlayer, double maxHealth, double maxFP, double maxStamina, boolean setMax) {
+    private static void updateMainStats(ServerPlayer serverPlayer, float maxHealth, float maxFP, float maxStamina, boolean setMax) {
         serverPlayer.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(maxHealth);
         serverPlayer.getAttributes().getInstance(EntityAttributeInit.MAX_FP.get()).setBaseValue(maxFP);
+        serverPlayer.getAttributes().getInstance(EpicFightAttributes.MAX_STAMINA.get()).setBaseValue(maxStamina);
         if (setMax) {
-            serverPlayer.setHealth(serverPlayer.getMaxHealth());
-            PlayerStatusUtil.setFPAmount(serverPlayer, maxFP);
-        }
-
-        if (CommonClass.hasEpicFight()) {
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(serverPlayer, ServerPlayerPatch.class);
-            serverPlayer.getAttributes().getInstance(EpicFightAttributes.MAX_STAMINA.get()).setBaseValue(maxStamina);
-            if (setMax)
-                playerPatch.setStamina(playerPatch.getMaxStamina());
+            serverPlayer.setHealth(serverPlayer.getMaxHealth());
+            PlayerStatusUtil.setFP(serverPlayer, maxFP);
+            playerPatch.setStamina(playerPatch.getMaxStamina());
         }
     }
 }
