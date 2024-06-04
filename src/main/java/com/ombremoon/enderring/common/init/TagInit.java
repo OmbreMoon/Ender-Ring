@@ -1,10 +1,13 @@
 package com.ombremoon.enderring.common.init;
 
 import com.ombremoon.enderring.CommonClass;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.PoiTypeTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -31,4 +34,20 @@ public class TagInit {
             return BlockTags.create(new ResourceLocation("forge", name));
         }
     }
+
+/*    public static class PoiTypes {
+        public static final TagKey<PoiType> HEWG_ANVIL = tag("hewg_anvil");
+
+        private static TagKey<PoiType> tag(String name) {
+            return create(CommonClass.customLocation(name));
+        }
+
+        private static TagKey<PoiType> forgeTag(String name) {
+            return create(new ResourceLocation("forge", name));
+        }
+
+        private static TagKey<PoiType> create(ResourceLocation resourceLocation) {
+            return TagKey.create(Registries.POINT_OF_INTEREST_TYPE, resourceLocation);
+        }
+    }*/
 }

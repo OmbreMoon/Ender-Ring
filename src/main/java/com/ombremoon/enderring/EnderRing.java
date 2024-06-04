@@ -2,6 +2,8 @@ package com.ombremoon.enderring;
 
 import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.Saturations;
+import com.ombremoon.enderring.common.init.entity.ai.MemoryTypeInit;
+import com.ombremoon.enderring.common.init.entity.ai.SensorsInit;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillCategories;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
@@ -41,6 +43,8 @@ public class EnderRing {
         CommonClass.init(modEventBus);
 
         SkillInit.registerSkills();
+        MemoryTypeInit.init();
+        SensorsInit.init();
 
         SkillCategory.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, ExtendedSkillCategories.class);
         SkillSlot.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, ExtendedSkillSlots.class);

@@ -2,9 +2,8 @@ package com.ombremoon.enderring.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ombremoon.enderring.CommonClass;
-import com.ombremoon.enderring.capability.PlayerStatusProvider;
-import com.ombremoon.enderring.util.CurioHelper;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.common.capability.EntityStatusProvider;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import com.ombremoon.enderring.util.RenderUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -30,8 +29,8 @@ public class QuickAccessOverlay {
 
     private static void renderQuickAccessItem(GuiGraphics guiGraphics, ForgeGui gui, int x, int y) {
         Player player = gui.getMinecraft().player;
-        if (player!= null && PlayerStatusProvider.isPresent(player)) {
-            ItemStack itemStack = PlayerStatusUtil.getQuickAccessItem(player);
+        if (player!= null && EntityStatusProvider.isPresent(player)) {
+            ItemStack itemStack = EntityStatusUtil.getQuickAccessItem(player);
             if (!itemStack.isEmpty()) {
                 RenderUtil.renderItem(gui.getMinecraft(), guiGraphics, itemStack, x - 196, y + 4, 16.0F);
             }

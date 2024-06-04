@@ -1,11 +1,10 @@
-package com.ombremoon.enderring.capability;
+package com.ombremoon.enderring.common.capability;
 
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -21,26 +20,6 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
     boolean consumeFP(float amount, boolean forceConsume);
 
-    float getPhysDefense();
-
-    void setPhysDefense(float physDefense);
-
-    float getMagicDefense();
-
-    void setMagicDefense(float magicDefense);
-
-    float getFireDefense();
-
-    void setFireDefense(float fireDefense);
-
-    float getLightDefense();
-
-    void setLightDefense(float lightDefense);
-
-    float getHolyDefense();
-
-    void setHolyDefense(float holyDefense);
-
     LinkedHashSet<SpellType<?>> getSpellSet();
 
     Map<AbstractSpell, SpellInstance> getActiveSpells();
@@ -48,6 +27,10 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
     SpellType<?> getSelectedSpell();
 
     void setSelectedSpell(SpellType<?> spellType);
+
+    EntityType<?> getSpiritSummon();
+
+    void setSpiritSummon(EntityType<?> spiritSummon);
 
     boolean isSpawnedTorrent();
 
@@ -76,10 +59,6 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
     ItemStack getCachedItem();
 
     void setCachedItem(ItemStack cachedItem);
-
-//    int getCachedSlot();
-
-//    void setCachedSlot(int slot);
 
     int getUseItemTicks();
 

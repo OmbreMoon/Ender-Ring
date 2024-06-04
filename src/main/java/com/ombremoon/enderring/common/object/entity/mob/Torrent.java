@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.mob;
 
 import com.ombremoon.enderring.common.init.entity.MobInit;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -46,8 +46,8 @@ public class Torrent extends AbstractHorse implements OwnableEntity, Saddleable,
         if (this.getPassengers().isEmpty()) {
             if (this.getOwner() != null && this.getOwner() instanceof Player player) {
                 player.removeVehicle();
-                PlayerStatusUtil.setTorrentSpawned(player, false);
-                PlayerStatusUtil.setTorrentHealth(player, this.getHealth());
+                EntityStatusUtil.setTorrentSpawned(player, false);
+                EntityStatusUtil.setTorrentHealth(player, this.getHealth());
             }
             this.discard();
         }

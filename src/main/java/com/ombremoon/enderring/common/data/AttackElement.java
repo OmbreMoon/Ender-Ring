@@ -25,6 +25,8 @@ public class AttackElement {
     public static final AttackElement DRAGON_COMMUNION_SEAL = Builder.create(30030).physical(WeaponScaling.FAI, WeaponScaling.ARC).magical(WeaponScaling.FAI, WeaponScaling.ARC).fire(WeaponScaling.FAI, WeaponScaling.ARC).lightning(WeaponScaling.FAI, WeaponScaling.ARC).holy(WeaponScaling.FAI, WeaponScaling.ARC).build();
     public static final AttackElement FRENZIED_FLAME_SEAL = Builder.create(30040).physical(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).magical(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).fire(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).lightning(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).holy(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).build();
 
+
+    //TODO: ADD EVENT
     static {
         registerElementID(DEFAULT);
         registerElementID(FIRE);

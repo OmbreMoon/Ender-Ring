@@ -3,7 +3,7 @@ package com.ombremoon.enderring.datagen;
 import com.google.common.collect.ImmutableMap;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.gui.screen.StarterScreen;
-import com.ombremoon.enderring.common.init.BlockInit;
+import com.ombremoon.enderring.common.init.blocks.BlockInit;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;

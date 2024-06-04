@@ -78,10 +78,10 @@ public class EquipmentInit extends ItemInit {
     public static final RegistryObject<AbstractShield> RED_THORN_ROUNDSHIELD = registerSmallShield("red_thorn_roundshield");
 
     //Armor Sets
-    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_COWL = registerArmor("blue_cloth_cowl", ModArmorMaterial.BLUE_CLOTH, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_VEST = registerArmor("blue_cloth_vest", ModArmorMaterial.BLUE_CLOTH, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_LEGGINGS = registerArmor("blue_cloth_leggings", ModArmorMaterial.BLUE_CLOTH, ArmorItem.Type.LEGGINGS);
-    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_GREAVES = registerArmor("blue_cloth_greaves", ModArmorMaterial.BLUE_CLOTH, ArmorItem.Type.BOOTS);
+    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_COWL = registerArmor("blue_cloth_cowl", ArmorInit.BLUE_CLOTH, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_VEST = registerArmor("blue_cloth_vest", ArmorInit.BLUE_CLOTH, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_LEGGINGS = registerArmor("blue_cloth_leggings", ArmorInit.BLUE_CLOTH, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_GREAVES = registerArmor("blue_cloth_greaves", ArmorInit.BLUE_CLOTH, ArmorItem.Type.BOOTS);
 
     //AMMUNITION
     public static final RegistryObject<Item> BONE_ARROW = registerBoneArrow("bone_arrow");
@@ -160,7 +160,7 @@ public class EquipmentInit extends ItemInit {
     }
 
     protected static RegistryObject<ModdedArmor> registerArmor(String name, ArmorMaterial armorMaterial, ArmorItem.Type type) {
-        return registerItem(name, () -> new ModdedArmor(armorMaterial, type, itemProperties()));
+        return registerArmor(name, () -> new ModdedArmor(armorMaterial, type, itemProperties()));
     }
 
     private static <T extends ModdedArmor> RegistryObject<T> registerArmor(String name, Supplier<T> armor) {

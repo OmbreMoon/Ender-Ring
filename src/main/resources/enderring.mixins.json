@@ -6,7 +6,9 @@
   "refmap": "enderring.mixins.refmap.json",
   "mixins": [
     "DuckRangedAttribute",
-    "BasicAttackMixin"
+    "BasicAttackMixin",
+    "AirAttackMixin",
+    "EntityPatchProviderMixin"
   ],
   "client": [
     "ControllEngineMixin"

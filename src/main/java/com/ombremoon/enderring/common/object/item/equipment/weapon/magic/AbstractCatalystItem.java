@@ -3,13 +3,15 @@ package com.ombremoon.enderring.common.object.item.equipment.weapon.magic;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.capability.EntityStatusProvider;
+import com.ombremoon.enderring.common.init.StatInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.util.DamageUtil;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,7 +37,7 @@ public class AbstractCatalystItem extends MeleeWeapon {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
-        SpellType<?> spell = PlayerStatusUtil.getSelectedSpell(pPlayer);
+        SpellType<?> spell = EntityStatusUtil.getSelectedSpell(pPlayer);
         if (pUsedHand == InteractionHand.MAIN_HAND && spell != null && spell.getSpell().getMagicType() == this.magicType) {
             return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
         }
@@ -46,9 +48,11 @@ public class AbstractCatalystItem extends MeleeWeapon {
     public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
         super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
         if (stack.getTag() != null) {
-            SpellType<?> spellType = PlayerStatusUtil.getSelectedSpell(player);
-            stack.getTag().putString("Spell", spellType != null ? spellType.getResourceLocation().toString() : "Empty");
-            return;
+            if (EntityStatusProvider.isPresent(player)) {
+                SpellType<?> spellType = EntityStatusUtil.getSelectedSpell(player);
+                stack.getTag().putString("Spell", spellType != null ? spellType.getResourceLocation().toString() : "Empty");
+                return;
+            }
         }
 
         Constants.LOG.warn("Shouldn't be running every tick!");
@@ -57,27 +61,30 @@ public class AbstractCatalystItem extends MeleeWeapon {
 
     @Override
     public int getUseDuration(ItemStack pStack) {
-        SpellType<?> spellType = PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(pStack.getTag(), "Spell"));
+        SpellType<?> spellType = EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(pStack.getTag(), "Spell"));
         return spellType != null ? spellType.getSpell().getCastTime() : 1;
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
         Player player = pLivingEntity instanceof Player ? (Player) pLivingEntity : null;
-        SpellType<?> spellType = PlayerStatusUtil.getSelectedSpell(player);
-        ScaledWeapon weapon = this.getWeapon();
+        SpellType<?> spellType = EntityStatusUtil.getSelectedSpell(player);
+        ScaledWeapon weapon = this.getModifiedWeapon(pStack);
         if (!pLevel.isClientSide && spellType != null) {
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
             AbstractSpell spell = spellType.getSpell();
-            if (playerPatch != null && PlayerStatusUtil.canCastSpell(player, spell, weapon, true)) {
+            if (playerPatch != null && this.canCastSpell(player, pStack, spell, true)) {
+                int i = this.getWeaponLevel(pStack);
                 WeaponDamage weaponDamage = this.magicType == MagicType.SORCERY ? WeaponDamage.MAGICAL : WeaponDamage.HOLY;
-                spell.activateSpellEffect(new SpellInstance(spellType, this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(this.getModifiedWeapon(pStack), player, this.getWeaponLevel(pStack), weaponDamage)), playerPatch, pLevel, pLivingEntity.getOnPos());
+                spell.activateSpellEffect(new SpellInstance(spellType, this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage)), playerPatch, pLevel, pLivingEntity.getOnPos());
+
+                player.awardStat(Stats.ITEM_USED.get(this));
+                player.awardStat(StatInit.SPELLS_CAST.get());
             }
 
             if (player != null) {
-                player.awardStat(Stats.ITEM_USED.get(this));
                 ItemCooldowns cooldowns = player.getCooldowns();
-                if (!cooldowns.isOnCooldown(this) && PlayerStatusUtil.canCastSpell(player, spell, weapon, false)) {
+                if (!cooldowns.isOnCooldown(this) && this.canCastSpell(player, pStack, spell, false)) {
                     cooldowns.addCooldown(this, spell.isInstantSpell() ? 10 : spell.getCastTime());
                 }
             }
@@ -87,5 +94,19 @@ public class AbstractCatalystItem extends MeleeWeapon {
 
     public MagicType getMagicType() {
         return this.magicType;
+    }
+
+    public boolean canCastSpell(Player player, ItemStack itemStack, AbstractSpell abstractSpell, boolean forceConsume) {
+        return this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(), forceConsume) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player);
+    }
+
+    private boolean canCastSpell(Player player, AbstractSpell abstractSpell) {
+        var requirements = abstractSpell.getRequiredStats();
+        for (var statPair : requirements) {
+            if (EntityStatusUtil.getEntityAttribute(player, statPair.getFirst().getAttribute()) < statPair.getSecond()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

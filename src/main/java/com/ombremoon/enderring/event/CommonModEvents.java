@@ -1,26 +1,21 @@
 package com.ombremoon.enderring.event;
 
-import com.mojang.datafixers.kinds.Const;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.item.EquipmentInit;
-import com.ombremoon.enderring.common.init.item.ItemInit;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
+import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
+import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
@@ -69,16 +64,51 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent event) {
-        if (event.getEntity() instanceof Player player) {
+        if (event.getSource() instanceof ModDamageSource damageSource) {
             Optional<ResourceKey<DamageType>> damageType = event.getSource().typeHolder().unwrapKey();
             if (damageType.isPresent()) {
+                LivingEntity livingEntity = event.getEntity();
                 for (WeaponDamage weaponDamage : WeaponDamage.values()) {
                     if (damageType.get() == weaponDamage.getDamageType()) {
-                        event.setAmount(event.getAmount() - weaponDamage.getDefenseFunction().apply(player));
-                        Constants.LOG.info(String.valueOf(event.getAmount()));
+                        if (livingEntity.getAttribute(weaponDamage.getDefenseAttribute()) != null) {
+                            float negation = 0;
+                            if (weaponDamage.getDamageType() == ModDamageTypes.PHYSICAL) {
+                                var physicalDamageTypes = damageSource.getDamageTypes();
+                                if (physicalDamageTypes != null) {
+                                    float negateAvg = 0;
+                                    for (PhysicalDamageType physicalDamage : physicalDamageTypes) {
+                                        negateAvg += EntityStatusUtil.getEntityAttribute(livingEntity, physicalDamage.getAttribute());
+                                    }
+                                    negation = 1 - (negateAvg / physicalDamageTypes.size());
+                                }
+                            } else {
+                                negation = (float) (1 - EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getNegateAttribute()));
+                            }
+                            float attr = livingEntity instanceof Player player ? player.getEntityData().get(weaponDamage.getDefAccessor()) : (float) EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getDefenseAttribute());
+                            float modifiedDamage = getDamageAfterDefense(event.getAmount(), attr);
+                            event.setAmount(modifiedDamage * negation);
+                            Constants.LOG.info(String.valueOf(event.getAmount()));
+                        }
                     }
                 }
             }
         }
+    }
+
+    private static float getDamageAfterDefense(float initialDamage, float defense) {
+        float maapRatio = initialDamage / defense;
+        float damageMult;
+        if (maapRatio < 0.12) {
+            damageMult = 0.1F;
+        } else if (maapRatio < 1) {
+            damageMult = (float) (0.1 + 0.3 * Math.pow((0.125 - maapRatio) / 0.88, 2));
+        } else if (maapRatio < 2.5) {
+            damageMult = (float) (0.7 - 0.3 * Math.pow((2.5 - maapRatio) / 1.5, 2));
+        } else if (maapRatio < 8) {
+            damageMult = (float) (0.9 - 0.2 * Math.pow((8 - maapRatio) / 5.5, 2));
+        } else {
+            damageMult = 0.9F;
+        }
+        return damageMult * initialDamage;
     }
 }

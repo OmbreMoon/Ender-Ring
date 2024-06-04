@@ -7,7 +7,7 @@ import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
 import com.ombremoon.enderring.common.object.item.equipment.SpiritCallingBellItem;
 import com.ombremoon.enderring.common.object.item.equipment.TorrentWhistleItem;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -22,6 +22,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -190,9 +191,9 @@ public class ItemInit {
         if (!level.isClientSide) {
             ServerPlayer serverPlayer = (ServerPlayer) player;
             if (isTalisman) {
-                PlayerStatusUtil.increaseTalismanPouches(serverPlayer);
+                EntityStatusUtil.increaseTalismanPouches(serverPlayer);
             } else {
-                PlayerStatusUtil.increaseMemoryStones(serverPlayer);
+                EntityStatusUtil.increaseMemoryStones(serverPlayer);
             }
         }
 

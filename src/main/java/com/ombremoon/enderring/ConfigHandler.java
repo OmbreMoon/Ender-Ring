@@ -8,12 +8,12 @@ public class ConfigHandler {
     public static final ForgeConfigSpec COMMON_CONFIG;
     public static final ForgeConfigSpec CLIENT_CONFIG;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> WEAPON_SCALE;
     public static final ForgeConfigSpec.ConfigValue<Integer> STAT_SCALE;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> AGGRO_NPC;
 
     static {
-        WEAPON_SCALE = COMMON_BUILDER.defineInRange("endderring.config.weapon_scale", 15, 1, 100);
         STAT_SCALE = COMMON_BUILDER.defineInRange("endderring.config.stat_scale", 15, 1, 100);
+        AGGRO_NPC = COMMON_BUILDER.define("endderring.config.aggro_npc", true);
         COMMON_CONFIG = COMMON_BUILDER.build();
         CLIENT_CONFIG = CLIENT_BUILDER.build();
     }

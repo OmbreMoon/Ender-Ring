@@ -11,7 +11,6 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.LivingEntity;
 
 public class TorrentModel<T extends LivingEntity> extends HierarchicalModel<T> {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(CommonClass.customLocation("torrent"), "main");
 	private final ModelPart torrent;
 
 	public TorrentModel(ModelPart root) {

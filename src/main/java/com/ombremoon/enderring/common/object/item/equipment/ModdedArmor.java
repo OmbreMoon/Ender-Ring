@@ -1,57 +1,75 @@
 package com.ombremoon.enderring.common.object.item.equipment;
 
 import com.ombremoon.enderring.client.render.ERArmorRenderer;
-import mod.azure.azurelibarmor.animatable.GeoItem;
-import mod.azure.azurelibarmor.animatable.client.RenderProvider;
-import mod.azure.azurelibarmor.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelibarmor.core.animation.AnimatableManager;
-import mod.azure.azurelibarmor.util.AzureLibUtil;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ModdedArmor extends ArmorItem implements GeoItem {
-    private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
-    private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
-
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public ModdedArmor(ArmorMaterial pMaterial, Type pType, Properties pProperties) {
         super(pMaterial, pType, pProperties);
     }
 
     @Override
-    public void createRenderer(Consumer<Object> consumer) {
-        consumer.accept(new RenderProvider() {
-            private ERArmorRenderer renderer;
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private GeoArmorRenderer<?> renderer;
 
             @Override
-            public HumanoidModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<LivingEntity> original) {
-                if (this.renderer == null)
+            public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
+                if (this.renderer == null) {
                     this.renderer = new ERArmorRenderer();
-                renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+                }
+
+                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+
                 return this.renderer;
             }
         });
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
-
-    @Override
-    public Supplier<Object> getRenderProvider() {
-        return renderProvider;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    public boolean hasFullSet(LivingEntity livingEntity) {
+        Set<Item> armorSet = new ObjectOpenHashSet<>();
+
+        for (ItemStack itemStack : livingEntity.getArmorSlots()) {
+            if (itemStack.isEmpty())
+                continue;
+
+            armorSet.add(itemStack.getItem());
+        }
+
+        for (Item item : armorSet) {
+            if (!(item instanceof ModdedArmor armor && armor.getMaterial() == this.getMaterial())) {
+                return false;
+            }
+        }
+        return armorSet.size() == 4;
     }
 }

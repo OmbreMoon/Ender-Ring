@@ -27,16 +27,31 @@ public class EntityAttributeInit {
     public static final RegistryObject<Attribute> ROBUSTNESS = registerAttribute("robustness", 1.0D, 0.0D, 230.0D, true);
 
     public static final RegistryObject<Attribute> PHYS_DAMAGE = registerAttribute("physical_damage", 1.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> STRIKE_DAMAGE = registerAttribute("strike_damage", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> SLASH_DAMAGE = registerAttribute("slash_damage", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> PIERCE_DAMAGE = registerAttribute("pierce_damage", 0.0D, 0.0D, 5120.0D, true);
     public static final RegistryObject<Attribute> MAGIC_DAMAGE = registerAttribute("magic_damage", 0.0D, 0.0D, 5120.0D, true);
     public static final RegistryObject<Attribute> FIRE_DAMAGE = registerAttribute("fire_damage", 0.0D, 0.0D, 5120.0D, true);
     public static final RegistryObject<Attribute> LIGHT_DAMAGE = registerAttribute("lightning_damage", 0.0D, 0.0D, 5120.0D, true);
     public static final RegistryObject<Attribute> HOLY_DAMAGE = registerAttribute("holy_damage", 0.0D, 0.0D, 5120.0D, true);
 
-    public static final RegistryObject<Attribute> PHYS_NEGATE = registerAttribute("physical_negation", 1.0D, 0.0D, 5120.0D, true);
-    public static final RegistryObject<Attribute> MAGIC_NEGATE = registerAttribute("magic_negation", 0.0D, 0.0D, 5120.0D, true);
-    public static final RegistryObject<Attribute> FIRE_NEGATE = registerAttribute("fire_negation", 0.0D, 0.0D, 5120.0D, true);
-    public static final RegistryObject<Attribute> LIGHT_NEGATE = registerAttribute("lightning_negation", 0.0D, 0.0D, 5120.0D, true);
-    public static final RegistryObject<Attribute> HOLY_NEGATE = registerAttribute("holy_negation", 0.0D, 0.0D, 5120.0D, true);
+    public static final RegistryObject<Attribute> PHYS_DEFENSE = registerAttribute("physical_defense", 1.0D, 0.0D, 500.0D, true);
+    public static final RegistryObject<Attribute> STRIKE_DEFENSE = registerAttribute("strike_defense", 1.0D, 0.0D, 500.0D, true);
+    public static final RegistryObject<Attribute> SLASH_DEFENSE = registerAttribute("slash_defense", 1.0D, 0.0D, 500.0D, true);
+    public static final RegistryObject<Attribute> PIERCE_DEFENSE = registerAttribute("pierce_defense", 1.0D, 0.0D, 500.0D, true);
+    public static final RegistryObject<Attribute> MAGIC_DEFENSE = registerAttribute("magic_defense", 1.0D, 0.0D, 500.0D, true);
+    public static final RegistryObject<Attribute> FIRE_DEFENSE = registerAttribute("fire_defense", 1.0D, 0.0D, 500.0D, true);
+    public static final RegistryObject<Attribute> LIGHT_DEFENSE = registerAttribute("lightning_defense", 1.0D, 0.0D, 500.0D, true);
+    public static final RegistryObject<Attribute> HOLY_DEFENSE = registerAttribute("holy_defense", 1.0D, 0.0D, 500.0D, true);
+
+    public static final RegistryObject<Attribute> PHYS_NEGATE = registerAttribute("physical_negation", 0.0D, -1.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> STRIKE_NEGATE = registerAttribute("strike_negation", 0.0D, -1.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> SLASH_NEGATE = registerAttribute("slash_negation", 0.0D, -1.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> PIERCE_NEGATE = registerAttribute("pierce_negation", 0.0D, -1.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> MAGIC_NEGATE = registerAttribute("magic_negation", 0.0D, -1.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> FIRE_NEGATE = registerAttribute("fire_negation", 0.0D, -1.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> LIGHT_NEGATE = registerAttribute("lightning_negation", 0.0D, -1.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> HOLY_NEGATE = registerAttribute("holy_negation", 0.0D, -1.0D, 1.0D, true);
 
     public static RegistryObject<Attribute> registerAttribute(String name, double defaultVal, double minVal, double maxVal, boolean syncable) {
         return ATTRIBUTES.register(name, () -> new RangedAttribute("attributes.name." + Constants.MOD_ID + "." + name, defaultVal, minVal, maxVal).setSyncable(syncable));

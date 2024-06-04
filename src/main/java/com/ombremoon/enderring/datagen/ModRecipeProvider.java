@@ -1,12 +1,10 @@
 package com.ombremoon.enderring.datagen;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.init.BlockInit;
+import com.ombremoon.enderring.common.init.blocks.BlockInit;
 import com.ombremoon.enderring.common.init.item.EquipmentInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import net.minecraft.advancements.critereon.ConsumeItemTrigger;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;

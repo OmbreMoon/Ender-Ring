@@ -2,7 +2,7 @@ package com.ombremoon.enderring.network;
 
 
 import com.ombremoon.enderring.CommonClass;
-import com.ombremoon.enderring.capability.PlayerStatusProvider;
+import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.client.gui.screen.StarterScreen;
 import com.ombremoon.enderring.network.client.ClientboundGraceSitePacket;
 import com.ombremoon.enderring.network.client.ClientboundOriginSelectPacket;
@@ -66,7 +66,7 @@ public class ModNetworking {
     }
 
     public static void syncCap(ServerPlayer serverPlayer) {
-        sendToPlayer(new ClientboundSyncCapabiltyPacket(PlayerStatusProvider.get(serverPlayer).serializeNBT()), serverPlayer);
+        sendToPlayer(new ClientboundSyncCapabiltyPacket(EntityStatusProvider.get(serverPlayer).serializeNBT()), serverPlayer);
     }
 
     public static void useQuickAccessItem(int ticks, ServerPlayer serverPlayer) {

@@ -2,12 +2,11 @@ package com.ombremoon.enderring.network.server;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.util.CurioHelper;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
@@ -34,10 +33,10 @@ public class ServerboundCycleQuickAccessPacket {
             final var handler = context.getNetworkManager().getPacketListener();
             if (handler instanceof ServerGamePacketListenerImpl serverGamePacketListener) {
                 ServerPlayer serverPlayer = serverGamePacketListener.player;
-                int currentSlot = PlayerStatusUtil.getQuickAccessSlot(serverPlayer);
+                int currentSlot = EntityStatusUtil.getQuickAccessSlot(serverPlayer);
                 cycle(serverPlayer, currentSlot);
 
-                Constants.LOG.info(String.valueOf(PlayerStatusUtil.getQuickAccessItem(serverPlayer)));
+                Constants.LOG.info(String.valueOf(EntityStatusUtil.getQuickAccessItem(serverPlayer)));
             }
         });
         ctx.get().setPacketHandled(true);
@@ -45,7 +44,7 @@ public class ServerboundCycleQuickAccessPacket {
 
     private static <T extends Integer> void cycle(ServerPlayer serverPlayer, T currentItem) {
         int slot = findNextItemInList(createItemList(serverPlayer), currentItem);
-        PlayerStatusUtil.setQuickAccessSlot(serverPlayer, slot);
+        EntityStatusUtil.setQuickAccessSlot(serverPlayer, slot);
     }
 
     private static <T> T findNextItemInList(Collection<T> itemList, T currentItem) {

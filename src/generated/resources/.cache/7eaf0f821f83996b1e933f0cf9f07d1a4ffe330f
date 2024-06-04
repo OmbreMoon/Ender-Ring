@@ -1,7 +1,8 @@
-// 1.20.1	2024-05-20T08:42:50.8890745	Scaled Weapons: enderring
-ac4056a8067f0bbadad1d44e2160af5cb03d829f data/enderring/scaled_weapons/astrologer_staff.json
-f67a79102409899a5c963c9c3da2cf968e14ea96 data/enderring/scaled_weapons/black_knife.json
-82cf1a8808813852801c48ca69decf5d8c2a5526 data/enderring/scaled_weapons/dagger.json
-5b34f54939e3f5fcba8f78de8957aabd6f80857d data/enderring/scaled_weapons/finger_seal.json
-a7066212b2b7231f4d57c8034b13f72b6ca4435e data/enderring/scaled_weapons/glintstone_staff.json
-2fde82726c6382b871f343ef9c1096bfd946d0a5 data/enderring/scaled_weapons/guardian_swordspear.json
+// 1.20.1	2024-06-02T21:39:05.2232567	Scaled Weapons: enderring
+d9a0ddb0871aa158c9a7ebe5deda17f4266c6758 data/enderring/scaled_weapons/astrologers_staff.json
+d4385427ef80c3cde4869e526312068a2a55601e data/enderring/scaled_weapons/black_knife.json
+c417f0ddc5da55ee17ee125f073c95a9065ec58b data/enderring/scaled_weapons/dagger.json
+b8976d69c44d33efa71ce7c0943d8abfc228bc64 data/enderring/scaled_weapons/finger_seal.json
+4272f1ba0ee7c6a99e654a4fd9d66cc53b43bd6a data/enderring/scaled_weapons/glintstone_staff.json
+3804f16c8dc3384f0926c904003348b8857df83c data/enderring/scaled_weapons/guardian_swordspear.json
+3776c1e0c84baea68b90c200be71cfcde4139dfb data/enderring/scaled_weapons/scimitar.json

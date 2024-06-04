@@ -2,19 +2,15 @@ package com.ombremoon.enderring.network.server;
 
 import com.ombremoon.enderring.client.gui.screen.StarterScreen;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.item.EquipmentInit;
-import com.ombremoon.enderring.common.init.item.ModArmorMaterial;
+import com.ombremoon.enderring.common.init.item.ArmorInit;
 import com.ombremoon.enderring.network.ModNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
@@ -73,14 +69,14 @@ public class ServerboundPlayerOriginPacket {
     }
 
     private static void handleArmorUpdate(ServerPlayer serverPlayer, StarterScreen.Base characterBase) {
-        ModArmorMaterial armorMaterial = characterBase.getStarterArmor();
+        ArmorInit armorMaterial = characterBase.getStarterArmor();
         if (armorMaterial != null) {
             switch (armorMaterial) {
                 case BLUE_CLOTH -> {
-                    serverPlayer.setItemSlot(EquipmentSlot.HEAD, new ItemStack(EquipmentInit.BLUE_CLOTH_COWL.get()));
-                    serverPlayer.setItemSlot(EquipmentSlot.CHEST, new ItemStack(EquipmentInit.BLUE_CLOTH_VEST.get()));
-                    serverPlayer.setItemSlot(EquipmentSlot.LEGS, new ItemStack(EquipmentInit.BLUE_CLOTH_LEGGINGS.get()));
-                    serverPlayer.setItemSlot(EquipmentSlot.FEET, new ItemStack(EquipmentInit.BLUE_CLOTH_GREAVES.get()));
+//                    serverPlayer.setItemSlot(EquipmentSlot.HEAD, new ItemStack(EquipmentInit.BLUE_CLOTH_COWL.get()));
+//                    serverPlayer.setItemSlot(EquipmentSlot.CHEST, new ItemStack(EquipmentInit.BLUE_CLOTH_VEST.get()));
+//                    serverPlayer.setItemSlot(EquipmentSlot.LEGS, new ItemStack(EquipmentInit.BLUE_CLOTH_LEGGINGS.get()));
+//                    serverPlayer.setItemSlot(EquipmentSlot.FEET, new ItemStack(EquipmentInit.BLUE_CLOTH_GREAVES.get()));
                 }
             }
         }

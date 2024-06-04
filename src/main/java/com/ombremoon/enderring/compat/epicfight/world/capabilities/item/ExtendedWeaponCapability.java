@@ -19,6 +19,8 @@ import yesman.epicfight.network.server.SPChangeSkill;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.SkillSlot;
+import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
@@ -109,7 +111,6 @@ public class ExtendedWeaponCapability extends WeaponCapability {
             this.heavyAutoAttackMotionMap = Maps.newHashMap();
             this.autoMotionValues = Maps.newHashMap();
             this.heavyAutoMotionValues = Maps.newHashMap();
-
         }
 
         @Override

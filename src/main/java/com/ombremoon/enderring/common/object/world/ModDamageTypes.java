@@ -8,6 +8,9 @@ import net.minecraft.world.damagesource.DamageType;
 
 public interface ModDamageTypes {
     ResourceKey<DamageType> PHYSICAL = register("physical");
+    ResourceKey<DamageType> STRIKE = register("strike");
+    ResourceKey<DamageType> SLASH = register("slash");
+    ResourceKey<DamageType> PIERCE = register("pierce");
     ResourceKey<DamageType> MAGICAL = register("magical");
     ResourceKey<DamageType> FIRE = register("fire");
     ResourceKey<DamageType> LIGHTNING = register("lightning");
@@ -19,6 +22,9 @@ public interface ModDamageTypes {
 
     static void bootstrap(BootstapContext<DamageType> context) {
         context.register(PHYSICAL, new DamageType("physical", 0.1F));
+        context.register(STRIKE, new DamageType("strike", 0.1F));
+        context.register(SLASH, new DamageType("slash", 0.1F));
+        context.register(PIERCE, new DamageType("pierce", 0.1F));
         context.register(MAGICAL, new DamageType("magical", 0.1F));
         context.register(FIRE, new DamageType("fire", 0.1F));
         context.register(LIGHTNING, new DamageType("lightning", 0.1F));

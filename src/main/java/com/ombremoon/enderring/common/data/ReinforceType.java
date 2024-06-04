@@ -29,6 +29,7 @@ public class ReinforceType {
 
     private static final Map<ResourceLocation, ReinforceType> reinforceTypeMap = new HashMap<>();
 
+    //TODO: ADD EVENT
     static {
         registerType(DEFAULT);
         registerType(HEAVY);

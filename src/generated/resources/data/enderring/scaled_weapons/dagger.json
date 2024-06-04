@@ -14,7 +14,11 @@
     "twoHandBonus": true
   },
   "damage": {
-    "physDamage": 74
+    "physDamage": 74,
+    "physDamageTypes": [
+      "slash",
+      "pierce"
+    ]
   },
   "requirements": {
     "dexReq": 9,

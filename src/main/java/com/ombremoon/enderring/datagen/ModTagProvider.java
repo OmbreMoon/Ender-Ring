@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.datagen;
 
+import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.TagInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
@@ -7,7 +8,9 @@ import com.ombremoon.enderring.common.object.item.CrystalTearItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.PoiTypeTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.PoiTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -60,4 +63,15 @@ public class ModTagProvider {
             }
         }
     }
+
+/*    public static class ModPoiTypeTagsProvider extends PoiTypeTagsProvider {
+        public ModPoiTypeTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
+            super(pOutput, pProvider, modId, existingFileHelper);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider pProvider) {
+            tag(TagInit.PoiTypes.HEWG_ANVIL).addOptional(CommonClass.customLocation("hewg_anvil"));
+        }
+    }*/
 }

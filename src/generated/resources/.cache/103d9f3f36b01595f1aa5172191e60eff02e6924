@@ -1,6 +1,9 @@
-// 1.20.1	2024-05-27T12:59:56.8444254	Registries
+// 1.20.1	2024-05-29T17:08:02.5967388	Registries
 fe8c85729655f971ee94229cbb7d68bbb513d08b data/enderring/damage_type/fire.json
 39287ac1b3c2d2489f179b5635913f9ee9bc08ef data/enderring/damage_type/holy.json
 84c0c00115bf565740bf1aecda250ab5c02dbb44 data/enderring/damage_type/lightning.json
 ec03ce44a42a9b14e3402c0e75ef3fb104928292 data/enderring/damage_type/magical.json
 85c74c24583e1daa15a36a8e1fe5ea21cd86a2ed data/enderring/damage_type/physical.json
+7c2587b954b6e08954c93f20d232c17a97cb259f data/enderring/damage_type/pierce.json
+2cd44abab3e8564f4ccdd5b396dcb2aa38eaff9b data/enderring/damage_type/slash.json
+357f9e94f4b39e3525dc512f0986b2749fd6b478 data/enderring/damage_type/strike.json

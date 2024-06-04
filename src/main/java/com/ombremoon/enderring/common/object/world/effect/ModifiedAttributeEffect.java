@@ -1,11 +1,13 @@
 package com.ombremoon.enderring.common.object.world.effect;
 
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -70,6 +72,7 @@ public class ModifiedAttributeEffect extends StatusEffect {
         if (!attributeInstance.hasModifier(attributeModifier)) {
             attributeInstance.addPermanentModifier(attributeModifier);
         }
+        EntityStatusUtil.updateDefense((Player) livingEntity, attribute.get());
     }
 
     protected void removeModifier(LivingEntity livingEntity, Supplier<Attribute> attribute, UUID uuid) {

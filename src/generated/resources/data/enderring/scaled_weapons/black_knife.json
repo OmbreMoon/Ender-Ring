@@ -14,7 +14,11 @@
   },
   "damage": {
     "holyDamage": 65,
-    "physDamage": 66
+    "physDamage": 66,
+    "physDamageTypes": [
+      "slash",
+      "pierce"
+    ]
   },
   "requirements": {
     "dexReq": 12,

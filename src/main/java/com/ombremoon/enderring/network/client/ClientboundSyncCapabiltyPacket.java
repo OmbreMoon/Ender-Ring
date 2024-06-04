@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.network.client;
 
-import com.ombremoon.enderring.capability.PlayerStatusProvider;
+import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,7 +32,7 @@ public class ClientboundSyncCapabiltyPacket {
             if (handler instanceof ClientGamePacketListener) {
                 Player player = Minecraft.getInstance().player;
                 if (player != null) {
-                    PlayerStatusProvider.get(player).deserializeNBT(packet.nbt);
+                    EntityStatusProvider.get(player).deserializeNBT(packet.nbt);
                 }
             }
         });

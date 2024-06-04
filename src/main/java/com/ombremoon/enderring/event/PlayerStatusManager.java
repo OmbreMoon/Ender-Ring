@@ -1,20 +1,21 @@
 package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.capability.IPlayerStatus;
-import com.ombremoon.enderring.capability.PlayerStatus;
-import com.ombremoon.enderring.capability.PlayerStatusProvider;
+import com.ombremoon.enderring.common.capability.IPlayerStatus;
+import com.ombremoon.enderring.common.capability.PlayerStatus;
+import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
+import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.FlaskUtil;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -49,10 +50,10 @@ public class PlayerStatusManager {
     @SubscribeEvent
     public static void onAttachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player player) {
-            var provider = new PlayerStatusProvider(player);
-            if (!PlayerStatusProvider.isPresent(player)) {
-                var cap = provider.getCapability(PlayerStatusProvider.PLAYER_STATUS).orElse(null);
-                event.addCapability(PlayerStatusProvider.CAPABILITY_LOCATION, provider);
+            var provider = new EntityStatusProvider(player);
+            if (!EntityStatusProvider.isPresent(player)) {
+                var cap = provider.getCapability(EntityStatusProvider.PLAYER_STATUS).orElse(null);
+                event.addCapability(EntityStatusProvider.CAPABILITY_LOCATION, provider);
             }
         }
     }
@@ -60,7 +61,7 @@ public class PlayerStatusManager {
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
         if (event.getLevel() instanceof ServerLevel && event.getEntity() instanceof ServerPlayer player) {
-            player.getEntityData().set(PlayerStatus.FP, (float) PlayerStatusUtil.getMaxFP(player));
+            player.getEntityData().set(PlayerStatus.FP, (float) EntityStatusUtil.getMaxFP(player));
             ModNetworking.syncCap(player);
         }
     }
@@ -73,11 +74,11 @@ public class PlayerStatusManager {
         Player oldPlayer = event.getOriginal();
         Player newPlayer = event.getEntity();
         if (event.isWasDeath()) {
-            PlayerStatusProvider.get(newPlayer).deserializeNBT(PlayerStatusProvider.get(oldPlayer).serializeNBT());
+            EntityStatusProvider.get(newPlayer).deserializeNBT(EntityStatusProvider.get(oldPlayer).serializeNBT());
 
             if (oldPlayer.hasEffect(StatusEffectInit.SACRIFICIAL_TWIG.get())) {
-                double runeAmount = PlayerStatusUtil.getRunesHeld(oldPlayer);
-                PlayerStatusUtil.increaseRunes(newPlayer, runeAmount);
+                double runeAmount = EntityStatusUtil.getRunesHeld(oldPlayer);
+                EntityStatusUtil.increaseRunes(newPlayer, runeAmount);
                 IDynamicStackHandler stackHandler = CurioHelper.getTalismanStacks(oldPlayer);
                 for (int i = 0; i < stackHandler.getSlots(); i++) {
                     ItemStack itemStack = stackHandler.getStackInSlot(i);
@@ -89,7 +90,7 @@ public class PlayerStatusManager {
 
             for (Attribute attribute : playerStats) {
                 if (attribute != EntityAttributeInit.RUNES_HELD.get()) {
-                    PlayerStatusUtil.setBaseStat(newPlayer, attribute, (int) oldPlayer.getAttributeBaseValue(attribute), true);
+                    EntityStatusUtil.setBaseStat(newPlayer, attribute, (int) oldPlayer.getAttributeBaseValue(attribute), true);
 //                    newPlayer.getAttributes().getInstance(attribute).setBaseValue(oldPlayer.getAttributeBaseValue(attribute));
                 }
             }
@@ -104,7 +105,7 @@ public class PlayerStatusManager {
         if (!(event.getEntity() instanceof Player player))
             return;
 
-        if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()) && event.getSource().is(ModDamageTypes.PHYSICAL)) {
+        if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()) && event.getSource() instanceof ModDamageSource damageSource && damageSource.isPhysicalDamage()) {
             event.setAmount(event.getAmount() * 0.85F);
         }
         if (player.hasEffect(StatusEffectInit.RADAGONS_SORESEAL.get())) {
@@ -123,14 +124,14 @@ public class PlayerStatusManager {
 
         if (player.level().isClientSide) return;
 
-        if (PlayerStatusProvider.isPresent(player)) {
+        if (EntityStatusProvider.isPresent(player)) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
-            Iterator<AbstractSpell> iterator = PlayerStatusUtil.getActiveSpells(player).keySet().iterator();
+            Iterator<AbstractSpell> iterator = EntityStatusUtil.getActiveSpells(player).keySet().iterator();
 
             try {
                 while (iterator.hasNext()) {
                     AbstractSpell abstractSpell = iterator.next();
-                    SpellInstance spellInstance = PlayerStatusUtil.getActiveSpells(player).get(abstractSpell);
+                    SpellInstance spellInstance = EntityStatusUtil.getActiveSpells(player).get(abstractSpell);
                     if (!spellInstance.tickSpellEffect(player, player.level(), player.getOnPos(), () -> {
                         abstractSpell.onSpellUpdate(spellInstance, serverPlayerPatch, spellInstance.getWeapon(), player.level(), player.getOnPos());
                     })) {
@@ -153,11 +154,11 @@ public class PlayerStatusManager {
 
         ItemStack itemStack = player.getMainHandItem();
 
-        if (!PlayerStatusProvider.isPresent(player)) return;
-        if (itemStack == PlayerStatusUtil.getCachedItem(player) || !(itemStack.getItem() instanceof IQuickAccess)) return;
+        if (!EntityStatusProvider.isPresent(player)) return;
+        if (itemStack == EntityStatusUtil.getCachedItem(player) || !(itemStack.getItem() instanceof IQuickAccess)) return;
 
-        if (PlayerStatusUtil.isUsingQuickAccess(player)) {
-            IPlayerStatus playerStatus = PlayerStatusProvider.get(player);
+        if (EntityStatusUtil.isUsingQuickAccess(player)) {
+            IPlayerStatus playerStatus = EntityStatusProvider.get(player);
             if (itemStack != ItemStack.EMPTY) {
                 int j = playerStatus.getUseItemTicks();
                 if (j >= 0) {

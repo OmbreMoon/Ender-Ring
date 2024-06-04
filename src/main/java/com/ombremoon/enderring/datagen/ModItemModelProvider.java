@@ -146,6 +146,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     static final Item[] EXCLUSION_LIST_1 = {
             EquipmentInit.GLINTSTONE_STAFF.get(),
+            EquipmentInit.ASTROLOGER_STAFF.get(),
             EquipmentInit.GUARDIAN_SWORDSPEAR.get(),
             EquipmentInit.RIVETED_WOODEN_SHIELD.get()
     };

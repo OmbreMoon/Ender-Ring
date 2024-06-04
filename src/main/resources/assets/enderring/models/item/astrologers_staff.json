@@ -1,0 +1,41 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "enderring:item/astrologers_staff"
+	},
+	"gui_light": "front",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, -90, 55],
+			"translation": [0, 4, 0.5],
+			"scale": [3.4, 3.4, 1]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, -55],
+			"translation": [0, 4, 0.5],
+			"scale": [3.4, 3.4, 1]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -90, 25],
+			"translation": [1.13, 3.2, 1.13],
+			"scale": [2.72, 2.72, 1]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 90, -25],
+			"translation": [1.13, 3.2, 1.13],
+			"scale": [2.72, 2.72, 1]
+		},
+		"ground": {
+			"translation": [3, 4.75, 0],
+			"scale": [1.5, 1.5, 0.5]
+		},
+		"gui": {
+			"translation": [3, 3, 0],
+			"scale": [2, 2, 1.5]
+		},
+		"fixed": {
+			"translation": [3, 3, 0],
+			"scale": [2, 2, 1.5]
+		}
+	}
+}

@@ -3,7 +3,7 @@ package com.ombremoon.enderring.client.gui.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.init.item.ModArmorMaterial;
+import com.ombremoon.enderring.common.init.item.ArmorInit;
 import com.ombremoon.enderring.common.init.item.EquipmentInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.event.FirstSpawnEvent;
@@ -15,7 +15,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -294,7 +293,7 @@ public class StarterScreen extends Screen {
 
     public enum Base {
         VAGABOND("vagabond", 9, 15, 10, 11, 14, 13, 9, 9, 7, List.of(EquipmentInit.LONGSWORD, EquipmentInit.HALBERD, EquipmentInit.HEATER_SHIELD), null),
-        WARRIOR("warrior", 8, 11, 12, 11, 10, 16, 10, 8, 9, List.of(EquipmentInit.SCIMITAR, EquipmentInit.SCIMITAR, EquipmentInit.RIVETED_WOODEN_SHIELD), ModArmorMaterial.BLUE_CLOTH),
+        WARRIOR("warrior", 8, 11, 12, 11, 10, 16, 10, 8, 9, List.of(EquipmentInit.SCIMITAR, EquipmentInit.SCIMITAR, EquipmentInit.RIVETED_WOODEN_SHIELD), ArmorInit.BLUE_CLOTH),
         HERO("hero", 7, 14, 9, 12, 16, 9, 7, 8, 11, List.of(EquipmentInit.BATTLE_AXE, EquipmentInit.LARGE_LEATHER_SHIELD), null),
         BANDIT("bandit", 5, 10, 11, 10, 9, 13, 9, 8, 14, List.of(EquipmentInit.GREAT_KNIFE, EquipmentInit.SHORTBOW, EquipmentInit.BUCKLER), null),
         ASTROLOGER("astrologer", 6, 9, 15, 9, 8, 12, 16, 7, 9, List.of(EquipmentInit.SHORT_SWORD, EquipmentInit.ASTROLOGER_STAFF, EquipmentInit.SCRIPTURE_WOODEN_SHIELD), null),
@@ -315,9 +314,9 @@ public class StarterScreen extends Screen {
         private final int faith;
         private final int arcane;
         private final List<Supplier<? extends Item>> starterItems;
-        private final ModArmorMaterial starterArmor;
+        private final ArmorInit starterArmor;
 
-        Base(String name, int level, int vigor, int mind, int endurance, int strength, int dexterity, int intelligence, int faith, int arcane, List<Supplier<? extends Item>> starterItems, ModArmorMaterial starterArmor) {
+        Base(String name, int level, int vigor, int mind, int endurance, int strength, int dexterity, int intelligence, int faith, int arcane, List<Supplier<? extends Item>> starterItems, ArmorInit starterArmor) {
             this.name = name;
             this.level = level;
             this.vigor = vigor;
@@ -376,7 +375,7 @@ public class StarterScreen extends Screen {
             return this.starterItems;
         }
 
-        public ModArmorMaterial getStarterArmor() {
+        public ArmorInit getStarterArmor() {
             return this.starterArmor;
         }
     }

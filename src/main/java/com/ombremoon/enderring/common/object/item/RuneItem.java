@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.common.object.item;
 
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -24,7 +24,7 @@ public class RuneItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            PlayerStatusUtil.increaseRunes(pPlayer, this.runeAmount);
+            EntityStatusUtil.increaseRunes(pPlayer, this.runeAmount);
             if (!pPlayer.getAbilities().instabuild) {
                 itemStack.shrink(1);
             }

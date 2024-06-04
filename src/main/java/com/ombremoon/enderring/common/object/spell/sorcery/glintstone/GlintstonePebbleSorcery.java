@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class GlintstonePebbleSorcery extends ProjectileSpell {
+    private boolean inWater;
 
     public static ProjectileSpell.Builder createGlinstonePebbleBuilder() {
         return createProjectileBuilder()
@@ -34,18 +35,25 @@ public class GlintstonePebbleSorcery extends ProjectileSpell {
 
     @Override
     public void tickSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
-
+        if (!this.inWater) {
+            Constants.LOG.info(String.valueOf(spellInstance.getDuration()));
+        }
     }
 
     @Override
     public void onSpellStart(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
         Constants.LOG.info("Spell: " + this.getSpellName().getString());
-//        playerPatch.playAnimationSynchronized(AnimationInit.SPELL_HEAL, 0.0F);
+        if (playerPatch.getOriginal().isInWater()) {
+            this.setInWater(true);
+        }
+    }
+
+    public void setInWater(boolean inWater) {
+        this.inWater = inWater;
     }
 
     @Override
     public boolean isEffectTick(int duration) {
-        Constants.LOG.info(String.valueOf(duration));
         return super.isEffectTick(duration);
     }
 }

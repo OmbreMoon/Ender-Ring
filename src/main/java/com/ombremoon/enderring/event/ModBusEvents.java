@@ -1,10 +1,12 @@
 package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.init.ParticleInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.MobInit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,11 +34,25 @@ public class ModBusEvents {
                 EntityAttributeInit.ARCANE,
                 EntityAttributeInit.ROBUSTNESS,
                 EntityAttributeInit.PHYS_DAMAGE,
+                EntityAttributeInit.STRIKE_DAMAGE,
+                EntityAttributeInit.SLASH_DAMAGE,
+                EntityAttributeInit.PIERCE_DAMAGE,
                 EntityAttributeInit.MAGIC_DAMAGE,
                 EntityAttributeInit.FIRE_DAMAGE,
                 EntityAttributeInit.LIGHT_DAMAGE,
                 EntityAttributeInit.HOLY_DAMAGE,
+                EntityAttributeInit.PHYS_DEFENSE,
+                EntityAttributeInit.STRIKE_DEFENSE,
+                EntityAttributeInit.SLASH_DEFENSE,
+                EntityAttributeInit.PIERCE_DEFENSE,
+                EntityAttributeInit.MAGIC_DEFENSE,
+                EntityAttributeInit.FIRE_DEFENSE,
+                EntityAttributeInit.LIGHT_DEFENSE,
+                EntityAttributeInit.HOLY_DEFENSE,
                 EntityAttributeInit.PHYS_NEGATE,
+                EntityAttributeInit.STRIKE_NEGATE,
+                EntityAttributeInit.SLASH_NEGATE,
+                EntityAttributeInit.PIERCE_NEGATE,
                 EntityAttributeInit.MAGIC_NEGATE,
                 EntityAttributeInit.FIRE_NEGATE,
                 EntityAttributeInit.LIGHT_NEGATE,

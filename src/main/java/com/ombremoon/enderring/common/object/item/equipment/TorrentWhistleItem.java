@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.common.object.item.equipment;
 
 import com.ombremoon.enderring.common.object.entity.mob.Torrent;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -17,7 +17,6 @@ public class TorrentWhistleItem extends Item implements IQuickAccess {
         super(pProperties.stacksTo(1));
     }
 
-
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
@@ -25,21 +24,21 @@ public class TorrentWhistleItem extends Item implements IQuickAccess {
             Torrent torrent = new Torrent(pLevel, pPlayer);
             if (this.canSpawnTorrent(pPlayer, pLevel)) {
                 torrent.setOwnerUUID(pPlayer.getUUID());
-                torrent.setHealth((float) PlayerStatusUtil.getTorrentHealth(pPlayer));
+                torrent.setHealth((float) EntityStatusUtil.getTorrentHealth(pPlayer));
                 pLevel.addFreshEntity(torrent);
                 pPlayer.startRiding(torrent, true);
-                PlayerStatusUtil.setTorrentSpawned(pPlayer, true);
+                EntityStatusUtil.setTorrentSpawned(pPlayer, true);
 
                 pPlayer.awardStat(Stats.ITEM_USED.get(this));
             }
         }
-        return super.use(pLevel, pPlayer, pUsedHand);
+        return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }
 
     private boolean canSpawnTorrent(Player player, Level level) {
         if (player.isSpectator()) {
             return false;
-        } else if (PlayerStatusUtil.isTorrentSpawnedOrIncapacitated(player)) {
+        } else if (EntityStatusUtil.isTorrentSpawnedOrIncapacitated(player)) {
             return false;
         } else {
             return !player.isInWall() && !player.isFallFlying() && player.getVehicle() == null;

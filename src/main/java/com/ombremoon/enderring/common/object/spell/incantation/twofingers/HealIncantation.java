@@ -100,7 +100,7 @@ public class HealIncantation extends HealSpell {
                     }
                 } else if (livingEntity instanceof Mob mob) {
                     if (mob.getMobType() == MobType.UNDEAD) {
-                        mob.hurt(DamageUtil.moddedDamageSource(level, ModDamageTypes.HOLY), incantScaling * this.motionValue / statScale);
+//                        mob.hurt(DamageUtil.moddedDamageSource(level, ModDamageTypes.HOLY), incantScaling * this.motionValue / statScale);
                     }
                 }
             }

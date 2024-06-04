@@ -148,11 +148,19 @@ repositories {
         name = "SmartBrainLib (SBL) Maven Repo"
         url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
     }
-    maven { url 'https://libs.azuredoom.com:4443/mods' }
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroupByRegex("software\\.bernie.*")
+            includeGroup("com.eliotlash.mclib")
+        }
+    }
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
     }
+    maven { url = 'https://maven.blamejared.com/' }
     maven {
         name = "ModMaven"
         url = "https://modmaven.dev"
@@ -163,8 +171,10 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:${epicfight_version}")
-    implementation fg.deobf("curse.maven:azurelib-armor-912767:4931088")
     implementation fg.deobf("net.tslat.smartbrainlib:SmartBrainLib-forge-1.20:1.11")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+    implementation fg.deobf("team.lodestar.lodestone:lodestone:${minecraft_version}-${lodestoneVersion}")
+    implementation("com.eliotlash.mclib:mclib:20")
     compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api"))
     runtimeOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))

@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.datagen;
 
-import com.ombremoon.enderring.common.init.BlockInit;
+import com.ombremoon.enderring.common.init.blocks.BlockInit;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;

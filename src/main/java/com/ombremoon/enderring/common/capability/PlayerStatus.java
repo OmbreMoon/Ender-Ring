@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.capability;
+package com.ombremoon.enderring.common.capability;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
@@ -6,12 +6,13 @@ import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,9 @@ import java.util.Map;
 public class PlayerStatus implements IPlayerStatus {
     public static final EntityDataAccessor<Float> FP = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> PHYSICAL_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> STRIKE_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> SLASH_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> PIERCE_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> MAGICAL_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> FIRE_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> LIGHTNING_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
@@ -31,11 +35,11 @@ public class PlayerStatus implements IPlayerStatus {
     private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
     private Map<AbstractSpell, SpellInstance> activeSpells = new HashMap<>();
     private SpellType<?> selectedSpell;
+    private EntityType<?> spiritSummon;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
     private int talismanPouches;
     private int memoryStones;
-    private ItemStack quickAccessItem;
     private int quickAccessSlot;
     private boolean usingQuickAccess;
     private ItemStack cachedItem;
@@ -45,6 +49,9 @@ public class PlayerStatus implements IPlayerStatus {
         this.player = player;
         player.getEntityData().define(FP, 0.0F);
         player.getEntityData().define(PHYSICAL_DEF, 0.0F);
+        player.getEntityData().define(STRIKE_DEF, 0.0F);
+        player.getEntityData().define(SLASH_DEF, 0.0F);
+        player.getEntityData().define(PIERCE_DEF, 0.0F);
         player.getEntityData().define(MAGICAL_DEF, 0.0F);
         player.getEntityData().define(FIRE_DEF, 0.0F);
         player.getEntityData().define(LIGHTNING_DEF, 0.0F);
@@ -83,56 +90,6 @@ public class PlayerStatus implements IPlayerStatus {
     }
 
     @Override
-    public float getPhysDefense() {
-        return this.player.getEntityData().get(PHYSICAL_DEF);
-    }
-
-    @Override
-    public void setPhysDefense(float physDefense) {
-        this.player.getEntityData().set(PHYSICAL_DEF, physDefense);
-    }
-
-    @Override
-    public float getMagicDefense() {
-        return this.player.getEntityData().get(MAGICAL_DEF);
-    }
-
-    @Override
-    public void setMagicDefense(float magicDefense) {
-        this.player.getEntityData().set(MAGICAL_DEF, magicDefense);
-    }
-
-    @Override
-    public float getFireDefense() {
-        return this.player.getEntityData().get(FIRE_DEF);
-    }
-
-    @Override
-    public void setFireDefense(float fireDefense) {
-        this.player.getEntityData().set(FIRE_DEF, fireDefense);
-    }
-
-    @Override
-    public float getLightDefense() {
-        return this.player.getEntityData().get(LIGHTNING_DEF);
-    }
-
-    @Override
-    public void setLightDefense(float lightDefense) {
-        this.player.getEntityData().set(LIGHTNING_DEF, lightDefense);
-    }
-
-    @Override
-    public float getHolyDefense() {
-        return this.player.getEntityData().get(HOLY_DEF);
-    }
-
-    @Override
-    public void setHolyDefense(float holyDefense) {
-        this.player.getEntityData().set(LIGHTNING_DEF, holyDefense);
-    }
-
-    @Override
     public LinkedHashSet<SpellType<?>> getSpellSet() {
         return this.spellSet;
     }
@@ -150,6 +107,16 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public void setSelectedSpell(SpellType<?> selectedSpell) {
         this.selectedSpell = selectedSpell;
+    }
+
+    @Override
+    public EntityType<?> getSpiritSummon() {
+        return this.spiritSummon;
+    }
+
+    @Override
+    public void setSpiritSummon(EntityType<?> spiritSummon) {
+        this.spiritSummon = spiritSummon;
     }
 
     @Override
@@ -241,7 +208,7 @@ public class PlayerStatus implements IPlayerStatus {
             compoundTag.putString("SelectedSpell", this.selectedSpell.getResourceLocation().toString());
 
         for (SpellType<?> spellType : spellSet) {
-            spellList.add(PlayerStatusUtil.storeSpell(spellType));
+            spellList.add(EntityStatusUtil.storeSpell(spellType));
         }
         compoundTag.put("Spells", spellList);
         compoundTag.putBoolean("Torrent", this.isTorrentSpawned);
@@ -256,13 +223,13 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public void deserializeNBT(CompoundTag nbt) {
         if (nbt.contains("SelectedSpell", 8)) {
-            this.selectedSpell = PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(nbt, "SelectedSpell"));
+            this.selectedSpell = EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(nbt, "SelectedSpell"));
         }
         if (nbt.contains("Spells", 9)) {
             ListTag spellList = nbt.getList("Spells", 10);
             for (int i = 0; i < spellList.size(); i++) {
                 CompoundTag compoundTag = spellList.getCompound(i);
-                this.spellSet.add(PlayerStatusUtil.getSpellByName(PlayerStatusUtil.getSpellId(compoundTag, "Spell")));
+                this.spellSet.add(EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(compoundTag, "Spell")));
             }
         }
         if (nbt.contains("Torrent", 99)) {

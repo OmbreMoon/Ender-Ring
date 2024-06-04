@@ -47,16 +47,9 @@ public class AbstractWeapon extends Item {
             CapabilityItem w = ItemCapabilityProvider.get(this);
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
             Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
-            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
 
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
-    }
-
-    @Override
-    public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-
-        return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 
     public int getWeaponLevel(ItemStack itemStack) {

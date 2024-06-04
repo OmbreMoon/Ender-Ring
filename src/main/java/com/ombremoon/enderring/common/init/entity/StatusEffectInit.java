@@ -2,7 +2,6 @@ package com.ombremoon.enderring.common.init.entity;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.object.world.effect.*;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.Attribute;

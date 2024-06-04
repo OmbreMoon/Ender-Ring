@@ -1,6 +1,9 @@
 {
   "values": [
     "enderring:physical",
+    "enderring:strike",
+    "enderring:slash",
+    "enderring:pierce",
     "enderring:magical",
     "enderring:fire",
     "enderring:lightning",

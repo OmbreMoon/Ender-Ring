@@ -1,21 +1,21 @@
 package com.ombremoon.enderring.common;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.ombremoon.enderring.common.data.AttackElement;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.Saturations;
+import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.util.DamageUtil;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ScaledWeapon implements INBTSerializable<CompoundTag> {
     protected Base base = new Base();
@@ -84,8 +84,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             jsonObject.addProperty("reinforceType", this.reinforceType.getTypeId().toString());
 
             JsonArray jsonArray = new JsonArray(5);
-            for (Saturations saturation1 : this.saturations) {
-                jsonArray.add(saturation1.ordinal());
+            for (Saturations saturation : this.saturations) {
+                jsonArray.add(saturation.ordinal());
             }
             jsonObject.add("saturations", jsonArray);
 
@@ -134,6 +134,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         private int fireDamage;
         private int lightDamage;
         private int holyDamage;
+        private PhysicalDamageType[] physDamageTypes;
 
         @Override
         public CompoundTag serializeNBT() {
@@ -143,6 +144,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             nbt.putInt("FireDamage", this.fireDamage);
             nbt.putInt("LightDamage", this.lightDamage);
             nbt.putInt("HolyDamage", this.holyDamage);
+            nbt.putIntArray("PhysDamageTypes", this.physDamageTypes != null ? Arrays.stream(this.physDamageTypes).mapToInt(PhysicalDamageType::ordinal).toArray() : new int[]{0});
             return nbt;
         }
 
@@ -163,6 +165,9 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             if (nbt.contains("HolyDamage", 99)) {
                 this.holyDamage = nbt.getInt("HolyDamage");
             }
+            if (nbt.contains("PhysDamageTypes", 11)) {
+                this.physDamageTypes = createDamageTypeArray(nbt.getIntArray("PhysDamageTypes"));
+            }
         }
 
         public JsonObject toJsonObject() {
@@ -171,12 +176,19 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             Preconditions.checkArgument(this.fireDamage >= 0, "Fire damage must be greater than or equal to 0");
             Preconditions.checkArgument(this.lightDamage >= 0, "Lightning damage must be greater than or equal to 0");
             Preconditions.checkArgument(this.holyDamage >= 0, "Holy damage must be greater than or equal to 0");
+            Preconditions.checkArgument(this.physDamageTypes != null, "Weapon must have a physical damage type");
             JsonObject jsonObject = new JsonObject();
             if (this.physDamage > 0) jsonObject.addProperty("physDamage", this.physDamage);
             if (this.magDamage > 0) jsonObject.addProperty("magDamage", this.magDamage);
             if (this.fireDamage > 0) jsonObject.addProperty("fireDamage", this.fireDamage);
             if (this.lightDamage > 0) jsonObject.addProperty("lightDamage", this.lightDamage);
             if (this.holyDamage > 0) jsonObject.addProperty("holyDamage", this.holyDamage);
+
+            JsonArray jsonArray = new JsonArray();
+            for (PhysicalDamageType damageType : this.physDamageTypes) {
+                jsonArray.add(damageType.getName());
+            }
+            jsonObject.add("physDamageTypes", jsonArray);
             return jsonObject;
         }
 
@@ -200,6 +212,10 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this.holyDamage;
         }
 
+        public PhysicalDamageType[] getPhysDamageTypes() {
+            return this.physDamageTypes;
+        }
+
         public Map<WeaponDamage, Integer> getDamageMap() {
             Map<WeaponDamage, Integer> damageMap = new TreeMap<>();
             if (this.physDamage > 0) damageMap.put(WeaponDamage.PHYSICAL, this.physDamage);
@@ -210,13 +226,13 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return damageMap;
         }
 
-        public Map<WeaponDamage, Float> getScaledDamageMap(ScaledWeapon weapon, Player player, int weaponLevel) {
+        public Map<WeaponDamage, Float> getScaledDamageMap(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel) {
             Map<WeaponDamage, Float> damageMap = new TreeMap<>();
-            if (DamageUtil.getPhysicalAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.PHYSICAL, DamageUtil.getPhysicalAP(weapon, player, weaponLevel));
-            if (DamageUtil.getMagicalAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.MAGICAL, DamageUtil.getMagicalAP(weapon, player, weaponLevel));
-            if (DamageUtil.getFireAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.FIRE, DamageUtil.getFireAP(weapon, player, weaponLevel));
-            if (DamageUtil.getLightningAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.LIGHTNING, DamageUtil.getLightningAP(weapon, player, weaponLevel));
-            if (DamageUtil.getHolyAP(weapon, player, weaponLevel) > 0) damageMap.put(WeaponDamage.HOLY, DamageUtil.getHolyAP(weapon, player, weaponLevel));
+            if (DamageUtil.getPhysicalAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.PHYSICAL, DamageUtil.getPhysicalAP(weapon, livingEntity, weaponLevel));
+            if (DamageUtil.getMagicalAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.MAGICAL, DamageUtil.getMagicalAP(weapon, livingEntity, weaponLevel));
+            if (DamageUtil.getFireAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.FIRE, DamageUtil.getFireAP(weapon, livingEntity, weaponLevel));
+            if (DamageUtil.getLightningAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.LIGHTNING, DamageUtil.getLightningAP(weapon, livingEntity, weaponLevel));
+            if (DamageUtil.getHolyAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.HOLY, DamageUtil.getHolyAP(weapon, livingEntity, weaponLevel));
             return damageMap;
         }
 
@@ -227,6 +243,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             damage.fireDamage = this.fireDamage;
             damage.lightDamage = this.lightDamage;
             damage.holyDamage = this.holyDamage;
+            damage.physDamageTypes = this.physDamageTypes;
             return damage;
         }
     }
@@ -406,19 +423,19 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return reqMap;
         }
 
-        public boolean meetsRequirements(Player player, ScaledWeapon weapon, WeaponDamage weaponDamage) {
+        public boolean meetsRequirements(LivingEntity livingEntity, ScaledWeapon weapon, WeaponDamage weaponDamage) {
             final var list = weapon.getBaseStats().getElementID().getListMap().get(weaponDamage);
             for (var scaling : list) {
-                if (PlayerStatusUtil.getPlayerStat(player, scaling.getAttribute()) < getReqMap().get(scaling)) {
+                if (EntityStatusUtil.getEntityAttribute(livingEntity, scaling.getAttribute()) < getReqMap().get(scaling)) {
                     return false;
                 }
             }
             return true;
         }
 
-        public boolean meetsRequirements(Player player) {
+        public boolean meetsRequirements(LivingEntity livingEntity) {
             for (var entry : this.getReqMap().entrySet()) {
-                if (PlayerStatusUtil.getPlayerStat(player, entry.getKey().getAttribute()) < entry.getValue()) {
+                if (EntityStatusUtil.getEntityAttribute(livingEntity, entry.getKey().getAttribute()) < entry.getValue()) {
                     return false;
                 }
             }
@@ -495,6 +512,10 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         return Arrays.stream(array).mapToObj(Saturations::getSaturationById).toArray(Saturations[]::new);
     }
 
+    private static PhysicalDamageType[] createDamageTypeArray(int[] array) {
+        return Arrays.stream(array).mapToObj(PhysicalDamageType::getTypeById).toArray(PhysicalDamageType[]::new);
+    }
+
     public ScaledWeapon copy() {
         ScaledWeapon scaledWeapon = new ScaledWeapon();
         scaledWeapon.base = this.base.copy();
@@ -557,6 +578,16 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
 
         public Builder saturation(Saturations physSat, Saturations magSat, Saturations fireSat, Saturations lightSat, Saturations holySat) {
             this.scaledWeapon.base.saturations = new Saturations[]{physSat, magSat, fireSat, lightSat, holySat};
+            return this;
+        }
+
+        public Builder physDamageType(int... damageTypes) {
+            this.scaledWeapon.damage.physDamageTypes = createDamageTypeArray(damageTypes);
+            return this;
+        }
+
+        public Builder physDamageType(PhysicalDamageType... damageTypes) {
+            this.scaledWeapon.damage.physDamageTypes = damageTypes;
             return this;
         }
 

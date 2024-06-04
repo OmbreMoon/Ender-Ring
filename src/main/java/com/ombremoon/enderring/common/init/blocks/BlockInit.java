@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common.init;
+package com.ombremoon.enderring.common.init.blocks;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.item.ItemInit;

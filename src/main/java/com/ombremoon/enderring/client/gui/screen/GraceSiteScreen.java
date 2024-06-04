@@ -1,23 +1,12 @@
 package com.ombremoon.enderring.client.gui.screen;
 
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.ombremoon.enderring.network.ModNetworking;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
-import com.ombremoon.enderring.util.RenderUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 
-import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 //TODO: TEST ON SERVER

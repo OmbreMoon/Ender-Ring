@@ -1,8 +1,7 @@
 package com.ombremoon.enderring.network.server;
 
-import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -36,9 +35,9 @@ public class ServerboundUpdateMainStatsPacket {
             final var handler = context.getNetworkManager().getPacketListener();
             if (handler instanceof ServerGamePacketListenerImpl serverGamePacketListener) {
                 final var serverPlayer = serverGamePacketListener.player;
-                byte flag1 = getAttributeFlag(EntityAttributeInit.VIGOR.get(), PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.VIGOR.get()));
-                byte flag2 = getAttributeFlag(EntityAttributeInit.MIND.get(), PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.MIND.get()));
-                byte flag3 = getAttributeFlag(EntityAttributeInit.ENDURANCE.get(), PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.ENDURANCE.get()));
+                byte flag1 = getAttributeFlag(EntityAttributeInit.VIGOR.get(), EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.VIGOR.get()));
+                byte flag2 = getAttributeFlag(EntityAttributeInit.MIND.get(), EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.MIND.get()));
+                byte flag3 = getAttributeFlag(EntityAttributeInit.ENDURANCE.get(), EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.ENDURANCE.get()));
 
                 updateMainStats(serverPlayer, getMaxHealth(serverPlayer, flag1), getMaxFP(serverPlayer, flag2), getMaxStamina(serverPlayer, flag3), packet.setMax);
             }
@@ -49,16 +48,16 @@ public class ServerboundUpdateMainStatsPacket {
     private static float getMaxHealth(ServerPlayer serverPlayer, byte flag) {
         switch (flag) {
             case 1 -> {
-                return (float) (20 + 33 * (Math.pow(((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.VIGOR.get()) - 1) / 24), 1.5)));
+                return (float) (20 + 33 * (Math.pow(((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.VIGOR.get()) - 1) / 24), 1.5)));
             }
             case 2 -> {
-                return (float) (53 + 43 * (Math.pow(((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.VIGOR.get()) - 25) / 15), 1.1)));
+                return (float) (53 + 43 * (Math.pow(((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.VIGOR.get()) - 25) / 15), 1.1)));
             }
             case 3 -> {
-                return (float) (97 + 30 * (1 - ( 1 - Math.pow(((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.VIGOR.get()) - 40) / 20), 1.2))));
+                return (float) (97 + 30 * (1 - ( 1 - Math.pow(((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.VIGOR.get()) - 40) / 20), 1.2))));
             }
             case 4 -> {
-                return (float) (127 + 13 * (1 - ( 1 - Math.pow(((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.VIGOR.get()) - 60) / 39), 1.2))));
+                return (float) (127 + 13 * (1 - ( 1 - Math.pow(((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.VIGOR.get()) - 60) / 39), 1.2))));
             }
             default -> {
                 return 0;
@@ -69,16 +68,16 @@ public class ServerboundUpdateMainStatsPacket {
     private static float getMaxFP(ServerPlayer serverPlayer, byte flag) {
         switch (flag) {
             case 1 -> {
-                return (float) (50 + 45 * (((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.MIND.get()) - 1) / 14)));
+                return (float) (50 + 45 * (((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.MIND.get()) - 1) / 14)));
             }
             case 2 -> {
-                return (float) (95 + 105 * (((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.MIND.get()) - 15) / 20)));
+                return (float) (95 + 105 * (((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.MIND.get()) - 15) / 20)));
             }
             case 3 -> {
-                return (float) (200 + 150 * (1 - ( 1 - Math.pow(((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.MIND.get()) - 35) / 25), 1.2))));
+                return (float) (200 + 150 * (1 - ( 1 - Math.pow(((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.MIND.get()) - 35) / 25), 1.2))));
             }
             case 4 -> {
-                return (float) (350 + 100 * (((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.MIND.get()) - 60) / 39)));
+                return (float) (350 + 100 * (((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.MIND.get()) - 60) / 39)));
             }
             default -> {
                 return 0;
@@ -89,16 +88,16 @@ public class ServerboundUpdateMainStatsPacket {
     private static float getMaxStamina(ServerPlayer serverPlayer, byte flag) {
         switch (flag) {
             case 1 -> {
-                return (float) (16 + 5 * (((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.ENDURANCE.get()) - 1) / 14)));
+                return (float) (16 + 5 * (((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.ENDURANCE.get()) - 1) / 14)));
             }
             case 2 -> {
-                return (float) (21 + 5 * (((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.ENDURANCE.get()) - 15) / 15)));
+                return (float) (21 + 5 * (((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.ENDURANCE.get()) - 15) / 15)));
             }
             case 3 -> {
-                return (float) (26 + 5 * (((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.ENDURANCE.get()) - 30) / 20)));
+                return (float) (26 + 5 * (((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.ENDURANCE.get()) - 30) / 20)));
             }
             case 4 -> {
-                return (float) (31 + 3 * (((PlayerStatusUtil.getPlayerStat(serverPlayer, EntityAttributeInit.ENDURANCE.get()) - 50) / 49)));
+                return (float) (31 + 3 * (((EntityStatusUtil.getEntityAttribute(serverPlayer, EntityAttributeInit.ENDURANCE.get()) - 50) / 49)));
             }
             default -> {
                 return 0;
@@ -127,7 +126,7 @@ public class ServerboundUpdateMainStatsPacket {
         if (setMax) {
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(serverPlayer, ServerPlayerPatch.class);
             serverPlayer.setHealth(serverPlayer.getMaxHealth());
-            PlayerStatusUtil.setFP(serverPlayer, maxFP);
+            EntityStatusUtil.setFP(serverPlayer, maxFP);
             playerPatch.setStamina(playerPatch.getMaxStamina());
         }
     }

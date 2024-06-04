@@ -1,9 +1,8 @@
 package com.ombremoon.enderring.common.object.world.inventory;
 
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.util.CurioHelper;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,7 +28,7 @@ public class QuickAccessMenu extends AbstractContainerMenu {
         addPlayerSlots(inventory);
         addQuickAccessSlots(player);
         addTalismanSlots(player);
-        this.addDataSlot(this.talismanPouches).set(PlayerStatusUtil.getTalismanPouches(player));
+        this.addDataSlot(this.talismanPouches).set(EntityStatusUtil.getTalismanPouches(player));
     }
 
     private void addPlayerSlots(Inventory inventory) {
@@ -61,7 +60,7 @@ public class QuickAccessMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(CurioHelper.getTalismanStacks(player), index, 53 + col * 18, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
-                    return PlayerStatusUtil.getTalismanPouches(player) >= index;
+                    return EntityStatusUtil.getTalismanPouches(player) >= index;
                 }
             });
         }
@@ -75,9 +74,9 @@ public class QuickAccessMenu extends AbstractContainerMenu {
     public void removed(Player pPlayer) {
         super.removed(pPlayer);
         if (pPlayer instanceof ServerPlayer serverPlayer) {
-            ItemStack itemStack = PlayerStatusUtil.getQuickAccessItem(serverPlayer);
+            ItemStack itemStack = EntityStatusUtil.getQuickAccessItem(serverPlayer);
             if (itemStack.isEmpty())
-                PlayerStatusUtil.setQuickAccessSlot(serverPlayer, CurioHelper.findFirstNonEmptySlot(serverPlayer));
+                EntityStatusUtil.setQuickAccessSlot(serverPlayer, CurioHelper.findFirstNonEmptySlot(serverPlayer));
         }
     }
 

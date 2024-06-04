@@ -131,7 +131,6 @@ public class HeavyAttack extends Skill {
         }
 
         executer.updateEntityState();
-        itemStack.getOrCreateTag().putFloat("MotionValue", 1.6F);
     }
 
     @Override

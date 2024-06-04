@@ -1,20 +1,19 @@
-package com.ombremoon.enderring.client;
+package com.ombremoon.enderring.client.event;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.client.KeyBinds;
 import com.ombremoon.enderring.client.gui.QuickAccessOverlay;
 import com.ombremoon.enderring.client.gui.screen.*;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
+import com.ombremoon.enderring.common.init.ParticleInit;
 import com.ombremoon.enderring.network.ModNetworking;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -65,6 +64,11 @@ public class ClientEvents {
         public static void registerGUIOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAboveAll("quick_access", QuickAccessOverlay.QUICK_ACCESS_OVERLAY);
         }
+
+        @SubscribeEvent
+        public static void onParticleProviderRegister(RegisterParticleProvidersEvent event) {
+            ParticleInit.registerParticleFactory(event);
+        }
     }
 
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
@@ -80,7 +84,7 @@ public class ClientEvents {
                 ModNetworking.cycleQuickAccessItem();
             }
             if (KeyBinds.USE_QUICK_ACCESS_BINDING.consumeClick()) {
-                if (!PlayerStatusUtil.isUsingQuickAccess(player))
+                if (!EntityStatusUtil.isUsingQuickAccess(player))
                     ModNetworking.useQuickAccessItem();
             }
         }
@@ -88,7 +92,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onUseQuickAccess(InputEvent.MouseScrollingEvent event) {
             Player player = Minecraft.getInstance().player;
-            if (PlayerStatusUtil.isUsingQuickAccess(player)) {
+            if (EntityStatusUtil.isUsingQuickAccess(player)) {
                 event.setCanceled(true);
             }
         }

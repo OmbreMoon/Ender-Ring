@@ -15,12 +15,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.EnumMap;
 import java.util.function.Supplier;
 
-public enum ModArmorMaterial implements ArmorMaterial {
+public enum ArmorInit implements ArmorMaterial {
     BLUE_CLOTH("blue_cloth", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266655_) -> {
-        p_266655_.put(ArmorItem.Type.BOOTS, 5);
-        p_266655_.put(ArmorItem.Type.LEGGINGS, 10);
-        p_266655_.put(ArmorItem.Type.CHESTPLATE, 14);
-        p_266655_.put(ArmorItem.Type.HELMET, 5);
+        p_266655_.put(ArmorItem.Type.HELMET, 3);
+        p_266655_.put(ArmorItem.Type.CHESTPLATE, 5);
+        p_266655_.put(ArmorItem.Type.LEGGINGS, 3);
+        p_266655_.put(ArmorItem.Type.BOOTS, 2);
         // Enchantability, Toughness, Knockback Resistance
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
@@ -28,10 +28,10 @@ public enum ModArmorMaterial implements ArmorMaterial {
 
     public static final StringRepresentable.EnumCodec<ArmorMaterials> CODEC = net.minecraft.util.StringRepresentable.fromEnum(ArmorMaterials::values);
     private static final EnumMap<ArmorItem.Type, Integer> HEALTH_FUNCTION_FOR_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266653_) -> {
-        p_266653_.put(ArmorItem.Type.BOOTS, 13);
-        p_266653_.put(ArmorItem.Type.LEGGINGS, 15);
-        p_266653_.put(ArmorItem.Type.CHESTPLATE, 16);
         p_266653_.put(ArmorItem.Type.HELMET, 11);
+        p_266653_.put(ArmorItem.Type.CHESTPLATE, 16);
+        p_266653_.put(ArmorItem.Type.LEGGINGS, 15);
+        p_266653_.put(ArmorItem.Type.BOOTS, 13);
     });
     private final String name;
     private final int durabilityMultiplier;
@@ -42,7 +42,7 @@ public enum ModArmorMaterial implements ArmorMaterial {
     private final float knockbackResistance;
     private final LazyLoadedValue<Ingredient> repairIngredient;
 
-    private ModArmorMaterial(String p_268171_, int p_268303_, EnumMap<ArmorItem.Type, Integer> p_267941_, int p_268086_, SoundEvent p_268145_, float p_268058_, float p_268180_, Supplier<Ingredient> p_268256_) {
+    private ArmorInit(String p_268171_, int p_268303_, EnumMap<ArmorItem.Type, Integer> p_267941_, int p_268086_, SoundEvent p_268145_, float p_268058_, float p_268180_, Supplier<Ingredient> p_268256_) {
         this.name = p_268171_;
         this.durabilityMultiplier = p_268303_;
         this.protectionFunctionForType = p_267941_;

@@ -1,26 +1,29 @@
 package com.ombremoon.enderring.common.magic;
 
+import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.CommonClass;
-import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.common.object.spell.SpellModule;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.memory.ExpirableValue;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
+import javax.annotation.Nullable;
+import java.util.*;
+
+/**TODO:
+ * Spells cannot get/set fields/have to use a impl of data keys
+ * Can be saved in a map that is registered on init*/
 
 public abstract class AbstractSpell {
     protected static int DEFAULT_CAST_TIME = 1;
@@ -30,6 +33,7 @@ public abstract class AbstractSpell {
     protected final int fpCost;
     protected final int duration;
     protected final float motionValue;
+    private final Map<SpellModule<?>, Optional<? extends ExpirableValue<?>>> modules = Maps.newHashMap();
     private String descriptionId;
 
     public static Builder<AbstractSpell> createBuilder() {
@@ -127,13 +131,71 @@ public abstract class AbstractSpell {
     public void activateSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, Level level, BlockPos blockPos) {
         AbstractSpell spell = spellInstance.getSpell();
         Player player = playerPatch.getOriginal();
-        SpellInstance currentSpellInstance = PlayerStatusUtil.getActiveSpells(player).get(spell);
+        SpellInstance currentSpellInstance = EntityStatusUtil.getActiveSpells(player).get(spell);
         if (currentSpellInstance == null) {
-            PlayerStatusUtil.activateSpell(player, spell, spellInstance);
+            EntityStatusUtil.activateSpell(player, spell, spellInstance);
             spell.onSpellStart(spellInstance, playerPatch, spellInstance.getWeapon(), level, blockPos);
         } else if (currentSpellInstance.updateSpell(spellInstance)) {
             currentSpellInstance.getSpell().onSpellUpdate(currentSpellInstance, playerPatch, currentSpellInstance.getWeapon(), level, blockPos);
         }
+    }
+
+    public void clearModules() {
+        this.modules.keySet().forEach(spellModule -> {
+            this.modules.put(spellModule, Optional.empty());
+        });
+    }
+
+    public <O> void invalidateModule(SpellModule<O> spellModule) {
+        this.setModule(spellModule, Optional.empty());
+    }
+
+    public <O> void setModule(SpellModule<O> spellModule, @Nullable O module) {
+        this.setModule(spellModule, Optional.ofNullable(module));
+    }
+
+    public <O> void setTransientModule(SpellModule<O> spellModule, O module, long ticksValid) {
+        this.setSpellModule(spellModule, Optional.of(ExpirableValue.of(module, ticksValid)));
+    }
+
+    public <O> void setModule(SpellModule<O> spellModule, Optional<? extends O> module) {
+        this.setSpellModule(spellModule, module.map(ExpirableValue::of));
+    }
+
+    <O> void setSpellModule(SpellModule<O> spellModule, Optional<? extends ExpirableValue<?>> module) {
+        if (this.modules.containsKey(spellModule)) {
+            if (module.isPresent() && this.isEmptyCollection(module.get().getValue())) {
+                this.invalidateModule(spellModule);
+            } else {
+                this.modules.put(spellModule, module);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <O> Optional<O> getModule(SpellModule<O> spellModule) {
+        Optional<? extends ExpirableValue<?>> optional = this.modules.get(spellModule);
+        if (optional == null) {
+            throw new IllegalStateException("Tried to fetch unregistered module: " + spellModule);
+        } else {
+            return (Optional<O>) optional.map(ExpirableValue::getValue);
+        }
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public <O> Optional<O> getSpellModule(SpellModule<O> spellModule) {
+        Optional<? extends ExpirableValue<?>> optional = this.modules.get(spellModule);
+        return optional == null ? null : (Optional<O>) optional.map(ExpirableValue::getValue);
+    }
+
+    public <O> long getTicksUntilInvalid(SpellModule<O> spellModule) {
+        Optional<? extends ExpirableValue<?>> optional = this.modules.get(spellModule);
+        return optional.map(ExpirableValue::getTimeToLive).orElse(0L);
+    }
+
+    private boolean isEmptyCollection(Object pCollection) {
+        return pCollection instanceof Collection collection && collection.isEmpty();
     }
 
     public static class Builder<T extends AbstractSpell> {

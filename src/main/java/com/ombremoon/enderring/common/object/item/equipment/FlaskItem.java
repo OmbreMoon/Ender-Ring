@@ -3,7 +3,7 @@ package com.ombremoon.enderring.common.object.item.equipment;
 import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.util.FlaskUtil;
-import com.ombremoon.enderring.util.PlayerStatusUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
@@ -96,7 +95,7 @@ public class FlaskItem extends Item implements ICurioItem, IQuickAccess {
                             f = flaskLevel <= 4 ? 80 + (15 * flaskLevel) : 150 + ((flaskLevel - 5) * 10);
 
                             if (pLivingEntity instanceof Player player)
-                                PlayerStatusUtil.increaseFP(player, f);
+                                EntityStatusUtil.increaseFP(player, f);
                         }
                     }
                     default -> {

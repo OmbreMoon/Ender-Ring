@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.common.data;
 
-public enum Saturations implements Saturation{
+public enum Saturations implements Saturation {
     DEFAULT(new int[]{1, 18, 60, 80, 150}, new int[]{0, 25, 75, 90, 110}, new double[]{1.2, -1.2, 1, 1, 1}),
     HEAVY(new int[]{1, 20, 60, 80, 150}, new int[]{0, 35, 75, 90, 110}, new double[]{1.2, -1.2, 1, 1, 1}),
     KEEN(new int[]{1, 20, 60, 80, 150}, new int[]{0, 35, 75, 90, 110}, new double[]{1.2, -1.2, 1, 1, 1}),
