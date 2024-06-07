@@ -2,22 +2,28 @@ package com.ombremoon.enderring.common.magic;
 
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-public class SpellType<T extends AbstractSpell> {
+public class SpellType<S extends AbstractSpell> {
     private final ResourceLocation resourceLocation;
-    private final Supplier<T> supplier;
+    private final SpellFactory<S> factory;
 
-    public SpellType(ResourceLocation resourceLocation, Supplier<T> supplier) {
+    public SpellType(ResourceLocation resourceLocation, SpellFactory<S> factory) {
+        this.factory = factory;
         this.resourceLocation = resourceLocation;
-        this.supplier = supplier;
     }
 
     public ResourceLocation getResourceLocation() {
         return this.resourceLocation;
     }
 
-    public T getSpell() {
-        return this.supplier.get();
+    @Nullable
+    public S createSpell() {
+        return this.factory.create();
+    }
+
+    public interface SpellFactory<S extends AbstractSpell> {
+        S create();
     }
 }

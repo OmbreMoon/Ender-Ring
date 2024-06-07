@@ -7,7 +7,6 @@ import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.init.StatInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.MagicType;
-import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.util.DamageUtil;
@@ -24,8 +23,6 @@ import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-//TODO: Add spells cast stat
-
 public class AbstractCatalystItem extends MeleeWeapon {
     private final MagicType magicType;
 
@@ -38,7 +35,7 @@ public class AbstractCatalystItem extends MeleeWeapon {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         SpellType<?> spell = EntityStatusUtil.getSelectedSpell(pPlayer);
-        if (pUsedHand == InteractionHand.MAIN_HAND && spell != null && spell.getSpell().getMagicType() == this.magicType) {
+        if (pUsedHand == InteractionHand.MAIN_HAND && spell != null && spell.createSpell().getMagicType() == this.magicType) {
             return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
         }
         return InteractionResultHolder.pass(itemStack);
@@ -62,7 +59,7 @@ public class AbstractCatalystItem extends MeleeWeapon {
     @Override
     public int getUseDuration(ItemStack pStack) {
         SpellType<?> spellType = EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(pStack.getTag(), "Spell"));
-        return spellType != null ? spellType.getSpell().getCastTime() : 1;
+        return spellType != null ? spellType.createSpell().getCastTime() : 1;
     }
 
     @Override
@@ -72,20 +69,22 @@ public class AbstractCatalystItem extends MeleeWeapon {
         ScaledWeapon weapon = this.getModifiedWeapon(pStack);
         if (!pLevel.isClientSide && spellType != null) {
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
-            AbstractSpell spell = spellType.getSpell();
-            if (playerPatch != null && this.canCastSpell(player, pStack, spell, true)) {
-                int i = this.getWeaponLevel(pStack);
-                WeaponDamage weaponDamage = this.magicType == MagicType.SORCERY ? WeaponDamage.MAGICAL : WeaponDamage.HOLY;
-                spell.activateSpellEffect(new SpellInstance(spellType, this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage)), playerPatch, pLevel, pLivingEntity.getOnPos());
+            AbstractSpell spell = spellType.createSpell();
+            if (spell != null) {
+                if (playerPatch != null && this.canCastSpell(player, pStack, spell, true)) {
+                    int i = this.getWeaponLevel(pStack);
+                    WeaponDamage weaponDamage = this.magicType == MagicType.SORCERY ? WeaponDamage.MAGICAL : WeaponDamage.HOLY;
+                    spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage));
 
-                player.awardStat(Stats.ITEM_USED.get(this));
-                player.awardStat(StatInit.SPELLS_CAST.get());
-            }
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    player.awardStat(this.magicType == MagicType.SORCERY ? StatInit.SORCERIES_CAST.get() : StatInit.INCANTATIONS_CAST.get());
+                }
 
-            if (player != null) {
-                ItemCooldowns cooldowns = player.getCooldowns();
-                if (!cooldowns.isOnCooldown(this) && this.canCastSpell(player, pStack, spell, false)) {
-                    cooldowns.addCooldown(this, spell.isInstantSpell() ? 10 : spell.getCastTime());
+                if (player != null) {
+                    ItemCooldowns cooldowns = player.getCooldowns();
+                    if (!cooldowns.isOnCooldown(this) && this.canCastSpell(player, pStack, spell, false)) {
+                        cooldowns.addCooldown(this, spell.isInstantSpell() ? 10 : spell.getCastTime());
+                    }
                 }
             }
         }

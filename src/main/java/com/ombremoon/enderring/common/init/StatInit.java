@@ -11,7 +11,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class StatInit {
     public static final DeferredRegister<ResourceLocation> STATS = DeferredRegister.create(Registries.CUSTOM_STAT, Constants.MOD_ID);
 
-    public static final RegistryObject<ResourceLocation> SPELLS_CAST = registerStat("spells_cast");
+    public static final RegistryObject<ResourceLocation> SORCERIES_CAST = registerStat("sorceries_cast");
+    public static final RegistryObject<ResourceLocation> INCANTATIONS_CAST = registerStat("incantations_cast");
 
     public static RegistryObject<ResourceLocation> registerStat(String name) {
         return STATS.register(name, () -> CommonClass.customLocation(name));

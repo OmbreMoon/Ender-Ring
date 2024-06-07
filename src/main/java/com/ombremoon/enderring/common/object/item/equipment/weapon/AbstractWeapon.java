@@ -46,6 +46,7 @@ public class AbstractWeapon extends Item {
         if (!pLevel.isClientSide) {
             CapabilityItem w = ItemCapabilityProvider.get(this);
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
+//            playerPatch.getArmature().rootJoint.getToOrigin()
             Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
 
         }

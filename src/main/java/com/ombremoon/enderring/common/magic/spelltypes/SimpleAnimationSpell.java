@@ -1,7 +1,10 @@
-package com.ombremoon.enderring.common.magic;
+package com.ombremoon.enderring.common.magic.spelltypes;
 
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.magic.AbstractSpell;
+import com.ombremoon.enderring.common.magic.MagicType;
+import com.ombremoon.enderring.common.magic.SpellType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -24,7 +27,8 @@ public abstract class SimpleAnimationSpell extends AbstractSpell {
     }
 
     @Override
-    public void onSpellStart(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
+    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellStart(playerPatch, level, blockPos, weapon);
 //        this.spellConsumer.accept(playerPatch.getOriginal());
         playerPatch.playAnimationSynchronized(this.spellAnimation.get(), 0.0F);
     }

@@ -1,8 +1,8 @@
 package com.ombremoon.enderring.common.capability;
 
 import com.ombremoon.enderring.common.magic.AbstractSpell;
-import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +22,7 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
     LinkedHashSet<SpellType<?>> getSpellSet();
 
-    Map<AbstractSpell, SpellInstance> getActiveSpells();
+    ObjectOpenHashSet<AbstractSpell> getActiveSpells();
 
     SpellType<?> getSelectedSpell();
 

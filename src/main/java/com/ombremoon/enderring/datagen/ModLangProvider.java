@@ -3,6 +3,7 @@ package com.ombremoon.enderring.datagen;
 import com.google.common.collect.ImmutableMap;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.gui.screen.StarterScreen;
+import com.ombremoon.enderring.common.init.StatInit;
 import com.ombremoon.enderring.common.init.blocks.BlockInit;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.SpellInit;
@@ -13,6 +14,8 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.Stat;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -51,6 +54,7 @@ public class ModLangProvider extends LanguageProvider {
         StatusEffectInit.STATUS_EFFECTS.getEntries().forEach(this::effectLang);
         SpellInit.SPELL_TYPE.getEntries().forEach(this::spellLang);
         MenuTypeInit.MENU_TYPES.getEntries().forEach(this::menuLang);
+        StatInit.STATS.getEntries().forEach(this::statLang);
         tabLang();
         originLang();
 
@@ -76,7 +80,7 @@ public class ModLangProvider extends LanguageProvider {
     }
 
     protected void spellLang(RegistryObject<SpellType<?>> entry) {
-        add(entry.get().getSpell().getDescriptionId(), checkReplace(entry));
+        add(entry.get().createSpell().getDescriptionId(), checkReplace(entry));
     }
 
     protected void menuLang(RegistryObject<MenuType<?>> entry) {
@@ -99,6 +103,10 @@ public class ModLangProvider extends LanguageProvider {
 
     private void originLang(StarterScreen.Base entry) {
         add(Constants.MOD_ID + ".origin." + entry.getName(), checkReplace(entry.getName()));
+    }
+
+    private void statLang(RegistryObject<ResourceLocation> entry) {
+        add("stat." + Constants.MOD_ID + "." + entry.get().getPath(), checkReplace(entry));
     }
 
     protected void manualEntries() {

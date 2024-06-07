@@ -1,8 +1,6 @@
 package com.ombremoon.enderring.compat.epicfight.skills;
 
-import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
-import com.ombremoon.enderring.compat.epicfight.util.ItemUtil;
+import com.ombremoon.enderring.compat.epicfight.util.EFMCapabilityUtil;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillCategories;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import net.minecraft.network.FriendlyByteBuf;
@@ -87,7 +85,7 @@ public class HeavyAttack extends Skill {
             return;
         }
 
-        ExtendedWeaponCapability cap = ItemUtil.getWeaponCapability(executer);
+        ExtendedWeaponCapability cap = EFMCapabilityUtil.getWeaponCapability(executer);
         StaticAnimation animation = null;
         ServerPlayer serverPlayer = executer.getOriginal();
         ItemStack itemStack = serverPlayer.getItemInHand(InteractionHand.MAIN_HAND);

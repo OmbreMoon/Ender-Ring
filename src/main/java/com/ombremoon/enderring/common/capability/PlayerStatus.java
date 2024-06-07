@@ -4,9 +4,9 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
-import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,9 +17,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 
 public class PlayerStatus implements IPlayerStatus {
     public static final EntityDataAccessor<Float> FP = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
@@ -33,7 +31,7 @@ public class PlayerStatus implements IPlayerStatus {
     public static final EntityDataAccessor<Float> HOLY_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     private final Player player;
     private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
-    private Map<AbstractSpell, SpellInstance> activeSpells = new HashMap<>();
+    private ObjectOpenHashSet<AbstractSpell> activeSpells = new ObjectOpenHashSet<>();
     private SpellType<?> selectedSpell;
     private EntityType<?> spiritSummon;
     private boolean isTorrentSpawned;
@@ -95,7 +93,7 @@ public class PlayerStatus implements IPlayerStatus {
     }
 
     @Override
-    public Map<AbstractSpell, SpellInstance> getActiveSpells() {
+    public ObjectOpenHashSet<AbstractSpell> getActiveSpells() {
         return this.activeSpells;
     }
 

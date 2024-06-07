@@ -1,31 +1,27 @@
 package com.ombremoon.enderring.common.magic;
 
-import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.CommonClass;
+import com.ombremoon.enderring.ConfigHandler;
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
-import com.ombremoon.enderring.common.object.spell.SpellModule;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.memory.ExpirableValue;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
+import org.slf4j.Logger;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-import javax.annotation.Nullable;
-import java.util.*;
-
-/**TODO:
- * Spells cannot get/set fields/have to use a impl of data keys
- * Can be saved in a map that is registered on init*/
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public abstract class AbstractSpell {
+    static final Logger LOGGER = Constants.LOG;
     protected static int DEFAULT_CAST_TIME = 1;
     protected final SpellType<?> spellType;
     protected final MagicType magicType;
@@ -33,8 +29,15 @@ public abstract class AbstractSpell {
     protected final int fpCost;
     protected final int duration;
     protected final float motionValue;
-    private final Map<SpellModule<?>, Optional<? extends ExpirableValue<?>>> modules = Maps.newHashMap();
     private String descriptionId;
+    private Level level;
+    private ServerPlayerPatch playerPatch;
+    private BlockPos blockPos;
+    private ScaledWeapon scaledWeapon;
+    private int ticks = 0;
+    public boolean isInactive = false;
+    public boolean init = false;
+    public float magicScaling;
 
     public static Builder<AbstractSpell> createBuilder() {
         return new Builder<>();
@@ -47,6 +50,7 @@ public abstract class AbstractSpell {
         this.fpCost = builder.fpCost;
         this.duration = builder.duration;
         this.motionValue = builder.motionValue;
+        //BUILD SPELL EVENT
     }
 
     public SpellType<?> getSpellType() {
@@ -67,6 +71,10 @@ public abstract class AbstractSpell {
 
     public Set<Pair<WeaponScaling, Integer>> getRequiredStats() {
         return this.requiredStats;
+    }
+
+    public float getMotionValue() {
+        return motionValue;
     }
 
     public boolean isInstantSpell() {
@@ -112,90 +120,70 @@ public abstract class AbstractSpell {
         return null;
     }
 
-    public abstract void tickSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos);
-
-    public abstract void onSpellStart(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos);
-
-    public void onSpellUpdate(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
-
-    }
-
-    public void onSpellStop(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
-
-    }
-
-    public boolean isEffectTick(int duration) {
-        return true;
-    }
-
-    public void activateSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, Level level, BlockPos blockPos) {
-        AbstractSpell spell = spellInstance.getSpell();
-        Player player = playerPatch.getOriginal();
-        SpellInstance currentSpellInstance = EntityStatusUtil.getActiveSpells(player).get(spell);
-        if (currentSpellInstance == null) {
-            EntityStatusUtil.activateSpell(player, spell, spellInstance);
-            spell.onSpellStart(spellInstance, playerPatch, spellInstance.getWeapon(), level, blockPos);
-        } else if (currentSpellInstance.updateSpell(spellInstance)) {
-            currentSpellInstance.getSpell().onSpellUpdate(currentSpellInstance, playerPatch, currentSpellInstance.getWeapon(), level, blockPos);
-        }
-    }
-
-    public void clearModules() {
-        this.modules.keySet().forEach(spellModule -> {
-            this.modules.put(spellModule, Optional.empty());
-        });
-    }
-
-    public <O> void invalidateModule(SpellModule<O> spellModule) {
-        this.setModule(spellModule, Optional.empty());
-    }
-
-    public <O> void setModule(SpellModule<O> spellModule, @Nullable O module) {
-        this.setModule(spellModule, Optional.ofNullable(module));
-    }
-
-    public <O> void setTransientModule(SpellModule<O> spellModule, O module, long ticksValid) {
-        this.setSpellModule(spellModule, Optional.of(ExpirableValue.of(module, ticksValid)));
-    }
-
-    public <O> void setModule(SpellModule<O> spellModule, Optional<? extends O> module) {
-        this.setSpellModule(spellModule, module.map(ExpirableValue::of));
-    }
-
-    <O> void setSpellModule(SpellModule<O> spellModule, Optional<? extends ExpirableValue<?>> module) {
-        if (this.modules.containsKey(spellModule)) {
-            if (module.isPresent() && this.isEmptyCollection(module.get().getValue())) {
-                this.invalidateModule(spellModule);
-            } else {
-                this.modules.put(spellModule, module);
+    public void tick() {
+        if (!level.isClientSide) {
+            ticks++;
+            if (init) {
+                this.startSpell();
+            } else if (!isInactive) {
+                if (this.shouldTickEffect(ticks)) {
+                    this.tickSpell();
+                }
+                if (ticks % duration == 0) {
+                    this.endSpell();
+                }
             }
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <O> Optional<O> getModule(SpellModule<O> spellModule) {
-        Optional<? extends ExpirableValue<?>> optional = this.modules.get(spellModule);
-        if (optional == null) {
-            throw new IllegalStateException("Tried to fetch unregistered module: " + spellModule);
-        } else {
-            return (Optional<O>) optional.map(ExpirableValue::getValue);
+    private void startSpell() {
+        this.init = false;
+        this.onSpellStart(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
+    }
+
+    private void tickSpell() {
+        this.onSpellTick(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
+        if (this.requiresConcentration() && !EntityStatusUtil.consumeFP(this.playerPatch.getOriginal(), this.fpCost, true)) {
+            this.endSpell();
         }
     }
 
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public <O> Optional<O> getSpellModule(SpellModule<O> spellModule) {
-        Optional<? extends ExpirableValue<?>> optional = this.modules.get(spellModule);
-        return optional == null ? null : (Optional<O>) optional.map(ExpirableValue::getValue);
+    private void endSpell() {
+        this.onSpellStop(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
+        this.init = false;
+        this.isInactive = true;
+        this.ticks = 0;
     }
 
-    public <O> long getTicksUntilInvalid(SpellModule<O> spellModule) {
-        Optional<? extends ExpirableValue<?>> optional = this.modules.get(spellModule);
-        return optional.map(ExpirableValue::getTimeToLive).orElse(0L);
+    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+
     }
 
-    private boolean isEmptyCollection(Object pCollection) {
-        return pCollection instanceof Collection collection && collection.isEmpty();
+    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+
+    }
+
+    protected void onSpellStop(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+
+    }
+
+    protected boolean shouldTickEffect(int duration) {
+        return true;
+    }
+
+    public float getCastValue() {
+        return this.magicScaling * this.motionValue / ConfigHandler.STAT_SCALE.get();
+    }
+
+    public void initSpell(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon, float magicScaling) {
+        this.level = level;
+        this.playerPatch = playerPatch;
+        this.blockPos = blockPos;
+        this.scaledWeapon = scaledWeapon;
+        this.magicScaling = magicScaling;
+
+        EntityStatusUtil.activateSpell(playerPatch.getOriginal(), this);
+        this.init = true;
     }
 
     public static class Builder<T extends AbstractSpell> {

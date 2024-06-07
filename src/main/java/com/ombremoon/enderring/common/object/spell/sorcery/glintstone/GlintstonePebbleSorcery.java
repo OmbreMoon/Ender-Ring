@@ -4,13 +4,14 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
-import com.ombremoon.enderring.common.magic.*;
+import com.ombremoon.enderring.common.magic.MagicType;
+import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class GlintstonePebbleSorcery extends ProjectileSpell {
-    private boolean inWater;
 
     public static ProjectileSpell.Builder createGlinstonePebbleBuilder() {
         return createProjectileBuilder()
@@ -20,8 +21,8 @@ public class GlintstonePebbleSorcery extends ProjectileSpell {
                 .setRequirements(WeaponScaling.INT, 10);
     }
 
-    public GlintstonePebbleSorcery(ProjectileSpell.Builder builder) {
-        this(SpellInit.GLINTSTONE_PEBBLE.get(), builder);
+    public GlintstonePebbleSorcery() {
+        this(SpellInit.GLINTSTONE_PEBBLE.get(), createGlinstonePebbleBuilder());
     }
 
     public GlintstonePebbleSorcery(SpellType<?> spellType, ProjectileSpell.Builder builder) {
@@ -34,26 +35,17 @@ public class GlintstonePebbleSorcery extends ProjectileSpell {
     }
 
     @Override
-    public void tickSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
-        if (!this.inWater) {
-            Constants.LOG.info(String.valueOf(spellInstance.getDuration()));
-        }
+    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellTick(playerPatch, level, blockPos, weapon);
     }
 
     @Override
-    public void onSpellStart(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
-        Constants.LOG.info("Spell: " + this.getSpellName().getString());
-        if (playerPatch.getOriginal().isInWater()) {
-            this.setInWater(true);
-        }
-    }
-
-    public void setInWater(boolean inWater) {
-        this.inWater = inWater;
+    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellStart(playerPatch, level, blockPos, weapon);Constants.LOG.info("Spell: " + this.getSpellName().getString());
     }
 
     @Override
-    public boolean isEffectTick(int duration) {
-        return super.isEffectTick(duration);
+    public boolean shouldTickEffect(int duration) {
+        return super.shouldTickEffect(duration);
     }
 }

@@ -153,6 +153,6 @@
   "itemGroup.equipment.tab": "ER Equipment",
   "itemGroup.talismans.tab": "ER Talismans",
   "spell.enderring.glintstone_pebble": "Glintstone Pebble",
-  "spell.enderring.heal": "Heal",
-  "spell.enderring.urgent_heal": "Urgent Heal"
+  "stat.enderring.incantations_cast": "Incantations Cast",
+  "stat.enderring.sorceries_cast": "Sorceries Cast"
 }

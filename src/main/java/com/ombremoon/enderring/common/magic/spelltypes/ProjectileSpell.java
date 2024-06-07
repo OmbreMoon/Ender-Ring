@@ -1,10 +1,9 @@
-package com.ombremoon.enderring.common.magic;
+package com.ombremoon.enderring.common.magic.spelltypes;
 
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponScaling;
-import com.ombremoon.enderring.common.init.SpellInit;
-
-import java.util.function.Supplier;
+import com.ombremoon.enderring.common.magic.AbstractSpell;
+import com.ombremoon.enderring.common.magic.MagicType;
+import com.ombremoon.enderring.common.magic.SpellType;
 
 public abstract class ProjectileSpell extends AbstractSpell {
 

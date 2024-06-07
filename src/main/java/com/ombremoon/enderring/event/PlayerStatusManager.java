@@ -1,21 +1,20 @@
 package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.capability.IPlayerStatus;
 import com.ombremoon.enderring.common.capability.PlayerStatus;
-import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
-import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
-import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
-import com.ombremoon.enderring.util.FlaskUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import com.ombremoon.enderring.util.FlaskUtil;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -35,11 +34,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.ConcurrentModificationException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,26 +118,14 @@ public class PlayerStatusManager {
     public static void onAbilityTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
 
-        if (player.level().isClientSide) return;
+        if (event.phase == TickEvent.Phase.START && !player.level().isClientSide) {
+            if (EntityStatusProvider.isPresent(player)) {
+                ObjectOpenHashSet<AbstractSpell> activeSpells = EntityStatusUtil.getActiveSpells(player);
 
-        if (EntityStatusProvider.isPresent(player)) {
-            ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
-            Iterator<AbstractSpell> iterator = EntityStatusUtil.getActiveSpells(player).keySet().iterator();
-
-            try {
-                while (iterator.hasNext()) {
-                    AbstractSpell abstractSpell = iterator.next();
-                    SpellInstance spellInstance = EntityStatusUtil.getActiveSpells(player).get(abstractSpell);
-                    if (!spellInstance.tickSpellEffect(player, player.level(), player.getOnPos(), () -> {
-                        abstractSpell.onSpellUpdate(spellInstance, serverPlayerPatch, spellInstance.getWeapon(), player.level(), player.getOnPos());
-                    })) {
-                        if (!player.level().isClientSide) {
-                            iterator.remove();
-                            abstractSpell.onSpellStop(spellInstance, serverPlayerPatch, spellInstance.getWeapon(), player.level(), player.getOnPos());
-                        }
-                    }
+                activeSpells.removeIf(spell -> spell.isInactive);
+                for (AbstractSpell abstractSpell : activeSpells) {
+                    abstractSpell.tick();
                 }
-            } catch (ConcurrentModificationException ignored) {
             }
         }
     }

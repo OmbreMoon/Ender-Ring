@@ -1,16 +1,12 @@
 package com.ombremoon.enderring.common.object.spell.incantation;
 
-import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.common.ScaledWeapon;
-import com.ombremoon.enderring.common.magic.SimpleAnimationSpell;
-import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.common.magic.spelltypes.SimpleAnimationSpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-
-//TODO: FIX CONFIG
 public abstract class HealSpell extends SimpleAnimationSpell {
 
     public HealSpell(SpellType<?> spellType, Builder builder) {
@@ -18,9 +14,9 @@ public abstract class HealSpell extends SimpleAnimationSpell {
     }
 
     @Override
-    public void tickSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
-        float incantScaling = spellInstance.getMagicScaling();
-        playerPatch.getOriginal().heal(incantScaling * this.motionValue / ConfigHandler.STAT_SCALE.get());
+    public void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellTick(playerPatch, level, blockPos, weapon);
+        playerPatch.getOriginal().heal(this.getCastValue());
     }
 
     @Override

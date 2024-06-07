@@ -8,9 +8,9 @@ import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
-import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.network.ModNetworking;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -186,12 +186,12 @@ public class EntityStatusUtil {
         return ResourceLocation.tryParse(compoundTag.getString(tagKey));
     }
 
-    public static Map<AbstractSpell, SpellInstance> getActiveSpells(Player player) {
+    public static ObjectOpenHashSet<AbstractSpell> getActiveSpells(Player player) {
         return EntityStatusProvider.get(player).getActiveSpells();
     }
 
-    public static void activateSpell(Player player, AbstractSpell abstractSpell, SpellInstance spellInstance) {
-        getActiveSpells(player).put(abstractSpell, spellInstance);
+    public static void activateSpell(Player player, AbstractSpell abstractSpell) {
+        getActiveSpells(player).add(abstractSpell);
     }
 
     public static LinkedHashSet<SpellType<?>> getSpellSet(Player player) {

@@ -1,3 +1,4 @@
+/*
 package com.ombremoon.enderring.common.object.spell.incantation.twofingers;
 
 import com.google.common.collect.Lists;
@@ -7,13 +8,10 @@ import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.magic.MagicType;
-import com.ombremoon.enderring.common.magic.SimpleAnimationSpell;
+import com.ombremoon.enderring.common.magic.spelltypes.SimpleAnimationSpell;
 import com.ombremoon.enderring.common.magic.SpellInstance;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.spell.incantation.HealSpell;
-import com.ombremoon.enderring.common.object.world.ModDamageTypes;
-import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
-import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -87,8 +85,8 @@ public class HealIncantation extends HealSpell {
     }
 
     @Override
-    public void tickSpellEffect(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
-        super.tickSpellEffect(spellInstance, playerPatch, weapon, level, blockPos);
+    public void spellTick(SpellInstance spellInstance, ServerPlayerPatch playerPatch, ScaledWeapon weapon, Level level, BlockPos blockPos) {
+        super.spellTick(spellInstance, playerPatch, weapon, level, blockPos);
         float incantScaling = spellInstance.getMagicScaling();
         int statScale = ConfigHandler.STAT_SCALE.get();
         List<Entity> entityList = level.getEntities(playerPatch.getOriginal(), playerPatch.getOriginal().getBoundingBox().inflate(3.0F));
@@ -112,3 +110,4 @@ public class HealIncantation extends HealSpell {
         return duration == 36;
     }
 }
+*/

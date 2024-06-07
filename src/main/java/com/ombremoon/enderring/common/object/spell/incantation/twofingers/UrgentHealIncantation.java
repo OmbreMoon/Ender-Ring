@@ -1,10 +1,11 @@
+/*
 package com.ombremoon.enderring.common.object.spell.incantation.twofingers;
 
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.magic.MagicType;
-import com.ombremoon.enderring.common.magic.SimpleAnimationSpell;
+import com.ombremoon.enderring.common.magic.spelltypes.SimpleAnimationSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.spell.incantation.HealSpell;
 import net.minecraft.resources.ResourceLocation;
@@ -25,3 +26,4 @@ public class UrgentHealIncantation extends HealSpell {
         super(spellType, builder);
     }
 }
+*/

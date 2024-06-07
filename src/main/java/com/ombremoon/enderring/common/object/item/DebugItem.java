@@ -40,11 +40,10 @@ public class DebugItem extends Item {
 //                EntityStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.INTELLIGENCE.get(), 2);
 //                EntityStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.FAITH.get(), 30);
 //                EntityStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.ARCANE.get(), 2);
-//                EntityStatusUtil.setSelectedSpell((ServerPlayer) pPlayer, SpellInit.HEAL.get());
-//                pPlayer.hurt(pLevel.damageSources().generic(), 10);
 //                this.displayPlayerStats(pPlayer);
                 //TODO: SYNC ON RESPAWN
                 Constants.LOG.info(String.valueOf(EntityStatusUtil.getFP(pPlayer)));
+                Constants.LOG.info(String.valueOf(SpellInit.GLINTSTONE_PEBBLE.get().createSpell().getId()));
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         } else {
