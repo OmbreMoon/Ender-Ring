@@ -3,6 +3,7 @@ package com.ombremoon.enderring.common.object.entity.npc;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.entity.ERMob;
 import com.ombremoon.enderring.common.object.world.TradeOffer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -37,7 +38,7 @@ public class Hewg extends MerchantNPCMob {
     }
 
     @Override
-    public int getRuneReward() {
+    public int getRuneReward(Level level, BlockPos blockPos) {
         return 0;
     }
 

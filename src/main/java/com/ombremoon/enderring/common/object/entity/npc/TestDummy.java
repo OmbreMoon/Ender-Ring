@@ -1,10 +1,9 @@
 package com.ombremoon.enderring.common.object.entity.npc;
 
 import com.mojang.datafixers.util.Pair;
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.entity.ERMob;
-import com.ombremoon.enderring.common.object.world.TradeOffer;
+import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.TestDummyPatch;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -42,13 +41,13 @@ import net.tslat.smartbrainlib.api.core.sensor.custom.NearbyBlocksSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.registry.SBLMemoryTypes;
 import net.tslat.smartbrainlib.util.BrainUtils;
-import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.item.Style;
 
 import java.util.List;
 
 //TODO: TESTING HEWG
 //TODO: ADD SHACKLE RENDER LAYER
-public class TestDummy extends MerchantNPCMob {
+public class TestDummy extends MerchantNPCMob implements LevelledMob {
     public static final EntityDataAccessor<Boolean> SMITHING = SynchedEntityData.defineId(TestDummy.class, EntityDataSerializers.BOOLEAN);
 
     public TestDummy(EntityType<TestDummy> pEntityType, Level pLevel) {
@@ -104,7 +103,7 @@ public class TestDummy extends MerchantNPCMob {
     }
 
     @Override
-    public int getRuneReward() {
+    public int getRuneReward(Level level, BlockPos blockPos) {
         return 1000;
     }
 
@@ -114,8 +113,8 @@ public class TestDummy extends MerchantNPCMob {
         TestDummyPatch mobPatch = this.getEntityPatch(TestDummyPatch.class);
         if (!this.level().isClientSide) {
 //            mobPatch.playAnimationSynchronized(Animations.BIPED_DEATH, 0.0F);
-            this.updateTrades();
-            LOGGER.info(String.valueOf(this.getTrades().stream().map(TradeOffer::getResult).toList()));
+//            this.updateTrades();
+            LOGGER.info(String.valueOf(this.getMaxHealth()));
         }
         return super.mobInteract(pPlayer, pHand);
     }

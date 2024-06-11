@@ -1,6 +1,5 @@
-package com.ombremoon.enderring.common.object.entity.npc;
+package com.ombremoon.enderring.common.object.world;
 
-import com.ombremoon.enderring.common.object.world.TradeOffer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;

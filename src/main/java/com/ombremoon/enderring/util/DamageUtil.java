@@ -3,6 +3,7 @@ package com.ombremoon.enderring.util;
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.common.data.ReinforceType;
+import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
@@ -156,7 +157,7 @@ public class DamageUtil {
         return getSaturationValue(getSaturation(weapon, weaponDamage), attributeValue, runeSaturation);
     }
 
-    private static float getSaturationValue(Saturations saturation, double attributeValue, boolean runeSaturation) {
+    private static float getSaturationValue(Saturation saturation, double attributeValue, boolean runeSaturation) {
         int i = getStatIndex(saturation, attributeValue);
         float ratio = getSaturationRatio(saturation, i, attributeValue, runeSaturation);
 
@@ -173,18 +174,18 @@ public class DamageUtil {
         return (float) (growMin + ((growMax - growMin) * growth)) / 100;
     }
 
-    private static float getSaturationRatio(Saturations saturation, int index, double attributeValue, boolean runeSaturation) {
+    private static float getSaturationRatio(Saturation saturation, int index, double attributeValue, boolean runeSaturation) {
         int statMin = saturation.getStat()[index];
         int statMax = saturation.getStat()[index + 1];
         int i = runeSaturation ? 79 : 0;
         return (float) ((attributeValue + i - statMin) / (statMax - statMin));
     }
 
-    private static Saturations getSaturation(ScaledWeapon weapon, WeaponDamage weaponDamage) {
+    private static Saturation getSaturation(ScaledWeapon weapon, WeaponDamage weaponDamage) {
         return weapon.getBaseStats().getSaturations()[weaponDamage.ordinal()];
     }
 
-    private static int getStatIndex(Saturations saturation, double playerAttribute) {
+    private static int getStatIndex(Saturation saturation, double playerAttribute) {
         List<Integer> list = Lists.reverse(Arrays.stream(saturation.getStat()).boxed().toList());
         for (int i : list) {
             if (playerAttribute > i) {

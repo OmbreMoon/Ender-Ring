@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.npc;
 
 import com.ombremoon.enderring.common.object.entity.NPCMob;
+import com.ombremoon.enderring.common.object.world.TradeList;
 import com.ombremoon.enderring.common.object.world.TradeOffer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +56,7 @@ public abstract class MerchantNPCMob extends NPCMob<MerchantNPCMob> implements I
         return super.mobInteract(pPlayer, pHand);
     }
 
-    private void startTrading(Player player) {
+    private void startTrading(ServerPlayer player) {
         this.setTrader(player);
         this.openMerchantMenu(player, this.getDisplayName());
     }
