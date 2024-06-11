@@ -38,12 +38,12 @@ public class TagInit {
 /*    public static class PoiTypes {
         public static final TagKey<PoiType> HEWG_ANVIL = tag("hewg_anvil");
 
-        private static TagKey<PoiType> tag(String name) {
-            return create(CommonClass.customLocation(name));
+        private static TagKey<PoiType> tag(String resourceLocation) {
+            return create(CommonClass.customLocation(resourceLocation));
         }
 
-        private static TagKey<PoiType> forgeTag(String name) {
-            return create(new ResourceLocation("forge", name));
+        private static TagKey<PoiType> forgeTag(String resourceLocation) {
+            return create(new ResourceLocation("forge", resourceLocation));
         }
 
         private static TagKey<PoiType> create(ResourceLocation resourceLocation) {

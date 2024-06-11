@@ -22,7 +22,6 @@ public class ModBusEvents {
     public static void onPlayerAttributeModification(EntityAttributeModificationEvent event) {
         addAttributesToPlayer(event,
                 EntityAttributeInit.RUNE_LEVEL,
-                EntityAttributeInit.RUNES_HELD,
                 EntityAttributeInit.MAX_FP,
                 EntityAttributeInit.VIGOR,
                 EntityAttributeInit.MIND,
@@ -42,9 +41,6 @@ public class ModBusEvents {
                 EntityAttributeInit.LIGHT_DAMAGE,
                 EntityAttributeInit.HOLY_DAMAGE,
                 EntityAttributeInit.PHYS_DEFENSE,
-                EntityAttributeInit.STRIKE_DEFENSE,
-                EntityAttributeInit.SLASH_DEFENSE,
-                EntityAttributeInit.PIERCE_DEFENSE,
                 EntityAttributeInit.MAGIC_DEFENSE,
                 EntityAttributeInit.FIRE_DEFENSE,
                 EntityAttributeInit.LIGHT_DEFENSE,

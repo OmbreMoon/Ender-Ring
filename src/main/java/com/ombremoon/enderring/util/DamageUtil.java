@@ -68,15 +68,13 @@ public class DamageUtil {
     public static void conditionalHurt(ItemStack itemStack, AbstractWeapon abstractWeapon, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
         for (WeaponDamage weaponDamage : WeaponDamage.values()) {
             DamageSource damageSource;
-            if (attackEntity instanceof Player || attackEntity instanceof IPlayerEnemy) {
-                float typeDamage = weaponDamage.getDamageFunction().apply(scaledWeapon, attackEntity, abstractWeapon.getWeaponLevel(itemStack));
+            float typeDamage = weaponDamage.getDamageFunction().apply(scaledWeapon, attackEntity, abstractWeapon.getWeaponLevel(itemStack));
 
-                //Ensures that type damage is 1 when between 0 and 1
-                if (typeDamage > 0) {
-                    damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), scaledWeapon.getDamage().getPhysDamageTypes());
-                    typeDamage = Math.max(typeDamage, 1.0F);
-                    targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage);
-                }
+            //Ensures that type damage is 1 when between 0 and 1
+            if (typeDamage > 0) {
+                damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), scaledWeapon.getDamage().getPhysDamageTypes());
+                typeDamage = Math.max(typeDamage, 1.0F);
+                targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage);
             }
         }
     }
@@ -88,16 +86,20 @@ public class DamageUtil {
     private static float calculateDamage(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, WeaponDamage weaponDamage) {
         float damage = getDamageUpgrade(weapon, weaponDamage, weaponLevel);
         float f = 0;
-        if (weapon.getRequirements().meetsRequirements(livingEntity, weapon, weaponDamage)) {
-            final var satList = createSaturationList(weapon, livingEntity, weaponDamage);
-            for (var map : satList) {
-                for (var entry : map.entrySet()) {
-                    f += damage * getScalingUpgrade(weapon, entry.getKey(), weaponLevel) * entry.getValue();
+        if (livingEntity instanceof Player || livingEntity instanceof IPlayerEnemy) {
+            if (weapon.getRequirements().meetsRequirements(livingEntity, weapon, weaponDamage)) {
+                final var satList = createSaturationList(weapon, livingEntity, weaponDamage);
+                for (var map : satList) {
+                    for (var entry : map.entrySet()) {
+                        f += damage * getScalingUpgrade(weapon, entry.getKey(), weaponLevel) * entry.getValue();
+                    }
                 }
+                return (damage + f) / STAT_SCALE;
+            } else {
+                return (damage + (damage * -0.4F)) / STAT_SCALE;
             }
-            return (damage + f) / STAT_SCALE;
         } else {
-            return (damage + (damage * -0.4F)) / STAT_SCALE;
+            return damage;
         }
     }
 
@@ -120,7 +122,7 @@ public class DamageUtil {
         return (100 * (f + getSaturationValue(Saturations.RUNE_DEFENSE, EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get()), true))) / STAT_SCALE;
     }
 
-    private static float getDamageUpgrade(ScaledWeapon weapon, WeaponDamage weaponDamage, int weaponLevel) {
+    public static float getDamageUpgrade(ScaledWeapon weapon, WeaponDamage weaponDamage, int weaponLevel) {
         ReinforceType reinforceType = weapon.getBaseStats().getReinforceType();
         return reinforceType.getReinforceDamageParam(weaponDamage, weaponLevel) * weapon.getDamage().getDamageMap().get(weaponDamage);
     }

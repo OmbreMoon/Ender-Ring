@@ -84,7 +84,7 @@ public class CommonModEvents {
                             } else {
                                 negation = (float) (1 - EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getNegateAttribute()));
                             }
-                            float attr = livingEntity instanceof Player player ? player.getEntityData().get(weaponDamage.getDefAccessor()) : (float) EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getDefenseAttribute());
+                            float attr = (float) EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getDefenseAttribute());
                             float modifiedDamage = getDamageAfterDefense(event.getAmount(), attr);
                             event.setAmount(modifiedDamage * negation);
                             Constants.LOG.info(String.valueOf(event.getAmount()));

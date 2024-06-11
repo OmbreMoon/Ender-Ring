@@ -12,6 +12,12 @@ import java.util.*;
 
 public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
+    int getRunes();
+
+    void setRunes(int runeAmount);
+
+    boolean consumeRunes(int amount, boolean forceConsume);
+
     float getMaxFP();
 
     float getFP();

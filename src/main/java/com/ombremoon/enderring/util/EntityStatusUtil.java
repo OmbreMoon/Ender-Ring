@@ -7,6 +7,7 @@ import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.network.ModNetworking;
@@ -30,23 +31,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class EntityStatusUtil {
-    public static final UUID RUNES_HELD = UUID.randomUUID();
-    public static final String VIGOR = "2489d650-cd33-4bb1-a3c5-95610555ec2c";
-    public static final UUID MIND = UUID.fromString("d8b0623b-787d-46f8-999a-66226d336f7e");
-    public static final UUID ENDURANCE = UUID.fromString("13c4e562-d177-41da-8391-f3864333d899");
-    public static final UUID STRENGTH = UUID.fromString("f6a50f0d-18aa-4f8a-be95-fe6e05141be0");
-    public static final UUID DEXTERITY = UUID.fromString("4a3bb0a1-95df-4c86-90f3-3db09a473747");
-    public static final UUID INTELLIGENCE = UUID.fromString("a7b53dcf-0c86-42be-a2d2-f3ab215cbf1b");
-    public static final UUID FAITH = UUID.fromString("9f51d3ae-2b49-4128-8163-023a22399053");
-    public static final UUID ARCANE = UUID.fromString("d30470e4-7d8b-4884-9e67-53dc0d645669");
-    public static final UUID FP = UUID.fromString("2031ddaf-832a-4a2b-a091-2ccaf65e6cbb");
 
     public static int getRuneLevel(Player player) {
         return (int) player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get());
-    }
-
-    public static int getRunesHeld(Player player) {
-        return (int) player.getAttributeValue(EntityAttributeInit.RUNES_HELD.get());
     }
 
     public static double getEntityAttribute(LivingEntity livingEntity, Attribute attribute) {
@@ -75,17 +62,6 @@ public class EntityStatusUtil {
         Objects.requireNonNull(player.getAttributes().getInstance(attribute)).setBaseValue(bastStat);
         updateDefense(player, attribute);
         updateMainAttributes(setMax);
-    }
-
-    public static void increaseRunes(Player player, double increaseAmount) {
-        AttributeInstance attributeInstance = player.getAttributes().getInstance(EntityAttributeInit.RUNES_HELD.get());
-        AttributeModifier attributemodifier = attributeInstance.getModifier(RUNES_HELD);
-        if (attributemodifier != null) {
-            attributeInstance.removeModifier(attributemodifier);
-            attributeInstance.addPermanentModifier(new AttributeModifier(attributemodifier.getId(), "runes_held", attributemodifier.getAmount() + increaseAmount, attributemodifier.getOperation()));
-        } else {
-            attributeInstance.addPermanentModifier(new AttributeModifier(RUNES_HELD, "runes_held", increaseAmount, AttributeModifier.Operation.ADDITION));
-        }
     }
 
     public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount, AttributeModifier.Operation operation, boolean setMax) {
@@ -120,13 +96,29 @@ public class EntityStatusUtil {
         addStatModifier(player, attribute, uuid, increaseAmount, AttributeModifier.Operation.ADDITION, setMax);
     }
 
+    public static int getRunesHeld(Player player) {
+        return player.getEntityData().get(PlayerStatus.RUNES);
+    }
+
+    public static void setRunesHeld(Player player, int amount) {
+        player.getEntityData().set(PlayerStatus.RUNES, amount);
+    }
+
+    public static void increaseRunes(Player player, int increaseAmount) {
+        player.getEntityData().set(PlayerStatus.RUNES, getRunesHeld(player) + increaseAmount);
+    }
+
+    public static boolean consumeRunes(Player player, int amount, boolean forceConsume) {
+        return EntityStatusProvider.get(player).consumeRunes(amount, forceConsume);
+    }
+
     public static double getFP(Player player) {
         return EntityStatusProvider.get(player).getFP();
     }
 
     public static void setFP(ServerPlayer player, float fpAmount) {
         EntityStatusProvider.get(player).setFP(fpAmount);
-        ModNetworking.syncCap(player);
+//        ModNetworking.syncCap(player);
     }
 
     public static double getMaxFP(Player player) {
@@ -146,10 +138,12 @@ public class EntityStatusUtil {
             for (WeaponDamage weaponDamage : WeaponDamage.values()) {
                 if (weaponDamage != WeaponDamage.LIGHTNING) {
                     if (weaponDamage.getWeaponScaling().getAttribute() == attribute) {
-                        player.getEntityData().set(weaponDamage.getDefAccessor(), DamageUtil.calculateDefense(player, weaponDamage));
+                        setBaseStat(player, weaponDamage.getDefenseAttribute(), Mth.floor(DamageUtil.calculateDefense(player, weaponDamage)));
+//                        player.getEntityData().set(weaponDamage.getDefAccessor(), DamageUtil.calculateDefense(player, weaponDamage));
                     }
                 } else {
-                        player.getEntityData().set(PlayerStatus.LIGHTNING_DEF, DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING));
+                    setBaseStat(player, EntityAttributeInit.LIGHT_DEFENSE.get(), Mth.floor(DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING)));
+//                    player.getEntityData().set(PlayerStatus.LIGHTNING_DEF, DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING));
                 }
             }
         }

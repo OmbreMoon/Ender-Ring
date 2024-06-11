@@ -21,14 +21,7 @@ import java.util.LinkedHashSet;
 
 public class PlayerStatus implements IPlayerStatus {
     public static final EntityDataAccessor<Float> FP = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> PHYSICAL_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> STRIKE_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> SLASH_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> PIERCE_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> MAGICAL_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> FIRE_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> LIGHTNING_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> HOLY_DEF = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Integer> RUNES = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     private final Player player;
     private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
     private ObjectOpenHashSet<AbstractSpell> activeSpells = new ObjectOpenHashSet<>();
@@ -46,14 +39,30 @@ public class PlayerStatus implements IPlayerStatus {
     public PlayerStatus(Player player) {
         this.player = player;
         player.getEntityData().define(FP, 0.0F);
-        player.getEntityData().define(PHYSICAL_DEF, 0.0F);
-        player.getEntityData().define(STRIKE_DEF, 0.0F);
-        player.getEntityData().define(SLASH_DEF, 0.0F);
-        player.getEntityData().define(PIERCE_DEF, 0.0F);
-        player.getEntityData().define(MAGICAL_DEF, 0.0F);
-        player.getEntityData().define(FIRE_DEF, 0.0F);
-        player.getEntityData().define(LIGHTNING_DEF, 0.0F);
-        player.getEntityData().define(HOLY_DEF, 0.0F);
+        player.getEntityData().define(RUNES, 0);
+    }
+
+    @Override
+    public void setRunes(int runeAmount) {
+        this.player.getEntityData().set(RUNES, runeAmount);
+    }
+
+    @Override
+    public boolean consumeRunes(int amount, boolean forceConsume) {
+        int runesHeld = this.getRunes();
+        if (runesHeld < amount) {
+            return false;
+        } else {
+            if (forceConsume)
+                this.setRunes(runesHeld - amount);
+
+            return true;
+        }
+    }
+
+    @Override
+    public int getRunes() {
+        return this.player.getEntityData().get(RUNES);
     }
 
     @Override

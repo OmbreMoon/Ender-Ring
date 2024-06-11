@@ -41,11 +41,9 @@ public class MeleeWeapon extends AbstractWeapon {
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
             ExtendedWeaponCapability weaponCapability = EFMCapabilityUtil.getWeaponCapability(serverPlayerPatch);
-            itemStack.getOrCreateTag().putInt("WeaponLevel", 10);
-            Constants.LOG.info(Arrays.toString(this.getModifiedWeapon(itemStack).getDamage().getPhysDamageTypes()));
             if (weaponCapability != null) {
-                Constants.LOG.info(String.valueOf(weaponCapability.getAshOfWar(itemStack)));
                 weaponCapability.swapAshOfWar(itemStack, weaponCapability.getAshOfWar(itemStack) == SkillInit.SWEEPING_EDGE_NEW ? SkillInit.GUILLOTINE_AXE_NEW : SkillInit.SWEEPING_EDGE_NEW);
+                Constants.LOG.info(String.valueOf(weaponCapability.getAshOfWar(itemStack)));
             }
 
         }

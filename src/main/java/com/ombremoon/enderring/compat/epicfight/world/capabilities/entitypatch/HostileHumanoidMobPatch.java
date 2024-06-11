@@ -1,13 +1,11 @@
 package com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch;
 
-import com.ombremoon.enderring.common.object.entity.HumanoidMob;
+import com.ombremoon.enderring.common.object.entity.ERMob;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.client.animation.ClientAnimator;
-import yesman.epicfight.world.capabilities.entitypatch.Faction;
+import yesman.epicfight.world.damagesource.StunType;
 
-public class HostileHumanoidMobPatch<E extends HumanoidMob<E>> extends ExtendedHumanoidMobPatch<E> {
-    public HostileHumanoidMobPatch(Faction faction) {
-        super(faction);
-    }
+public class HostileHumanoidMobPatch<E extends ERMob<E>> extends ERHumanoidMobPatch<E> {
 
     @Override
     public void initAnimator(ClientAnimator clientAnimator) {
@@ -17,5 +15,10 @@ public class HostileHumanoidMobPatch<E extends HumanoidMob<E>> extends ExtendedH
     @Override
     public void updateMotion(boolean b) {
 
+    }
+
+    @Override
+    public StaticAnimation getHitAnimation(StunType stunType) {
+        return null;
     }
 }

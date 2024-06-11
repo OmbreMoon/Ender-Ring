@@ -2,7 +2,7 @@ package com.ombremoon.enderring.client.render.entity;
 
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.client.model.entity.TestDummyModel;
-import com.ombremoon.enderring.common.object.entity.TestDummy;
+import com.ombremoon.enderring.common.object.entity.npc.TestDummy;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

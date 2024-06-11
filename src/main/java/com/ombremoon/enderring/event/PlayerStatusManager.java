@@ -73,7 +73,7 @@ public class PlayerStatusManager {
             EntityStatusProvider.get(newPlayer).deserializeNBT(EntityStatusProvider.get(oldPlayer).serializeNBT());
 
             if (oldPlayer.hasEffect(StatusEffectInit.SACRIFICIAL_TWIG.get())) {
-                double runeAmount = EntityStatusUtil.getRunesHeld(oldPlayer);
+                int runeAmount = EntityStatusUtil.getRunesHeld(oldPlayer);
                 EntityStatusUtil.increaseRunes(newPlayer, runeAmount);
                 IDynamicStackHandler stackHandler = CurioHelper.getTalismanStacks(oldPlayer);
                 for (int i = 0; i < stackHandler.getSlots(); i++) {
@@ -85,13 +85,11 @@ public class PlayerStatusManager {
             }
 
             for (Attribute attribute : playerStats) {
-                if (attribute != EntityAttributeInit.RUNES_HELD.get()) {
-                    EntityStatusUtil.setBaseStat(newPlayer, attribute, (int) oldPlayer.getAttributeBaseValue(attribute), true);
-//                    newPlayer.getAttributes().getInstance(attribute).setBaseValue(oldPlayer.getAttributeBaseValue(attribute));
-                }
+                EntityStatusUtil.setBaseStat(newPlayer, attribute, (int) oldPlayer.getAttributeBaseValue(attribute), true);
             }
             newPlayer.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.MAX_HEALTH));
             newPlayer.getEntityData().set(PlayerStatus.FP, (float) newPlayer.getAttributeValue(EntityAttributeInit.MAX_FP.get()));
+            newPlayer.getEntityData().set(PlayerStatus.RUNES, 0);
             ModNetworking.updateMainAttributes(true);
         }
     }

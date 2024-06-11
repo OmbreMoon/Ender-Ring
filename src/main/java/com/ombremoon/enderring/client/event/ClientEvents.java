@@ -6,10 +6,12 @@ import com.ombremoon.enderring.client.gui.QuickAccessOverlay;
 import com.ombremoon.enderring.client.gui.screen.*;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.ParticleInit;
+import com.ombremoon.enderring.common.object.entity.NPCMob;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -58,6 +60,8 @@ public class ClientEvents {
             MenuScreens.register(MenuTypeInit.MEMORIZE_SPELL_MENU.get(), MemorizeSpellScreen::new);
             MenuScreens.register(MenuTypeInit.GOLDEN_SEED_MENU.get(), GoldenSeedScreen::new);
             MenuScreens.register(MenuTypeInit.SACRED_TEAR_MENU.get(), SacredTearScreen::new);
+
+            EntityDataSerializers.registerSerializer(NPCMob.NPC_DATA_SERIALIZER);
         }
 
         @SubscribeEvent

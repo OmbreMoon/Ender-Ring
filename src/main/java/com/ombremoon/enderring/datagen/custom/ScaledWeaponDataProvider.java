@@ -26,6 +26,7 @@ public abstract class ScaledWeaponDataProvider implements DataProvider {
 
     protected abstract void registerWeapons();
 
+    //TODO: ADD EXCEPTION IF RESOURCE LOCATION DOES NOT LEAD TO ITEM
     protected void addWeapon(ResourceLocation resourceLocation, ScaledWeapon weapon) {
         this.weaponMap.put(resourceLocation, weapon);
     }

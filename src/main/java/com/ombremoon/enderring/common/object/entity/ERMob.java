@@ -1,9 +1,8 @@
 package com.ombremoon.enderring.common.object.entity;
 
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.compat.epicfight.util.EFMCapabilityUtil;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.ERMobPatch;
-import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.SimpleHumanoidMobPatch;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -15,14 +14,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
-import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import org.slf4j.Logger;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.network.server.SPPlayAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-
-import java.util.List;
+import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 
 public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements SmartBrainOwner<ERMob<T>> {
+    protected static final Logger LOGGER = Constants.LOG;
 
     protected ERMob(EntityType<? extends ERMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -63,8 +62,12 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
 
     public abstract int getRuneReward();
 
+    public <P extends EntityPatch<?>> P getEntityPatch(Class<P> clazz) {
+        return EpicFightCapabilities.getEntityPatch(this, clazz);
+    }
+
     protected void playAnim(StaticAnimation animation) {
-        ERMobPatch<?> mobPatch = EpicFightCapabilities.getEntityPatch(this, ERMobPatch.class);
+        ERMobPatch<?> mobPatch = this.getEntityPatch(ERMobPatch.class);
         if (!this.level().isClientSide) {
             mobPatch.playAnimationSynchronized(animation, 0.0F, SPPlayAnimation::new);
         }
@@ -76,7 +79,6 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
                 .add(EntityAttributeInit.STRENGTH.get()).add(EntityAttributeInit.DEXTERITY.get()).add(EntityAttributeInit.INTELLIGENCE.get()).add(EntityAttributeInit.FAITH.get()).add(EntityAttributeInit.ARCANE.get())
                 .add(EntityAttributeInit.PHYS_DEFENSE.get()).add(EntityAttributeInit.MAGIC_DEFENSE.get()).add(EntityAttributeInit.FIRE_DEFENSE.get()).add(EntityAttributeInit.LIGHT_DEFENSE.get()).add(EntityAttributeInit.HOLY_DEFENSE.get())
                 .add(EntityAttributeInit.PHYS_NEGATE.get()).add(EntityAttributeInit.MAGIC_NEGATE.get()).add(EntityAttributeInit.FIRE_NEGATE.get()).add(EntityAttributeInit.LIGHT_NEGATE.get()).add(EntityAttributeInit.HOLY_NEGATE.get())
-                .add(EntityAttributeInit.STRIKE_DEFENSE.get()).add(EntityAttributeInit.SLASH_DEFENSE.get()).add(EntityAttributeInit.PIERCE_DEFENSE.get())
                 .add(EntityAttributeInit.STRIKE_NEGATE.get()).add(EntityAttributeInit.SLASH_NEGATE.get()).add(EntityAttributeInit.PIERCE_NEGATE.get());
     }
 

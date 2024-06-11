@@ -12,7 +12,6 @@ public class EntityAttributeInit {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, Constants.MOD_ID);
 
     public static final RegistryObject<Attribute> RUNE_LEVEL = registerAttribute("rune_level", 1.0D, 1.0D, 713.0D, true);
-    public static final RegistryObject<Attribute> RUNES_HELD = registerAttribute("runes_held", 0.0D, 0.0D, 999999999.0D, true);
     public static final RegistryObject<Attribute> MAX_FP = registerAttribute("max_fp", 1.0D, 1.0D, 450.0D, true);
 
     public static final RegistryObject<Attribute> VIGOR = registerAttribute("vigor", 1.0D, 1.0D, 99.0D, true);
@@ -36,9 +35,6 @@ public class EntityAttributeInit {
     public static final RegistryObject<Attribute> HOLY_DAMAGE = registerAttribute("holy_damage", 0.0D, 0.0D, 5120.0D, true);
 
     public static final RegistryObject<Attribute> PHYS_DEFENSE = registerAttribute("physical_defense", 1.0D, 0.0D, 500.0D, true);
-    public static final RegistryObject<Attribute> STRIKE_DEFENSE = registerAttribute("strike_defense", 1.0D, 0.0D, 500.0D, true);
-    public static final RegistryObject<Attribute> SLASH_DEFENSE = registerAttribute("slash_defense", 1.0D, 0.0D, 500.0D, true);
-    public static final RegistryObject<Attribute> PIERCE_DEFENSE = registerAttribute("pierce_defense", 1.0D, 0.0D, 500.0D, true);
     public static final RegistryObject<Attribute> MAGIC_DEFENSE = registerAttribute("magic_defense", 1.0D, 0.0D, 500.0D, true);
     public static final RegistryObject<Attribute> FIRE_DEFENSE = registerAttribute("fire_defense", 1.0D, 0.0D, 500.0D, true);
     public static final RegistryObject<Attribute> LIGHT_DEFENSE = registerAttribute("lightning_defense", 1.0D, 0.0D, 500.0D, true);
@@ -54,7 +50,7 @@ public class EntityAttributeInit {
     public static final RegistryObject<Attribute> HOLY_NEGATE = registerAttribute("holy_negation", 0.0D, -1.0D, 1.0D, true);
 
     public static RegistryObject<Attribute> registerAttribute(String name, double defaultVal, double minVal, double maxVal, boolean syncable) {
-        return ATTRIBUTES.register(name, () -> new RangedAttribute("attributes.name." + Constants.MOD_ID + "." + name, defaultVal, minVal, maxVal).setSyncable(syncable));
+        return ATTRIBUTES.register(name, () -> new RangedAttribute("attributes.resourceLocation." + Constants.MOD_ID + "." + name, defaultVal, minVal, maxVal).setSyncable(syncable));
     }
 
     public static void register(IEventBus modEventBus) {

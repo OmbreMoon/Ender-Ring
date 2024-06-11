@@ -20,12 +20,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.slf4j.Logger;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.provider.ItemCapabilityProvider;
 
 public class AbstractWeapon extends Item {
+    public static Logger LOGGER = Constants.LOG;
     private ScaledWeapon weapon = new ScaledWeapon();
 
     public AbstractWeapon(Properties pProperties) {
@@ -46,7 +48,6 @@ public class AbstractWeapon extends Item {
         if (!pLevel.isClientSide) {
             CapabilityItem w = ItemCapabilityProvider.get(this);
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-//            playerPatch.getArmature().rootJoint.getToOrigin()
             Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
 
         }
@@ -55,6 +56,10 @@ public class AbstractWeapon extends Item {
 
     public int getWeaponLevel(ItemStack itemStack) {
         return itemStack.getOrCreateTag().getInt("WeaponLevel");
+    }
+
+    public void setWeaponLevel(ItemStack itemStack, int weaponLevel) {
+        itemStack.getOrCreateTag().putInt("WeaponLevel", weaponLevel);
     }
 
     public ScaledWeapon getModifiedWeapon(ItemStack stack) {
