@@ -2,6 +2,9 @@ package com.ombremoon.enderring.common.object.entity;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.item.EquipmentInit;
+import com.ombremoon.enderring.common.init.item.ItemInit;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.world.LevelledList;
 import com.ombremoon.enderring.common.object.world.LevelledLists;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.ERMobPatch;
@@ -9,8 +12,12 @@ import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -18,6 +25,8 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -36,9 +45,28 @@ import java.util.Optional;
 
 public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements SmartBrainOwner<ERMob<T>> {
     protected static final Logger LOGGER = Constants.LOG;
+    protected static final EntityDataAccessor<Float> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> SCARLET_ROT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> BLOOD_LOSS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> FROSTBITE = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> SLEEP = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
 
     protected ERMob(EntityType<? extends ERMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.getEntityData().define(POISON, 0.0F);
+        this.getEntityData().define(SCARLET_ROT, 0.0F);
+        this.getEntityData().define(BLOOD_LOSS, 0.0F);
+        this.getEntityData().define(FROSTBITE, 0.0F);
+        this.getEntityData().define(SLEEP, 0.0F);
+        this.getEntityData().define(MADNESS, 0.0F);
+        this.getEntityData().define(DEATH_BLIGHT, 0.0F);
     }
 
     @Override
@@ -87,6 +115,70 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
         }
     }
 
+    @Override
+    protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
+        this.setItemSlot(EquipmentSlot.MAINHAND, this.getMainHandWeapon());
+        this.setItemSlot(EquipmentSlot.OFFHAND, this.getOffHandWeapon());
+        this.setItemSlot(EquipmentSlot.HEAD, this.getHeadArmor());
+        this.setItemSlot(EquipmentSlot.CHEST, this.getChestArmor());
+        this.setItemSlot(EquipmentSlot.LEGS, this.getLegArmor());
+        this.setItemSlot(EquipmentSlot.FEET, this.getFeetArmor());
+        this.setDropChance(EquipmentSlot.MAINHAND, this.getMainHandWeaponDropChance());
+        this.setDropChance(EquipmentSlot.OFFHAND, this.getOffHandWeaponDropChance());
+        this.setDropChance(EquipmentSlot.HEAD, this.getHeadArmorDropChance());
+        this.setDropChance(EquipmentSlot.CHEST, this.getChestArmorDropChance());
+        this.setDropChance(EquipmentSlot.LEGS, this.getLegArmorDropChance());
+        this.setDropChance(EquipmentSlot.FEET, this.getFeetArmorDropChance());
+    }
+
+    protected ItemStack getMainHandWeapon() {
+        return ItemStack.EMPTY;
+    }
+
+    protected ItemStack getOffHandWeapon() {
+        return ItemStack.EMPTY;
+    }
+
+    protected ItemStack getHeadArmor() {
+        return ItemStack.EMPTY;
+    }
+
+    protected ItemStack getChestArmor() {
+        return ItemStack.EMPTY;
+    }
+
+    protected ItemStack getLegArmor() {
+        return ItemStack.EMPTY;
+    }
+
+    protected ItemStack getFeetArmor() {
+        return ItemStack.EMPTY;
+    }
+
+    protected float getMainHandWeaponDropChance() {
+        return 0.0F;
+    }
+
+    protected float getOffHandWeaponDropChance() {
+        return 0.0F;
+    }
+
+    protected float getHeadArmorDropChance() {
+        return 0.0F;
+    }
+
+    protected float getChestArmorDropChance() {
+        return 0.0F;
+    }
+
+    protected float getLegArmorDropChance() {
+        return 0.0F;
+    }
+
+    protected float getFeetArmorDropChance() {
+        return 0.0F;
+    }
+
     //TODO: CHANGE TO UNIVERSAL VALUE ENUM
     @Nullable
     @Override
@@ -100,6 +192,7 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
                 }
             }
         }
+        this.populateDefaultEquipmentSlots(pLevel.getRandom(), pDifficulty);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
@@ -116,5 +209,4 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
                 .add(EntityAttributeInit.PHYS_NEGATE.get()).add(EntityAttributeInit.MAGIC_NEGATE.get()).add(EntityAttributeInit.FIRE_NEGATE.get()).add(EntityAttributeInit.LIGHT_NEGATE.get()).add(EntityAttributeInit.HOLY_NEGATE.get())
                 .add(EntityAttributeInit.STRIKE_NEGATE.get()).add(EntityAttributeInit.SLASH_NEGATE.get()).add(EntityAttributeInit.PIERCE_NEGATE.get());
     }
-
 }

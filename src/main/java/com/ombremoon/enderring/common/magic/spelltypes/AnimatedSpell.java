@@ -9,32 +9,40 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.api.animation.AnimationProvider;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-public abstract class SimpleAnimationSpell extends AbstractSpell {
+import java.util.function.Supplier;
+
+public abstract class AnimatedSpell extends AbstractSpell {
     protected AnimationProvider spellAnimation;
 
-    public static Builder createSimpleSpellBuilder() {
-        return new Builder();
+    public static Builder<AnimatedSpell> createSimpleSpellBuilder() {
+        return new Builder<>();
     }
 
-    public SimpleAnimationSpell(SpellType<?> spellType, Builder builder) {
+    public AnimatedSpell(SpellType<?> spellType, Builder builder) {
         super(spellType, builder);
         this.spellAnimation = () -> {
-            return EpicFightMod.getInstance().animationManager.findAnimationByPath(builder.spellAnimation.toString());
+            return EpicFightMod.getInstance().animationManager.findAnimationByPath(((StaticAnimation)builder.spellAnimation.get()).getRegistryName().toString());
         };
+    }
+
+    public StaticAnimation getSpellAnimation() {
+        return this.spellAnimation.get();
     }
 
     @Override
     protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         super.onSpellStart(playerPatch, level, blockPos, weapon);
-//        this.spellConsumer.accept(playerPatch.getOriginal());
-        playerPatch.playAnimationSynchronized(this.spellAnimation.get(), 0.0F);
+        if (playerPatch.isBattleMode()) {
+            playerPatch.playAnimationSynchronized(this.spellAnimation.get(), 0.0F);
+        }
     }
 
-    public static class Builder extends AbstractSpell.Builder<SimpleAnimationSpell> {
-        protected ResourceLocation spellAnimation;
+    public static class Builder<T extends AnimatedSpell> extends AbstractSpell.Builder<T> {
+        protected Supplier<StaticAnimation> spellAnimation;
 
         public Builder() {
 
@@ -65,7 +73,7 @@ public abstract class SimpleAnimationSpell extends AbstractSpell {
             return this;
         }
 
-        public Builder setAnimations(ResourceLocation spellAnimation) {
+        public Builder setAnimation(Supplier<StaticAnimation> spellAnimation) {
             this.spellAnimation = spellAnimation;
             return this;
         }

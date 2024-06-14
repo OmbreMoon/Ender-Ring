@@ -67,6 +67,7 @@ public class CommonModEvents {
         if (event.getSource() instanceof ModDamageSource damageSource) {
             Optional<ResourceKey<DamageType>> damageType = event.getSource().typeHolder().unwrapKey();
             if (damageType.isPresent()) {
+                if (damageType.get() == ModDamageTypes.FIRE) Constants.LOG.info("Hi");
                 LivingEntity livingEntity = event.getEntity();
                 for (WeaponDamage weaponDamage : WeaponDamage.values()) {
                     if (damageType.get() == weaponDamage.getDamageType()) {

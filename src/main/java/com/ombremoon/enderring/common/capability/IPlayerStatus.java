@@ -30,6 +30,10 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
     ObjectOpenHashSet<AbstractSpell> getActiveSpells();
 
+    AbstractSpell getRecentlyActivatedSpell();
+
+    void setRecentlyActivatedSpell(AbstractSpell spellType);
+
     SpellType<?> getSelectedSpell();
 
     void setSelectedSpell(SpellType<?> spellType);

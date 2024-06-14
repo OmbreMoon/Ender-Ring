@@ -74,7 +74,7 @@ public class AbstractCatalystItem extends MeleeWeapon {
                 if (playerPatch != null && this.canCastSpell(player, pStack, spell, true)) {
                     int i = this.getWeaponLevel(pStack);
                     WeaponDamage weaponDamage = this.magicType == MagicType.SORCERY ? WeaponDamage.MAGICAL : WeaponDamage.HOLY;
-                    spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage));
+                    spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), pStack, this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage));
 
                     player.awardStat(Stats.ITEM_USED.get(this));
                     player.awardStat(this.magicType == MagicType.SORCERY ? StatInit.SORCERIES_CAST.get() : StatInit.INCANTATIONS_CAST.get());

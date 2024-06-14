@@ -27,7 +27,13 @@ public class ModDamageTypeTagsProvider extends TagsProvider<DamageType> {
                 .add(ModDamageTypes.MAGICAL)
                 .add(ModDamageTypes.FIRE)
                 .add(ModDamageTypes.LIGHTNING)
-                .add(ModDamageTypes.HOLY);
+                .add(ModDamageTypes.HOLY)
+                .add(ModDamageTypes.POISON)
+                .add(ModDamageTypes.SCARLET_ROT)
+                .add(ModDamageTypes.BLOOD_LOSS)
+                .add(ModDamageTypes.FROSTBITE)
+                .add(ModDamageTypes.MADNESS)
+                .add(ModDamageTypes.DEATH_BLIGHT);
 
         tag(DamageTypeTags.BYPASSES_RESISTANCE)
                 .add(ModDamageTypes.PHYSICAL)
@@ -37,7 +43,13 @@ public class ModDamageTypeTagsProvider extends TagsProvider<DamageType> {
                 .add(ModDamageTypes.MAGICAL)
                 .add(ModDamageTypes.FIRE)
                 .add(ModDamageTypes.LIGHTNING)
-                .add(ModDamageTypes.HOLY);
+                .add(ModDamageTypes.HOLY)
+                .add(ModDamageTypes.POISON)
+                .add(ModDamageTypes.SCARLET_ROT)
+                .add(ModDamageTypes.BLOOD_LOSS)
+                .add(ModDamageTypes.FROSTBITE)
+                .add(ModDamageTypes.MADNESS)
+                .add(ModDamageTypes.DEATH_BLIGHT);
 
         tag(DamageTypeTags.BYPASSES_COOLDOWN)
                 .add(ModDamageTypes.PHYSICAL)
@@ -47,6 +59,12 @@ public class ModDamageTypeTagsProvider extends TagsProvider<DamageType> {
                 .add(ModDamageTypes.MAGICAL)
                 .add(ModDamageTypes.FIRE)
                 .add(ModDamageTypes.LIGHTNING)
-                .add(ModDamageTypes.HOLY);
+                .add(ModDamageTypes.HOLY)
+                .add(ModDamageTypes.POISON)
+                .add(ModDamageTypes.SCARLET_ROT)
+                .add(ModDamageTypes.BLOOD_LOSS)
+                .add(ModDamageTypes.FROSTBITE)
+                .add(ModDamageTypes.MADNESS)
+                .add(ModDamageTypes.DEATH_BLIGHT);
     }
 }

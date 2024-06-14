@@ -1,11 +1,14 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
 import com.ombremoon.enderring.common.WeaponScaling;
-import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
+import net.minecraft.resources.ResourceLocation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 
-public abstract class ProjectileSpell extends AbstractSpell {
+import java.util.function.Supplier;
+
+public abstract class ProjectileSpell extends AnimatedSpell {
 
     public static Builder createProjectileBuilder() {
         return new Builder();
@@ -15,7 +18,12 @@ public abstract class ProjectileSpell extends AbstractSpell {
         super(spellType, builder);
     }
 
-    public static class Builder extends AbstractSpell.Builder<ProjectileSpell> {
+    @Override
+    protected boolean shouldTickEffect(int duration) {
+        return this.isInstantSpell() ? duration == 1 : super.shouldTickEffect(duration);
+    }
+
+    public static class Builder<T extends ProjectileSpell> extends AnimatedSpell.Builder<T> {
 
         public Builder() {
         }
@@ -42,6 +50,11 @@ public abstract class ProjectileSpell extends AbstractSpell {
 
         public Builder setMotionValue(int motionValue) {
             this.motionValue = motionValue;
+            return this;
+        }
+
+        public Builder setAnimation(Supplier<StaticAnimation> animation) {
+            this.spellAnimation = animation;
             return this;
         }
     }

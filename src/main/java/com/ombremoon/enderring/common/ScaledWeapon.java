@@ -1,7 +1,6 @@
 package com.ombremoon.enderring.common;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.ombremoon.enderring.common.data.AttackElement;
@@ -22,6 +21,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
     protected Damage damage = new Damage();
     protected Scaling scaling = new Scaling();
     protected Requirements requirements = new Requirements();
+    protected Guard guard = new Guard();
+    protected Status status = new Status();
 
     public Base getBaseStats() {
         return this.base;
@@ -29,6 +30,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
     public Damage getDamage() { return this.damage; }
     public Scaling getScale() { return this.scaling; }
     public Requirements getRequirements() { return this.requirements; }
+    public Guard getGuard() { return this.guard; }
+    public Status getStatus() { return this.status; }
 
     public static class Base implements INBTSerializable<CompoundTag> {
         private int maxUpgrades;
@@ -454,16 +457,202 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
     }
 
     public static class Guard implements INBTSerializable<CompoundTag> {
+        private int physGuard;
+        private int magicGuard;
+        private int fireGuard;
+        private int lightGuard;
+        private int holyGuard;
 
         @Override
         public CompoundTag serializeNBT() {
             CompoundTag nbt = new CompoundTag();
+            nbt.putInt("PhysGuard", this.physGuard);
+            nbt.putInt("MagicGuard", this.magicGuard);
+            nbt.putInt("FireGuard", this.fireGuard);
+            nbt.putInt("LightGuard", this.lightGuard);
+            nbt.putInt("HolyGuard", this.holyGuard);
             return nbt;
         }
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
+            if (nbt.contains("PhysGuard", 99)) {
+                this.physGuard = nbt.getInt("PhysGuard");
+            }
+            if (nbt.contains("MagicGuard", 99)) {
+                this.magicGuard = nbt.getInt("MagicGuard");
+            }
+            if (nbt.contains("FireGuard", 99)) {
+                this.fireGuard = nbt.getInt("FireGuard");
+            }
+            if (nbt.contains("LightGuard", 99)) {
+                this.lightGuard = nbt.getInt("LightGuard");
+            }
+            if (nbt.contains("HolyGuard", 99)) {
+                this.holyGuard = nbt.getInt("HolyGuard");
+            }
+        }
 
+        public JsonObject toJsonObject() {
+            Preconditions.checkArgument(this.physGuard >= 0, "Physical guard must be greater than or equal to 0");
+            Preconditions.checkArgument(this.magicGuard >= 0, "Magic guard must be greater than or equal to 0");
+            Preconditions.checkArgument(this.fireGuard >= 0, "Fire guard must be greater than or equal to 0");
+            Preconditions.checkArgument(this.lightGuard >= 0, "Lightning guard must be greater than or equal to 0");
+            Preconditions.checkArgument(this.holyGuard >= 0, "Holy guard must be greater than or equal to 0");
+            JsonObject jsonObject = new JsonObject();
+            if (this.physGuard > 0) jsonObject.addProperty("physGuard", this.physGuard);
+            if (this.magicGuard > 0) jsonObject.addProperty("magicGuard", this.magicGuard);
+            if (this.fireGuard > 0) jsonObject.addProperty("fireGuard", this.fireGuard);
+            if (this.lightGuard > 0) jsonObject.addProperty("lightGuard", this.lightGuard);
+            if (this.holyGuard > 0) jsonObject.addProperty("holyGuard", this.holyGuard);
+            return jsonObject;
+        }
+
+        public int getPhysGuard() {
+            return this.physGuard;
+        }
+
+        public int getMagicGuard() {
+            return this.magicGuard;
+        }
+
+        public int getFireGuard() {
+            return this.fireGuard;
+        }
+
+        public int getLightGuard() {
+            return this.lightGuard;
+        }
+
+        public int getHolyGuard() {
+            return this.holyGuard;
+        }
+
+        public Map<WeaponDamage, Integer> getGuardMap() {
+            Map<WeaponDamage, Integer> guardMap = new TreeMap<>();
+            if (this.physGuard > 0) guardMap.put(WeaponDamage.PHYSICAL, this.physGuard);
+            if (this.magicGuard > 0) guardMap.put(WeaponDamage.MAGICAL, this.magicGuard);
+            if (this.fireGuard > 0) guardMap.put(WeaponDamage.FIRE, this.fireGuard);
+            if (this.lightGuard > 0) guardMap.put(WeaponDamage.LIGHTNING, this.lightGuard);
+            if (this.holyGuard > 0) guardMap.put(WeaponDamage.HOLY, this.holyGuard);
+            return guardMap;
+        }
+
+        public Guard copy() {
+            Guard guard = new Guard();
+            guard.physGuard = this.physGuard;
+            guard.magicGuard = this.magicGuard;
+            guard.fireGuard = this.fireGuard;
+            guard.lightGuard = this.lightGuard;
+            guard.holyGuard = this.holyGuard;
+            return guard;
+        }
+    }
+
+    public static class Status implements INBTSerializable<CompoundTag> {
+        private int poison;
+        private int scarletRot;
+        private int bloodLoss;
+        private int frostBite;
+        private int sleep;
+        private int madness;
+        private int deathBlight;
+
+        @Override
+        public CompoundTag serializeNBT() {
+            CompoundTag nbt = new CompoundTag();
+            nbt.putInt("Poison", this.poison);
+            nbt.putInt("ScarletRot", this.scarletRot);
+            nbt.putInt("BloodLoss", this.bloodLoss);
+            nbt.putInt("FrostBite", this.frostBite);
+            nbt.putInt("Sleep", this.sleep);
+            nbt.putInt("Madness", this.madness);
+            nbt.putInt("DeathBlight", this.deathBlight);
+            return nbt;
+        }
+
+        @Override
+        public void deserializeNBT(CompoundTag nbt) {
+            if (nbt.contains("Poison", 99)) {
+                this.poison = nbt.getInt("Poison");
+            }
+            if (nbt.contains("ScarletRot", 99)) {
+                this.scarletRot = nbt.getInt("ScarletRot");
+            }
+            if (nbt.contains("BloodLoss", 99)) {
+                this.bloodLoss = nbt.getInt("BloodLoss");
+            }
+            if (nbt.contains("FrostBite", 99)) {
+                this.frostBite = nbt.getInt("FrostBite");
+            }
+            if (nbt.contains("Sleep", 99)) {
+                this.sleep = nbt.getInt("Sleep");
+            }
+            if (nbt.contains("Madness", 99)) {
+                this.madness = nbt.getInt("Madness");
+            }
+            if (nbt.contains("DeathBlight", 99)) {
+                this.deathBlight = nbt.getInt("DeathBlight");
+            }
+        }
+
+        public JsonObject toJsonObject() {
+            Preconditions.checkArgument(this.poison >= 0, "Poison build up must be greater than or equal to 0");
+            Preconditions.checkArgument(this.scarletRot >= 0, "Scarlet rot build up must be greater than or equal to 0");
+            Preconditions.checkArgument(this.bloodLoss >= 0, "Blood loss build up must be greater than or equal to 0");
+            Preconditions.checkArgument(this.frostBite >= 0, "Frostbite build up must be greater than or equal to 0");
+            Preconditions.checkArgument(this.sleep >= 0, "Sleep build up must be greater than or equal to 0");
+            Preconditions.checkArgument(this.madness >= 0, "Madness build up must be greater than or equal to 0");
+            Preconditions.checkArgument(this.deathBlight >= 0, "Death blight build up must be greater than or equal to 0");
+            JsonObject jsonObject = new JsonObject();
+            if (this.poison > 0) jsonObject.addProperty("poison", this.poison);
+            if (this.scarletRot > 0) jsonObject.addProperty("scarletRot", this.scarletRot);
+            if (this.bloodLoss > 0) jsonObject.addProperty("bloodLoss", this.bloodLoss);
+            if (this.frostBite > 0) jsonObject.addProperty("frostBite", this.frostBite);
+            if (this.sleep > 0) jsonObject.addProperty("sleep", this.sleep);
+            if (this.madness > 0) jsonObject.addProperty("madness", this.madness);
+            if (this.deathBlight > 0) jsonObject.addProperty("deathBlight", this.deathBlight);
+            return jsonObject;
+        }
+
+        public int getPoison() {
+            return this.poison;
+        }
+
+        public int getScarletRot() {
+            return this.scarletRot;
+        }
+
+        public int getBloodLoss() {
+            return this.bloodLoss;
+        }
+
+        public int getFrostBite() {
+            return this.frostBite;
+        }
+
+        public int getSleep() {
+            return this.sleep;
+        }
+
+
+        public int getMadness() {
+            return this.madness;
+        }
+
+        public int getDeathBlight() {
+            return this.deathBlight;
+        }
+
+        public Status copy() {
+            Status status = new Status();
+            status.poison = this.poison;
+            status.scarletRot = this.scarletRot;
+            status.bloodLoss = this.bloodLoss;
+            status.frostBite = this.frostBite;
+            status.madness = this.madness;
+            status.deathBlight = this.deathBlight;
+            return status;
         }
     }
 
@@ -474,6 +663,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         nbt.put("Damage", this.damage.serializeNBT());
         nbt.put("Scaling", this.scaling.serializeNBT());
         nbt.put("Requirements", this.requirements.serializeNBT());
+        nbt.put("Guard", this.guard.serializeNBT());
+        nbt.put("Status", this.status.serializeNBT());
         return nbt;
     }
 
@@ -491,6 +682,12 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         if (nbt.contains("Requirements", 10)) {
             this.requirements.deserializeNBT(nbt.getCompound("Requirements"));
         }
+        if (nbt.contains("Guard", 10)) {
+            this.guard.deserializeNBT(nbt.getCompound("Guard"));
+        }
+        if (nbt.contains("Status", 10)) {
+            this.status.deserializeNBT(nbt.getCompound("Status"));
+        }
     }
 
     public JsonObject toJsonObject() {
@@ -499,6 +696,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         jsonObject.add("damage", this.damage.toJsonObject());
         jsonObject.add("scaling", this.scaling.toJsonObject());
         jsonObject.add("requirements", this.requirements.toJsonObject());
+        jsonObject.add("guard", this.guard.toJsonObject());
+        jsonObject.add("status", this.status.toJsonObject());
         return jsonObject;
     }
 
@@ -615,6 +814,15 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             this.scaledWeapon.requirements.intReq = intReq;
             this.scaledWeapon.requirements.faiReq = faiReq;
             this.scaledWeapon.requirements.arcReq = arcReq;
+            return this;
+        }
+
+        public Builder weaponGuard(int physGuard, int magicGuard, int fireGuard, int lightGuard, int holyGuard) {
+            this.scaledWeapon.guard.physGuard = physGuard;
+            this.scaledWeapon.guard.magicGuard = magicGuard;
+            this.scaledWeapon.guard.fireGuard = fireGuard;
+            this.scaledWeapon.guard.lightGuard = lightGuard;
+            this.scaledWeapon.guard.holyGuard = holyGuard;
             return this;
         }
     }

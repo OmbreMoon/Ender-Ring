@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
-import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
-import com.ombremoon.enderring.compat.epicfight.util.EFMCapabilityUtil;
-import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
+import com.ombremoon.enderring.common.object.world.effect.IncrementalStatusEffect;
+import com.ombremoon.enderring.common.object.world.effect.StatusEffectInstance;
 import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -22,8 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-
-import java.util.Arrays;
 
 public class MeleeWeapon extends AbstractWeapon {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
@@ -40,11 +38,12 @@ public class MeleeWeapon extends AbstractWeapon {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            ExtendedWeaponCapability weaponCapability = EFMCapabilityUtil.getWeaponCapability(serverPlayerPatch);
+            pPlayer.addEffect(new StatusEffectInstance(this.getModifiedWeapon(itemStack), (IncrementalStatusEffect) StatusEffectInit.POISON.get(), 200));
+            /*ExtendedWeaponCapability weaponCapability = EFMCapabilityUtil.getWeaponCapability(serverPlayerPatch);
             if (weaponCapability != null) {
                 weaponCapability.swapAshOfWar(itemStack, weaponCapability.getAshOfWar(itemStack) == SkillInit.SWEEPING_EDGE_NEW ? SkillInit.GUILLOTINE_AXE_NEW : SkillInit.SWEEPING_EDGE_NEW);
                 Constants.LOG.info(String.valueOf(weaponCapability.getAshOfWar(itemStack)));
-            }
+            }*/
 
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
@@ -53,7 +52,7 @@ public class MeleeWeapon extends AbstractWeapon {
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         float motionValue = pStack.getTag().getFloat("MotionValue");
-        DamageUtil.conditionalHurt(pStack, this, this.getModifiedWeapon(pStack), pAttacker, pTarget, motionValue);
+        DamageUtil.conditionalHurt(pStack, this.getModifiedWeapon(pStack), pAttacker, pTarget, motionValue);
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 

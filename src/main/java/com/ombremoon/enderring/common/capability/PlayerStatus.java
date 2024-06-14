@@ -5,6 +5,7 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.common.object.entity.ERMob;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
@@ -22,10 +23,18 @@ import java.util.LinkedHashSet;
 public class PlayerStatus implements IPlayerStatus {
     public static final EntityDataAccessor<Float> FP = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> RUNES = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Float> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> SCARLET_ROT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> BLOOD_LOSS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> FROSTBITE = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> SLEEP = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
     private final Player player;
     private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
     private ObjectOpenHashSet<AbstractSpell> activeSpells = new ObjectOpenHashSet<>();
     private SpellType<?> selectedSpell;
+    private AbstractSpell recentlyActivatedSpell;
     private EntityType<?> spiritSummon;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
@@ -35,11 +44,22 @@ public class PlayerStatus implements IPlayerStatus {
     private boolean usingQuickAccess;
     private ItemStack cachedItem;
     private int useItemTicks;
+    private boolean initialized;
 
     public PlayerStatus(Player player) {
         this.player = player;
+//        if (!initialized) {
         player.getEntityData().define(FP, 0.0F);
         player.getEntityData().define(RUNES, 0);
+        player.getEntityData().define(POISON, 0.0F);
+        player.getEntityData().define(SCARLET_ROT, 0.0F);
+        player.getEntityData().define(BLOOD_LOSS, 0.0F);
+        player.getEntityData().define(FROSTBITE, 0.0F);
+        player.getEntityData().define(SLEEP, 0.0F);
+        player.getEntityData().define(MADNESS, 0.0F);
+        player.getEntityData().define(DEATH_BLIGHT, 0.0F);
+//            this.initialized = true;
+//        }
     }
 
     @Override
@@ -104,6 +124,16 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public ObjectOpenHashSet<AbstractSpell> getActiveSpells() {
         return this.activeSpells;
+    }
+
+    @Override
+    public AbstractSpell getRecentlyActivatedSpell() {
+        return this.recentlyActivatedSpell;
+    }
+
+    @Override
+    public void setRecentlyActivatedSpell(AbstractSpell recentlyActivatedSpell) {
+        this.recentlyActivatedSpell = recentlyActivatedSpell;
     }
 
     @Override

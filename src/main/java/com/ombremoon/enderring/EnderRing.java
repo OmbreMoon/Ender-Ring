@@ -57,7 +57,7 @@ public class EnderRing {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        ModNetworking.registerPackets();
+        event.enqueueWork(ModNetworking::registerPackets);
     }
 
     private void loadComplete(FMLLoadCompleteEvent event) {

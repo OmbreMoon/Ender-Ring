@@ -2,6 +2,7 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.Saturations;
@@ -62,14 +63,15 @@ public class DamageUtil {
         return calculateMagicScaling(weapon, player, weaponLevel, WeaponDamage.HOLY);
     }
 
-    public static void conditionalHurt(ItemStack itemStack, AbstractWeapon abstractWeapon, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity) {
-        conditionalHurt(itemStack, abstractWeapon, scaledWeapon, attackEntity, targetEntity, 1.0F);
+    public static void conditionalHurt(ItemStack itemStack, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity) {
+        conditionalHurt(itemStack, scaledWeapon, attackEntity, targetEntity, 1.0F);
     }
 
-    public static void conditionalHurt(ItemStack itemStack, AbstractWeapon abstractWeapon, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
+    public static void conditionalHurt(ItemStack itemStack, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
+        AbstractWeapon weapon = (AbstractWeapon) itemStack.getItem();
         for (WeaponDamage weaponDamage : WeaponDamage.values()) {
             DamageSource damageSource;
-            float typeDamage = weaponDamage.getDamageFunction().apply(scaledWeapon, attackEntity, abstractWeapon.getWeaponLevel(itemStack));
+            float typeDamage = weaponDamage.getDamageFunction().apply(scaledWeapon, attackEntity, weapon.getWeaponLevel(itemStack));
 
             //Ensures that type damage is 1 when between 0 and 1
             if (typeDamage > 0) {
@@ -80,8 +82,12 @@ public class DamageUtil {
         }
     }
 
+    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType) {
+        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType));
+    }
+
     public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, PhysicalDamageType... damageTypes) {
-        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), damageTypes);
+        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType)).addPhysicalDamage(damageTypes);
     }
 
     private static float calculateDamage(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, WeaponDamage weaponDamage) {
@@ -121,6 +127,11 @@ public class DamageUtil {
             f += getSaturationValue(weaponDamage.getSaturation(), EntityStatusUtil.getEntityAttribute(player, weaponDamage.getWeaponScaling().getAttribute()), false);
         }
         return (100 * (f + getSaturationValue(Saturations.RUNE_DEFENSE, EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get()), true))) / STAT_SCALE;
+    }
+
+    public static float calculateStatusBuildUp(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, int buildUp) {
+        float f = getSaturationValue(Saturations.STATUS_EFFECT, EntityStatusUtil.getEntityAttribute(livingEntity, EntityAttributeInit.ARCANE.get()), false);
+        return buildUp * getScalingUpgrade(weapon, WeaponScaling.ARC, weaponLevel) * f;
     }
 
     public static float getDamageUpgrade(ScaledWeapon weapon, WeaponDamage weaponDamage, int weaponLevel) {

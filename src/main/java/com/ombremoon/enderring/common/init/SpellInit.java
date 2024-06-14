@@ -4,7 +4,9 @@ import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.common.magic.spelltypes.AnimatedSpell;
 import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
+import com.ombremoon.enderring.common.object.spell.firemonk.CatchFlameIncantation;
 import com.ombremoon.enderring.common.object.spell.sorcery.glintstone.GlintstonePebbleSorcery;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -22,6 +24,7 @@ public class SpellInit {
     public static final RegistryObject<SpellType<ProjectileSpell>> GLINTSTONE_PEBBLE = registerSpell("glintstone_pebble", GlintstonePebbleSorcery::new);
 
     //INCANTATIONS
+    public static final RegistryObject<SpellType<AnimatedSpell>> CATCH_FLAME = registerSpell("catch_flame", CatchFlameIncantation::new);
 //    public static final RegistryObject<SpellType<SimpleAnimationSpell>> HEAL = registerSpell("heal", HealIncantation::new, HealIncantation.createHealBuilder());
 //    public static final RegistryObject<SpellType<SimpleAnimationSpell>> URGENT_HEAL = registerSpell("urgent_heal", UrgentHealIncantation::new, UrgentHealIncantation.createUrgentHealBuilder());
 

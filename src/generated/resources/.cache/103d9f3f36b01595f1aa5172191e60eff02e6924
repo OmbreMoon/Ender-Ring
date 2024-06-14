@@ -1,9 +1,15 @@
-// 1.20.1	2024-05-29T17:08:02.5967388	Registries
+// 1.20.1	2024-06-12T13:49:18.9528408	Registries
+08b980ed6197a77f59b3c1df97406ec679bac0a7 data/enderring/damage_type/blood_loss.json
+215b3568a89ae35810c2fa43c6bd5bab4d8bc4c6 data/enderring/damage_type/death_blight.json
 fe8c85729655f971ee94229cbb7d68bbb513d08b data/enderring/damage_type/fire.json
+673720aa8917909de4bd294e7c33c1ede5177880 data/enderring/damage_type/frostbite.json
 39287ac1b3c2d2489f179b5635913f9ee9bc08ef data/enderring/damage_type/holy.json
 84c0c00115bf565740bf1aecda250ab5c02dbb44 data/enderring/damage_type/lightning.json
+fc763dfda313f71b320c38a60edb541f4eaafa13 data/enderring/damage_type/madness.json
 ec03ce44a42a9b14e3402c0e75ef3fb104928292 data/enderring/damage_type/magical.json
 85c74c24583e1daa15a36a8e1fe5ea21cd86a2ed data/enderring/damage_type/physical.json
 7c2587b954b6e08954c93f20d232c17a97cb259f data/enderring/damage_type/pierce.json
+099014a6422922c404d7745aa0345f7e1be96403 data/enderring/damage_type/poison.json
+c01fb750a6b0672fd665530ff6dad6963ac24506 data/enderring/damage_type/scarlet_rot.json
 2cd44abab3e8564f4ccdd5b396dcb2aa38eaff9b data/enderring/damage_type/slash.json
 357f9e94f4b39e3525dc512f0986b2749fd6b478 data/enderring/damage_type/strike.json

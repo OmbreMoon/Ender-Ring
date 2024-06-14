@@ -16,6 +16,13 @@ public interface ModDamageTypes {
     ResourceKey<DamageType> LIGHTNING = register("lightning");
     ResourceKey<DamageType> HOLY = register("holy");
 
+    ResourceKey<DamageType> POISON = register("poison");
+    ResourceKey<DamageType> SCARLET_ROT = register("scarlet_rot");
+    ResourceKey<DamageType> BLOOD_LOSS = register("blood_loss");
+    ResourceKey<DamageType> FROSTBITE = register("frostbite");
+    ResourceKey<DamageType> MADNESS = register("madness");
+    ResourceKey<DamageType> DEATH_BLIGHT = register("death_blight");
+
     private static ResourceKey<DamageType> register(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, CommonClass.customLocation(name));
     }
@@ -29,5 +36,12 @@ public interface ModDamageTypes {
         context.register(FIRE, new DamageType("fire", 0.1F));
         context.register(LIGHTNING, new DamageType("lightning", 0.1F));
         context.register(HOLY, new DamageType("holy", 0.1F));
+
+        context.register(POISON, new DamageType("poison", 0.1F));
+        context.register(SCARLET_ROT, new DamageType("scarlet_rot", 0.1F));
+        context.register(BLOOD_LOSS, new DamageType("blood_loss", 0.1F));
+        context.register(FROSTBITE, new DamageType("frostbite", 0.1F));
+        context.register(MADNESS, new DamageType("madness", 0.1F));
+        context.register(DEATH_BLIGHT, new DamageType("death_blight", 0.1F));
     }
 }

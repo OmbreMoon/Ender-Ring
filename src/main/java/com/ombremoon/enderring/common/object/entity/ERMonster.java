@@ -12,4 +12,5 @@ public abstract class ERMonster<T extends ERMonster<T>> extends ERMob<T> {
     protected boolean shouldDespawnInPeaceful() {
         return true;
     }
+
 }

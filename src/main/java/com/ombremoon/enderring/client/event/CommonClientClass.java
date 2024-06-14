@@ -1,11 +1,11 @@
 package com.ombremoon.enderring.client.event;
 
 import com.ombremoon.enderring.client.ModelLocations;
+import com.ombremoon.enderring.client.model.MidasShoulderGuardModel;
 import com.ombremoon.enderring.client.model.entity.TestDummyModel;
 import com.ombremoon.enderring.client.model.entity.mob.TorrentModel;
 import com.ombremoon.enderring.client.render.entity.TestDummyRenderer;
 import com.ombremoon.enderring.client.render.entity.mob.TorrentRenderer;
-import com.ombremoon.enderring.common.init.entity.EntityInit;
 import com.ombremoon.enderring.common.init.entity.MobInit;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -29,7 +29,8 @@ public class CommonClientClass {
         List<LayerDefinitions> definitions = new ArrayList<>();
         definitions.addAll(List.of(
                 new LayerDefinitions(ModelLocations.TEST_DUMMY, TestDummyModel.createBodyLayer()),
-                new LayerDefinitions(ModelLocations.TORRENT, TorrentModel.createBodyLayer())
+                new LayerDefinitions(ModelLocations.TORRENT, TorrentModel.createBodyLayer()),
+                new LayerDefinitions(ModelLocations.MIDAS_SHOULDER_GUARD, MidasShoulderGuardModel.createBodyLayer())
         ));
         return definitions;
     }

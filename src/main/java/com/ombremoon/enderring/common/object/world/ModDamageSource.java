@@ -5,18 +5,20 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ModDamageSource extends DamageSource {
-    private final Set<PhysicalDamageType> damageTypes;
+    private final Set<PhysicalDamageType> damageTypes = new HashSet<>();
 
     public ModDamageSource(Holder<DamageType> pType) {
-        this(pType, (PhysicalDamageType) null);
+        super(pType);
     }
 
-    public ModDamageSource(Holder<DamageType> pType, PhysicalDamageType... damageTypes) {
-        super(pType);
-        this.damageTypes = Set.of(damageTypes);
+    public ModDamageSource addPhysicalDamage(PhysicalDamageType... damageTypes) {
+        this.damageTypes.addAll(List.of(damageTypes));
+        return this;
     }
 
     public Set<PhysicalDamageType> getDamageTypes() {

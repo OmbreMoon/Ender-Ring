@@ -24,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -138,12 +139,11 @@ public class EntityStatusUtil {
             for (WeaponDamage weaponDamage : WeaponDamage.values()) {
                 if (weaponDamage != WeaponDamage.LIGHTNING) {
                     if (weaponDamage.getWeaponScaling().getAttribute() == attribute) {
-                        setBaseStat(player, weaponDamage.getDefenseAttribute(), Mth.floor(DamageUtil.calculateDefense(player, weaponDamage)));
-//                        player.getEntityData().set(weaponDamage.getDefAccessor(), DamageUtil.calculateDefense(player, weaponDamage));
+                        player.getAttribute(weaponDamage.getDefenseAttribute()).setBaseValue(Mth.floor(DamageUtil.calculateDefense(player, weaponDamage)));
+                        break;
                     }
                 } else {
-                    setBaseStat(player, EntityAttributeInit.LIGHT_DEFENSE.get(), Mth.floor(DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING)));
-//                    player.getEntityData().set(PlayerStatus.LIGHTNING_DEF, DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING));
+                    player.getAttribute(EntityAttributeInit.LIGHT_DEFENSE.get()).setBaseValue(Mth.floor(DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING)));
                 }
             }
         }
@@ -186,10 +186,19 @@ public class EntityStatusUtil {
 
     public static void activateSpell(Player player, AbstractSpell abstractSpell) {
         getActiveSpells(player).add(abstractSpell);
+        setRecentlyActivatedSpell(player, abstractSpell);
     }
 
     public static LinkedHashSet<SpellType<?>> getSpellSet(Player player) {
         return EntityStatusProvider.get(player).getSpellSet();
+    }
+
+    public static AbstractSpell getRecentlyActivatedSpell(Player player) {
+        return EntityStatusProvider.get(player).getRecentlyActivatedSpell();
+    }
+
+    public static void setRecentlyActivatedSpell(Player player, AbstractSpell abstractSpell) {
+        EntityStatusProvider.get(player).setRecentlyActivatedSpell(abstractSpell);
     }
 
     public static SpellType<?> getSelectedSpell(Player player) {

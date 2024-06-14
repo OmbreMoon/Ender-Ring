@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.world.effect;
 
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -8,11 +9,13 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StatusEffect extends MobEffect {
+    protected static final Logger LOGGER = Constants.LOG;
 
     public StatusEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);

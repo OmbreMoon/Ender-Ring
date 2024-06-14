@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.init.item;
 
+import com.ombremoon.enderring.common.object.item.MidasGauntletItem;
 import com.ombremoon.enderring.common.object.item.equipment.ModdedArmor;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.ranged.AbstractArrowItem;
@@ -86,6 +87,12 @@ public class EquipmentInit extends ItemInit {
     //AMMUNITION
     public static final RegistryObject<Item> BONE_ARROW = registerBoneArrow("bone_arrow");
     public static final RegistryObject<Item> BONE_BOLT = registerBoneBolt("bone_bolt");
+
+
+    //PIERCE TEST
+    public static final RegistryObject<Item> MIDAS_GAUNTLET = registerItem("midas_gauntlet", () -> new MidasGauntletItem(itemProperties()));
+
+
 
     protected static RegistryObject<Item> registerBoneArrow(String name) {
         return registerItem(name, () -> new AbstractArrowItem(itemProperties()), EQUIPMENT_LIST, SIMPLE_ITEM_LIST);

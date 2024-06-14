@@ -11,4 +11,5 @@ public class ModelLocations {
     public static final ModelLayerLocation TORRENT = new ModelLayerLocation(CommonClass.customLocation("torrent"), "main");
 
     //MISC ENTITIES
+    public static final ModelLayerLocation MIDAS_SHOULDER_GUARD = new ModelLayerLocation(CommonClass.customLocation("midas_shoulder_guard"), "main");
 }

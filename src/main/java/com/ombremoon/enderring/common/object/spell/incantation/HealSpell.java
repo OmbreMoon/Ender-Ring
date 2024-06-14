@@ -2,12 +2,12 @@ package com.ombremoon.enderring.common.object.spell.incantation;
 
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.magic.SpellType;
-import com.ombremoon.enderring.common.magic.spelltypes.SimpleAnimationSpell;
+import com.ombremoon.enderring.common.magic.spelltypes.AnimatedSpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
-public abstract class HealSpell extends SimpleAnimationSpell {
+public abstract class HealSpell extends AnimatedSpell {
 
     public HealSpell(SpellType<?> spellType, Builder builder) {
         super(spellType, builder);

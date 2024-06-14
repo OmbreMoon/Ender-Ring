@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.entity.npc;
 
 import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.item.EquipmentInit;
 import com.ombremoon.enderring.common.object.entity.ERMob;
 import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.TestDummyPatch;
@@ -20,6 +21,8 @@ import net.minecraft.world.entity.ai.behavior.BlockPosTracker;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -41,7 +44,6 @@ import net.tslat.smartbrainlib.api.core.sensor.custom.NearbyBlocksSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.registry.SBLMemoryTypes;
 import net.tslat.smartbrainlib.util.BrainUtils;
-import yesman.epicfight.world.capabilities.item.Style;
 
 import java.util.List;
 
@@ -83,6 +85,16 @@ public class TestDummy extends MerchantNPCMob implements LevelledMob {
     }
 
     @Override
+    protected ItemStack getMainHandWeapon() {
+        return new ItemStack(EquipmentInit.GUARDIAN_SWORDSPEAR.get());
+    }
+
+    @Override
+    protected ItemStack getOffHandWeapon() {
+        return new ItemStack(Items.SHIELD);
+    }
+
+    @Override
     public BrainActivityGroup<? extends ERMob<MerchantNPCMob>> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
                 new LookAtTarget<>(),
@@ -95,6 +107,11 @@ public class TestDummy extends MerchantNPCMob implements LevelledMob {
 
     public boolean isSmithing() {
         return this.entityData.get(SMITHING);
+    }
+
+    @Override
+    public boolean isPushable() {
+        return !this.isSmithing();
     }
 
     @Override
@@ -120,7 +137,7 @@ public class TestDummy extends MerchantNPCMob implements LevelledMob {
     }
 
     private double getAnvilRangeSqr() {
-        return this.getBbWidth() * 2.0F * this.getBbWidth() * 2.0F + 2.0F;
+        return this.getBbWidth() * 2.0F * this.getBbWidth() * 2.0F + 1.0F;
     }
 
     private double getPerceivedAnvilDistanceSquare(BlockPos blockPos) {
@@ -158,7 +175,8 @@ public class TestDummy extends MerchantNPCMob implements LevelledMob {
 
                 final var position = posList.get(0);
                 final var blockPos = position.getFirst();
-                return testDummy.isWithinAnvilRange(blockPos);
+                final var blockState = position.getSecond();
+                return blockPos.closerToCenterThan(testDummy.position(), 2) && !testDummy.level().getBlockState(blockPos.relative(blockState.getValue(AnvilBlock.FACING)).below()).isAir();
             });
             whenStarting(testDummy -> {
                 var blockPos = this.target.getFirst();
@@ -209,7 +227,7 @@ public class TestDummy extends MerchantNPCMob implements LevelledMob {
                 BlockPos blockPos = position.getFirst();
                 BlockState blockState = position.getSecond();
                 BlockPos freePos = blockPos.relative(blockState.getValue(AnvilBlock.FACING));
-                if (level.getBlockState(freePos).isAir()) {
+                if (level.getBlockState(freePos).isAir() && !level.getBlockState(freePos.below()).isAir()) {
                     this.target = Pair.of(freePos.immutable(), level.getBlockState(freePos));
                 }
 

@@ -18,14 +18,6 @@ import net.minecraftforge.network.simple.SimpleChannel;
 public class ModNetworking {
     private static final String VER = "1";
     public static final SimpleChannel PACKET_CHANNEL = NetworkRegistry.newSimpleChannel(CommonClass.customLocation("main"), () -> VER, VER::equals, VER::equals);
-    public static ModNetworking instance;
-
-    public static ModNetworking getInstance() {
-        if (instance == null) {
-            return new ModNetworking();
-        }
-        return instance;
-    }
 
     public static void setPlayerOrigin(StarterScreen.Base characterBase, StarterScreen.Keepsake keepsake, boolean confirmFlag) {
         sendToServer(new ServerboundPlayerOriginPacket(characterBase, keepsake, confirmFlag));

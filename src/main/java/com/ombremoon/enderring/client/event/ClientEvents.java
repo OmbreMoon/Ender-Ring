@@ -4,13 +4,15 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.KeyBinds;
 import com.ombremoon.enderring.client.gui.QuickAccessOverlay;
 import com.ombremoon.enderring.client.gui.screen.*;
+import com.ombremoon.enderring.client.render.layer.MidasShoulderGuardLayer;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
-import com.ombremoon.enderring.common.init.ParticleInit;
 import com.ombremoon.enderring.common.object.entity.NPCMob;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +30,9 @@ public class ClientEvents {
         @SubscribeEvent
         public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
             CommonClientClass.getRenderers().forEach(
-                    renderers -> event.registerEntityRenderer((EntityType<?>) renderers.type().get(), renderers.renderer())
+                    renderers -> {
+                        event.registerEntityRenderer((EntityType<?>) renderers.type().get(), renderers.renderer());
+                    }
             );
         }
 
@@ -41,7 +45,12 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.AddLayers event) {
-
+            for (final String skin : event.getSkins()) {
+                final LivingEntityRenderer<Player, PlayerModel<Player>> playerRenderer = event.getSkin(skin);
+                if (playerRenderer == null)
+                    continue;
+                playerRenderer.addLayer(new MidasShoulderGuardLayer<>(playerRenderer));
+            }
         }
 
         @SubscribeEvent
@@ -71,7 +80,7 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void onParticleProviderRegister(RegisterParticleProvidersEvent event) {
-            ParticleInit.registerParticleFactory(event);
+//            ParticleInit.registerParticleFactory(event);
         }
     }
 

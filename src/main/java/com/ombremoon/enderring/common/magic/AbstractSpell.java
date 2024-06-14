@@ -7,11 +7,16 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
+import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
@@ -23,6 +28,7 @@ import java.util.Set;
 public abstract class AbstractSpell {
     static final Logger LOGGER = Constants.LOG;
     protected static int DEFAULT_CAST_TIME = 1;
+    protected static int INSTANT_SPELL_DURATION = 10;
     protected final SpellType<?> spellType;
     protected final MagicType magicType;
     protected final Set<Pair<WeaponScaling, Integer>> requiredStats;
@@ -34,6 +40,7 @@ public abstract class AbstractSpell {
     private ServerPlayerPatch playerPatch;
     private BlockPos blockPos;
     private ScaledWeapon scaledWeapon;
+    private ItemStack weapon;
     private int ticks = 0;
     public boolean isInactive = false;
     public boolean init = false;
@@ -160,10 +167,14 @@ public abstract class AbstractSpell {
     }
 
     protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-
+        playerPatch.getOriginal().sendSystemMessage(Component.literal("Spell: ").append(Component.translatable(this.getSpellName().getString())));
     }
 
     protected void onSpellStop(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+
+    }
+
+    protected void onHurtTick(ServerPlayerPatch playerPatch, LivingEntity targetEntity, Level level, ScaledWeapon weapon) {
 
     }
 
@@ -175,10 +186,35 @@ public abstract class AbstractSpell {
         return this.magicScaling * this.motionValue / ConfigHandler.STAT_SCALE.get();
     }
 
-    public void initSpell(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon, float magicScaling) {
+    protected float getSorceryScaling() {
+        return DamageUtil.getSorceryScaling(this.scaledWeapon, this.playerPatch.getOriginal(), this.weapon.getTag().getInt("WeaponLevel"));
+    }
+
+    protected float getIncantationScaling() {
+        return DamageUtil.getIncantScaling(this.scaledWeapon, this.playerPatch.getOriginal(), this.weapon.getTag().getInt("WeaponLevel"));
+    }
+
+    public void checkHurt(LivingEntity livingEntity) {
+        DamageInstance damageInstance = this.createDamageInstance();
+        if (damageInstance != null) {
+            onHurtTick(this.playerPatch, livingEntity, this.level, this.scaledWeapon);
+            livingEntity.hurt(DamageUtil.moddedDamageSource(this.level, damageInstance.damageType()), damageInstance.amount());
+        }
+    }
+
+    protected DamageInstance createDamageInstance() {
+        return null;
+    }
+
+    protected float getScaledDamage(float magicScaling) {
+        return magicScaling * motionValue / ConfigHandler.STAT_SCALE.get();
+    }
+
+    public void initSpell(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ItemStack itemStack, ScaledWeapon scaledWeapon, float magicScaling) {
         this.level = level;
         this.playerPatch = playerPatch;
         this.blockPos = blockPos;
+        this.weapon = itemStack;
         this.scaledWeapon = scaledWeapon;
         this.magicScaling = magicScaling;
 
@@ -225,4 +261,6 @@ public abstract class AbstractSpell {
             this.requiredStats.add(Pair.of(statType, requiredStat));
         }
     }
+
+    public record DamageInstance(ResourceKey<DamageType> damageType, float amount) {}
 }

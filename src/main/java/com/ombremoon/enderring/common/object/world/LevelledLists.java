@@ -12,7 +12,7 @@ public enum LevelledLists implements LevelledList {
     final float maxHPMult;
     final int id;
 
-    private LevelledLists(ResourceKey<Biome> biome, float maxHPMult) {
+    LevelledLists(ResourceKey<Biome> biome, float maxHPMult) {
         this.id = LevelledList.ENUM_MANAGER.assign(this);
         this.biome = biome;
         this.maxHPMult = maxHPMult;

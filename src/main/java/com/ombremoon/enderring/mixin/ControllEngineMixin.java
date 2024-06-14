@@ -66,11 +66,13 @@ public abstract class ControllEngineMixin {
         this.heavyAttackPressToggle = false;
     }
 
-    @Inject(method = "attackKeyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;isPaused()Z", shift = At.Shift.AFTER))
-    private void heavyAttackKeyPressed(KeyMapping key, int action, CallbackInfoReturnable<Boolean> cir) {
-        if (EpicFightKeyMappings.ATTACK.getKey().equals(KeyBinds.HEAVY_ATTACK_BINDING.getKey())) {
-            if (!this.heavyAttackPressToggle) {
-                this.heavyAttackPressToggle = true;
+    @Inject(method = "attackKeyPressed", at = @At(value = "HEAD"))
+    private void heavyAttackPressed(KeyMapping key, int action, CallbackInfoReturnable<Boolean> cir) {
+        if (action == 1 && this.playerpatch.isBattleMode() && this.currentChargingKey != key && !Minecraft.getInstance().isPaused()) {
+            if (EpicFightKeyMappings.ATTACK.getKey().equals(KeyBinds.HEAVY_ATTACK_BINDING.getKey())) {
+                if (!this.heavyAttackPressToggle) {
+                    this.heavyAttackPressToggle = true;
+                }
             }
         }
     }

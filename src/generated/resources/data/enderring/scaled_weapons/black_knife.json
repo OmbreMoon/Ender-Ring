@@ -20,6 +20,7 @@
       "pierce"
     ]
   },
+  "guard": {},
   "requirements": {
     "dexReq": 12,
     "faiReq": 18,
@@ -29,5 +30,6 @@
     "dexScale": 55,
     "faiScale": 35,
     "strScale": 10
-  }
+  },
+  "status": {}
 }

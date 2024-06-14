@@ -1,15 +1,11 @@
 package com.ombremoon.enderring.common.object.spell.sorcery.glintstone;
 
-import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.gameasset.Animations;
 
 public class GlintstonePebbleSorcery extends ProjectileSpell {
 
@@ -18,14 +14,15 @@ public class GlintstonePebbleSorcery extends ProjectileSpell {
                 .setMagicType(MagicType.SORCERY)
                 .setDuration(10)
                 .setFPCost(7)
-                .setRequirements(WeaponScaling.INT, 10);
+                .setRequirements(WeaponScaling.INT, 10)
+                .setAnimation(() -> Animations.BIPED_DEATH);
     }
 
     public GlintstonePebbleSorcery() {
         this(SpellInit.GLINTSTONE_PEBBLE.get(), createGlinstonePebbleBuilder());
     }
 
-    public GlintstonePebbleSorcery(SpellType<?> spellType, ProjectileSpell.Builder builder) {
+    public GlintstonePebbleSorcery(SpellType<?> spellType, ProjectileSpell.Builder<GlintstonePebbleSorcery> builder) {
         super(spellType, builder);
     }
 
@@ -34,18 +31,4 @@ public class GlintstonePebbleSorcery extends ProjectileSpell {
         return DEFAULT_CAST_TIME;
     }
 
-    @Override
-    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellTick(playerPatch, level, blockPos, weapon);
-    }
-
-    @Override
-    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellStart(playerPatch, level, blockPos, weapon);Constants.LOG.info("Spell: " + this.getSpellName().getString());
-    }
-
-    @Override
-    public boolean shouldTickEffect(int duration) {
-        return super.shouldTickEffect(duration);
-    }
 }

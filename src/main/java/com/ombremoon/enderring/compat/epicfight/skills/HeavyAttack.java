@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.compat.epicfight.skills;
 
-import com.ombremoon.enderring.compat.epicfight.util.EFMCapabilityUtil;
+import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillCategories;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import net.minecraft.network.FriendlyByteBuf;
@@ -85,7 +85,7 @@ public class HeavyAttack extends Skill {
             return;
         }
 
-        ExtendedWeaponCapability cap = EFMCapabilityUtil.getWeaponCapability(executer);
+        ExtendedWeaponCapability cap = EFMUtil.getWeaponCapability(executer);
         StaticAnimation animation = null;
         ServerPlayer serverPlayer = executer.getOriginal();
         ItemStack itemStack = serverPlayer.getItemInHand(InteractionHand.MAIN_HAND);

@@ -3,13 +3,15 @@ package com.ombremoon.enderring.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 
-public class TestDummyModel<T extends LivingEntity> extends HierarchicalModel<T> {
+public class TestDummyModel<T extends LivingEntity> extends HierarchicalModel<T> implements ArmedModel {
 	private final ModelPart excalibur;
 
 	public TestDummyModel(ModelPart root) {
@@ -64,5 +66,14 @@ public class TestDummyModel<T extends LivingEntity> extends HierarchicalModel<T>
 	@Override
 	public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
 
+	}
+
+	@Override
+	public void translateToHand(HumanoidArm pSide, PoseStack pPoseStack) {
+		this.getArm(pSide).translateAndRotate(pPoseStack);
+	}
+
+	protected ModelPart getArm(HumanoidArm pSide) {
+		return pSide == HumanoidArm.LEFT ? this.excalibur.getChild("left_arm") : this.excalibur.getChild("right_arm");
 	}
 }

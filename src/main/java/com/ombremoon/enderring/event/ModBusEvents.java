@@ -1,12 +1,10 @@
 package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.init.ParticleInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.entity.MobInit;
+import com.ombremoon.enderring.common.init.entity.EntityInit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -62,6 +60,6 @@ public class ModBusEvents {
 
     @SubscribeEvent
     public static void onEntityAttributeRegister(EntityAttributeCreationEvent e) {
-        MobInit.attributeSuppliers.forEach(p -> e.put(p.entityTypeSupplier().get(), p.attributeSupplier().get().build()));
+        EntityInit.SUPPLIERS.forEach(p -> e.put(p.entityTypeSupplier().get(), p.attributeSupplier().get().build()));
     }
 }

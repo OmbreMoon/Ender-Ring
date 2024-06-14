@@ -7,6 +7,12 @@
     "enderring:magical",
     "enderring:fire",
     "enderring:lightning",
-    "enderring:holy"
+    "enderring:holy",
+    "enderring:poison",
+    "enderring:scarlet_rot",
+    "enderring:blood_loss",
+    "enderring:frostbite",
+    "enderring:madness",
+    "enderring:death_blight"
   ]
 }
