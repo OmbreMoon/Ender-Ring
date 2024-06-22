@@ -10,6 +10,7 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
+import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -18,6 +19,8 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,6 +36,7 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
+import org.lwjgl.system.linux.Stat;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import java.util.ConcurrentModificationException;
@@ -99,16 +103,23 @@ public class PlayerStatusManager {
         if (!(event.getEntity() instanceof Player player))
             return;
 
+        float damage = event.getAmount();
         if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()) && event.getSource() instanceof ModDamageSource damageSource && damageSource.isPhysicalDamage()) {
-            event.setAmount(event.getAmount() * 0.85F);
+            damage *= 0.85F;
         }
         if (player.hasEffect(StatusEffectInit.RADAGONS_SORESEAL.get())) {
-            event.setAmount(event.getAmount() * 1.15F);
+            MobEffectInstance instance = player.getEffect(StatusEffectInit.RADAGONS_SORESEAL.get());
+            damage *= 1.1F + (0.05F * instance.getAmplifier());
+        }
+        if (player.hasEffect(StatusEffectInit.MARIKAS_SORESEAL.get())) {
+            MobEffectInstance instance = player.getEffect(StatusEffectInit.MARIKAS_SORESEAL.get());
+            damage *= 1.1F + (0.05F * instance.getAmplifier());
         }
         if (player.hasEffect(StatusEffectInit.OPALINE_BUBBLE.get()) && (event.getSource().getEntity() != null || event.getSource().is(DamageTypes.EXPLOSION))) {
             player.removeEffect(StatusEffectInit.OPALINE_BUBBLE.get());
-            event.setAmount(event.getAmount() * 0.1F);
+            damage *= 0.1F;
         }
+        event.setAmount(damage);
         Constants.LOG.info(String.valueOf(event.getAmount()));
     }
 

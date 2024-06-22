@@ -9,6 +9,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -18,6 +20,7 @@ public class ModifiedAttributeEffect extends StatusEffect {
     private final Supplier<Attribute> attribute3;
     private final Supplier<Attribute> attribute4;
     private final AttributeModifier attributeModifier;
+    private Map<Integer, Float> tiers;
 
     public ModifiedAttributeEffect(MobEffectCategory pCategory, int pColor, Supplier<Attribute> attribute1, Supplier<Attribute> attribute2, Supplier<Attribute> attribute3, Supplier<Attribute> attribute4, AttributeModifier attributeModifier) {
         super(pCategory, pColor);
@@ -26,6 +29,7 @@ public class ModifiedAttributeEffect extends StatusEffect {
         this.attribute3 = attribute3;
         this.attribute4 = attribute4;
         this.attributeModifier = attributeModifier;
+        this.tiers = new HashMap<>();
     }
 
     public ModifiedAttributeEffect(MobEffectCategory pCategory, int pColor, Supplier<Attribute> attribute1, Supplier<Attribute> attribute2, Supplier<Attribute> attribute3, AttributeModifier attributeModifier) {
@@ -63,7 +67,8 @@ public class ModifiedAttributeEffect extends StatusEffect {
     }
 
     public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier) {
-        return pModifier.getAmount();
+        if (this.tiers.get(pAmplifier) == null) return pModifier.getAmount();
+        return this.tiers.get(pAmplifier);
     }
 
     protected void addAttributeModifier(LivingEntity livingEntity, Supplier<Attribute> attribute, UUID uuid, String name, double amount, AttributeModifier.Operation operation) {
@@ -79,5 +84,10 @@ public class ModifiedAttributeEffect extends StatusEffect {
     protected void removeModifier(LivingEntity livingEntity, Supplier<Attribute> attribute, UUID uuid) {
         AttributeInstance attributeInstance = getAttributeInstance(livingEntity, attribute);
         attributeInstance.removePermanentModifier(uuid);
+    }
+
+    public ModifiedAttributeEffect addTier(int tier, float multiplier) {
+        this.tiers.put(tier, multiplier);
+        return this;
     }
 }

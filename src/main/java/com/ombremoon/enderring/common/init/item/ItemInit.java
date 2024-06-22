@@ -109,8 +109,14 @@ public class ItemInit {
     //TALISMANS
     public static final RegistryObject<Item> GREEN_TURTLE_TALISMAN = registerTalisman("green_turtle_talisman", StatusEffectInit.GREEN_TURTLE);
     public static final RegistryObject<Item> GODFREY_ICON = registerTalisman("godfrey_icon", StatusEffectInit.GREEN_TURTLE);
-    public static final RegistryObject<Item> RADAGONS_SORESEAL = registerTalisman("radagons_soreseal", StatusEffectInit.RADAGONS_SORESEAL);
+    public static final RegistryObject<Item> RADAGONS_SCARSEAL = registerTalisman("radagons_scarseal", StatusEffectInit.RADAGONS_SORESEAL);
+    public static final RegistryObject<Item> RADAGONS_SORESEAL = registerTalisman("radagons_soreseal", StatusEffectInit.RADAGONS_SORESEAL, 1);
+    public static final RegistryObject<Item> MARIKAS_SCARSEAL = registerTalisman("marikas_scarseal", StatusEffectInit.MARIKAS_SORESEAL);
+    public static final RegistryObject<Item> MARIKAS_SORESEAL = registerTalisman("marikas_soreseal", StatusEffectInit.MARIKAS_SORESEAL, 1);
     public static final RegistryObject<Item> SACRIFICIAL_TWIG = registerTalisman("sacrificial_twig", StatusEffectInit.SACRIFICIAL_TWIG);
+    public static final RegistryObject<Item> CRIMSON_SEED_TALISMAN = registerStatlessTalisman("crimson_seed_talisman");
+    public static final RegistryObject<Item> CERULEAN_SEED_TALISMAN = registerStatlessTalisman("cerulean_seed_talisman");
+
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerCreativeModeTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION, TALISMAN_LIST);
@@ -123,6 +129,10 @@ public class ItemInit {
 
     public static RegistryObject<Item> registerCookbook(String name) {
         return registerGeneralItem(name, () -> new CookbookItem(itemProperties()));
+    }
+
+    public static RegistryObject<Item> registerStatlessTalisman(String name) {
+        return registerItem(name, () -> new Item(itemProperties().stacksTo(1)), TALISMAN_LIST, SIMPLE_ITEM_LIST);
     }
 
     public static RegistryObject<Item> registerTalisman(String name, Supplier<MobEffect> mobEffect) {
