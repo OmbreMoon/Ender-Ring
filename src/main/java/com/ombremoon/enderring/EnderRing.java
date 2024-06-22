@@ -2,6 +2,7 @@ package com.ombremoon.enderring;
 
 import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.Saturations;
+import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.ai.MemoryTypeInit;
 import com.ombremoon.enderring.common.init.entity.ai.SensorsInit;
 import com.ombremoon.enderring.common.object.world.LevelledList;
@@ -58,6 +59,12 @@ public class EnderRing {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(ModNetworking::registerPackets);
+        event.enqueueWork(() -> {
+            EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.VIGOR.get(), EntityAttributeInit.IMMUNITY.get());
+            EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.ENDURANCE.get(), EntityAttributeInit.ROBUSTNESS.get());
+            EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.MIND.get(), EntityAttributeInit.FOCUS.get());
+            EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.ARCANE.get(), EntityAttributeInit.VITALITY.get());
+        });
     }
 
     private void loadComplete(FMLLoadCompleteEvent event) {

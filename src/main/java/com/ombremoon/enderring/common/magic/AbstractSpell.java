@@ -11,9 +11,11 @@ import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -26,22 +28,27 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public abstract class AbstractSpell {
-    static final Logger LOGGER = Constants.LOG;
+    protected static final Logger LOGGER = Constants.LOG;
     protected static int DEFAULT_CAST_TIME = 1;
     protected static int INSTANT_SPELL_DURATION = 10;
-    protected final SpellType<?> spellType;
-    protected final MagicType magicType;
-    protected final Set<Pair<WeaponScaling, Integer>> requiredStats;
-    protected final int fpCost;
-    protected final int duration;
-    protected final float motionValue;
-    private String descriptionId;
-    private Level level;
+    private final SpellType<?> spellType;
+    private final MagicType magicType;
+    private final Set<Pair<WeaponScaling, Integer>> requiredStats;
+    private final int fpCost;
+    private final int duration;
+    private final float motionValue;
+    private final float chargedMotionValue;
+    private final boolean canCharge;
+    private final SoundEvent castSound;
+    protected Level level;
+    protected ScaledWeapon scaledWeapon;
     private ServerPlayerPatch playerPatch;
     private BlockPos blockPos;
-    private ScaledWeapon scaledWeapon;
-    private ItemStack weapon;
+    private String descriptionId;
+    private float chargeAmount;
     private int ticks = 0;
+    private boolean wasCharged = false;
+    private int chargeTicks = 0;
     public boolean isInactive = false;
     public boolean init = false;
     public float magicScaling;
@@ -52,12 +59,15 @@ public abstract class AbstractSpell {
 
     public AbstractSpell(SpellType<?> spellType, Builder<? extends AbstractSpell> builder) {
         this.spellType = spellType;
+        //BUILD SPELL EVENT
         this.magicType = builder.magicType;
         this.requiredStats = builder.requiredStats;
         this.fpCost = builder.fpCost;
         this.duration = builder.duration;
         this.motionValue = builder.motionValue;
-        //BUILD SPELL EVENT
+        this.chargedMotionValue = builder.chargedMotionValue;
+        this.canCharge = builder.canCharge;
+        this.castSound = builder.castSound;
     }
 
     public SpellType<?> getSpellType() {
@@ -81,7 +91,19 @@ public abstract class AbstractSpell {
     }
 
     public float getMotionValue() {
-        return motionValue;
+        return this.motionValue;
+    }
+
+    public float getChargedMotionValue() {
+        return this.chargedMotionValue;
+    }
+
+    public boolean canCharge() {
+        return this.canCharge;
+    }
+
+    protected SoundEvent getCastSound() {
+        return this.castSound;
     }
 
     public boolean isInstantSpell() {
@@ -148,8 +170,13 @@ public abstract class AbstractSpell {
         this.onSpellStart(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
     }
 
+    //TODO: ADD CAN CAST SPELL CHECK
     private void tickSpell() {
         this.onSpellTick(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
+        if (false/*player is holding down mouse*/) {
+            this.chargeTicks++;
+
+        }
         if (this.requiresConcentration() && !EntityStatusUtil.consumeFP(this.playerPatch.getOriginal(), this.fpCost, true)) {
             this.endSpell();
         }
@@ -160,6 +187,8 @@ public abstract class AbstractSpell {
         this.init = false;
         this.isInactive = true;
         this.ticks = 0;
+        this.wasCharged = false;
+        this.chargeTicks = 0;
     }
 
     protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
@@ -167,7 +196,7 @@ public abstract class AbstractSpell {
     }
 
     protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        playerPatch.getOriginal().sendSystemMessage(Component.literal("Spell: ").append(Component.translatable(this.getSpellName().getString())));
+//        playerPatch.getOriginal().sendSystemMessage(Component.literal("Spell: ").append(Component.translatable(this.getSpellName().getString())));
     }
 
     protected void onSpellStop(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
@@ -182,16 +211,11 @@ public abstract class AbstractSpell {
         return true;
     }
 
-    public float getCastValue() {
+    public float getScaledDamage() {
+        if (this.wasCharged) {
+            return this.magicScaling * this.chargedMotionValue / ConfigHandler.STAT_SCALE.get();
+        }
         return this.magicScaling * this.motionValue / ConfigHandler.STAT_SCALE.get();
-    }
-
-    protected float getSorceryScaling() {
-        return DamageUtil.getSorceryScaling(this.scaledWeapon, this.playerPatch.getOriginal(), this.weapon.getTag().getInt("WeaponLevel"));
-    }
-
-    protected float getIncantationScaling() {
-        return DamageUtil.getIncantScaling(this.scaledWeapon, this.playerPatch.getOriginal(), this.weapon.getTag().getInt("WeaponLevel"));
     }
 
     public void checkHurt(LivingEntity livingEntity) {
@@ -202,21 +226,54 @@ public abstract class AbstractSpell {
         }
     }
 
+    public boolean wasCharged() {
+        return this.wasCharged;
+    }
+
+    public boolean isCharging() {
+        return this.chargeTicks > 0;
+    }
+
+    public float getChargeAmount() {
+        return this.chargeAmount;
+    }
+
+    public void setChargeAmount(float chargeAmount) {
+        this.chargeAmount = chargeAmount;
+    }
+
+    public static float getPowerForTime(AbstractSpell spell, int pCharge) {
+        if (spell.canCharge()) {
+            float f = (float) pCharge / 20.0F;
+            f = (f * f + f * 2.0F) / 3.0F;
+            if (f > 1.0F) {
+                f = 1.0F;
+            }
+            return f;
+        } else {
+            return 1.0F;
+        }
+    }
+
     protected DamageInstance createDamageInstance() {
         return null;
     }
 
-    protected float getScaledDamage(float magicScaling) {
-        return magicScaling * motionValue / ConfigHandler.STAT_SCALE.get();
+    public ServerPlayerPatch getCaster() {
+        return this.playerPatch;
     }
 
-    public void initSpell(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ItemStack itemStack, ScaledWeapon scaledWeapon, float magicScaling) {
+    public ScaledWeapon getCatalyst() {
+        return this.scaledWeapon;
+    }
+
+    public void initSpell(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon, float magicScaling, boolean wasCharged) {
         this.level = level;
         this.playerPatch = playerPatch;
         this.blockPos = blockPos;
-        this.weapon = itemStack;
         this.scaledWeapon = scaledWeapon;
         this.magicScaling = magicScaling;
+        this.wasCharged = wasCharged;
 
         EntityStatusUtil.activateSpell(playerPatch.getOriginal(), this);
         this.init = true;
@@ -228,6 +285,9 @@ public abstract class AbstractSpell {
         protected int duration = 1;
         protected int fpCost;
         protected float motionValue;
+        protected float chargedMotionValue;
+        protected boolean canCharge;
+        protected SoundEvent castSound;
 
         public Builder<T> setMagicType(MagicType magicType) {
             this.magicType = magicType;
@@ -251,6 +311,21 @@ public abstract class AbstractSpell {
 
         public Builder<T> setMotionValue(float motionValue) {
             this.motionValue = motionValue;
+            return this;
+        }
+
+        public Builder<T> setChargedMotionValue(float motionValue) {
+            this.chargedMotionValue = motionValue;
+            return this;
+        }
+
+        public Builder<T> setCanCharge(boolean canCharge) {
+            this.canCharge = canCharge;
+            return this;
+        }
+
+        public Builder<T> setCastSound(SoundEvent castSound) {
+            this.castSound = castSound;
             return this;
         }
 

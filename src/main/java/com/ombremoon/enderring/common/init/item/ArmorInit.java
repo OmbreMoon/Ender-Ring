@@ -42,15 +42,15 @@ public enum ArmorInit implements ArmorMaterial {
     private final float knockbackResistance;
     private final LazyLoadedValue<Ingredient> repairIngredient;
 
-    private ArmorInit(String p_268171_, int p_268303_, EnumMap<ArmorItem.Type, Integer> p_267941_, int p_268086_, SoundEvent p_268145_, float p_268058_, float p_268180_, Supplier<Ingredient> p_268256_) {
-        this.name = p_268171_;
-        this.durabilityMultiplier = p_268303_;
-        this.protectionFunctionForType = p_267941_;
-        this.enchantmentValue = p_268086_;
-        this.sound = p_268145_;
-        this.toughness = p_268058_;
-        this.knockbackResistance = p_268180_;
-        this.repairIngredient = new LazyLoadedValue<>(p_268256_);
+    private ArmorInit(String name, int durabilityMultiplier, EnumMap<ArmorItem.Type, Integer> protectionFunction, int enchantmentValue, SoundEvent sound, float toughness, float knockbackResistance, Supplier<Ingredient> ingredient) {
+        this.name = name;
+        this.durabilityMultiplier = durabilityMultiplier;
+        this.protectionFunctionForType = protectionFunction;
+        this.enchantmentValue = enchantmentValue;
+        this.sound = sound;
+        this.toughness = toughness;
+        this.knockbackResistance = knockbackResistance;
+        this.repairIngredient = new LazyLoadedValue<>(ingredient);
     }
 
 

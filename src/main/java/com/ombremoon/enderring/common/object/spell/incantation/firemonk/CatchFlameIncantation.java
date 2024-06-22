@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common.object.spell.firemonk;
+package com.ombremoon.enderring.common.object.spell.incantation.firemonk;
 
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
@@ -11,7 +11,7 @@ import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
 
 public class CatchFlameIncantation extends AnimatedSpell {
 
-    public static AnimatedSpell.Builder<CatchFlameIncantation> createCatchFlameBuilder() {
+    public static Builder<AnimatedSpell> createCatchFlameBuilder() {
         return createSimpleSpellBuilder()
                 .setMagicType(MagicType.INCANTATION)
                 .setDuration(INSTANT_SPELL_DURATION)
@@ -31,7 +31,7 @@ public class CatchFlameIncantation extends AnimatedSpell {
 
     @Override
     public DamageInstance createDamageInstance() {
-        return new DamageInstance(ModDamageTypes.FIRE, this.getScaledDamage(this.getIncantationScaling()));
+        return new DamageInstance(ModDamageTypes.FIRE, this.getScaledDamage());
     }
 
     @Override

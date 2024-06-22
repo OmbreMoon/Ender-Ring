@@ -26,7 +26,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.provider.ItemCapabilityProvider;
 
-public class AbstractWeapon extends Item {
+public class AbstractWeapon extends Item implements Scalable {
     public static Logger LOGGER = Constants.LOG;
     private ScaledWeapon weapon = new ScaledWeapon();
 
@@ -34,24 +34,14 @@ public class AbstractWeapon extends Item {
         super(pProperties.stacksTo(1));
     }
 
+    @Override
     public void setWeapon(ScaledWeaponManager.Wrapper wrapper) {
         this.weapon = wrapper.getWeapon();
     }
 
+    @Override
     public ScaledWeapon getWeapon() {
         return this.weapon;
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
-        if (!pLevel.isClientSide) {
-            CapabilityItem w = ItemCapabilityProvider.get(this);
-            ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
-
-        }
-        return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }
 
     public int getWeaponLevel(ItemStack itemStack) {
@@ -62,6 +52,7 @@ public class AbstractWeapon extends Item {
         itemStack.getOrCreateTag().putInt("WeaponLevel", weaponLevel);
     }
 
+    @Override
     public ScaledWeapon getModifiedWeapon(ItemStack stack) {
         CompoundTag nbt = stack.getTag();
         if (nbt != null && nbt.contains("Weapon", 10)) {

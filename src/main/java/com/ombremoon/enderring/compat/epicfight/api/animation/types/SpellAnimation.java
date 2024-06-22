@@ -1,5 +1,7 @@
 package com.ombremoon.enderring.compat.epicfight.api.animation.types;
 
+import com.ombremoon.enderring.common.magic.AbstractSpell;
+import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
 import com.ombremoon.enderring.compat.epicfight.api.collider.WorldPosOBBCollider;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.client.Minecraft;
@@ -52,18 +54,16 @@ public class SpellAnimation extends AttackAnimation {
 
                 if (trueEntity != null && trueEntity.isAlive() && !entitypatch.getCurrenltyAttackedEntities().contains(trueEntity) && !entitypatch.isTeammate(hitten)) {
                     if (hitten instanceof LivingEntity || hitten instanceof PartEntity) {
-                        if (entity instanceof Player player)
-                            EntityStatusUtil.getRecentlyActivatedSpell(player).checkHurt(trueEntity);
+                        if (entity instanceof Player player) {
+                            AbstractSpell spell = EntityStatusUtil.getRecentlyActivatedSpell(player);
+                            if (!(spell instanceof ProjectileSpell<?,?>))
+                                spell.checkHurt(trueEntity);
+                        }
 
                         entitypatch.getCurrenltyAttackedEntities().add(trueEntity);
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public void changeCollider(Collider newCollider, int index) {
-
     }
 }

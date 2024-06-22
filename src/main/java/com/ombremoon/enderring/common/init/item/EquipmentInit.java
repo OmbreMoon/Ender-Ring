@@ -4,11 +4,11 @@ import com.ombremoon.enderring.common.object.item.MidasGauntletItem;
 import com.ombremoon.enderring.common.object.item.equipment.ModdedArmor;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.ranged.AbstractArrowItem;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.AbstractCatalystItem;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.CatalystWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.KatanaWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.*;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.SealItem;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.StaffItem;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.SealWeapon;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.StaffWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.ranged.BowWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.ranged.CrossbowWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.ranged.RangedWeapon;
@@ -63,9 +63,9 @@ public class EquipmentInit extends ItemInit {
     public static final RegistryObject<BowWeapon> LONGBOW = registerBow("longbow");
 
     //Catalysts
-    public static final RegistryObject<StaffItem> ASTROLOGER_STAFF = registerStaff("astrologers_staff");
-    public static final RegistryObject<StaffItem> GLINTSTONE_STAFF = registerStaff("glintstone_staff");
-    public static final RegistryObject<SealItem> FINGER_SEAL = registerSeal("finger_seal");
+    public static final RegistryObject<StaffWeapon> ASTROLOGER_STAFF = registerStaff("astrologers_staff");
+    public static final RegistryObject<StaffWeapon> GLINTSTONE_STAFF = registerStaff("glintstone_staff");
+    public static final RegistryObject<SealWeapon> FINGER_SEAL = registerSeal("finger_seal");
 
     //Shields
     public static final RegistryObject<AbstractShield> LARGE_LEATHER_SHIELD = registerMediumShield("large_leather_shield");
@@ -102,12 +102,12 @@ public class EquipmentInit extends ItemInit {
         return registerItem(name, () -> new AbstractArrowItem(itemProperties()), EQUIPMENT_LIST, SIMPLE_ITEM_LIST);
     }
 
-    protected static RegistryObject<SealItem> registerSeal(String name) {
-        return registerCatalyst(name, () -> new SealItem(itemProperties()));
+    protected static RegistryObject<SealWeapon> registerSeal(String name) {
+        return registerCatalyst(name, () -> new SealWeapon(itemProperties()));
     }
 
-    protected static RegistryObject<StaffItem> registerStaff(String name) {
-        return registerCatalyst(name, () -> new StaffItem(itemProperties()));
+    protected static RegistryObject<StaffWeapon> registerStaff(String name) {
+        return registerCatalyst(name, () -> new StaffWeapon(itemProperties()));
     }
 
     protected static RegistryObject<AbstractShield> registerSmallShield(String name) {
@@ -174,7 +174,7 @@ public class EquipmentInit extends ItemInit {
         return registerItem(name, armor, EQUIPMENT_LIST, SIMPLE_ITEM_LIST);
     }
 
-    private static <T extends AbstractCatalystItem> RegistryObject<T> registerCatalyst(String name, Supplier<T> catalyst) {
+    private static <T extends CatalystWeapon> RegistryObject<T> registerCatalyst(String name, Supplier<T> catalyst) {
         return registerMeleeWeapon(name, catalyst);
     }
 

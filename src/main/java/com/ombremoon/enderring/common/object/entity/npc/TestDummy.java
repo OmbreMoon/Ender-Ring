@@ -152,10 +152,10 @@ public class TestDummy extends MerchantNPCMob implements LevelledMob {
     public static AttributeSupplier.Builder createTestDummyAttributes() {
         return createERMobAttributes().add(Attributes.MAX_HEALTH, 35.0D).add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(EntityAttributeInit.PHYS_DEFENSE.get(), 6.7D)
-                .add(EntityAttributeInit.SLASH_NEGATE.get(), 0.1D)
-                .add(EntityAttributeInit.PIERCE_NEGATE.get(), -0.1D)
+                .add(EntityAttributeInit.SLASH_NEGATE.get(), 10.0D)
+                .add(EntityAttributeInit.PIERCE_NEGATE.get(), -10.0D)
                 .add(EntityAttributeInit.MAGIC_DEFENSE.get(), 6.7D)
-                .add(EntityAttributeInit.MAGIC_NEGATE.get(), -0.2D)
+                .add(EntityAttributeInit.MAGIC_NEGATE.get(), -20.0D)
                 .add(EntityAttributeInit.FIRE_DEFENSE.get(), 6.7D)
                 .add(EntityAttributeInit.LIGHT_DEFENSE.get(), 6.7D)
                 .add(EntityAttributeInit.HOLY_DEFENSE.get(), 6.7D);

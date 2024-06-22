@@ -1,12 +1,15 @@
 package com.ombremoon.enderring.client.event;
 
 import com.ombremoon.enderring.client.ModelLocations;
-import com.ombremoon.enderring.client.model.MidasShoulderGuardModel;
+import com.ombremoon.enderring.client.model.MidasShoulderGuardTwoModel;
 import com.ombremoon.enderring.client.model.entity.TestDummyModel;
 import com.ombremoon.enderring.client.model.entity.mob.TorrentModel;
+import com.ombremoon.enderring.client.model.entity.projectile.spell.GlintstoneArcModel;
 import com.ombremoon.enderring.client.render.entity.TestDummyRenderer;
 import com.ombremoon.enderring.client.render.entity.mob.TorrentRenderer;
+import com.ombremoon.enderring.client.render.entity.projectile.spell.GlintstoneArcRenderer;
 import com.ombremoon.enderring.common.init.entity.MobInit;
+import com.ombremoon.enderring.common.init.entity.ProjectileInit;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -21,7 +24,8 @@ public class CommonClientClass {
     public static <T extends Entity> List<Renderers> getRenderers() {
         return List.of(
                 new Renderers(MobInit.TEST_DUMMY, (context) -> new TestDummyRenderer(context, new TestDummyModel<>(context.bakeLayer(ModelLocations.TEST_DUMMY)))),
-                new Renderers(MobInit.TORRENT, (context) -> new TorrentRenderer(context, new TorrentModel<>(context.bakeLayer(ModelLocations.TORRENT))))
+                new Renderers(MobInit.TORRENT, (context) -> new TorrentRenderer(context, new TorrentModel<>(context.bakeLayer(ModelLocations.TORRENT)))),
+                new Renderers(ProjectileInit.GLINTSTONE_ARC, GlintstoneArcRenderer::new)
         );
     }
 
@@ -30,7 +34,8 @@ public class CommonClientClass {
         definitions.addAll(List.of(
                 new LayerDefinitions(ModelLocations.TEST_DUMMY, TestDummyModel.createBodyLayer()),
                 new LayerDefinitions(ModelLocations.TORRENT, TorrentModel.createBodyLayer()),
-                new LayerDefinitions(ModelLocations.MIDAS_SHOULDER_GUARD, MidasShoulderGuardModel.createBodyLayer())
+                new LayerDefinitions(ModelLocations.GLINTSTONE_ARC, GlintstoneArcModel.createBodyLayer()),
+                new LayerDefinitions(ModelLocations.MIDAS_SHOULDER_GUARD, MidasShoulderGuardTwoModel.createBodyLayer())
         ));
         return definitions;
     }

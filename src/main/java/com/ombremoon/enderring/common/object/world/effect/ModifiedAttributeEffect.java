@@ -73,6 +73,7 @@ public class ModifiedAttributeEffect extends StatusEffect {
             attributeInstance.addPermanentModifier(attributeModifier);
         }
         EntityStatusUtil.updateDefense((Player) livingEntity, attribute.get());
+        EntityStatusUtil.updateResistances((Player) livingEntity, attribute.get());
     }
 
     protected void removeModifier(LivingEntity livingEntity, Supplier<Attribute> attribute, UUID uuid) {

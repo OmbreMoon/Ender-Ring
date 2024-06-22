@@ -4,6 +4,7 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.CatalystWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
@@ -38,7 +39,10 @@ public class CommonModEvents {
     public static final UUID FIRE_UUID = UUID.fromString("ecab5e7d-3f32-4d1f-bd5b-9a08a8359051");
     public static final UUID LIGHTNING_UUID = UUID.fromString("fded75da-cb86-462e-ba89-7242d58f72ed");
     public static final UUID HOLY_UUID = UUID.fromString("cbe3a5a2-8205-475f-97cf-82d37d042a90");
+    public static final UUID SORCERY_UUID = UUID.fromString("5a4873e5-8d98-4482-b379-3623421f60fa");
+    public static final UUID INCANT_UUID = UUID.fromString("b17dc25b-371b-44c4-9eb0-ed399a6d690f");
 
+    //TODO: ADD TO EXTENDED SERVERPLAYER PATCH
     @SubscribeEvent
     public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
         EntityPatch<Entity> entitypatch = EpicFightCapabilities.getEntityPatch(event.getEntity(), EntityPatch.class);
@@ -60,6 +64,9 @@ public class CommonModEvents {
             if (weapon.getLightDamage(itemStack) > 0) event.addModifier(EntityAttributeInit.LIGHT_DAMAGE.get(), new AttributeModifier(LIGHTNING_UUID, "Weapon modifier", weapon.getLightDamage(itemStack), AttributeModifier.Operation.ADDITION));
             if (weapon.getHolyDamage(itemStack) > 0) event.addModifier(EntityAttributeInit.HOLY_DAMAGE.get(), new AttributeModifier(HOLY_UUID, "Weapon modifier", weapon.getHolyDamage(itemStack), AttributeModifier.Operation.ADDITION));
         }
+        if (itemStack.getItem() instanceof CatalystWeapon catalyst && event.getSlotType() == EquipmentSlot.MAINHAND) {
+            if (catalyst.getMagicScaling(itemStack) > 0) event.addModifier(catalyst.getMagicType().getAttribute(), new AttributeModifier(SORCERY_UUID, "Weapon modifier", catalyst.getMagicScaling(itemStack), AttributeModifier.Operation.ADDITION));
+        }
     }
 
     @SubscribeEvent
@@ -78,18 +85,19 @@ public class CommonModEvents {
                                 if (physicalDamageTypes != null) {
                                     float negateAvg = 0;
                                     for (PhysicalDamageType physicalDamage : physicalDamageTypes) {
-                                        negateAvg += EntityStatusUtil.getEntityAttribute(livingEntity, physicalDamage.getAttribute());
+                                        negateAvg += EntityStatusUtil.getEntityAttribute(livingEntity, physicalDamage.getAttribute()) / 100;
                                     }
                                     negation = 1 - (negateAvg / physicalDamageTypes.size());
                                 }
                             } else {
-                                negation = (float) (1 - EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getNegateAttribute()));
+                                negation = (float) (1 - (EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getNegateAttribute()) / 100));
                             }
                             float attr = (float) EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getDefenseAttribute());
                             float modifiedDamage = getDamageAfterDefense(event.getAmount(), attr);
                             event.setAmount(modifiedDamage * negation);
                             Constants.LOG.info(String.valueOf(event.getAmount()));
                         }
+                        Constants.LOG.info(String.valueOf(event.getAmount()));
                     }
                 }
             }

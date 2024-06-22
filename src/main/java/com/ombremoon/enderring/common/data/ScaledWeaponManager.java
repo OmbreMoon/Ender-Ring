@@ -5,9 +5,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.*;
+import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import net.minecraft.Util;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -27,8 +27,9 @@ import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+//TODO: CHANGE ABSTRACT WEAPON TO INTERFACE FOR MOD COMPAT
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
-public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<AbstractWeapon, ScaledWeapon>> {
+public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Scalable, ScaledWeapon>> {
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();
     private static final JsonDeserializer<ResourceLocation> RESOURCE_LOCATION = (json, typeOfT, context) -> new ResourceLocation(json.getAsString());
     private static final JsonDeserializer<ReinforceType> REINFORCE_TYPE = (json, typeOfT, context) -> ReinforceType.getTypeFromLocation(ResourceLocation.tryParse(json.getAsString()));
@@ -45,15 +46,15 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
         builder.excludeFieldsWithModifiers(Modifier.TRANSIENT);
         return builder.create();
     });
-    private static List<AbstractWeapon> clientWeapons = new ArrayList<>();
+    private static List<Scalable> clientWeapons = new ArrayList<>();
     private static ScaledWeaponManager instance;
 
     private Map<ResourceLocation, ScaledWeapon> registeredWeapons = new HashMap<>();
 
     @Override
-    protected Map<AbstractWeapon, ScaledWeapon> prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
-        Map<AbstractWeapon, ScaledWeapon> map = new HashMap<>();
-        ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof AbstractWeapon).forEach(item -> {
+    protected Map<Scalable, ScaledWeapon> prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+        Map<Scalable, ScaledWeapon> map = new HashMap<>();
+        ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof Scalable).forEach(item -> {
             ResourceLocation id = ForgeRegistries.ITEMS.getKey(item);
             if (id != null) {
                 List<ResourceLocation> locations = new ArrayList<>(pResourceManager.listResources("scaled_weapons", location -> location.getPath().endsWith(id.getPath() + ".json")).keySet());
@@ -74,7 +75,7 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
                     pResourceManager.getResource(resourceLocation).ifPresent(resource -> {
                         try(Reader reader = new BufferedReader(new InputStreamReader(resource.open(), StandardCharsets.UTF_8))) {
                             ScaledWeapon scaledWeapon = GsonHelper.fromJson(GSON_INSTANCE, reader, ScaledWeapon.class);
-                            map.put((AbstractWeapon) item, scaledWeapon);
+                            map.put((Scalable) item, scaledWeapon);
                         } catch (InvalidObjectException e) {
                             Constants.LOG.error("Missing required properties for {}", id);
                             e.printStackTrace();
@@ -89,11 +90,11 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
     }
 
     @Override
-    protected void apply(Map<AbstractWeapon, ScaledWeapon> pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+    protected void apply(Map<Scalable, ScaledWeapon> pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
         ImmutableMap.Builder<ResourceLocation, ScaledWeapon> builder = ImmutableMap.builder();
-        pObject.forEach(((abstractWeapon, weapon) -> {
-            builder.put(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(abstractWeapon)), weapon);
-            abstractWeapon.setWeapon(new Wrapper(weapon));
+        pObject.forEach(((scalable, weapon) -> {
+            builder.put(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey((Item) scalable)), weapon);
+            scalable.setWeapon(new Wrapper(weapon));
         }));
         this.registeredWeapons = builder.build();
     }
@@ -125,11 +126,11 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Abst
         if (registeredWeapons != null) {
             for (Map.Entry<ResourceLocation, ScaledWeapon> entry : registeredWeapons.entrySet()) {
                 Item item = ForgeRegistries.ITEMS.getValue(entry.getKey());
-                if (!(item instanceof AbstractWeapon))
+                if (!(item instanceof Scalable))
                     return false;
 
-                ((AbstractWeapon) item).setWeapon(new ScaledWeaponManager.Wrapper(entry.getValue()));
-                clientWeapons.add((AbstractWeapon) item);
+                ((Scalable) item).setWeapon(new ScaledWeaponManager.Wrapper(entry.getValue()));
+                clientWeapons.add((Scalable) item);
             }
             return true;
         }

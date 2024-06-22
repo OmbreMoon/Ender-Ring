@@ -3,6 +3,7 @@ package com.ombremoon.enderring.event;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
+import com.ombremoon.enderring.common.init.entity.MobInit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -29,7 +30,10 @@ public class ModBusEvents {
                 EntityAttributeInit.INTELLIGENCE,
                 EntityAttributeInit.FAITH,
                 EntityAttributeInit.ARCANE,
+                EntityAttributeInit.IMMUNITY,
                 EntityAttributeInit.ROBUSTNESS,
+                EntityAttributeInit.FOCUS,
+                EntityAttributeInit.VITALITY,
                 EntityAttributeInit.PHYS_DAMAGE,
                 EntityAttributeInit.STRIKE_DAMAGE,
                 EntityAttributeInit.SLASH_DAMAGE,
@@ -38,6 +42,8 @@ public class ModBusEvents {
                 EntityAttributeInit.FIRE_DAMAGE,
                 EntityAttributeInit.LIGHT_DAMAGE,
                 EntityAttributeInit.HOLY_DAMAGE,
+                EntityAttributeInit.SORCERY_SCALING,
+                EntityAttributeInit.INCANT_SCALING,
                 EntityAttributeInit.PHYS_DEFENSE,
                 EntityAttributeInit.MAGIC_DEFENSE,
                 EntityAttributeInit.FIRE_DEFENSE,
@@ -60,6 +66,6 @@ public class ModBusEvents {
 
     @SubscribeEvent
     public static void onEntityAttributeRegister(EntityAttributeCreationEvent e) {
-        EntityInit.SUPPLIERS.forEach(p -> e.put(p.entityTypeSupplier().get(), p.attributeSupplier().get().build()));
+        MobInit.SUPPLIERS.forEach(p -> e.put(p.entityTypeSupplier().get(), p.attributeSupplier().get().build()));
     }
 }

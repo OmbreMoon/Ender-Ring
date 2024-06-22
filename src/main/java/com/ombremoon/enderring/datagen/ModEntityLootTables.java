@@ -101,7 +101,7 @@ public class ModEntityLootTables extends EntityLootSubProvider {
 
     @Override
     protected Stream<EntityType<?>> getKnownEntityTypes() {
-        return EntityInit.ENTITIES.getEntries().stream().map(RegistryObject::get);
+        return MobInit.MOBS.stream().map(RegistryObject::get);
     }
 
     record LootEntry(Item item, NumberProvider numberProvider, float chance) {}

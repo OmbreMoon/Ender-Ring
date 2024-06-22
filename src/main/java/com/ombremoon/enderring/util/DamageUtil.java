@@ -13,12 +13,14 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -68,10 +70,10 @@ public class DamageUtil {
     }
 
     public static void conditionalHurt(ItemStack itemStack, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
-        AbstractWeapon weapon = (AbstractWeapon) itemStack.getItem();
+        Scalable scalable = (Scalable) itemStack.getItem();
         for (WeaponDamage weaponDamage : WeaponDamage.values()) {
             DamageSource damageSource;
-            float typeDamage = weaponDamage.getDamageFunction().apply(scaledWeapon, attackEntity, weapon.getWeaponLevel(itemStack));
+            float typeDamage = weaponDamage.getDamageFunction().apply(scaledWeapon, attackEntity, scalable.getWeaponLevel(itemStack));
 
             //Ensures that type damage is 1 when between 0 and 1
             if (typeDamage > 0) {
@@ -129,6 +131,16 @@ public class DamageUtil {
         return (100 * (f + getSaturationValue(Saturations.RUNE_DEFENSE, EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get()), true))) / STAT_SCALE;
     }
 
+    public static float calculateResistance(Player player, Attribute attribute) {
+        float f = 0;
+        if (EntityStatusUtil.isMainAttribute(attribute)) {
+            f += getSaturationValue(Saturations.RESISTANCE, EntityStatusUtil.getEntityAttribute(player, attribute), false);
+        } else if (attribute == EntityAttributeInit.ARCANE.get()) {
+            f += getSaturationValue(Saturations.VITALITY, EntityStatusUtil.getEntityAttribute(player, attribute), false);
+        }
+        return 100 * (f + getSaturationValue(Saturations.RUNE_RESISTANCE, EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get()), false));
+    }
+
     public static float calculateStatusBuildUp(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, int buildUp) {
         float f = getSaturationValue(Saturations.STATUS_EFFECT, EntityStatusUtil.getEntityAttribute(livingEntity, EntityAttributeInit.ARCANE.get()), false);
         return buildUp * getScalingUpgrade(weapon, WeaponScaling.ARC, weaponLevel) * f;
@@ -182,6 +194,12 @@ public class DamageUtil {
 
         int growMin = saturation.getGrow()[i];
         int growMax = saturation.getGrow()[i + 1];
+
+        if (saturation == Saturations.RUNE_RESISTANCE) {
+            Constants.LOG.info(String.valueOf(growMin));
+            Constants.LOG.info(String.valueOf((float) (growMin + ((growMax - growMin) * growth))));
+        }
+
         return (float) (growMin + ((growMax - growMin) * growth)) / 100;
     }
 

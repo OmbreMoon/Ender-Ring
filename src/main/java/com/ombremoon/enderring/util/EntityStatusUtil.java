@@ -55,14 +55,15 @@ public class EntityStatusUtil {
         setBaseStat(player, attribute, (int) (player.getAttributeValue(attribute) + increaseAmount), setMax);
     }
 
-    public static void setBaseStat(Player player, Attribute attribute, int bastStat) {
+    public static void setBaseStat(Player player, Attribute attribute, double bastStat) {
         setBaseStat(player, attribute, bastStat, false);
     }
 
-    public static void setBaseStat(Player player, Attribute attribute, int bastStat, boolean setMax) {
-        Objects.requireNonNull(player.getAttributes().getInstance(attribute)).setBaseValue(bastStat);
-        updateDefense(player, attribute);
+    public static void setBaseStat(Player player, Attribute attribute, double bastStat, boolean setMax) {
+        player.getAttributes().getInstance(attribute).setBaseValue(bastStat);
         updateMainAttributes(setMax);
+        updateDefense(player, attribute);
+        updateResistances(player, attribute);
     }
 
     public static void addStatModifier(Player player, Attribute attribute, UUID uuid, double increaseAmount, AttributeModifier.Operation operation, boolean setMax) {
@@ -145,6 +146,21 @@ public class EntityStatusUtil {
                 } else {
                     player.getAttribute(EntityAttributeInit.LIGHT_DEFENSE.get()).setBaseValue(Mth.floor(DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING)));
                 }
+                if (attribute == EntityAttributeInit.RUNE_LEVEL.get()) {
+                    player.getAttribute(weaponDamage.getDefenseAttribute()).setBaseValue(Mth.floor(DamageUtil.calculateDefense(player, weaponDamage)));
+                }
+            }
+        }
+    }
+    
+    public static void updateResistances(Player player, Attribute attribute) {
+        if (isMainAttribute(attribute)) {
+            player.getAttribute(EntityAttributeInit.ATTRIBUTE_MAP.get(attribute)).setBaseValue(Mth.floor(DamageUtil.calculateResistance(player, attribute)));
+        } else if (attribute == EntityAttributeInit.ARCANE.get()) {
+            player.getAttribute(EntityAttributeInit.VITALITY.get()).setBaseValue(Mth.floor(DamageUtil.calculateResistance(player, EntityAttributeInit.ARCANE.get())));
+        } else if (attribute == EntityAttributeInit.RUNE_LEVEL.get()) {
+            for (var entry : EntityAttributeInit.ATTRIBUTE_MAP.entrySet()) {
+                player.getAttribute(entry.getValue()).setBaseValue(Mth.floor(DamageUtil.calculateResistance(player, entry.getKey())));
             }
         }
     }

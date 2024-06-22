@@ -10,6 +10,9 @@ public class ModelLocations {
     //MOBS
     public static final ModelLayerLocation TORRENT = new ModelLayerLocation(CommonClass.customLocation("torrent"), "main");
 
+    //SPELLS
+    public static final ModelLayerLocation GLINTSTONE_ARC = new ModelLayerLocation(CommonClass.customLocation("glintstone_arc"), "main");
+
     //MISC ENTITIES
     public static final ModelLayerLocation MIDAS_SHOULDER_GUARD = new ModelLayerLocation(CommonClass.customLocation("midas_shoulder_guard"), "main");
 }

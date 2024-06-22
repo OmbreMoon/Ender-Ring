@@ -2,8 +2,8 @@ package com.ombremoon.enderring.common.object.item.equipment.weapon.magic;
 
 import com.ombremoon.enderring.common.magic.MagicType;
 
-public class SealItem extends AbstractCatalystItem {
-    public SealItem(Properties properties) {
+public class SealWeapon extends CatalystWeapon {
+    public SealWeapon(Properties properties) {
         super(MagicType.INCANTATION, properties);
     }
 }

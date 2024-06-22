@@ -1,11 +1,9 @@
 package com.ombremoon.enderring.common;
 
-import com.ombremoon.enderring.common.capability.PlayerStatus;
 import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.util.DamageUtil;
-import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;

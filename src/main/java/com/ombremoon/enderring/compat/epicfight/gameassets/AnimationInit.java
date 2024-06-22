@@ -56,7 +56,7 @@ public class AnimationInit {
             double x = vec3.x();
             double y = vec3.y();
             double z = vec3.z();
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 15; i++) {
                 livingEntity.level().addParticle(ParticleTypes.FLAME, x + RandomUtil.randomValueBetween(-0.5, 0.5), y + RandomUtil.randomValueBetween(-0.5, 0.5), z + RandomUtil.randomValueBetween(-0.5, 0.5), random.nextDouble() * 0.005, random.nextDouble() * 0.005, random.nextDouble() * 0.005);
             }
             livingEntity.level().playSound(livingEntity, livingEntity.getOnPos(), SoundEvents.GHAST_SHOOT, SoundSource.PLAYERS, 1.0F, random.nextFloat() * 0.4F + 0.8F);

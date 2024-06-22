@@ -219,7 +219,6 @@ public class StarterScreen extends Screen {
                 }
             }
 
-
             for (int k = 0; k < characterBase.getStarterItems().size(); k++) {
                 Item item = characterBase.getStarterItems().get(k).get();
                 if (item != null) {

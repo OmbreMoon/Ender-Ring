@@ -20,7 +20,10 @@ public enum Saturations implements Saturation {
     PHYSICAL_DEFENSE(new int[]{0, 30, 40, 60, 99}, new int[]{0, 10, 15, 30, 40}, new double[]{1, 1, 1, 1, 1}),
     MAGICAL_DEFENSE(new int[]{0, 20, 35, 60, 99}, new int[]{0, 40, 50, 60, 70}, new double[]{1, 1, 1, 1, 1}),
     FIRE_DEFENSE(new int[]{0, 30, 40, 60, 99}, new int[]{0, 20, 40, 60, 70}, new double[]{1, 1, 1, 1, 1}),
-    HOLY_DEFENSE(new int[]{0, 20, 35, 60, 99}, new int[]{0, 40, 50, 60, 70}, new double[]{1, 1, 1, 1, 1});
+    HOLY_DEFENSE(new int[]{0, 20, 35, 60, 99}, new int[]{0, 40, 50, 60, 70}, new double[]{1, 1, 1, 1, 1}),
+    RUNE_RESISTANCE(new int[]{1, 71, 111, 161, 713}, new int[]{75, 105, 145, 160, 180}, new double[]{1, 1, 1, 1, 1}),
+    RESISTANCE(new int[]{0, 30, 40, 60, 99}, new int[]{0, 0, 30, 40, 50}, new double[]{1, 1, 1, 1, 1}),
+    VITALITY(new int[]{0, 15, 40, 60, 99}, new int[]{0, 15, 30, 40, 50}, new double[]{1, 1, 1, 1, 1});
 
     private final int[] stat;
     private final int[] grow;

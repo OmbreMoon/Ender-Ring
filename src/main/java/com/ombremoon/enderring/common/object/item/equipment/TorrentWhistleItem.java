@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.item.equipment;
 
+import com.ombremoon.enderring.common.init.entity.MobInit;
 import com.ombremoon.enderring.common.object.entity.mob.Torrent;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.stats.Stats;
@@ -21,8 +22,10 @@ public class TorrentWhistleItem extends Item implements IQuickAccess {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            Torrent torrent = new Torrent(pLevel, pPlayer);
+            Torrent torrent = MobInit.TORRENT.get().create(pLevel);
+//            Torrent torrent = new Torrent(pLevel, pPlayer);
             if (this.canSpawnTorrent(pPlayer, pLevel)) {
+                torrent.setPos(pPlayer.getX(), pPlayer.getY(), pPlayer.getZ());
                 torrent.setOwnerUUID(pPlayer.getUUID());
                 torrent.setHealth((float) EntityStatusUtil.getTorrentHealth(pPlayer));
                 pLevel.addFreshEntity(torrent);
