@@ -1,0 +1,33 @@
+{
+  "base": {
+    "elementID": 10000,
+    "infusable": true,
+    "maxUpgrades": 25,
+    "reinforceType": "enderring:default",
+    "saturations": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "twoHandBonus": true
+  },
+  "damage": {
+    "physDamage": 139,
+    "physDamageTypes": [
+      "standard",
+      "pierce"
+    ]
+  },
+  "guard": {},
+  "requirements": {
+    "dexReq": 16,
+    "strReq": 17
+  },
+  "scaling": {
+    "dexScale": 64,
+    "strScale": 5
+  },
+  "status": {}
+}

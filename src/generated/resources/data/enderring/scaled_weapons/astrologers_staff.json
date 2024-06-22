@@ -1,0 +1,31 @@
+{
+  "base": {
+    "elementID": 20000,
+    "maxUpgrades": 25,
+    "reinforceType": "enderring:pure_catalyst_front",
+    "saturations": [
+      14,
+      14,
+      14,
+      14,
+      14
+    ],
+    "twoHandBonus": true
+  },
+  "damage": {
+    "physDamage": 25,
+    "physDamageTypes": [
+      "strike"
+    ]
+  },
+  "guard": {},
+  "requirements": {
+    "intReq": 16,
+    "strReq": 7
+  },
+  "scaling": {
+    "intScale": 89,
+    "strScale": 12
+  },
+  "status": {}
+}

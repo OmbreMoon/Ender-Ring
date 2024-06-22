@@ -194,12 +194,6 @@ public class DamageUtil {
 
         int growMin = saturation.getGrow()[i];
         int growMax = saturation.getGrow()[i + 1];
-
-        if (saturation == Saturations.RUNE_RESISTANCE) {
-            Constants.LOG.info(String.valueOf(growMin));
-            Constants.LOG.info(String.valueOf((float) (growMin + ((growMax - growMin) * growth))));
-        }
-
         return (float) (growMin + ((growMax - growMin) * growth)) / 100;
     }
 

@@ -1,0 +1,18 @@
+{
+  "negation": {
+    "fireNegation": 2.7,
+    "holyNegation": 2.3,
+    "lightNegation": 2.9,
+    "magicNegation": 2.5,
+    "physNegation": 2.3,
+    "pierceNegation": 1.9,
+    "slashNegation": 1.9,
+    "strikeNegation": 2.3
+  },
+  "resistance": {
+    "focus": 17,
+    "immunity": 21,
+    "robustness": 14,
+    "vitality": 17
+  }
+}
