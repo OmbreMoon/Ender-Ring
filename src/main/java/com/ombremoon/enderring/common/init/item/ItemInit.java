@@ -114,6 +114,9 @@ public class ItemInit {
     public static final RegistryObject<Item> MARIKAS_SCARSEAL = registerTalisman("marikas_scarseal", StatusEffectInit.MARIKAS_SORESEAL);
     public static final RegistryObject<Item> MARIKAS_SORESEAL = registerTalisman("marikas_soreseal", StatusEffectInit.MARIKAS_SORESEAL, 1);
     public static final RegistryObject<Item> SACRIFICIAL_TWIG = registerTalisman("sacrificial_twig", StatusEffectInit.SACRIFICIAL_TWIG);
+    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN = registerTalisman("dragoncrest_shield_talisman", StatusEffectInit.PHYSICAL_NEGATION);
+    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN1 = registerTalisman("dragoncrest_shield_talisman1", StatusEffectInit.PHYSICAL_NEGATION, 1);
+    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN2 = registerTalisman("dragoncrest_shield_talisman2", StatusEffectInit.PHYSICAL_NEGATION, 2);
     public static final RegistryObject<Item> CRIMSON_SEED_TALISMAN = registerStatlessTalisman("crimson_seed_talisman");
     public static final RegistryObject<Item> CERULEAN_SEED_TALISMAN = registerStatlessTalisman("cerulean_seed_talisman");
 

@@ -115,6 +115,13 @@ public class PlayerStatusManager {
             MobEffectInstance instance = player.getEffect(StatusEffectInit.MARIKAS_SORESEAL.get());
             damage *= 1.1F + (0.05F * instance.getAmplifier());
         }
+        if (player.hasEffect(StatusEffectInit.PHYSICAL_NEGATION.get())) {
+            MobEffectInstance instance = player.getEffect(StatusEffectInit.PHYSICAL_NEGATION.get());
+            int amp = instance.getAmplifier();
+            if (amp == 0) damage *= 0.9F;
+            else if (amp == 1) damage *= 0.87F;
+            else damage *= 0.83F;
+        }
         if (player.hasEffect(StatusEffectInit.OPALINE_BUBBLE.get()) && (event.getSource().getEntity() != null || event.getSource().is(DamageTypes.EXPLOSION))) {
             player.removeEffect(StatusEffectInit.OPALINE_BUBBLE.get());
             damage *= 0.1F;
