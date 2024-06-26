@@ -102,13 +102,6 @@ public class PlayerStatusManager {
 
         float damage = event.getAmount();
         if (event.getSource() instanceof ModDamageSource damageSource && damageSource.isPhysicalDamage()) {
-            if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()))
-                damage *= 0.85F;
-            else if (player.hasEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get())) {
-                MobEffectInstance effect = player.getEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get());
-                Float tierDmg = ((StatusEffect) effect.getEffect()).getTier(effect.getAmplifier());
-                if (tierDmg != null) damage *= tierDmg;
-            }
         }
         if (player.hasEffect(StatusEffectInit.RADAGONS_SCARSEAL.get())) {
             MobEffectInstance instance = player.getEffect(StatusEffectInit.RADAGONS_SCARSEAL.get());
@@ -117,13 +110,6 @@ public class PlayerStatusManager {
         if (player.hasEffect(StatusEffectInit.MARIKAS_SCARSEAL.get())) {
             MobEffectInstance instance = player.getEffect(StatusEffectInit.MARIKAS_SCARSEAL.get());
             damage *= 1.1F + (0.05F * instance.getAmplifier());
-        }
-        if (player.hasEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get())) {
-            MobEffectInstance instance = player.getEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get());
-            int amp = instance.getAmplifier();
-            if (amp == 0) damage *= 0.9F;
-            else if (amp == 1) damage *= 0.87F;
-            else damage *= 0.83F;
         }
         if (player.hasEffect(StatusEffectInit.OPALINE_BUBBLE.get()) && (event.getSource().getEntity() != null || event.getSource().is(DamageTypes.EXPLOSION))) {
             player.removeEffect(StatusEffectInit.OPALINE_BUBBLE.get());

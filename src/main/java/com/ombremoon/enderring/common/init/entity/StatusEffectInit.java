@@ -84,9 +84,14 @@ public class StatusEffectInit {
                     .addTranslation(1, "item.enderring.marikas_scarsealplus1").build());
     public static final RegistryObject<MobEffect> DRAGONCREST_SHIELD_TALISMAN = registerSimpleEffect("dragoncrest_shield_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
-                    .addTier(0, 0.9F)
-                    .addTier(1, 0.87F)
-                    .addTier(2, 0.83F).build());
+                    .addAttribute(EntityAttributeInit.PHYS_NEGATE)
+                    .setModifier(new AttributeModifier(
+                            "Dragoncrest Shield Talisman",
+                            1.1F,
+                            AttributeModifier.Operation.MULTIPLY_BASE
+                    ))
+                    .addTier(1, 1.13F)
+                    .addTier(2, 1.17F).build());
     public static final RegistryObject<MobEffect> SACRIFICIAL_TWIG = registerSimpleEffect("sacrificial_twig",
             new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> CRIMSON_SEED_TALISMAN = registerSimpleEffect("crimson_seed_talisman",
