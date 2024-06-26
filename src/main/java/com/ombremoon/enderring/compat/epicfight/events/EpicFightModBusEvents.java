@@ -3,7 +3,7 @@ package com.ombremoon.enderring.compat.epicfight.events;
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.MobInit;
-import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.TestDummyPatch;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.patches.TestDummyPatch;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapabilityPresets;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

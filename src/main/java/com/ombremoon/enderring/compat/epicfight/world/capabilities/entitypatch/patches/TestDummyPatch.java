@@ -1,6 +1,7 @@
-package com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch;
+package com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.patches;
 
 import com.ombremoon.enderring.common.object.entity.npc.TestDummy;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.SimpleHumanoidMobPatch;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.client.animation.ClientAnimator;
@@ -21,9 +22,6 @@ public class TestDummyPatch extends SimpleHumanoidMobPatch<TestDummy> {
     @Override
     public void updateMotion(boolean b) {
         super.commonMobUpdateMotion(b);
-        if (this.getOriginal().isSmithing()) {
-            this.currentLivingMotion = LivingMotions.CLIMB;
-        }
     }
 
     @Override

@@ -23,6 +23,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -43,29 +44,19 @@ public class DebugItem extends Item {
             ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
             if (pPlayer.isCrouching()) {
                 ModNetworking.openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
+            } else if (pPlayer.isInWater()) {
+                ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
             } else {
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
-//                pPlayer.hurt(DamageUtil.moddedDamageSource(pLevel, ModDamageTypes.MAGICAL), 10.0F);
-//                ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
+                pPlayer.hurt(pLevel.damageSources().generic(), 7.0F);
 //                this.setStats(pPlayer);
-//                this.displayPlayerStats(pPlayer);
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         } else {
-            Minecraft.getInstance().setScreen(new PlayerStatusScreen(Component.literal("Status")));
+            if (!pPlayer.isCrouching())
+                Minecraft.getInstance().setScreen(new PlayerStatusScreen(Component.literal("Status")));
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
-    }
-
-    private void displayPlayerStats(Player player) {
-        player.sendSystemMessage(Component.literal("HP: " + player.getHealth()));
-        player.sendSystemMessage(Component.literal("LEVEL: " + EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get())));
-        player.sendSystemMessage(Component.literal("VIGOR: " + EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.VIGOR.get())));
-        player.sendSystemMessage(Component.literal("MIND: " + EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.MIND.get())));
-        player.sendSystemMessage(Component.literal("END: " + EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.ENDURANCE.get())));
-        for (WeaponScaling weaponScaling : WeaponScaling.values()) {
-            player.sendSystemMessage(Component.literal(weaponScaling.toString() + ": " + EntityStatusUtil.getEntityAttribute(player, weaponScaling.getAttribute())));
-        }
     }
 
     private void setStats(Player player) {

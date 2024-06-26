@@ -64,6 +64,16 @@ public class EnderRing {
             EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.ENDURANCE.get(), EntityAttributeInit.ROBUSTNESS.get());
             EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.MIND.get(), EntityAttributeInit.FOCUS.get());
             EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.ARCANE.get(), EntityAttributeInit.VITALITY.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.RUNE_LEVEL.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.MAX_FP.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.VIGOR.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.MIND.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.ENDURANCE.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.STRENGTH.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.DEXTERITY.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.INTELLIGENCE.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.FAITH.get());
+            EntityAttributeInit.PLAYER_ATTRIBUTES.add(EntityAttributeInit.ARCANE.get());
         });
     }
 

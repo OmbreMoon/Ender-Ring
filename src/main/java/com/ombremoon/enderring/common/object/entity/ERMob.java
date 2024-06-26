@@ -43,7 +43,7 @@ import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 
 import java.util.Optional;
 
-public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements SmartBrainOwner<ERMob<T>> {
+public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements LevelledMob, SmartBrainOwner<ERMob<T>> {
     protected static final Logger LOGGER = Constants.LOG;
     protected static final EntityDataAccessor<Float> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float> SCARLET_ROT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
@@ -119,16 +119,8 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
         this.setItemSlot(EquipmentSlot.MAINHAND, this.getMainHandWeapon());
         this.setItemSlot(EquipmentSlot.OFFHAND, this.getOffHandWeapon());
-        this.setItemSlot(EquipmentSlot.HEAD, this.getHeadArmor());
-        this.setItemSlot(EquipmentSlot.CHEST, this.getChestArmor());
-        this.setItemSlot(EquipmentSlot.LEGS, this.getLegArmor());
-        this.setItemSlot(EquipmentSlot.FEET, this.getFeetArmor());
         this.setDropChance(EquipmentSlot.MAINHAND, this.getMainHandWeaponDropChance());
         this.setDropChance(EquipmentSlot.OFFHAND, this.getOffHandWeaponDropChance());
-        this.setDropChance(EquipmentSlot.HEAD, this.getHeadArmorDropChance());
-        this.setDropChance(EquipmentSlot.CHEST, this.getChestArmorDropChance());
-        this.setDropChance(EquipmentSlot.LEGS, this.getLegArmorDropChance());
-        this.setDropChance(EquipmentSlot.FEET, this.getFeetArmorDropChance());
     }
 
     protected ItemStack getMainHandWeapon() {
@@ -136,22 +128,6 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     }
 
     protected ItemStack getOffHandWeapon() {
-        return ItemStack.EMPTY;
-    }
-
-    protected ItemStack getHeadArmor() {
-        return ItemStack.EMPTY;
-    }
-
-    protected ItemStack getChestArmor() {
-        return ItemStack.EMPTY;
-    }
-
-    protected ItemStack getLegArmor() {
-        return ItemStack.EMPTY;
-    }
-
-    protected ItemStack getFeetArmor() {
         return ItemStack.EMPTY;
     }
 
@@ -163,22 +139,6 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
         return 0.0F;
     }
 
-    protected float getHeadArmorDropChance() {
-        return 0.0F;
-    }
-
-    protected float getChestArmorDropChance() {
-        return 0.0F;
-    }
-
-    protected float getLegArmorDropChance() {
-        return 0.0F;
-    }
-
-    protected float getFeetArmorDropChance() {
-        return 0.0F;
-    }
-
     //TODO: CHANGE TO UNIVERSAL VALUE ENUM
     @Nullable
     @Override
@@ -187,7 +147,7 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
         if (optional.isPresent()) {
             ResourceKey<Biome> biome = optional.get();
             for (var levelledList : LevelledLists.values()) {
-                if (levelledList.getBiome() == biome && this instanceof LevelledMob) {
+                if (levelledList.getBiome() == biome) {
                     this.scaleStats(levelledList);
                 }
             }
@@ -207,6 +167,7 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
                 .add(EntityAttributeInit.STRENGTH.get()).add(EntityAttributeInit.DEXTERITY.get()).add(EntityAttributeInit.INTELLIGENCE.get()).add(EntityAttributeInit.FAITH.get()).add(EntityAttributeInit.ARCANE.get())
                 .add(EntityAttributeInit.PHYS_DEFENSE.get()).add(EntityAttributeInit.MAGIC_DEFENSE.get()).add(EntityAttributeInit.FIRE_DEFENSE.get()).add(EntityAttributeInit.LIGHT_DEFENSE.get()).add(EntityAttributeInit.HOLY_DEFENSE.get())
                 .add(EntityAttributeInit.PHYS_NEGATE.get()).add(EntityAttributeInit.MAGIC_NEGATE.get()).add(EntityAttributeInit.FIRE_NEGATE.get()).add(EntityAttributeInit.LIGHT_NEGATE.get()).add(EntityAttributeInit.HOLY_NEGATE.get())
-                .add(EntityAttributeInit.STRIKE_NEGATE.get()).add(EntityAttributeInit.SLASH_NEGATE.get()).add(EntityAttributeInit.PIERCE_NEGATE.get());
+                .add(EntityAttributeInit.STRIKE_NEGATE.get()).add(EntityAttributeInit.SLASH_NEGATE.get()).add(EntityAttributeInit.PIERCE_NEGATE.get())
+                .add(EntityAttributeInit.POISON_RESIST.get()).add(EntityAttributeInit.SCARLET_ROT_RESIST.get()).add(EntityAttributeInit.HEMORRHAGE_RESIST.get()).add(EntityAttributeInit.FROSTBITE_RESIST.get()).add(EntityAttributeInit.SLEEP_RESIST.get()).add(EntityAttributeInit.MADNESS_RESIST.get());
     }
 }

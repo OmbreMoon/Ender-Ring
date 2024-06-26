@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 public class MerchantTrades {
     private static final int INFINITE_SUPPLY = -1;
     public static final Map<Merchant, Object2ObjectOpenHashMap<Predicate<MerchantNPCMob>, Trade[]>> TRADES = Util.make(Maps.newHashMap(), map -> {
-        map.put(Merchant.TEST, predicateMap(ImmutableMap.of(MerchantNPCMob::shouldDropRunes, new Trade[]{new KeyItemForRunes(ItemInit.STONESWORD_KEY.get(), 4000, 1), new KeyItemForRunes(EquipmentInit.BONE_BOLT.get(), 40, INFINITE_SUPPLY)}, merchantNPCMob -> merchantNPCMob instanceof TestDummy dummy && dummy.isSmithing(), new Trade[]{new KeyItemForRunes(ItemInit.MISSIONARY_COOKBOOK_ONE.get(), 1000, 1), new KeyItemForRunes(ItemInit.CRACKED_POT.get(), 300, 3)})));
+//        map.put(Merchant.TEST, predicateMap(ImmutableMap.of(MerchantNPCMob::shouldDropRunes, new Trade[]{new KeyItemForRunes(ItemInit.STONESWORD_KEY.get(), 4000, 1), new KeyItemForRunes(EquipmentInit.BONE_BOLT.get(), 40, INFINITE_SUPPLY)}, merchantNPCMob -> merchantNPCMob instanceof TestDummy dummy && dummy.isSmithing(), new Trade[]{new KeyItemForRunes(ItemInit.MISSIONARY_COOKBOOK_ONE.get(), 1000, 1), new KeyItemForRunes(ItemInit.CRACKED_POT.get(), 300, 3)})));
     });
 
     private static Object2ObjectOpenHashMap<Predicate<MerchantNPCMob>, Trade[]> predicateMap(ImmutableMap<Predicate<MerchantNPCMob>, Trade[]> map) {

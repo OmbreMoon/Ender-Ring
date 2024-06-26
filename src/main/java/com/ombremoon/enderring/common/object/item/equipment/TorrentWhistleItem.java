@@ -23,6 +23,7 @@ public class TorrentWhistleItem extends Item implements IQuickAccess {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             Torrent torrent = MobInit.TORRENT.get().create(pLevel);
+//            EntityStatusUtil.setTorrentHealth(pPlayer, 77.0);
 //            Torrent torrent = new Torrent(pLevel, pPlayer);
             if (this.canSpawnTorrent(pPlayer, pLevel)) {
                 torrent.setPos(pPlayer.getX(), pPlayer.getY(), pPlayer.getZ());

@@ -33,8 +33,8 @@ public class MobInit {
     //Hostile Mobs
     //Soldier of Godrick
     //Margit
-    //Bloodhound Knight
-    //
+    //Mad Pumpkin Head
+    //Beastman of Farum Azula
 
     protected static <T extends Mob> RegistryObject<EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange, Supplier<AttributeSupplier.Builder> attributeSupplier) {
         return registerMob(name, factory, category, true, width, height, clientTrackingRange, attributeSupplier, true);

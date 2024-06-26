@@ -1,240 +1,127 @@
 package com.ombremoon.enderring.common.object.entity.npc;
 
-import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.item.EquipmentInit;
+import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
-import com.ombremoon.enderring.common.object.entity.LevelledMob;
-import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.TestDummyPatch;
+import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.BlockPosTracker;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AnvilBlock;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.Team;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
-import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.HeldBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.WalkOrRunToWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToBlock;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
-import net.tslat.smartbrainlib.api.core.sensor.custom.NearbyBlocksSensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
-import net.tslat.smartbrainlib.registry.SBLMemoryTypes;
-import net.tslat.smartbrainlib.util.BrainUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-//TODO: TESTING HEWG
-//TODO: ADD SHACKLE RENDER LAYER
-public class TestDummy extends MerchantNPCMob implements LevelledMob {
-    public static final EntityDataAccessor<Boolean> SMITHING = SynchedEntityData.defineId(TestDummy.class, EntityDataSerializers.BOOLEAN);
+//TODO: TESTING MAD PUMPKIN HEAD
+public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
+    @Nullable
+    private UUID owner;
 
     public TestDummy(EntityType<TestDummy> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SMITHING, false);
+    public int getRuneReward(Level level, BlockPos blockPos) {
+        return 1100;
     }
 
     @Override
-    public List<ExtendedSensor<TestDummy>> getSensors() {
+    public List<? extends ExtendedSensor<? extends ERMob<TestDummy>>> getSensors() {
         return ObjectArrayList.of(
                 new NearbyPlayersSensor<>(),
-                new NearbyBlocksSensor<TestDummy>().setRadius(10).setPredicate((blockState, livingEntity) -> blockState.is(Blocks.ANVIL)));
+                new NearbyLivingEntitySensor<TestDummy>().setScanRate(entity -> 40),
+                new HurtBySensor<>()
+        );
     }
 
     @Override
-    public BrainActivityGroup<? extends ERMob<MerchantNPCMob>> getIdleTasks() {
+    public BrainActivityGroup<? extends ERMob<TestDummy>> getCoreTasks() {
+        return BrainActivityGroup.coreTasks(
+                new LookAtTarget<>(),
+                new WalkOrRunToWalkTarget<>());
+    }
+
+    @Override
+    public BrainActivityGroup<? extends ERMob<TestDummy>> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<>(
-                    new HewgIdle(),
-                    new SetAnvilWalkTarget().closeEnoughWhen((testDummy, pair) -> 1),
-                    new FirstApplicableBehaviour<>(
-                            new SetPlayerLookTarget<>(),
-                            new SetRandomLookTarget<>()),
-                    new OneRandomBehaviour<>(
-                            new SetRandomWalkTarget<>(),
-                            new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)))
+                new TargetOrRetaliate<>()
+                        .useMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER)
+                        .attackablePredicate(target -> target.isAlive() && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(target)));
+    }
+
+    @Override
+    public BrainActivityGroup<? extends ERMob<TestDummy>> getFightTasks() {
+        return BrainActivityGroup.fightTasks(
+                new InvalidateAttackTarget<>().invalidateIf((entity, target) -> !target.isAlive() || (target instanceof Player player && player.getAbilities().invulnerable) || distanceToSqr(target.position()) > Math.pow(getAttributeValue(Attributes.FOLLOW_RANGE), 2)),
+                new SetWalkTargetToAttackTarget<>()
+                        .speedMod((entity, target) -> 1.25F),
+                new OneRandomBehaviour(
+                        new SetWalkTargetToBlock()
                 ));
     }
 
     @Override
-    protected ItemStack getMainHandWeapon() {
-        return new ItemStack(EquipmentInit.GUARDIAN_SWORDSPEAR.get());
+    public boolean isAlliedTo(Team pTeam) {
+        return super.isAlliedTo(pTeam);
     }
 
     @Override
-    protected ItemStack getOffHandWeapon() {
-        return new ItemStack(Items.SHIELD);
+    public Map<Activity, BrainActivityGroup<? extends ERMob<TestDummy>>> getAdditionalTasks() {
+        return super.getAdditionalTasks();
     }
 
     @Override
-    public BrainActivityGroup<? extends ERMob<MerchantNPCMob>> getCoreTasks() {
-        return BrainActivityGroup.coreTasks(
-                new LookAtTarget<>(),
-                new MoveToWalkTarget<>());
-    }
-
-    public void setSmithing(boolean smithing) {
-        this.entityData.set(SMITHING, smithing);
-    }
-
-    public boolean isSmithing() {
-        return this.entityData.get(SMITHING);
+    public int getSummonCost() {
+        return 110;
     }
 
     @Override
-    public boolean isPushable() {
-        return !this.isSmithing();
+    public ResourceLocation getTextureLocation() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public UUID getOwnerUUID() {
+        return this.owner;
+    }
+
+    public void setOwnerUUID(UUID owner) {
+        this.owner = owner;
     }
 
     @Override
-    public boolean canAggro() {
-        return false;
-    }
-
-    @Override
-    public int getRuneReward(Level level, BlockPos blockPos) {
-        return 1000;
-    }
-
-    //DEBUGGER
-    @Override
-    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        TestDummyPatch mobPatch = this.getEntityPatch(TestDummyPatch.class);
-        if (!this.level().isClientSide) {
-//            mobPatch.playAnimationSynchronized(Animations.BIPED_DEATH, 0.0F);
-//            this.updateTrades();
-            LOGGER.info(String.valueOf(this.getMaxHealth()));
-        }
-        return super.mobInteract(pPlayer, pHand);
-    }
-
-    private double getAnvilRangeSqr() {
-        return this.getBbWidth() * 2.0F * this.getBbWidth() * 2.0F + 1.0F;
-    }
-
-    private double getPerceivedAnvilDistanceSquare(BlockPos blockPos) {
-        return this.distanceToSqr(blockPos.getCenter());
-    }
-
-    private boolean isWithinAnvilRange(BlockPos blockPos) {
-        double d0 = this.getPerceivedAnvilDistanceSquare(blockPos);
-        return d0 <= this.getAnvilRangeSqr();
+    public ERBoss.Type getBossType() {
+        return Type.INSTANCE;
     }
 
     public static AttributeSupplier.Builder createTestDummyAttributes() {
-        return createERMobAttributes().add(Attributes.MAX_HEALTH, 35.0D).add(Attributes.MOVEMENT_SPEED, 0.25D)
-                .add(EntityAttributeInit.PHYS_DEFENSE.get(), 6.7D)
-                .add(EntityAttributeInit.SLASH_NEGATE.get(), 10.0D)
-                .add(EntityAttributeInit.PIERCE_NEGATE.get(), -10.0D)
-                .add(EntityAttributeInit.MAGIC_DEFENSE.get(), 6.7D)
-                .add(EntityAttributeInit.MAGIC_NEGATE.get(), -20.0D)
-                .add(EntityAttributeInit.FIRE_DEFENSE.get(), 6.7D)
-                .add(EntityAttributeInit.LIGHT_DEFENSE.get(), 6.7D)
-                .add(EntityAttributeInit.HOLY_DEFENSE.get(), 6.7D);
-    }
-
-    private static class HewgIdle extends HeldBehaviour<TestDummy> {
-        private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = ObjectArrayList.of(Pair.of(SBLMemoryTypes.NEARBY_BLOCKS.get(), MemoryStatus.VALUE_PRESENT));
-
-        protected Pair<BlockPos, BlockState> target = null;
-
-        public HewgIdle() {
-
-            startCondition(testDummy -> {
-                var posList = BrainUtils.getMemory(testDummy, SBLMemoryTypes.NEARBY_BLOCKS.get());
-                if (posList == null || posList.isEmpty())
-                    return false;
-
-                final var position = posList.get(0);
-                final var blockPos = position.getFirst();
-                final var blockState = position.getSecond();
-                return blockPos.closerToCenterThan(testDummy.position(), 2) && !testDummy.level().getBlockState(blockPos.relative(blockState.getValue(AnvilBlock.FACING)).below()).isAir();
-            });
-            whenStarting(testDummy -> {
-                var blockPos = this.target.getFirst();
-                var blockState = this.target.getSecond();
-                testDummy.setXxa(0);
-                testDummy.setYya(0);
-                testDummy.setZza(0);
-                testDummy.setDeltaMovement(Vec3.ZERO);
-                testDummy.setPos(blockPos.relative(blockState.getValue(AnvilBlock.FACING)).getCenter());
-                BrainUtils.clearMemory(testDummy, MemoryModuleType.PATH);
-                BrainUtils.setMemory(testDummy, MemoryModuleType.LOOK_TARGET, new BlockPosTracker(this.target.getFirst()));
-                testDummy.setSmithing(true);
-            });
-            whenStopping(testDummy -> {
-                BrainUtils.clearMemory(testDummy, MemoryModuleType.LOOK_TARGET);
-                testDummy.setSmithing(false);
-            });
-            stopIf(testDummy -> {
-                var blockPos = this.target.getFirst();
-                return !testDummy.level().getBlockState(blockPos).is(Blocks.ANVIL) || !testDummy.isWithinAnvilRange(blockPos);
-            });
-        }
-
-        @Override
-        protected List<Pair<MemoryModuleType<?>, MemoryStatus>> getMemoryRequirements() {
-            return MEMORY_REQUIREMENTS;
-        }
-
-        //TODO: TRANSFER TO REGULAR START CONDITION METHOD
-        @Override
-        protected boolean checkExtraStartConditions(ServerLevel level, TestDummy entity) {
-            for (var position : BrainUtils.getMemory(entity, SBLMemoryTypes.NEARBY_BLOCKS.get())) {
-                this.target = position;
-
-                break;
-            }
-
-            return this.target != null;
-
-        }
-    }
-
-    private static class SetAnvilWalkTarget extends SetWalkTargetToBlock<TestDummy> {
-
-        @Override
-        protected boolean checkExtraStartConditions(ServerLevel level, TestDummy entity) {
-            for (var position : BrainUtils.getMemory(entity, SBLMemoryTypes.NEARBY_BLOCKS.get())) {
-                BlockPos blockPos = position.getFirst();
-                BlockState blockState = position.getSecond();
-                BlockPos freePos = blockPos.relative(blockState.getValue(AnvilBlock.FACING));
-                if (level.getBlockState(freePos).isAir() && !level.getBlockState(freePos.below()).isAir()) {
-                    this.target = Pair.of(freePos.immutable(), level.getBlockState(freePos));
-                }
-
-                break;
-            }
-
-            return this.target != null;
-        }
+        return createERMobAttributes().add(Attributes.MAX_HEALTH, 88.5D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ARMOR, 3.0D)
+                .add(EntityAttributeInit.PHYS_DEFENSE.get(), 6.8D).add(EntityAttributeInit.MAGIC_DEFENSE.get(), 6.8D).add(EntityAttributeInit.FIRE_DEFENSE.get(), 6.8D).add(EntityAttributeInit.LIGHT_DEFENSE.get(), 6.8D).add(EntityAttributeInit.HOLY_DEFENSE.get(), 6.8D)
+                .add(EntityAttributeInit.SLASH_NEGATE.get(), -10.0D).add(EntityAttributeInit.LIGHT_NEGATE.get(), -20.0D)
+                .add(EntityAttributeInit.POISON_RESIST.get(), 226).add(EntityAttributeInit.SCARLET_ROT_RESIST.get(), 226).add(EntityAttributeInit.HEMORRHAGE_RESIST.get(), 169).add(EntityAttributeInit.FROSTBITE_RESIST.get(), 169).add(EntityAttributeInit.SLEEP_RESIST.get(), 310).add(EntityAttributeInit.MADNESS_RESIST.get(), -1.0D);
     }
 }
