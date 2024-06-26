@@ -100,8 +100,12 @@ public class PlayerStatusManager {
             return;
 
         float damage = event.getAmount();
-        if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()) && event.getSource() instanceof ModDamageSource damageSource && damageSource.isPhysicalDamage()) {
-            damage *= 0.85F;
+        if (event.getSource() instanceof ModDamageSource damageSource && damageSource.isPhysicalDamage()) {
+            if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()))
+                damage *= 0.85F;
+            else if (player.hasEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get())) {
+                damage *= 
+            }
         }
         if (player.hasEffect(StatusEffectInit.RADAGONS_SCARSEAL.get())) {
             MobEffectInstance instance = player.getEffect(StatusEffectInit.RADAGONS_SCARSEAL.get());

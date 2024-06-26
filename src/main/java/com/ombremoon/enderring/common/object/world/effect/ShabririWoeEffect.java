@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ShabririWoeEffect extends StatusEffect {
     public ShabririWoeEffect(MobEffectCategory pCategory, int pColor) {
-        super(pCategory, pColor);
+        super(pCategory, pColor, null);
     }
 
     @Override

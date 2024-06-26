@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 public class CrimsonAmberEffect extends StatusEffect {
     public CrimsonAmberEffect(MobEffectCategory pCategory, int pColor) {
-        super(pCategory, pColor);
+        super(pCategory, pColor, null);
     }
 
     @Override

@@ -1,13 +1,12 @@
 package com.ombremoon.enderring.common.init.entity;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.object.world.effect.*;
-import com.ombremoon.enderring.common.object.world.effect.talisman.CrimsonAmberEffect;
-import com.ombremoon.enderring.common.object.world.effect.talisman.MarikasScarsealEffect;
-import com.ombremoon.enderring.common.object.world.effect.talisman.RadagonsScarsealEffect;
+import com.ombremoon.enderring.common.object.world.effect.EffectBuilder;
+import com.ombremoon.enderring.common.object.world.effect.IncrementalStatusEffect;
+import com.ombremoon.enderring.common.object.world.effect.ShabririWoeEffect;
+import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,57 +15,92 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
-import java.util.UUID;
-import java.util.function.Supplier;
-
 public class StatusEffectInit {
     public static final DeferredRegister<MobEffect> STATUS_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Constants.MOD_ID);
 
-    public static final RegistryObject<MobEffect> PHYSICAL_DAMAGE_NEGATION = registerSimpleEffect("physical_damage_negation", MobEffectCategory.BENEFICIAL, 234227227);
-    public static final RegistryObject<MobEffect> INVIGORATING_MEAT = registerStatusEffect("invigorating_cured_meat", new CuredMeatEffect(MobEffectCategory.BENEFICIAL, 234227227, EntityAttributeInit.ROBUSTNESS, new AttributeModifier(UUID.fromString("3b51a5e3-f445-494f-a8c5-9d8ccbe4462c"), "Cured Meat", 100, AttributeModifier.Operation.ADDITION)));
+    public static final RegistryObject<MobEffect> PHYSICAL_DAMAGE_NEGATION = registerSimpleEffect("physical_damage_negation", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> INVIGORATING_MEAT = registerStatusEffect("invigorating_cured_meat",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(EntityAttributeInit.ROBUSTNESS)
+                    .setModifier(new AttributeModifier(
+                            "Cured Meat",
+                            100,
+                            AttributeModifier.Operation.ADDITION)).build());
 
     //STATUS EFFECTS
     public static final RegistryObject<MobEffect> POISON = registerIncrementalEffect("poison");
 
     //CRYSTAL TEARS
-    public static final RegistryObject<MobEffect> CRIMSON_CRYSTAL = registerSimpleEffect("crimson_crystal_tear", MobEffectCategory.BENEFICIAL, 234227227);
-    public static final RegistryObject<MobEffect> CERULEAN_CRYSTAL = registerSimpleEffect("cerulean_crystal_tear", MobEffectCategory.BENEFICIAL, 234227227);
-    public static final RegistryObject<MobEffect> OPALINE_BUBBLE = registerSimpleEffect("opaline_bubble_tear", MobEffectCategory.BENEFICIAL, 234227227);
-    public static final RegistryObject<MobEffect> CERULEAN_HIDDEN = registerSimpleEffect("cerulean_hidden_tear", MobEffectCategory.BENEFICIAL, 234227227);
+    public static final RegistryObject<MobEffect> CRIMSON_CRYSTAL = registerSimpleEffect("crimson_crystal_tear", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> CERULEAN_CRYSTAL = registerSimpleEffect("cerulean_crystal_tear", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> OPALINE_BUBBLE = registerSimpleEffect("opaline_bubble_tear", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> CERULEAN_HIDDEN = registerSimpleEffect("cerulean_hidden_tear", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
 
     //TALISMANS
-    public static final RegistryObject<MobEffect> CRIMSON_AMBER_MEDALLION = registerStatusEffect("crimson_amber_medallion", new CrimsonAmberEffect(MobEffectCategory.BENEFICIAL, 234227227).addAttributeModifier(Attributes.MAX_HEALTH, "90f5e679-991d-4f90-b60f-6c8868ea78de", 1.0F, AttributeModifier.Operation.MULTIPLY_BASE));
-    public static final RegistryObject<MobEffect> SHABRIRIS_WOE = registerStatusEffect("shabriris_woe", new ShabririWoeEffect(MobEffectCategory.NEUTRAL, 234227227));
-    public static final RegistryObject<MobEffect> GREEN_TURTLE = registerAttributeEffect("green_turtle_talisman", MobEffectCategory.BENEFICIAL, 234227227, EpicFightAttributes.STAMINA_REGEN, "d2a006de-1f50-409e-ba98-55eccdecdee2", 0.2F, AttributeModifier.Operation.ADDITION);
-    public static final RegistryObject<MobEffect> RADAGONS_SCARSEAL = registerStatusEffect("radagons_scarseal", new RadagonsScarsealEffect(MobEffectCategory.NEUTRAL, 234227227, EntityAttributeInit.VIGOR, EntityAttributeInit.ENDURANCE, EntityAttributeInit.STRENGTH, EntityAttributeInit.DEXTERITY, new AttributeModifier(UUID.fromString("92ee04e4-66be-41d2-88e2-9bb7043ab9d2"), "Radagon's Soreseal", 3.0F, AttributeModifier.Operation.ADDITION)).addTier(1, 5f));
-    public static final RegistryObject<MobEffect> MARIKAS_SCARSEAL = registerStatusEffect("marikas_scarseal", new MarikasScarsealEffect(MobEffectCategory.NEUTRAL, 234227227, EntityAttributeInit.MIND, EntityAttributeInit.INTELLIGENCE, EntityAttributeInit.FAITH, EntityAttributeInit.ARCANE, new AttributeModifier(UUID.randomUUID(), "Marika's Soreseal", 3.0F, AttributeModifier.Operation.ADDITION)).addTier(1, 5F));
-    public static final RegistryObject<MobEffect> SACRIFICIAL_TWIG = registerSimpleEffect("sacrificial_twig", MobEffectCategory.BENEFICIAL, 234227227);
-    public static final RegistryObject<MobEffect> DRAGONCREST_SHIELD_TALISMAN = registerSimpleEffect("dragoncrest_shield_talisman", MobEffectCategory.BENEFICIAL, 234227227);
-    public static final RegistryObject<MobEffect> CRIMSON_SEED_TALISMAN = registerSimpleEffect("crimson_seed_talisman", MobEffectCategory.BENEFICIAL, 234227227);
-    public static final RegistryObject<MobEffect> CERULEAN_SEED_TALISMAN = registerSimpleEffect("cerulean_seed_talisman", MobEffectCategory.BENEFICIAL, 234227227);
+    //TODO: fix crimson amber medallion values
+    public static final RegistryObject<MobEffect> CRIMSON_AMBER_MEDALLION = registerStatusEffect("crimson_amber_medallion",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(() -> Attributes.MAX_HEALTH)
+                    .setModifier(new AttributeModifier(
+                            "Crimson Amber Medallion",
+                            1.06F,
+                            AttributeModifier.Operation.MULTIPLY_BASE))
+                    .addTier(1, 1.07F)
+                    .addTier(2, 1.08F).build());
+    public static final RegistryObject<MobEffect> SHABRIRIS_WOE = registerStatusEffect("shabriris_woe",
+            new ShabririWoeEffect(MobEffectCategory.NEUTRAL, 234227227));
+    public static final RegistryObject<MobEffect> GREEN_TURTLE = registerStatusEffect("green_turtle_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(EpicFightAttributes.STAMINA_REGEN)
+                    .setModifier(new AttributeModifier(
+                            "Green turtle talisman",
+                            0.2F,
+                            AttributeModifier.Operation.ADDITION)).build());
+    public static final RegistryObject<MobEffect> RADAGONS_SCARSEAL = registerStatusEffect("radagons_scarseal",
+            new EffectBuilder(MobEffectCategory.NEUTRAL)
+                    .addAttribute(EntityAttributeInit.VIGOR)
+                    .addAttribute(EntityAttributeInit.ENDURANCE)
+                    .addAttribute(EntityAttributeInit.STRENGTH)
+                    .addAttribute(EntityAttributeInit.DEXTERITY)
+                    .setModifier(new AttributeModifier(
+                            "Radagon's Scarseal",
+                            3F,
+                            AttributeModifier.Operation.ADDITION))
+                    .addTier(1, 5f)
+                    .addTranslation(0, "item.enderring.radagons_scarseal")
+                    .addTranslation(1, "item.enderring.radagons_scarsealplus1").build());
+    public static final RegistryObject<MobEffect> MARIKAS_SCARSEAL = registerStatusEffect("marikas_scarseal",
+            new EffectBuilder(MobEffectCategory.NEUTRAL)
+                    .addAttribute(EntityAttributeInit.MIND)
+                    .addAttribute(EntityAttributeInit.INTELLIGENCE)
+                    .addAttribute(EntityAttributeInit.FAITH)
+                    .addAttribute(EntityAttributeInit.ARCANE)
+                    .setModifier(new AttributeModifier(
+                            "Marika's Soreseal",
+                            3.0F,
+                            AttributeModifier.Operation.ADDITION))
+                    .addTier(1, 5F)
+                    .addTranslation(0, "item.enderring.marikas_scarseal")
+                    .addTranslation(1, "item.enderring.marikas_scarsealplus1").build());
+    public static final RegistryObject<MobEffect> DRAGONCREST_SHIELD_TALISMAN = registerSimpleEffect("dragoncrest_shield_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addTier(0, 0.9F)
+                    .addTier(1, 0.87F)
+                    .addTier(2, 0.83F).build());
+    public static final RegistryObject<MobEffect> SACRIFICIAL_TWIG = registerSimpleEffect("sacrificial_twig",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> CRIMSON_SEED_TALISMAN = registerSimpleEffect("crimson_seed_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> CERULEAN_SEED_TALISMAN = registerSimpleEffect("cerulean_seed_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
 
-    private static RegistryObject<MobEffect> registerAttributeEffect(String name, MobEffectCategory category, int color, Supplier<Attribute> attribute, Supplier<Attribute> attribute1, Supplier<Attribute> attribute2, Supplier<Attribute> attribute3, String uuid, float amount, AttributeModifier.Operation operation) {
-        return STATUS_EFFECTS.register(name, () -> new StatusEffect(category, color).addAttributeModifier(attribute.get(), uuid, amount, operation).addAttributeModifier(attribute1.get(), uuid, amount, operation).addAttributeModifier(attribute2.get(), uuid, amount, operation).addAttributeModifier(attribute3.get(), uuid, amount, operation));
-    }
-
-    private static RegistryObject<MobEffect> registerAttributeEffect(String name, MobEffectCategory category, int color, Supplier<Attribute> attribute, Supplier<Attribute> attribute1, Supplier<Attribute> attribute2, String uuid, float amount, AttributeModifier.Operation operation) {
-        return STATUS_EFFECTS.register(name, () -> new StatusEffect(category, color).addAttributeModifier(attribute.get(), uuid, amount, operation).addAttributeModifier(attribute1.get(), uuid, amount, operation).addAttributeModifier(attribute2.get(), uuid, amount, operation));
-    }
-
-    private static RegistryObject<MobEffect> registerAttributeEffect(String name, MobEffectCategory category, int color, Supplier<Attribute> attribute, Supplier<Attribute> attribute1, String uuid, float amount, AttributeModifier.Operation operation) {
-        return STATUS_EFFECTS.register(name, () -> new StatusEffect(category, color).addAttributeModifier(attribute.get(), uuid, amount, operation).addAttributeModifier(attribute1.get(), uuid, amount, operation));
-    }
-
-    private static RegistryObject<MobEffect> registerAttributeEffect(String name, MobEffectCategory category, int color, Supplier<Attribute> attribute, String uuid, float amount, AttributeModifier.Operation operation) {
-        return STATUS_EFFECTS.register(name, () -> new StatusEffect(category, color).addAttributeModifier(attribute.get(), uuid, amount, operation));
-    }
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(MobEffectCategory.HARMFUL, 234227227));
     }
 
-    private static RegistryObject<MobEffect> registerSimpleEffect(String name, MobEffectCategory category, int color) {
-        return STATUS_EFFECTS.register(name, () -> new StatusEffect(category, color));
+    private static RegistryObject<MobEffect> registerSimpleEffect(String name, StatusEffect effect) {
+        return STATUS_EFFECTS.register(name, () -> effect);
     }
 
     private static RegistryObject<MobEffect> registerStatusEffect(String name, MobEffect statusEffect) {

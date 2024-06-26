@@ -9,12 +9,15 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class MainAttributeEffect extends ModifiedAttributeEffect {
 
-    public MainAttributeEffect(MobEffectCategory pCategory, int pColor, Supplier<Attribute> attribute1, Supplier<Attribute> attribute2, Supplier<Attribute> attribute3, Supplier<Attribute> attribute4, AttributeModifier attributeModifier) {
-        super(pCategory, pColor, attribute1, attribute2, attribute3, attribute4, attributeModifier);
+    public MainAttributeEffect(MobEffectCategory category, int color, List<Supplier<Attribute>> attributes, AttributeModifier modifier, @Nullable Map<Integer, String> translations, Map<Integer, Float> tiers) {
+        super(category, color, attributes, modifier, translations, tiers);
     }
 
     @Override

@@ -20,8 +20,9 @@ public class StatusEffect extends MobEffect {
     protected static final Logger LOGGER = Constants.LOG;
     @Nullable public Map<Integer, String> translationKeys = null;
 
-    public StatusEffect(MobEffectCategory pCategory, int pColor) {
+    public StatusEffect(MobEffectCategory pCategory, int pColor, @Nullable Map<Integer, String> translations) {
         super(pCategory, pColor);
+        this.translationKeys = translations;
     }
 
     @Override

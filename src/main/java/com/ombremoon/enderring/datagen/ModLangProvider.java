@@ -1,21 +1,18 @@
 package com.ombremoon.enderring.datagen;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.logging.LogUtils;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.gui.screen.StarterScreen;
-import com.ombremoon.enderring.common.init.StatInit;
-import com.ombremoon.enderring.common.init.blocks.BlockInit;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
 import com.ombremoon.enderring.common.init.SpellInit;
+import com.ombremoon.enderring.common.init.StatInit;
+import com.ombremoon.enderring.common.init.blocks.BlockInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
-import com.ombremoon.enderring.common.object.world.effect.talisman.MarikasScarsealEffect;
-import com.ombremoon.enderring.common.object.world.effect.talisman.RadagonsScarsealEffect;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -145,8 +142,8 @@ public class ModLangProvider extends LanguageProvider {
         add(Constants.MOD_ID + ".flask.tear_1", "1st Crystal Tear Slot");
         add(Constants.MOD_ID + ".flask.tear_2", "2nd Crystal Tear Slot");
         add(FlaskItem.NO_TEARS, "Wondrous Physick is currently holding no Crystal Tears");
-        add(MarikasScarsealEffect.MARIKAS_SORESEAL, "Marika's Soreseal");
-        add(RadagonsScarsealEffect.RADAGONS_SORESEAL, "Radagon's Soreseal");
+        add("item.enderring.marikas_scarsealplus1", "Marika's Soreseal");
+        add("item.enderring.radagons_scarsealplus1", "Radagon's Soreseal");
     }
 
     protected String checkReplaceMenu(RegistryObject<MenuType<?>> registryObject) {
