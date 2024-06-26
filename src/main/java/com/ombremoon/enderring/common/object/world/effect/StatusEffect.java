@@ -11,11 +11,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class StatusEffect extends MobEffect {
     protected static final Logger LOGGER = Constants.LOG;
+    @Nullable public Map<Integer, String> translationKeys = null;
 
     public StatusEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);

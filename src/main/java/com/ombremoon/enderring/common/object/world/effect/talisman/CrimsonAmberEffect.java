@@ -1,5 +1,6 @@
-package com.ombremoon.enderring.common.object.world.effect;
+package com.ombremoon.enderring.common.object.world.effect.talisman;
 
+import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;

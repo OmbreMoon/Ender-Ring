@@ -34,6 +34,7 @@ public class ModDataGen {
         generator.addProvider(includeServer, new ModSoundProvider(packOutput, existingFileHelper));
         generator.addProvider(includeServer, new ModTagProvider.Blocks(packOutput, event.getLookupProvider(), existingFileHelper));
         generator.addProvider(includeServer, new ModTagProvider.Items(packOutput, event.getLookupProvider(), existingFileHelper));
+        generator.addProvider(includeServer, new ModTagProvider.Curios(packOutput, event.getLookupProvider(), existingFileHelper));
         generator.addProvider(includeServer, new ModGlobalLootModifiersProvider(packOutput));
         generator.addProvider(includeServer, new DatapackRegistriesProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new ModDamageTypeTagsProvider(packOutput, lookupProviderWithOwn, existingFileHelper));

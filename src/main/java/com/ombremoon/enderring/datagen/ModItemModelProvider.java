@@ -28,9 +28,9 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        registerItemModels(ItemInit.GENERAL_LIST);
-        registerItemModels(ItemInit.TALISMAN_LIST);
         registerEquipModels(ItemInit.EQUIPMENT_LIST);
+        registerItemModels(ItemInit.TALISMAN_LIST.keySet());
+        registerItemModels(ItemInit.GENERAL_LIST);
         Arrays.stream(EXCLUSION_LIST).toList().forEach(this::tempItem);
         Arrays.stream(EQUIP_EXCLUSION_LIST).toList().forEach(this::tempItem);
 
@@ -111,6 +111,11 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.GREEN_TURTLE_TALISMAN.get(),
             ItemInit.GODFREY_ICON.get(),
             ItemInit.SACRIFICIAL_TWIG.get(),
+            ItemInit.CERULEAN_SEED_TALISMAN.get(),
+            ItemInit.CRIMSON_SEED_TALISMAN.get(),
+            ItemInit.DRAGONCREST_SHIELD_TALISMAN.get(),
+            ItemInit.MARIKAS_SCARSEAL.get(),
+            ItemInit.RADAGONS_SCARSEAL.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

@@ -11,9 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public class RadagonSoresealEffect extends ModifiedAttributeEffect {
+public class MainAttributeEffect extends ModifiedAttributeEffect {
 
-    public RadagonSoresealEffect(MobEffectCategory pCategory, int pColor, Supplier<Attribute> attribute1, Supplier<Attribute> attribute2, Supplier<Attribute> attribute3, Supplier<Attribute> attribute4, AttributeModifier attributeModifier) {
+    public MainAttributeEffect(MobEffectCategory pCategory, int pColor, Supplier<Attribute> attribute1, Supplier<Attribute> attribute2, Supplier<Attribute> attribute3, Supplier<Attribute> attribute4, AttributeModifier attributeModifier) {
         super(pCategory, pColor, attribute1, attribute2, attribute3, attribute4, attributeModifier);
     }
 

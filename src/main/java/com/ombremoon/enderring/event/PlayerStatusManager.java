@@ -10,7 +10,6 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
-import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -19,7 +18,6 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -36,10 +34,8 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
-import org.lwjgl.system.linux.Stat;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
-import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,16 +103,16 @@ public class PlayerStatusManager {
         if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()) && event.getSource() instanceof ModDamageSource damageSource && damageSource.isPhysicalDamage()) {
             damage *= 0.85F;
         }
-        if (player.hasEffect(StatusEffectInit.RADAGONS_SORESEAL.get())) {
-            MobEffectInstance instance = player.getEffect(StatusEffectInit.RADAGONS_SORESEAL.get());
+        if (player.hasEffect(StatusEffectInit.RADAGONS_SCARSEAL.get())) {
+            MobEffectInstance instance = player.getEffect(StatusEffectInit.RADAGONS_SCARSEAL.get());
             damage *= 1.1F + (0.05F * instance.getAmplifier());
         }
-        if (player.hasEffect(StatusEffectInit.MARIKAS_SORESEAL.get())) {
-            MobEffectInstance instance = player.getEffect(StatusEffectInit.MARIKAS_SORESEAL.get());
+        if (player.hasEffect(StatusEffectInit.MARIKAS_SCARSEAL.get())) {
+            MobEffectInstance instance = player.getEffect(StatusEffectInit.MARIKAS_SCARSEAL.get());
             damage *= 1.1F + (0.05F * instance.getAmplifier());
         }
-        if (player.hasEffect(StatusEffectInit.PHYSICAL_NEGATION.get())) {
-            MobEffectInstance instance = player.getEffect(StatusEffectInit.PHYSICAL_NEGATION.get());
+        if (player.hasEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get())) {
+            MobEffectInstance instance = player.getEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get());
             int amp = instance.getAmplifier();
             if (amp == 0) damage *= 0.9F;
             else if (amp == 1) damage *= 0.87F;

@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.datagen;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.logging.LogUtils;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.gui.screen.StarterScreen;
 import com.ombremoon.enderring.common.init.StatInit;
@@ -13,9 +14,10 @@ import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
+import com.ombremoon.enderring.common.object.world.effect.talisman.MarikasScarsealEffect;
+import com.ombremoon.enderring.common.object.world.effect.talisman.RadagonsScarsealEffect;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.Stat;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -29,16 +31,28 @@ import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ModLangProvider extends LanguageProvider {
+
     protected static final Map<String, String> REPLACE_LIST = ImmutableMap.of(
             "tnt", "TNT",
             "sus", "",
             "shabriris", "Shabriri's",
             "radagons", "Radagon's",
             "astrologers", "Astrologer's"
+    );
+
+    //Include talismans that go up to plus one and no further
+    private static final List<RegistryObject<Item>> PLUS_ONE_TALISMANS = List.of(
+
+    );
+
+    //Include talismans that go up to plus two and no higher/lower
+    private static final List<RegistryObject<Item>> PLUS_TWO_TALISMANS = List.of(
+        ItemInit.DRAGONCREST_SHIELD_TALISMAN
     );
 
     public ModLangProvider(PackOutput gen) {
@@ -59,6 +73,17 @@ public class ModLangProvider extends LanguageProvider {
         originLang();
 
         manualEntries();
+        upgradedLang(PLUS_ONE_TALISMANS, 1);
+        upgradedLang(PLUS_TWO_TALISMANS, 2);
+    }
+
+    protected void upgradedLang(List<RegistryObject<Item>> list, int tier) {
+        for (RegistryObject<Item> item : list) {
+            for (int i = 1; i <= tier; i++) {
+                add(item.get().getDescriptionId() + "plus" + i,
+                        checkReplace(item) + " +" + i);
+            }
+        }
     }
 
     protected void itemLang(RegistryObject<Item> entry) {
@@ -120,6 +145,8 @@ public class ModLangProvider extends LanguageProvider {
         add(Constants.MOD_ID + ".flask.tear_1", "1st Crystal Tear Slot");
         add(Constants.MOD_ID + ".flask.tear_2", "2nd Crystal Tear Slot");
         add(FlaskItem.NO_TEARS, "Wondrous Physick is currently holding no Crystal Tears");
+        add(MarikasScarsealEffect.MARIKAS_SORESEAL, "Marika's Soreseal");
+        add(RadagonsScarsealEffect.RADAGONS_SORESEAL, "Radagon's Soreseal");
     }
 
     protected String checkReplaceMenu(RegistryObject<MenuType<?>> registryObject) {

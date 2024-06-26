@@ -22,7 +22,6 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,9 +29,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -41,7 +38,7 @@ public class ItemInit {
     public static final List<RegistryObject<? extends Item>> GENERAL_LIST = new ArrayList<>();
     public static final List<RegistryObject<? extends Item>> SIMPLE_ITEM_LIST = new ArrayList<>();
     public static final List<RegistryObject<? extends Item>> HANDHELD_LIST = new ArrayList<>();
-    public static final List<RegistryObject<? extends Item>> TALISMAN_LIST = new ArrayList<>();
+    public static final Map<RegistryObject<? extends Item>, Integer> TALISMAN_LIST = new HashMap<>();
     public static final List<RegistryObject<? extends Item>> EQUIPMENT_LIST = new ArrayList<>();
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Constants.MOD_ID);
@@ -109,20 +106,16 @@ public class ItemInit {
     //TALISMANS
     public static final RegistryObject<Item> GREEN_TURTLE_TALISMAN = registerTalisman("green_turtle_talisman", StatusEffectInit.GREEN_TURTLE);
     public static final RegistryObject<Item> GODFREY_ICON = registerTalisman("godfrey_icon", StatusEffectInit.GREEN_TURTLE);
-    public static final RegistryObject<Item> RADAGONS_SCARSEAL = registerTalisman("radagons_scarseal", StatusEffectInit.RADAGONS_SORESEAL);
-    public static final RegistryObject<Item> RADAGONS_SORESEAL = registerTalisman("radagons_soreseal", StatusEffectInit.RADAGONS_SORESEAL, 1);
-    public static final RegistryObject<Item> MARIKAS_SCARSEAL = registerTalisman("marikas_scarseal", StatusEffectInit.MARIKAS_SORESEAL);
-    public static final RegistryObject<Item> MARIKAS_SORESEAL = registerTalisman("marikas_soreseal", StatusEffectInit.MARIKAS_SORESEAL, 1);
+    public static final RegistryObject<Item> RADAGONS_SCARSEAL = registerTalisman("radagons_scarseal", StatusEffectInit.RADAGONS_SCARSEAL, 1);
+    public static final RegistryObject<Item> MARIKAS_SCARSEAL = registerTalisman("marikas_scarseal", StatusEffectInit.MARIKAS_SCARSEAL, 1);
     public static final RegistryObject<Item> SACRIFICIAL_TWIG = registerTalisman("sacrificial_twig", StatusEffectInit.SACRIFICIAL_TWIG);
-    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN = registerTalisman("dragoncrest_shield_talisman", StatusEffectInit.PHYSICAL_NEGATION);
-    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN1 = registerTalisman("dragoncrest_shield_talisman1", StatusEffectInit.PHYSICAL_NEGATION, 1);
-    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN2 = registerTalisman("dragoncrest_shield_talisman2", StatusEffectInit.PHYSICAL_NEGATION, 2);
-    public static final RegistryObject<Item> CRIMSON_SEED_TALISMAN = registerStatlessTalisman("crimson_seed_talisman");
-    public static final RegistryObject<Item> CERULEAN_SEED_TALISMAN = registerStatlessTalisman("cerulean_seed_talisman");
+    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN = registerTalisman("dragoncrest_shield_talisman", StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN, 2);
+    public static final RegistryObject<Item> CRIMSON_SEED_TALISMAN = registerTalisman("crimson_seed_talisman", StatusEffectInit.CRIMSON_SEED_TALISMAN);
+    public static final RegistryObject<Item> CERULEAN_SEED_TALISMAN = registerTalisman("cerulean_seed_talisman", StatusEffectInit.CERULEAN_SEED_TALISMAN);
 
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
-    public static final RegistryObject<CreativeModeTab> TALISMAN = registerCreativeModeTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION, TALISMAN_LIST);
+    public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);
     public static final RegistryObject<CreativeModeTab> WEAPON = registerCreativeModeTab("equipment", ItemInit.DEBUG, EQUIPMENT_LIST, item -> item instanceof AbstractWeapon, ((item, output) -> registerScaledWeapons(output, item)));
 
 
@@ -134,16 +127,15 @@ public class ItemInit {
         return registerGeneralItem(name, () -> new CookbookItem(itemProperties()));
     }
 
-    public static RegistryObject<Item> registerStatlessTalisman(String name) {
-        return registerItem(name, () -> new Item(itemProperties().stacksTo(1)), TALISMAN_LIST, SIMPLE_ITEM_LIST);
-    }
-
     public static RegistryObject<Item> registerTalisman(String name, Supplier<MobEffect> mobEffect) {
         return registerTalisman(name, mobEffect, 0);
     }
 
-    public static RegistryObject<Item> registerTalisman(String name, Supplier<MobEffect> mobEffect, int amplifier) {
-        return registerItem(name, () -> new TalismanItem(() -> new MobEffectInstance(mobEffect.get(), -1, amplifier), itemProperties()), TALISMAN_LIST, SIMPLE_ITEM_LIST);
+    public static RegistryObject<Item> registerTalisman(String name, Supplier<MobEffect> mobEffect, int maxUpgrade) {
+        RegistryObject<Item> talismanObj = registerItem(name, () -> new TalismanItem(mobEffect, itemProperties()));
+        TALISMAN_LIST.put(talismanObj, maxUpgrade);
+        SIMPLE_ITEM_LIST.add(talismanObj);
+        return talismanObj;
     }
 
     protected static RegistryObject<Item> registerSimpleItem(String name) {
@@ -171,6 +163,23 @@ public class ItemInit {
 
     protected static <T extends Item> RegistryObject<CreativeModeTab> registerCreativeModeTab(String name, RegistryObject<T> item, List<RegistryObject<? extends Item>> registryObjects) {
         return registerCreativeModeTab(name, item, registryObjects, item1 -> false, (item1, output) -> {});
+    }
+
+    protected static RegistryObject<CreativeModeTab> registerTalismanTab(String name, RegistryObject<Item> item) {
+        return CREATIVE_MODE_TABS.register(name, () -> CreativeModeTab.builder()
+                .icon(() -> new ItemStack(item.get()))
+                .title(Component.translatable("itemgroup." + name + ".tab"))
+                .displayItems(
+                        ((itemDisplayParameters, output) -> {
+                            for (Map.Entry<RegistryObject<? extends Item>, Integer> entry : TALISMAN_LIST.entrySet()) {
+                                for (int i = 0; i <= entry.getValue(); i++) {
+                                    ItemStack stack = new ItemStack(entry.getKey().get());
+                                    stack.getOrCreateTag().putInt("tier", i);
+                                    output.accept(stack);
+                                }
+                            }
+                        })
+                ).build());
     }
 
     protected static <T extends Item> RegistryObject<CreativeModeTab> registerCreativeModeTab(String name, RegistryObject<? extends Item> item, List<RegistryObject<? extends Item>> registryObjects, Predicate<Item> itemPredicate, BiConsumer<Item, CreativeModeTab.Output> itemConsumer) {

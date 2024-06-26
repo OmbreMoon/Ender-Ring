@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.Block;
 public class TagInit {
     public static class Items {
         public static final TagKey<Item> CRYSTAL_TEAR = tag("crystal_tear");
+        public static final TagKey<Item> TALISMANS = curiosTag("talismans");
+        public static final TagKey<Item> QUICK_ACCESS = curiosTag("quick_access");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(CommonClass.customLocation(name));
@@ -21,6 +23,10 @@ public class TagInit {
 
         private static TagKey<Item> forgeTag(String name) {
             return ItemTags.create(new ResourceLocation("forge", name));
+        }
+
+        private static TagKey<Item> curiosTag(String name) {
+            return ItemTags.create(new ResourceLocation("curios", name));
         }
     }
 
