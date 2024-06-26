@@ -10,6 +10,7 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
+import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -104,7 +105,9 @@ public class PlayerStatusManager {
             if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()))
                 damage *= 0.85F;
             else if (player.hasEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get())) {
-                damage *= 
+                MobEffectInstance effect = player.getEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get());
+                Float tierDmg = ((StatusEffect) effect.getEffect()).getTier(effect.getAmplifier());
+                if (tierDmg != null) damage *= tierDmg;
             }
         }
         if (player.hasEffect(StatusEffectInit.RADAGONS_SCARSEAL.get())) {

@@ -20,13 +20,11 @@ import java.util.function.Supplier;
 public class ModifiedAttributeEffect extends StatusEffect {
     private final List<Supplier<Attribute>> attributes;
     private final AttributeModifier modifier;
-    private Map<Integer, Float> tiers;
 
     public ModifiedAttributeEffect(MobEffectCategory category, int color, List<Supplier<Attribute>> attributes, AttributeModifier modifier, Map<Integer, String> translations, Map<Integer, Float> tiers) {
-        super(category, color, translations);
+        super(category, color, translations, tiers);
         this.attributes = attributes;
         this.modifier = modifier;
-        this.tiers = tiers;
     }
 
     @Override
@@ -57,10 +55,9 @@ public class ModifiedAttributeEffect extends StatusEffect {
     }
 
     public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier) {
-        if (this.tiers == null || this.tiers.get(pAmplifier) == null)
-            return pModifier.getAmount();
+        if (this.getTier(pAmplifier) == null) return pModifier.getAmount();
 
-        return this.tiers.get(pAmplifier);
+        return this.getTier(pAmplifier);
     }
 
     protected void addAttributeModifier(LivingEntity livingEntity, Supplier<Attribute> attribute, UUID uuid, String name, double amount, AttributeModifier.Operation operation) {

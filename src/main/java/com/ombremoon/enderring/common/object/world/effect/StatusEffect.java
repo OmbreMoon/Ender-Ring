@@ -19,10 +19,12 @@ import java.util.Map;
 public class StatusEffect extends MobEffect {
     protected static final Logger LOGGER = Constants.LOG;
     @Nullable public Map<Integer, String> translationKeys = null;
+    @Nullable private Map<Integer, Float> tiers;
 
-    public StatusEffect(MobEffectCategory pCategory, int pColor, @Nullable Map<Integer, String> translations) {
+    public StatusEffect(MobEffectCategory pCategory, int pColor, @Nullable Map<Integer, String> translations, Map<Integer, Float> tiers) {
         super(pCategory, pColor);
         this.translationKeys = translations;
+        this.tiers = tiers;
     }
 
     @Override
@@ -42,6 +44,11 @@ public class StatusEffect extends MobEffect {
     @Override
     public List<ItemStack> getCurativeItems() {
         return new ArrayList<>();
+    }
+
+    public Float getTier(int amp) {
+        if (this.tiers == null) return null;
+        return this.tiers.get(amp);
     }
 
 }

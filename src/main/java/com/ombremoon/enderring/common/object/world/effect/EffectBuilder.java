@@ -59,12 +59,12 @@ public class EffectBuilder {
     public StatusEffect build() {
         if (this.attributes != null && modifier == null) {
             log.error("Can not modify attributes without a modifier.");
-            return new StatusEffect(category, color, translations);
+            return new StatusEffect(category, color, translations, tiers);
         } else if (this.attributes == null && modifier != null) {
             log.error("Can not set a modifier without adding attributes to modify.");
-            return new StatusEffect(category, color, translations);
+            return new StatusEffect(category, color, translations, tiers);
         } else if (this.attributes == null) {
-            return new StatusEffect(category, color, translations);
+            return new StatusEffect(category, color, translations, tiers);
         } else if (this.attributes.contains(EntityAttributeInit.VIGOR)
                 || this.attributes.contains(EntityAttributeInit.ENDURANCE)
                 || this.attributes.contains(EntityAttributeInit.MIND)) {
