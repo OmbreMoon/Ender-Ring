@@ -115,7 +115,11 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.CRIMSON_SEED_TALISMAN.get(),
             ItemInit.DRAGONCREST_SHIELD_TALISMAN.get(),
             ItemInit.MARIKAS_SCARSEAL.get(),
-            ItemInit.RADAGONS_SCARSEAL.get()
+            ItemInit.RADAGONS_SCARSEAL.get(),
+            ItemInit.STARSCOURGE_HEIRLOOM.get(),
+            ItemInit.PROSTHESIS_WEARER_HEIRLOOM.get(),
+            ItemInit.STARGAZER_HEIRLOOM.get(),
+            ItemInit.TWO_FINGERS_HEIRLOOM.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

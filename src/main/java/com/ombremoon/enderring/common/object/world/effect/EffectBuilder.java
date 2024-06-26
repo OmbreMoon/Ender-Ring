@@ -5,6 +5,7 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -31,6 +32,13 @@ public class EffectBuilder {
     public EffectBuilder addTier(int tier, float modifier) {
         if (this.tiers == null) this.tiers = new HashMap<>();
         this.tiers.put(tier, modifier);
+        return this;
+    }
+
+    public EffectBuilder singleAttribute(Supplier<Attribute> attribute, String modifierName, float amount, AttributeModifier.Operation operation) {
+        this.attributes = new ArrayList<>();
+        this.attributes.add(attribute);
+        this.modifier = new AttributeModifier(modifierName, amount, operation);
         return this;
     }
 

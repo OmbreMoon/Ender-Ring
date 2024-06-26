@@ -98,6 +98,26 @@ public class StatusEffectInit {
             new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> CERULEAN_SEED_TALISMAN = registerSimpleEffect("cerulean_seed_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> STARSCOURGE_HEIRLOOM = registerSimpleEffect("starscourge_heirloom",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .singleAttribute(EntityAttributeInit.STRENGTH,
+                            "Starscourge Heirloom",
+                            5F, AttributeModifier.Operation.ADDITION).build());
+    public static final RegistryObject<MobEffect> PROSTHESIS_WEARER_HEIRLOOM = registerSimpleEffect("prosthesis_wearer_heirloom",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .singleAttribute(EntityAttributeInit.DEXTERITY,
+                            "Prosthesis Wearer Heirloom",
+                            5F, AttributeModifier.Operation.ADDITION).build());
+    public static final RegistryObject<MobEffect> STARGAZER_HEIRLOOM = registerStatusEffect("stargazer_heirloom",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .singleAttribute(EntityAttributeInit.INTELLIGENCE,
+                            "Stargazer Heirloom",
+                            5F, AttributeModifier.Operation.ADDITION).build());
+    public static final RegistryObject<MobEffect> TWO_FINGERS_HEIRLOOM = registerStatusEffect("two_finger_heirloom",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .singleAttribute(EntityAttributeInit.INTELLIGENCE,
+                            "Two Fingers Heirloom",
+                            5F, AttributeModifier.Operation.ADDITION).build());
 
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
