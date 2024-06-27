@@ -15,11 +15,12 @@ public class AnimatedMeleeBehavior<E extends Mob> extends AnimatedCombatBehavior
 
     @Override
     protected void doDelayedAction(E entity) {
-        super.doDelayedAction(entity);
         if (this.target == null)
             return;
 
         if (!entity.getSensing().hasLineOfSight(this.target) || !entity.isWithinMeleeAttackRange(this.target))
             return;
+
+        super.doDelayedAction(entity);
     }
 }
