@@ -49,7 +49,7 @@ public class ModLangProvider extends LanguageProvider {
 
     //Include talismans that go up to plus two and no higher/lower
     private static final List<RegistryObject<Item>> PLUS_TWO_TALISMANS = List.of(
-        ItemInit.DRAGONCREST_SHIELD_TALISMAN
+        ItemInit.DRAGONCREST_SHIELD_TALISMAN, ItemInit.ERDTREES_FAVOR
     );
 
     public ModLangProvider(PackOutput gen) {

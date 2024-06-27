@@ -44,10 +44,10 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("8d56064f-619a-40f5-bc91-d74f9735d964"),
                             "Crimson Amber Medallion",
-                            1.06F, AttributeModifier.Operation.MULTIPLY_BASE),
+                            0.06F, AttributeModifier.Operation.MULTIPLY_BASE),
                             () -> Attributes.MAX_HEALTH)
-                    .addTier("8d56064f-619a-40f5-bc91-d74f9735d964",1, 1.07F)
-                    .addTier("8d56064f-619a-40f5-bc91-d74f9735d964",2, 1.08F).build());
+                    .addTier("8d56064f-619a-40f5-bc91-d74f9735d964",1, 0.07F)
+                    .addTier("8d56064f-619a-40f5-bc91-d74f9735d964",2, 0.08F).build());
     public static final RegistryObject<MobEffect> SHABRIRIS_WOE = registerStatusEffect("shabriris_woe",
             new ShabririWoeEffect(MobEffectCategory.NEUTRAL, 234227227));
     public static final RegistryObject<MobEffect> GREEN_TURTLE = registerStatusEffect("green_turtle_talisman",
@@ -179,6 +179,23 @@ public class StatusEffectInit {
                                     "Sacred Scorpion Charm",
                                     0.9F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE).build());
+    //TODO: If equip load is implemented please add that to erdtrees favor
+    public static final RegistryObject<MobEffect> ERDTREES_FAVOR = registerStatusEffect("erdtrees_favor",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d0e53b5c-b3d0-478d-a426-cf5a6372c6f2"),
+                            "ErdTree's Favor",
+                            0.03D, AttributeModifier.Operation.MULTIPLY_BASE),
+                            () -> Attributes.MAX_HEALTH)
+                    .addTier("d0e53b5c-b3d0-478d-a426-cf5a6372c6f2", 1, 0.035D)
+                    .addTier("d0e53b5c-b3d0-478d-a426-cf5a6372c6f2", 2, 0.04D)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("3c973081-d8d4-4dea-ad93-570ea884af51"),
+                            "Erdtree's Favor",
+                            1.07D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EpicFightAttributes.MAX_STAMINA)
+                    .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 1, 1.085D)
+                    .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 2, 1.1D).build());
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(MobEffectCategory.HARMFUL, 234227227));

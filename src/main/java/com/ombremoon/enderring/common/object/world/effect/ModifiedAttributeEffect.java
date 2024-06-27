@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.object.world.effect;
 
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import net.minecraft.world.effect.HealthBoostMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -55,6 +56,8 @@ public class ModifiedAttributeEffect extends StatusEffect {
                 removeModifier(pLivingEntity, attribute, modifier.getId());
             }
         }
+        if (pLivingEntity.getHealth() >= pLivingEntity.getMaxHealth())
+            pLivingEntity.setHealth(pLivingEntity.getMaxHealth());
     }
 
     private AttributeInstance getAttributeInstance(LivingEntity livingEntity, Supplier<Attribute> attribute) {
