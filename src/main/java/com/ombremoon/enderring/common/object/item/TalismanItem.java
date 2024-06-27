@@ -35,6 +35,7 @@ public class TalismanItem extends Item implements ICurioItem {
             int amp = getTier(stack);
             MobEffectInstance effectInstance = new MobEffectInstance(effect.get(), -1, amp,
                     false, false);
+            
             slotContext.entity().addEffect(effectInstance);
             if (effectInstance.getEffect().isInstantenous()) {
                 effectInstance.getEffect().applyInstantenousEffect(livingEntity, livingEntity, livingEntity, amp, 1.0D);
@@ -48,7 +49,6 @@ public class TalismanItem extends Item implements ICurioItem {
         Player player = (Player) slotContext.entity();
 
         int slots = CurioHelper.getTalismanStacks(player).getSlots();
-        int j = 0;
         for (int i = 0; i < slots; i++) {
             if (stack.getItem() == CurioHelper.getTalismanStacks(player).getStackInSlot(i).getItem()) {
                 ICurioItem.super.onUnequip(slotContext, newStack, stack);
