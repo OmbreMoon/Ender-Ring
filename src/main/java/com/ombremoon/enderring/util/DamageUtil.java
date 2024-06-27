@@ -10,11 +10,13 @@ import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
+import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
@@ -103,13 +105,23 @@ public class DamageUtil {
                         f += damage * getScalingUpgrade(weapon, entry.getKey(), weaponLevel) * entry.getValue();
                     }
                 }
-                return (damage + f) / STAT_SCALE;
+                return ((damage + f) / STAT_SCALE) * getApMultipliers(livingEntity);
             } else {
-                return (damage + (damage * -0.4F)) / STAT_SCALE;
+                return ((damage + (damage * -0.4F)) / STAT_SCALE) * getApMultipliers(livingEntity);
             }
         } else {
-            return damage;
+            return damage * getApMultipliers(livingEntity);
         }
+    }
+
+    private static float getApMultipliers(LivingEntity entity) {
+        float multiplier = 1.0F;
+        if (entity.hasEffect(StatusEffectInit.RITUAL_SWORD_TALISMAN.get())
+            && entity.getHealth() >= entity.getMaxHealth()) multiplier += 0.1F;
+        if (entity.hasEffect(StatusEffectInit.RED_FEATHERED_BRANCHSWORD.get())
+            && entity.getHealth() <= entity.getMaxHealth()*0.2F) multiplier += 0.2F;
+
+        return multiplier;
     }
 
     public static float calculateMagicScaling(ScaledWeapon weapon, Player player, int weaponLevel, WeaponDamage weaponDamage) {

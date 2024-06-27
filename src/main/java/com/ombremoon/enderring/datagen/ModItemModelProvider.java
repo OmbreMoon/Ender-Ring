@@ -126,7 +126,11 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.LIGHTNING_SCORPION_CHARM.get(),
             ItemInit.SACRED_SCORPION_CHARM.get(),
             ItemInit.MAGIC_SCORPION_CHARM.get(),
-            ItemInit.ERDTREES_FAVOR.get()
+            ItemInit.ERDTREES_FAVOR.get(),
+            ItemInit.RITUAL_SHIELD_TALISMAN.get(),
+            ItemInit.RITUAL_SWORD_TALISMAN.get(),
+            ItemInit.RED_FEATHERED_BRANCHSWORD.get(),
+            ItemInit.BLUE_FEATHERED_BRANCHSWORD.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

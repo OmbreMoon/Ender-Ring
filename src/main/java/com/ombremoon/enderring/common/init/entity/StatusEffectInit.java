@@ -196,6 +196,27 @@ public class StatusEffectInit {
                             EpicFightAttributes.MAX_STAMINA)
                     .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 1, 1.085D)
                     .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 2, 1.1D).build());
+    public static final RegistryObject<MobEffect> RITUAL_SWORD_TALISMAN = registerStatusEffect("ritual_sword_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> RITUAL_SHIELD_TALISMAN = registerStatusEffect("ritual_shield_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("f981c6d2-3381-4633-bc94-5f7d3fbd813a"),
+                            "Ritual Shield Talisman",
+                            1.3D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.PHYS_NEGATE, EntityAttributeInit.HOLY_NEGATE,
+                            EntityAttributeInit.LIGHT_NEGATE, EntityAttributeInit.FIRE_NEGATE,
+                            EntityAttributeInit.MAGIC_NEGATE).buildHpEffect(true));
+    public static final RegistryObject<MobEffect> RED_FEATHERED_BRANCHSWORD = registerStatusEffect("red_feathered_branchsword",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> BLUE_FEATHERED_BRANCHSWORD = registerStatusEffect("blue_feathered_branchsword",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL).addAttribute(new AttributeModifier(
+                            UUID.fromString("3849ab13-31af-4dec-bdc5-aa3af1047457"),
+                            "Blue Feathered Branchsword",
+                            1.3D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                    EntityAttributeInit.PHYS_NEGATE, EntityAttributeInit.HOLY_NEGATE,
+                    EntityAttributeInit.LIGHT_NEGATE, EntityAttributeInit.FIRE_NEGATE,
+                    EntityAttributeInit.MAGIC_NEGATE).buildHpEffect(false));
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(MobEffectCategory.HARMFUL, 234227227));
