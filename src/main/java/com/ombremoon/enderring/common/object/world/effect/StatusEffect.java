@@ -19,9 +19,9 @@ import java.util.Map;
 public class StatusEffect extends MobEffect {
     protected static final Logger LOGGER = Constants.LOG;
     @Nullable public Map<Integer, String> translationKeys = null;
-    @Nullable private Map<Integer, Float> tiers;
+    @Nullable private Map<String, Map<Integer, Double>> tiers;
 
-    public StatusEffect(MobEffectCategory pCategory, int pColor, @Nullable Map<Integer, String> translations, Map<Integer, Float> tiers) {
+    public StatusEffect(MobEffectCategory pCategory, int pColor, @Nullable Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers) {
         super(pCategory, pColor);
         this.translationKeys = translations;
         this.tiers = tiers;
@@ -46,9 +46,15 @@ public class StatusEffect extends MobEffect {
         return new ArrayList<>();
     }
 
-    public Float getTier(int amp) {
-        if (this.tiers == null) return null;
-        return this.tiers.get(amp);
+    public Double getTier(String uuid, int amp) {
+        if (this.tiers == null) {
+            LOGGER.warn("Attempted to use getTier on status effect with no tiers.");
+            return null;
+        } else if (this.tiers.get(uuid) == null) {
+            LOGGER.warn("Attempted to use getTier on an invalid UUID");
+            return null;
+        }
+        return this.tiers.get(uuid).get(amp);
     }
 
 }

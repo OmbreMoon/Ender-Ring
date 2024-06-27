@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.world.effect;
 
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Attr;
 
 import java.util.HashMap;
@@ -18,35 +20,40 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 public class ModifiedAttributeEffect extends StatusEffect {
-    protected final List<Supplier<Attribute>> attributes;
-    protected final AttributeModifier modifier;
+    protected final Map<AttributeModifier, List<Supplier<Attribute>>> attributes;
 
-    public ModifiedAttributeEffect(MobEffectCategory category, int color, List<Supplier<Attribute>> attributes, AttributeModifier modifier, Map<Integer, String> translations, Map<Integer, Float> tiers) {
+    public ModifiedAttributeEffect(MobEffectCategory category, int color, Map<AttributeModifier, List<Supplier<Attribute>>> attributes, Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers) {
         super(category, color, translations, tiers);
         this.attributes = attributes;
-        this.modifier = modifier;
     }
 
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         super.applyEffectTick(pLivingEntity, pAmplifier);
-        for (Supplier<Attribute> attribute : attributes) {
-            addAttributeModifier(pLivingEntity,
-                    attribute,
-                    modifier.getId(),
-                    modifier.getName(),
-                    getAttributeModifierValue(pAmplifier, modifier),
-                    modifier.getOperation());
+        for (AttributeModifier modifier : attributes.keySet()) {
+            for (Supplier<Attribute> attribute : attributes.get(modifier)) {
+                addAttributeModifier(pLivingEntity, attribute, modifier, getAttributeModifierValue(pAmplifier, modifier));
+            }
         }
+    }
+
+    @Override
+    public boolean isInstantenous() {
+        return true;
+    }
+
+    @Override
+    public void applyInstantenousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, int pAmplifier, double pHealth) {
+        applyEffectTick(pLivingEntity, pAmplifier);
     }
 
     @Override
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         super.removeAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
-        for (Supplier<Attribute> attribute : attributes) {
-            removeModifier(pLivingEntity,
-                    attribute,
-                    modifier.getId());
+        for (AttributeModifier modifier : attributes.keySet()) {
+            for (Supplier<Attribute> attribute : attributes.get(modifier)) {
+                removeModifier(pLivingEntity, attribute, modifier.getId());
+            }
         }
     }
 
@@ -55,14 +62,16 @@ public class ModifiedAttributeEffect extends StatusEffect {
     }
 
     public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier) {
-        if (this.getTier(pAmplifier) == null) return pModifier.getAmount();
+        if (this.getTier(pModifier.getId().toString(), pAmplifier) == null) return pModifier.getAmount();
 
-        return this.getTier(pAmplifier);
+        return this.getTier(pModifier.getId().toString(), pAmplifier);
     }
 
-    protected void addAttributeModifier(LivingEntity livingEntity, Supplier<Attribute> attribute, UUID uuid, String name, double amount, AttributeModifier.Operation operation) {
+    protected void addAttributeModifier(LivingEntity livingEntity, Supplier<Attribute> attribute, AttributeModifier modifier, double amount) {
         AttributeInstance attributeInstance = getAttributeInstance(livingEntity, attribute);
-        AttributeModifier attributeModifier = new AttributeModifier(uuid, name, amount, operation);
+        AttributeModifier attributeModifier = new AttributeModifier(modifier.getId(),
+                modifier.getName(), amount, modifier.getOperation());
+
         if (!attributeInstance.hasModifier(attributeModifier)) {
             attributeInstance.addPermanentModifier(attributeModifier);
         }
