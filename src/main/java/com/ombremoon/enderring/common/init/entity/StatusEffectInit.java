@@ -15,6 +15,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
+import java.util.UUID;
+
 public class StatusEffectInit {
     public static final DeferredRegister<MobEffect> STATUS_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Constants.MOD_ID);
 
@@ -42,6 +44,7 @@ public class StatusEffectInit {
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .addAttribute(() -> Attributes.MAX_HEALTH)
                     .setModifier(new AttributeModifier(
+                            UUID.fromString("8d56064f-619a-40f5-bc91-d74f9735d964"),
                             "Crimson Amber Medallion",
                             1.06F,
                             AttributeModifier.Operation.MULTIPLY_BASE))
@@ -53,6 +56,7 @@ public class StatusEffectInit {
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .addAttribute(EpicFightAttributes.STAMINA_REGEN)
                     .setModifier(new AttributeModifier(
+                            UUID.fromString("574ddd07-f2cc-41c8-accf-b8e6369a7377"),
                             "Green turtle talisman",
                             0.2F,
                             AttributeModifier.Operation.ADDITION)).build());
@@ -63,6 +67,7 @@ public class StatusEffectInit {
                     .addAttribute(EntityAttributeInit.STRENGTH)
                     .addAttribute(EntityAttributeInit.DEXTERITY)
                     .setModifier(new AttributeModifier(
+                            UUID.fromString("03592921-f6c8-4528-9ec4-f301fa5ec9d7"),
                             "Radagon's Scarseal",
                             3F,
                             AttributeModifier.Operation.ADDITION))
@@ -76,6 +81,7 @@ public class StatusEffectInit {
                     .addAttribute(EntityAttributeInit.FAITH)
                     .addAttribute(EntityAttributeInit.ARCANE)
                     .setModifier(new AttributeModifier(
+                            UUID.fromString("44f08804-32f0-42b3-85e5-1b441aa6c325"),
                             "Marika's Soreseal",
                             3.0F,
                             AttributeModifier.Operation.ADDITION))
@@ -86,6 +92,7 @@ public class StatusEffectInit {
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .addAttribute(EntityAttributeInit.PHYS_NEGATE)
                     .setModifier(new AttributeModifier(
+                            UUID.fromString("07f0bb21-c796-4808-8fd4-18d8df9f6347"),
                             "Dragoncrest Shield Talisman",
                             1.1F,
                             AttributeModifier.Operation.MULTIPLY_BASE
@@ -101,23 +108,29 @@ public class StatusEffectInit {
     public static final RegistryObject<MobEffect> STARSCOURGE_HEIRLOOM = registerSimpleEffect("starscourge_heirloom",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .singleAttribute(EntityAttributeInit.STRENGTH,
+                            "6b6df324-3d12-4abe-9373-02298b897c77",
                             "Starscourge Heirloom",
                             5F, AttributeModifier.Operation.ADDITION).build());
     public static final RegistryObject<MobEffect> PROSTHESIS_WEARER_HEIRLOOM = registerSimpleEffect("prosthesis_wearer_heirloom",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .singleAttribute(EntityAttributeInit.DEXTERITY,
+                            "acdf6fe1-31ec-411f-9946-67964a4957f5",
                             "Prosthesis Wearer Heirloom",
                             5F, AttributeModifier.Operation.ADDITION).build());
     public static final RegistryObject<MobEffect> STARGAZER_HEIRLOOM = registerStatusEffect("stargazer_heirloom",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .singleAttribute(EntityAttributeInit.INTELLIGENCE,
+                            "9690d174-be9c-4fac-a5d4-5dd31e00dc7b",
                             "Stargazer Heirloom",
                             5F, AttributeModifier.Operation.ADDITION).build());
     public static final RegistryObject<MobEffect> TWO_FINGERS_HEIRLOOM = registerStatusEffect("two_finger_heirloom",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .singleAttribute(EntityAttributeInit.INTELLIGENCE,
+                            "a5114201-7ce1-4781-b444-f72c5a2d0632",
                             "Two Fingers Heirloom",
                             5F, AttributeModifier.Operation.ADDITION).build());
+    public static final RegistryObject<MobEffect> LONGTAIL_CAT_TALISMAN = registerStatusEffect("longtail_cat_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
 
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {

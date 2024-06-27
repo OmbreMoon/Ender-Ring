@@ -8,10 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class EffectBuilder {
@@ -35,10 +32,10 @@ public class EffectBuilder {
         return this;
     }
 
-    public EffectBuilder singleAttribute(Supplier<Attribute> attribute, String modifierName, float amount, AttributeModifier.Operation operation) {
+    public EffectBuilder singleAttribute(Supplier<Attribute> attribute, String uuid, String modifierName, float amount, AttributeModifier.Operation operation) {
         this.attributes = new ArrayList<>();
         this.attributes.add(attribute);
-        this.modifier = new AttributeModifier(modifierName, amount, operation);
+        this.modifier = new AttributeModifier(UUID.fromString(uuid), modifierName, amount, operation);
         return this;
     }
 

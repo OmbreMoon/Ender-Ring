@@ -17,6 +17,7 @@ import com.ombremoon.enderring.util.FlaskUtil;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -34,6 +35,7 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
+import org.lwjgl.system.linux.Stat;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import java.util.List;
@@ -97,13 +99,17 @@ public class PlayerStatusManager {
         if (!(event.getEntity() instanceof Player player))
             return;
 
+        if (event.getSource().is(DamageTypes.FALL) && player.hasEffect(StatusEffectInit.LONGTAIL_CAT_TALISMAN.get())) {
+            if (player.getHealth() - event.getAmount() > 0) {
+                event.setCanceled(true);
+                return;
+            }
+        }
+
         float damage = event.getAmount();
         if (event.getSource() instanceof ModDamageSource damageSource && damageSource.isPhysicalDamage()) {
             if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()))
                 damage *= 0.85F;
-            else if (player.hasEffect(StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN.get())) {
-                damage *= 0.75F;
-            }
         }
         if (player.hasEffect(StatusEffectInit.RADAGONS_SCARSEAL.get())) {
             MobEffectInstance instance = player.getEffect(StatusEffectInit.RADAGONS_SCARSEAL.get());
