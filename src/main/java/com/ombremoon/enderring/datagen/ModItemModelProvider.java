@@ -121,7 +121,11 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.STARGAZER_HEIRLOOM.get(),
             ItemInit.TWO_FINGERS_HEIRLOOM.get(),
             ItemInit.LONGTAIL_CAT_TALISMAN.get(),
-            ItemInit.PRIMAL_GLINTSTONE_BLADE.get()
+            ItemInit.PRIMAL_GLINTSTONE_BLADE.get(),
+            ItemInit.FIRE_SCORPION_CHARM.get(),
+            ItemInit.LIGHTNING_SCORPION_CHARM.get(),
+            ItemInit.SACRED_SCORPION_CHARM.get(),
+            ItemInit.MAGIC_SCORPION_CHARM.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

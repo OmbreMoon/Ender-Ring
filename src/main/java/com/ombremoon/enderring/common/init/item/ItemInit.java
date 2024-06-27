@@ -118,6 +118,10 @@ public class ItemInit {
     public static final RegistryObject<Item> TWO_FINGERS_HEIRLOOM = registerTalisman("two_fingers_heirloom", StatusEffectInit.TWO_FINGERS_HEIRLOOM);
     public static final RegistryObject<Item> LONGTAIL_CAT_TALISMAN = registerTalisman("longtail_cat_talisman", StatusEffectInit.LONGTAIL_CAT_TALISMAN);
     public static final RegistryObject<Item> PRIMAL_GLINTSTONE_BLADE = registerTalisman("primal_glintstone_blade", StatusEffectInit.PRIMAL_GLINTSTONE_BLADE);
+    public static final RegistryObject<Item> MAGIC_SCORPION_CHARM = registerTalisman("magic_scorpion_charm", StatusEffectInit.MAGIC_SCORPION_CHARM);
+    public static final RegistryObject<Item> FIRE_SCORPION_CHARM = registerTalisman("fire_scorpion_charm", StatusEffectInit.FIRE_SCORPION_CHARM);
+    public static final RegistryObject<Item> LIGHTNING_SCORPION_CHARM = registerTalisman("lightning_scorpion_charm", StatusEffectInit.LIGHTNING_SCORPION_CHARM);
+    public static final RegistryObject<Item> SACRED_SCORPION_CHARM = registerTalisman("sacred_scorpion_charm", StatusEffectInit.SACRED_SCORPION_CHARM);
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);
