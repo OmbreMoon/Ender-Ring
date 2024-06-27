@@ -18,8 +18,8 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 public class ModifiedAttributeEffect extends StatusEffect {
-    private final List<Supplier<Attribute>> attributes;
-    private final AttributeModifier modifier;
+    protected final List<Supplier<Attribute>> attributes;
+    protected final AttributeModifier modifier;
 
     public ModifiedAttributeEffect(MobEffectCategory category, int color, List<Supplier<Attribute>> attributes, AttributeModifier modifier, Map<Integer, String> translations, Map<Integer, Float> tiers) {
         super(category, color, translations, tiers);

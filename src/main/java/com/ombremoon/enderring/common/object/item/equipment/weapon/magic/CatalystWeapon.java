@@ -147,7 +147,7 @@ public class CatalystWeapon extends MeleeWeapon {
     }
 
     public boolean canCastSpell(Player player, ItemStack itemStack, AbstractSpell abstractSpell, boolean forceConsume) {
-        return this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(), forceConsume) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player);
+        return this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), forceConsume) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player);
     }
 
     private boolean canCastSpell(Player player, AbstractSpell abstractSpell) {

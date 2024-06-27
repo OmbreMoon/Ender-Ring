@@ -79,4 +79,8 @@ public class EffectBuilder {
         }
     }
 
+    public HPTalisman buildHpTalisman(boolean maxHpEffect) {
+        return new HPTalisman(category, color, attributes, modifier, translations, tiers, maxHpEffect);
+    }
+
 }

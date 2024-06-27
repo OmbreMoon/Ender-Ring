@@ -7,6 +7,7 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.Util;
@@ -78,7 +79,9 @@ public abstract class AbstractSpell {
         return this.magicType;
     }
 
-    public int getFpCost() {
+    public int getFpCost(LivingEntity caster) {
+        if (caster.hasEffect(StatusEffectInit.PRIMAL_GLINTSTONE_BLADE.get()))
+            return Math.round((float) this.fpCost * 0.75F);
         return this.fpCost;
     }
 

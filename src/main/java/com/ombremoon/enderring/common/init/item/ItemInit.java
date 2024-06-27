@@ -117,6 +117,7 @@ public class ItemInit {
     public static final RegistryObject<Item> STARGAZER_HEIRLOOM = registerTalisman("stargazer_heirloom", StatusEffectInit.STARGAZER_HEIRLOOM);
     public static final RegistryObject<Item> TWO_FINGERS_HEIRLOOM = registerTalisman("two_fingers_heirloom", StatusEffectInit.TWO_FINGERS_HEIRLOOM);
     public static final RegistryObject<Item> LONGTAIL_CAT_TALISMAN = registerTalisman("longtail_cat_talisman", StatusEffectInit.LONGTAIL_CAT_TALISMAN);
+    public static final RegistryObject<Item> PRIMAL_GLINTSTONE_BLADE = registerTalisman("primal_glintstone_blade", StatusEffectInit.PRIMAL_GLINTSTONE_BLADE);
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);

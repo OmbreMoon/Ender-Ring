@@ -119,7 +119,9 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.STARSCOURGE_HEIRLOOM.get(),
             ItemInit.PROSTHESIS_WEARER_HEIRLOOM.get(),
             ItemInit.STARGAZER_HEIRLOOM.get(),
-            ItemInit.TWO_FINGERS_HEIRLOOM.get()
+            ItemInit.TWO_FINGERS_HEIRLOOM.get(),
+            ItemInit.LONGTAIL_CAT_TALISMAN.get(),
+            ItemInit.PRIMAL_GLINTSTONE_BLADE.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

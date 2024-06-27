@@ -13,6 +13,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.checkerframework.checker.units.qual.A;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import java.util.UUID;
@@ -90,13 +91,10 @@ public class StatusEffectInit {
                     .addTranslation(1, "item.enderring.marikas_scarsealplus1").build());
     public static final RegistryObject<MobEffect> DRAGONCREST_SHIELD_TALISMAN = registerSimpleEffect("dragoncrest_shield_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
-                    .addAttribute(EntityAttributeInit.PHYS_NEGATE)
-                    .setModifier(new AttributeModifier(
-                            UUID.fromString("07f0bb21-c796-4808-8fd4-18d8df9f6347"),
+                    .singleAttribute(EntityAttributeInit.PHYS_NEGATE,
+                            "07f0bb21-c796-4808-8fd4-18d8df9f6347",
                             "Dragoncrest Shield Talisman",
-                            1.1F,
-                            AttributeModifier.Operation.MULTIPLY_BASE
-                    ))
+                            1.1F, AttributeModifier.Operation.MULTIPLY_TOTAL)
                     .addTier(1, 1.13F)
                     .addTier(2, 1.17F).build());
     public static final RegistryObject<MobEffect> SACRIFICIAL_TWIG = registerSimpleEffect("sacrificial_twig",
@@ -131,6 +129,13 @@ public class StatusEffectInit {
                             5F, AttributeModifier.Operation.ADDITION).build());
     public static final RegistryObject<MobEffect> LONGTAIL_CAT_TALISMAN = registerStatusEffect("longtail_cat_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> PRIMAL_GLINTSTONE_BLADE = registerStatusEffect("primal_glintstone_blade",
+            new EffectBuilder(MobEffectCategory.NEUTRAL)
+                    .singleAttribute(() -> Attributes.MAX_HEALTH,
+                            "8c9d806a-ac65-4423-be9d-d4b5e25e5f4f",
+                            "Primal Glintstone Blade",
+                            0.85F, AttributeModifier.Operation.MULTIPLY_TOTAL
+                    ).build());
 
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
