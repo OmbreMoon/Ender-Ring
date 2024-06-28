@@ -87,4 +87,8 @@ public class ModifiedAttributeEffect extends StatusEffect {
         AttributeInstance attributeInstance = getAttributeInstance(livingEntity, attribute);
         attributeInstance.removePermanentModifier(uuid);
     }
+
+    public Map<AttributeModifier, List<Supplier<Attribute>>> getAttributeMap() {
+        return this.attributes;
+    }
 }

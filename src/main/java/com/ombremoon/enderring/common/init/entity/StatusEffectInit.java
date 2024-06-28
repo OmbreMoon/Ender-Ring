@@ -4,6 +4,7 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.object.world.effect.*;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -87,7 +88,9 @@ public class StatusEffectInit {
                             0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE)
                     .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 1, 0.13D)
-                    .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 2, 0.17D).build());
+                    .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 2, 0.17D)
+                    .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 3, 0.20D)
+                    .addTranslation(3, "item.enderring.dragoncrest_shield_talismanplus3").build());
     public static final RegistryObject<MobEffect> SACRIFICIAL_TWIG = registerSimpleEffect("sacrificial_twig",
             new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> CRIMSON_SEED_TALISMAN = registerSimpleEffect("crimson_seed_talisman",
@@ -284,6 +287,48 @@ public class StatusEffectInit {
                             EpicFightAttributes.MAX_STAMINA)
                     .addTier("ac39b284-98c2-4a98-8518-d71ab1e94bf6", 1, 0.13D)
                     .addTier("ac39b284-98c2-4a98-8518-d71ab1e94bf6", 2, 0.15D).build());
+    public static final RegistryObject<MobEffect> IMMUNIZING_HORN_CHARM = registerStatusEffect("immunizing_horn_charm",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("e2e008c8-8dcb-48f7-a6e7-42bb6157dc7a"),
+                            "Immunizing Horn Charm",
+                            90D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.IMMUNITY)
+                    .addTier("e2e008c8-8dcb-48f7-a6e7-42bb6157dc7a", 1, 140D).build());
+    public static final RegistryObject<MobEffect> STALWART_HORN_CHARM = registerStatusEffect("stalwart_horn_charm",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("7999bc4a-52f5-4fab-a426-9172b8b9d3a2"),
+                            "Stalwart Horn Charm",
+                            90D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.ROBUSTNESS)
+                    .addTier("7999bc4a-52f5-4fab-a426-9172b8b9d3a2", 1, 140D).build());
+    public static final RegistryObject<MobEffect> CLARIFYING_HORN_CHARM = registerStatusEffect("clarifying_horn_charm",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("653fb08c-9ba5-45c1-99d7-60e1734d4a5f"),
+                            "Clarifying Horn Charm",
+                            90D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.FOCUS)
+                    .addTier("653fb08c-9ba5-45c1-99d7-60e1734d4a5f", 1, 140D).build());
+    public static final RegistryObject<MobEffect> MOTTLED_NECKLACE = registerStatusEffect("mottled_necklace",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("6944bd54-d28c-4c6d-b559-e1c50a4574d5"),
+                            "Mottled Necklace",
+                            40D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.IMMUNITY, EntityAttributeInit.ROBUSTNESS,
+                            EntityAttributeInit.FOCUS)
+                    .addTier("6944bd54-d28c-4c6d-b559-e1c50a4574d5", 1, 60D).build());
+    public static final RegistryObject<MobEffect> PRINCE_OF_DEATHS_PUSTULE = registerStatusEffect("prince_of_deaths_pustule",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("c0386557-a3b0-4c98-8493-6330e6adede7"),
+                            "Prince of Deaths Pustule",
+                            90D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.VITALITY)
+                    .addTier("c0386557-a3b0-4c98-8493-6330e6adede7", 1, 140D)
+                    .addTranslation(1, "item.enderring.prince_of_deaths_pustuleplus1").build());
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(MobEffectCategory.HARMFUL, 234227227));

@@ -109,7 +109,7 @@ public class ItemInit {
     public static final RegistryObject<Item> RADAGONS_SCARSEAL = registerTalisman("radagons_scarseal", StatusEffectInit.RADAGONS_SCARSEAL, 1);
     public static final RegistryObject<Item> MARIKAS_SCARSEAL = registerTalisman("marikas_scarseal", StatusEffectInit.MARIKAS_SCARSEAL, 1);
     public static final RegistryObject<Item> SACRIFICIAL_TWIG = registerTalisman("sacrificial_twig", StatusEffectInit.SACRIFICIAL_TWIG);
-    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN = registerTalisman("dragoncrest_shield_talisman", StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN, 2);
+    public static final RegistryObject<Item> DRAGONCREST_SHIELD_TALISMAN = registerTalisman("dragoncrest_shield_talisman", StatusEffectInit.DRAGONCREST_SHIELD_TALISMAN, 3);
     public static final RegistryObject<Item> CRIMSON_SEED_TALISMAN = registerTalisman("crimson_seed_talisman", StatusEffectInit.CRIMSON_SEED_TALISMAN);
     public static final RegistryObject<Item> CERULEAN_SEED_TALISMAN = registerTalisman("cerulean_seed_talisman", StatusEffectInit.CERULEAN_SEED_TALISMAN);
     public static final RegistryObject<Item> STARSCOURGE_HEIRLOOM = registerTalisman("starscourge_heirloom", StatusEffectInit.STARSCOURGE_HEIRLOOM);
@@ -135,6 +135,11 @@ public class ItemInit {
     public static final RegistryObject<Item> BLESSED_DEW_TALISMAN = registerTalisman("blessed_dew_talisman", StatusEffectInit.BLESSED_DEW_TALISMAN);
     public static final RegistryObject<Item> CERULEAN_AMBER_MEDALLION = registerTalisman("cerulean_amber_medallion", StatusEffectInit.CERULEAN_AMBER_MEDALLION, 2);
     public static final RegistryObject<Item> VIRIDIAN_AMBER_MEDALLION = registerTalisman("viridian_amber_medallion", StatusEffectInit.VIRIDIAN_AMBER_MEDALLION, 2);
+    public static final RegistryObject<Item> IMMUNIZING_HORN_CHARM = registerTalisman("immunizing_horn_charm", StatusEffectInit.IMMUNIZING_HORN_CHARM, 1);
+    public static final RegistryObject<Item> STALWART_HORN_CHARM = registerTalisman("stalwart_horn_charm", StatusEffectInit.STALWART_HORN_CHARM, 1);
+    public static final RegistryObject<Item> CLARIFYING_HORN_CHARM = registerTalisman("clarifying_horn_charm", StatusEffectInit.CLARIFYING_HORN_CHARM, 1);
+    public static final RegistryObject<Item> MOTTLED_NECKLACE = registerTalisman("mottled_necklace", StatusEffectInit.MOTTLED_NECKLACE, 1);
+    public static final RegistryObject<Item> PRINCE_OF_DEATHS_PUSTULE = registerTalisman("prince_of_deaths_pustule", StatusEffectInit.PRINCE_OF_DEATHS_PUSTULE, 1);
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);
