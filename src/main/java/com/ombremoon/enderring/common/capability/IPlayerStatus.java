@@ -74,5 +74,9 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
     void setUseItemTicks(int ticks);
 
+    boolean isChannelling();
+
+    void setChannelling(boolean chargingSpell);
+
 //    void resetTalismanPouches();
 }

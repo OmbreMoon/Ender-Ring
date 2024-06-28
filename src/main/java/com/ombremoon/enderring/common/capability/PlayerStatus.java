@@ -35,6 +35,7 @@ public class PlayerStatus implements IPlayerStatus {
     private ObjectOpenHashSet<AbstractSpell> activeSpells = new ObjectOpenHashSet<>();
     private SpellType<?> selectedSpell;
     private AbstractSpell recentlyActivatedSpell;
+    private boolean channelling;
     private EntityType<?> spiritSummon;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
@@ -147,6 +148,16 @@ public class PlayerStatus implements IPlayerStatus {
     }
 
     @Override
+    public boolean isChannelling() {
+        return this.channelling;
+    }
+
+    @Override
+    public void setChannelling(boolean channelling) {
+        this.channelling = channelling;
+    }
+
+    @Override
     public EntityType<?> getSpiritSummon() {
         return this.spiritSummon;
     }
@@ -248,6 +259,7 @@ public class PlayerStatus implements IPlayerStatus {
             spellList.add(EntityStatusUtil.storeSpell(spellType));
         }
         compoundTag.put("Spells", spellList);
+        compoundTag.putBoolean("Channelling", this.channelling);
         compoundTag.putBoolean("Torrent", this.isTorrentSpawned);
         compoundTag.putDouble("TorrentHealth", this.torrentHealth);
         compoundTag.putInt("TalismanPouches", this.talismanPouches);
@@ -268,6 +280,9 @@ public class PlayerStatus implements IPlayerStatus {
                 CompoundTag compoundTag = spellList.getCompound(i);
                 this.spellSet.add(EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(compoundTag, "Spell")));
             }
+        }
+        if (nbt.contains("Channelling", 99)) {
+            this.channelling = nbt.getBoolean("Channelling");
         }
         if (nbt.contains("Torrent", 99)) {
             this.isTorrentSpawned = nbt.getBoolean("Torrent");

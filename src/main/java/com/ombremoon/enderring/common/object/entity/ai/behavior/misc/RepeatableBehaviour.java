@@ -53,7 +53,7 @@ public class RepeatableBehaviour<E extends LivingEntity> extends GroupBehaviour<
     protected @Nullable ExtendedBehaviour<? super E> pickBehaviour(ServerLevel level, E entity, long gameTime, SBLShufflingList<ExtendedBehaviour<? super E>> extendedBehaviours) {
         for (ExtendedBehaviour<? super E> behaviour : extendedBehaviours) {
             if (behaviour.tryStart(level, entity, gameTime)) {
-                if (this.repeatCount < this.maxRepeat) {
+                if (this.repeatCount <= this.maxRepeat) {
                     this.repeatCount++;
                     return behaviour;
                 }

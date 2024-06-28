@@ -7,7 +7,6 @@ import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.network.ModNetworking;
@@ -24,10 +23,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -200,7 +197,7 @@ public class EntityStatusUtil {
         return EntityStatusProvider.get(player).getActiveSpells();
     }
 
-    public static void activateSpell(Player player, AbstractSpell abstractSpell) {
+    public static void activateSpell(ServerPlayer player, AbstractSpell abstractSpell) {
         getActiveSpells(player).add(abstractSpell);
         setRecentlyActivatedSpell(player, abstractSpell);
     }
@@ -213,8 +210,9 @@ public class EntityStatusUtil {
         return EntityStatusProvider.get(player).getRecentlyActivatedSpell();
     }
 
-    public static void setRecentlyActivatedSpell(Player player, AbstractSpell abstractSpell) {
+    public static void setRecentlyActivatedSpell(ServerPlayer player, AbstractSpell abstractSpell) {
         EntityStatusProvider.get(player).setRecentlyActivatedSpell(abstractSpell);
+        ModNetworking.syncCap(player);
     }
 
     public static SpellType<?> getSelectedSpell(Player player) {
@@ -223,6 +221,15 @@ public class EntityStatusUtil {
 
     public static void setSelectedSpell(ServerPlayer player, SpellType<?> spellType) {
         EntityStatusProvider.get(player).setSelectedSpell(spellType);
+        ModNetworking.syncCap(player);
+    }
+
+    public static boolean isChannelling(Player player) {
+        return EntityStatusProvider.get(player).isChannelling();
+    }
+
+    public static void setChannelling(ServerPlayer player, boolean channelling) {
+        EntityStatusProvider.get(player).setChannelling(channelling);
         ModNetworking.syncCap(player);
     }
 

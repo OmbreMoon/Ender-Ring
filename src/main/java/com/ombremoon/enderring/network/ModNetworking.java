@@ -49,6 +49,10 @@ public class ModNetworking {
         sendToServer(new ServerboundUseQuickAccessPacket());
     }
 
+    public static void chargeSpell(boolean chargeSpell) {
+        sendToServer(new ServerboundChargeSpellPacket(chargeSpell));
+    }
+
     public static void selectOrigin(Component component, ServerPlayer serverPlayer) {
         sendToPlayer(new ClientboundOriginSelectPacket(component), serverPlayer);
     }
@@ -75,6 +79,7 @@ public class ModNetworking {
         PACKET_CHANNEL.registerMessage(id++, ServerboundCycleQuickAccessPacket.class, ServerboundCycleQuickAccessPacket::encode, ServerboundCycleQuickAccessPacket::new, ServerboundCycleQuickAccessPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundUseQuickAccessPacket.class, ServerboundUseQuickAccessPacket::encode, ServerboundUseQuickAccessPacket::new, ServerboundUseQuickAccessPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ServerboundOpenGraceMenuPacket.class, ServerboundOpenGraceMenuPacket::encode, ServerboundOpenGraceMenuPacket::new, ServerboundOpenGraceMenuPacket::handle);
+        PACKET_CHANNEL.registerMessage(id++, ServerboundChargeSpellPacket.class, ServerboundChargeSpellPacket::encode, ServerboundChargeSpellPacket::new, ServerboundChargeSpellPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ClientboundOriginSelectPacket.class, ClientboundOriginSelectPacket::encode, ClientboundOriginSelectPacket::new, ClientboundOriginSelectPacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ClientboundGraceSitePacket.class, ClientboundGraceSitePacket::encode, ClientboundGraceSitePacket::new, ClientboundGraceSitePacket::handle);
         PACKET_CHANNEL.registerMessage(id++, ClientboundSyncCapabiltyPacket.class, ClientboundSyncCapabiltyPacket::encode, ClientboundSyncCapabiltyPacket::new, ClientboundSyncCapabiltyPacket::handle);

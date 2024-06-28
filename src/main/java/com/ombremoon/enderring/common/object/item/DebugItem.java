@@ -46,8 +46,9 @@ public class DebugItem extends Item {
                 ModNetworking.openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
             } else if (pPlayer.isInWater()) {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
+                this.setStats(pPlayer);
             } else {
-                EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
+                EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.COMET_AZUR.get());
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         } else {
@@ -62,7 +63,7 @@ public class DebugItem extends Item {
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 99);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 99);
 //        EntityStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.DEXTERITY.get(), 30);
-//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 9);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 99);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 35);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 99);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 33);

@@ -12,14 +12,12 @@ import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
@@ -161,7 +159,7 @@ public abstract class AbstractSpell {
                 if (this.shouldTickEffect(ticks)) {
                     this.tickSpell();
                 }
-                if (ticks % duration == 0) {
+                if (!this.requiresConcentration() && ticks % duration == 0) {
                     this.endSpell();
                 }
             }
@@ -176,16 +174,11 @@ public abstract class AbstractSpell {
     //TODO: ADD CAN CAST SPELL CHECK
     private void tickSpell() {
         this.onSpellTick(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
-        if (false/*player is holding down mouse*/) {
+        if (EntityStatusUtil.isChannelling(this.playerPatch.getOriginal()))
             this.chargeTicks++;
-
-        }
-        if (this.requiresConcentration() && !EntityStatusUtil.consumeFP(this.playerPatch.getOriginal(), this.fpCost, true)) {
-            this.endSpell();
-        }
     }
 
-    private void endSpell() {
+    protected void endSpell() {
         this.onSpellStop(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
         this.init = false;
         this.isInactive = true;
@@ -229,11 +222,7 @@ public abstract class AbstractSpell {
         }
     }
 
-    public boolean wasCharged() {
-        return this.wasCharged;
-    }
-
-    public boolean isCharging() {
+    public boolean isChannelling() {
         return this.chargeTicks > 0;
     }
 

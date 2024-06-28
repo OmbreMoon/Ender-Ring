@@ -2,6 +2,7 @@ package com.ombremoon.enderring.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import org.lwjgl.glfw.GLFW;
 import yesman.epicfight.client.input.CombatKeyMapping;
@@ -28,4 +29,9 @@ public class KeyBinds {
 
     public static final KeyMapping ASH_OF_WAR_BINDING = new CombatKeyMapping(KEY_ASH_OF_WAR,
             InputConstants.Type.KEYSYM, InputConstants.KEY_Z, KEY_CATEGORY_ER);
+
+    public static KeyMapping getCastKey() {
+        Minecraft minecraft = Minecraft.getInstance();
+        return minecraft.options.keyUse;
+    }
 }
