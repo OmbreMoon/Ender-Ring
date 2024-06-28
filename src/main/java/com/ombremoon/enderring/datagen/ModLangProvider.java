@@ -54,7 +54,10 @@ public class ModLangProvider extends LanguageProvider {
             ItemInit.BOLTDRAKE_TALISMAN,
             ItemInit.HALIGDRAKE_TALISMAN,
             ItemInit.PEARLDRAKE_TALISMAN,
-            ItemInit.SPELLDRAKE_TALISMAN
+            ItemInit.SPELLDRAKE_TALISMAN,
+            ItemInit.CERULEAN_AMBER_MEDALLION,
+            ItemInit.VIRIDIAN_AMBER_MEDALLION,
+            ItemInit.CRIMSON_AMBER_MEDALLION
     );
 
     public ModLangProvider(PackOutput gen) {

@@ -66,7 +66,7 @@ public class ItemInit {
 
 
     //KEEPSAKES
-    public static final RegistryObject<Item> CRIMSON_AMBER_MEDALLION = registerTalisman("crimson_amber_medallion", StatusEffectInit.CRIMSON_AMBER_MEDALLION);
+    public static final RegistryObject<Item> CRIMSON_AMBER_MEDALLION = registerTalisman("crimson_amber_medallion", StatusEffectInit.CRIMSON_AMBER_MEDALLION, 2);
     public static final RegistryObject<Item> BLOCKS_BETWEEN_RUNE = registerGeneralItem("blocks_between_rune", () -> new RuneItem(itemProperties().stacksTo(1), 3000));
     public static final RegistryObject<Item> GOLDEN_SEED = registerSimpleItem("golden_seed", itemProperties().stacksTo(16));
     public static final RegistryObject<Item> CRACKED_POT = registerSimpleItem("cracked_pot", itemProperties().stacksTo(20));
@@ -133,6 +133,8 @@ public class ItemInit {
     public static final RegistryObject<Item> HALIGDRAKE_TALISMAN = registerTalisman("haligdrake_talisman", StatusEffectInit.HALIGDRAKE_TALISMAN, 2);
     public static final RegistryObject<Item> PEARLDRAKE_TALISMAN = registerTalisman("pearldrake_talisman", StatusEffectInit.PEARLDRAKE_TALISMAN, 2);
     public static final RegistryObject<Item> BLESSED_DEW_TALISMAN = registerTalisman("blessed_dew_talisman", StatusEffectInit.BLESSED_DEW_TALISMAN);
+    public static final RegistryObject<Item> CERULEAN_AMBER_MEDALLION = registerTalisman("cerulean_amber_medallion", StatusEffectInit.CERULEAN_AMBER_MEDALLION, 2);
+    public static final RegistryObject<Item> VIRIDIAN_AMBER_MEDALLION = registerTalisman("viridian_amber_medallion", StatusEffectInit.VIRIDIAN_AMBER_MEDALLION, 2);
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);

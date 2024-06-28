@@ -266,6 +266,24 @@ public class StatusEffectInit {
     public static final RegistryObject<MobEffect> BLESSED_DEW_TALISMAN = registerStatusEffect("blessed_dew_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .setApplyTick((time, amp) -> time % 20 == 0).build());
+    public static final RegistryObject<MobEffect> CERULEAN_AMBER_MEDALLION = registerStatusEffect("cerulean_amber_medallion",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("9b84dd1f-ba39-4cec-afa7-dcd7aa1cc3f4"),
+                            "Cerulean Amber Medallion",
+                            0.07D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.MAX_FP)
+                    .addTier("9b84dd1f-ba39-4cec-afa7-dcd7aa1cc3f4", 1, 0.09D)
+                    .addTier("9b84dd1f-ba39-4cec-afa7-dcd7aa1cc3f4", 2, 0.11D).build());
+    public static final RegistryObject<MobEffect> VIRIDIAN_AMBER_MEDALLION = registerStatusEffect("viridian_amber_medallion",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("ac39b284-98c2-4a98-8518-d71ab1e94bf6"),
+                            "Viridian Amber Medallion",
+                            0.11D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EpicFightAttributes.MAX_STAMINA)
+                    .addTier("ac39b284-98c2-4a98-8518-d71ab1e94bf6", 1, 0.13D)
+                    .addTier("ac39b284-98c2-4a98-8518-d71ab1e94bf6", 2, 0.15D).build());
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(MobEffectCategory.HARMFUL, 234227227));
