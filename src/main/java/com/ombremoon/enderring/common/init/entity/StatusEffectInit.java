@@ -263,6 +263,9 @@ public class StatusEffectInit {
                             EntityAttributeInit.FIRE_NEGATE, EntityAttributeInit.MAGIC_NEGATE)
                     .addTier("ac8aa17e-3c5b-4120-8968-0cbadf272f02", 1, 0.07D)
                     .addTier("ac8aa17e-3c5b-4120-8968-0cbadf272f02", 2, 0.09D).build());
+    public static final RegistryObject<MobEffect> BLESSED_DEW_TALISMAN = registerStatusEffect("blessed_dew_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .setApplyTick((time, amp) -> time % 20 == 0).build());
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(MobEffectCategory.HARMFUL, 234227227));

@@ -15,16 +15,19 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.*;
 
 public class StatusEffect extends MobEffect {
     protected static final Logger LOGGER = Constants.LOG;
-    @Nullable public Map<Integer, String> translationKeys = null;
-    @Nullable private Map<String, Map<Integer, Double>> tiers;
+    @Nullable public final Map<Integer, String> translationKeys;
+    @Nullable private final Map<String, Map<Integer, Double>> tiers;
+    private final BiFunction<Integer, Integer, Boolean> applyTick;
 
-    public StatusEffect(MobEffectCategory pCategory, int pColor, @Nullable Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers) {
+    public StatusEffect(MobEffectCategory pCategory, int pColor, @Nullable Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, BiFunction<Integer, Integer, Boolean> applyTick) {
         super(pCategory, pColor);
         this.translationKeys = translations;
         this.tiers = tiers;
+        this.applyTick = applyTick;
     }
 
     @Override
@@ -33,12 +36,14 @@ public class StatusEffect extends MobEffect {
             pLivingEntity.heal(pLivingEntity.getMaxHealth() / 2);
         } else if (this == StatusEffectInit.CERULEAN_CRYSTAL.get() && pLivingEntity instanceof Player player) {
             EntityStatusUtil.increaseFP(player, (float) (player.getAttributeValue(EntityAttributeInit.MAX_FP.get()) / 2));
+        } else if (this == StatusEffectInit.BLESSED_DEW_TALISMAN.get()) {
+            pLivingEntity.heal(0.1F);
         }
     }
 
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return true;
+        return applyTick.apply(pDuration, pAmplifier);
     }
 
     @Override
