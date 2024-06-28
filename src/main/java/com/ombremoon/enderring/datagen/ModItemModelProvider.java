@@ -130,7 +130,12 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.RITUAL_SHIELD_TALISMAN.get(),
             ItemInit.RITUAL_SWORD_TALISMAN.get(),
             ItemInit.RED_FEATHERED_BRANCHSWORD.get(),
-            ItemInit.BLUE_FEATHERED_BRANCHSWORD.get()
+            ItemInit.BLUE_FEATHERED_BRANCHSWORD.get(),
+            ItemInit.SPELLDRAKE_TALISMAN.get(),
+            ItemInit.FLAMEDRAKE_TALISMAN.get(),
+            ItemInit.BOLTDRAKE_TALISMAN.get(),
+            ItemInit.HALIGDRAKE_TALISMAN.get(),
+            ItemInit.PEARLDRAKE_TALISMAN.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

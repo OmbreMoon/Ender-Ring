@@ -217,6 +217,52 @@ public class StatusEffectInit {
                     EntityAttributeInit.PHYS_NEGATE, EntityAttributeInit.HOLY_NEGATE,
                     EntityAttributeInit.LIGHT_NEGATE, EntityAttributeInit.FIRE_NEGATE,
                     EntityAttributeInit.MAGIC_NEGATE).buildHpEffect(false));
+    public static final RegistryObject<MobEffect> SPELLDRAKE_TALISMAN = registerStatusEffect("spelldrake_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("412149bc-f790-4a06-a40c-9f024026eb65"),
+                            "Spelldrake Talisman",
+                            1.13D, AttributeModifier.Operation.MULTIPLY_TOTAL
+                    ), EntityAttributeInit.MAGIC_NEGATE)
+                    .addTier("412149bc-f790-4a06-a40c-9f024026eb65", 1, 1.17D)
+                    .addTier("412149bc-f790-4a06-a40c-9f024026eb65", 2, 1.2D).build());
+    public static final RegistryObject<MobEffect> FLAMEDRAKE_TALISMAN = registerStatusEffect("flamedrake_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("9de8ffae-2deb-4b5e-84fa-ca69fec7cfdd"),
+                            "Flamedrake Talisman",
+                            1.13D, AttributeModifier.Operation.MULTIPLY_TOTAL
+                    ), EntityAttributeInit.FIRE_NEGATE)
+                    .addTier("9de8ffae-2deb-4b5e-84fa-ca69fec7cfdd", 1, 1.17D)
+                    .addTier("9de8ffae-2deb-4b5e-84fa-ca69fec7cfdd", 1, 1.2D).build());
+    public static final RegistryObject<MobEffect> BOLTDRAKE_TALISMAN = registerStatusEffect("boltdrake_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("ac2e3caa-a368-4620-8d3a-07ffb9999259"),
+                            "Boltdrake Talisman",
+                            1.13D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.LIGHT_NEGATE)
+                    .addTier("ac2e3caa-a368-4620-8d3a-07ffb9999259", 1, 1.17D)
+                    .addTier("ac2e3caa-a368-4620-8d3a-07ffb9999259", 2, 1.2D).build());
+    public static final RegistryObject<MobEffect> HALIGDRAKE_TALISMAN = registerStatusEffect("haligdrake_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("66ee0b5a-fdf9-49a8-803a-64e670317d97"),
+                            "Haligdrake Talisman",
+                            1.13D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.HOLY_NEGATE)
+                    .addTier("66ee0b5a-fdf9-49a8-803a-64e670317d97", 1, 1.17D)
+                    .addTier("66ee0b5a-fdf9-49a8-803a-64e670317d97", 1, 1.2D).build());
+    public static final RegistryObject<MobEffect> PEARLDRAKE_TALISMAN = registerStatusEffect("pearldrake_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("ac8aa17e-3c5b-4120-8968-0cbadf272f02"),
+                            "Pearldrake Talisman",
+                            1.05D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.HOLY_NEGATE, EntityAttributeInit.LIGHT_NEGATE,
+                            EntityAttributeInit.FIRE_NEGATE, EntityAttributeInit.MAGIC_NEGATE)
+                    .addTier("ac8aa17e-3c5b-4120-8968-0cbadf272f02", 1, 1.07D)
+                    .addTier("ac8aa17e-3c5b-4120-8968-0cbadf272f02", 2, 1.09D).build());
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(MobEffectCategory.HARMFUL, 234227227));

@@ -127,6 +127,11 @@ public class ItemInit {
     public static final RegistryObject<Item> RITUAL_SHIELD_TALISMAN = registerTalisman("ritual_shield_talisman", StatusEffectInit.RITUAL_SHIELD_TALISMAN);
     public static final RegistryObject<Item> RED_FEATHERED_BRANCHSWORD = registerTalisman("red_feathered_branchsword", StatusEffectInit.RED_FEATHERED_BRANCHSWORD);
     public static final RegistryObject<Item> BLUE_FEATHERED_BRANCHSWORD = registerTalisman("blue_feathered_branchsword", StatusEffectInit.BLUE_FEATHERED_BRANCHSWORD);
+    public static final RegistryObject<Item> SPELLDRAKE_TALISMAN = registerTalisman("spelldrake_talisman", StatusEffectInit.SPELLDRAKE_TALISMAN,2);
+    public static final RegistryObject<Item> FLAMEDRAKE_TALISMAN = registerTalisman("flamedrake_talisman", StatusEffectInit.FLAMEDRAKE_TALISMAN,2);
+    public static final RegistryObject<Item> BOLTDRAKE_TALISMAN = registerTalisman("boltdrake_talisman", StatusEffectInit.BOLTDRAKE_TALISMAN, 2);
+    public static final RegistryObject<Item> HALIGDRAKE_TALISMAN = registerTalisman("haligdrake_talisman", StatusEffectInit.HALIGDRAKE_TALISMAN, 2);
+    public static final RegistryObject<Item> PEARLDRAKE_TALISMAN = registerTalisman("pearldrake_talisman", StatusEffectInit.PEARLDRAKE_TALISMAN, 2);
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);
