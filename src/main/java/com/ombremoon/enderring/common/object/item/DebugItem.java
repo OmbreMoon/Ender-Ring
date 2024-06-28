@@ -48,8 +48,6 @@ public class DebugItem extends Item {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
             } else {
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
-                pPlayer.hurt(pLevel.damageSources().generic(), 7.0F);
-//                this.setStats(pPlayer);
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         } else {
