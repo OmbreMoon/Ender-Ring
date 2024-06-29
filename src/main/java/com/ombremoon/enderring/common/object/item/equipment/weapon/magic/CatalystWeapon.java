@@ -37,6 +37,9 @@ public class CatalystWeapon extends MeleeWeapon {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         SpellType<?> spell = EntityStatusUtil.getSelectedSpell(pPlayer);
+        if (EntityStatusUtil.isChannelling(pPlayer)) {
+            return InteractionResultHolder.pass(itemStack);
+        }
         if (pUsedHand == InteractionHand.MAIN_HAND && spell != null && spell.createSpell().getMagicType() == this.magicType) {
             return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
         }

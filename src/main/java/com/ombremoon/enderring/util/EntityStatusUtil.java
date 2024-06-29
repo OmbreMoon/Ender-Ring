@@ -226,6 +226,15 @@ public class EntityStatusUtil {
         ModNetworking.syncCap(player);
     }
 
+    public static boolean isChannelling(Player player) {
+        return EntityStatusProvider.get(player).isChannelling();
+    }
+
+    public static void setChannelling(ServerPlayer player, boolean channelling) {
+        EntityStatusProvider.get(player).setChannelling(channelling);
+        ModNetworking.syncCap(player);
+    }
+
     public static EntityType<?> getSpiritSummon(Player player) {
         return EntityStatusProvider.get(player).getSpiritSummon();
     }

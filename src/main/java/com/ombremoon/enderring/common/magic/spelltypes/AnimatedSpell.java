@@ -26,9 +26,11 @@ public abstract class AnimatedSpell extends AbstractSpell {
 
     public AnimatedSpell(SpellType<?> spellType, Builder builder) {
         super(spellType, builder);
-        this.spellAnimation = () -> {
-            return EpicFightMod.getInstance().animationManager.findAnimationByPath(((StaticAnimation)builder.spellAnimation.get()).getRegistryName().toString());
-        };
+        if (builder.spellAnimation != null) {
+            this.spellAnimation = () -> {
+                return EpicFightMod.getInstance().animationManager.findAnimationByPath(((StaticAnimation) builder.spellAnimation.get()).getRegistryName().toString());
+            };
+        }
     }
 
     public StaticAnimation getSpellAnimation() {
@@ -38,7 +40,7 @@ public abstract class AnimatedSpell extends AbstractSpell {
     @Override
     protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         super.onSpellStart(playerPatch, level, blockPos, weapon);
-        if (playerPatch.isBattleMode()) {
+        if (playerPatch.isBattleMode() && this.spellAnimation != null) {
             playerPatch.playAnimationSynchronized(this.spellAnimation.get(), 0.0F);
         }
     }
