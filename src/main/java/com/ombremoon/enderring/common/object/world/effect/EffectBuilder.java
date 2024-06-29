@@ -7,12 +7,14 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.Debug;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.w3c.dom.Attr;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class EffectBuilder {
@@ -23,10 +25,12 @@ public class EffectBuilder {
     private Map<String, Map<Integer, Double>> tiers;
     private Map<Integer, String> translations;
     private Map<AttributeModifier, List<Supplier<Attribute>>> attributes;
+    private BiFunction<Integer, Integer, Boolean> applyTick;
 
     public EffectBuilder(MobEffectCategory category) {
         this.category = category;
         this.color = 234227227;
+        this.applyTick = (a, b) -> true;
     }
 
     public EffectBuilder addTier(String uuid, int tier, double modifier) {
@@ -36,6 +40,12 @@ public class EffectBuilder {
             tierMap.put(tier, modifier);
             this.tiers.put(uuid, tierMap);
         } else this.tiers.get(uuid).put(tier, modifier);
+        return this;
+    }
+
+    public EffectBuilder setApplyTick(BiFunction<Integer, Integer, Boolean> apply) {
+        if (this.attributes != null) LogUtils.getLogger().warn("Can not set apply ticks on an modified attribute effect.");
+        this.applyTick = apply;
         return this;
     }
 
@@ -61,7 +71,7 @@ public class EffectBuilder {
 
     public StatusEffect build() {
         if (this.attributes == null) {
-            return new StatusEffect(category, color, translations, tiers);
+            return new StatusEffect(category, color, translations, tiers, applyTick);
         } else {
             for (List<Supplier<Attribute>> attributesList : this.attributes.values()) {
                 if (attributesList.contains(EntityAttributeInit.VIGOR)

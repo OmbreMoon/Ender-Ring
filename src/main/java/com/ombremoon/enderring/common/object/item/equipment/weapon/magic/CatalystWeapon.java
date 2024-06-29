@@ -11,6 +11,7 @@ import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +22,6 @@ import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
-import org.apache.commons.compress.harmony.unpack200.bytecode.CPMember;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
@@ -77,7 +77,7 @@ public class CatalystWeapon extends MeleeWeapon {
         ScaledWeapon weapon = this.getModifiedWeapon(pStack);
         if (!pLevel.isClientSide && spellType != null) {
             AbstractSpell recentSpell = EntityStatusUtil.getRecentlyActivatedSpell(player);
-            if (recentSpell != null && recentSpell.isCharging())
+            if (recentSpell != null && recentSpell.isChannelling())
                 return pStack;
 
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
@@ -90,6 +90,9 @@ public class CatalystWeapon extends MeleeWeapon {
 
                     if (spell.canCharge())
                         spell.setChargeAmount(1.0F);
+
+                    if (spell.requiresConcentration())
+                        EntityStatusUtil.setChannelling((ServerPlayer) player, true);
 
                     player.awardStat(Stats.ITEM_USED.get(this));
                     player.awardStat(this.magicType == MagicType.SORCERY ? StatInit.SORCERIES_CAST.get() : StatInit.INCANTATIONS_CAST.get());
@@ -112,7 +115,8 @@ public class CatalystWeapon extends MeleeWeapon {
         ScaledWeapon weapon = this.getModifiedWeapon(pStack);
         if (!pLevel.isClientSide && spellType != null) {
             AbstractSpell recentSpell = EntityStatusUtil.getRecentlyActivatedSpell(player);
-            if (recentSpell != null && recentSpell.wasCharged())
+//            if (recentSpell != null && recentSpell.wasCharged())
+            if (recentSpell != null && recentSpell.requiresConcentration())
                 return;
 
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);

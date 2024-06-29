@@ -17,7 +17,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -39,8 +38,7 @@ public class CommonModEvents {
     public static final UUID FIRE_UUID = UUID.fromString("ecab5e7d-3f32-4d1f-bd5b-9a08a8359051");
     public static final UUID LIGHTNING_UUID = UUID.fromString("fded75da-cb86-462e-ba89-7242d58f72ed");
     public static final UUID HOLY_UUID = UUID.fromString("cbe3a5a2-8205-475f-97cf-82d37d042a90");
-    public static final UUID SORCERY_UUID = UUID.fromString("5a4873e5-8d98-4482-b379-3623421f60fa");
-    public static final UUID INCANT_UUID = UUID.fromString("b17dc25b-371b-44c4-9eb0-ed399a6d690f");
+    public static final UUID SCALING_UUID = UUID.fromString("5a4873e5-8d98-4482-b379-3623421f60fa");
 
     //TODO: ADD TO EXTENDED SERVERPLAYER PATCH
     @SubscribeEvent
@@ -65,7 +63,7 @@ public class CommonModEvents {
             if (weapon.getHolyDamage(itemStack) > 0) event.addModifier(EntityAttributeInit.HOLY_DAMAGE.get(), new AttributeModifier(HOLY_UUID, "Weapon modifier", weapon.getHolyDamage(itemStack), AttributeModifier.Operation.ADDITION));
         }
         if (itemStack.getItem() instanceof CatalystWeapon catalyst && event.getSlotType() == EquipmentSlot.MAINHAND) {
-            if (catalyst.getMagicScaling(itemStack) > 0) event.addModifier(catalyst.getMagicType().getAttribute(), new AttributeModifier(SORCERY_UUID, "Weapon modifier", catalyst.getMagicScaling(itemStack), AttributeModifier.Operation.ADDITION));
+            if (catalyst.getMagicScaling(itemStack) > 0) event.addModifier(catalyst.getMagicType().getAttribute(), new AttributeModifier(SCALING_UUID, "Weapon modifier", catalyst.getMagicScaling(itemStack), AttributeModifier.Operation.ADDITION));
         }
     }
 

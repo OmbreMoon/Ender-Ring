@@ -25,15 +25,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
 import org.checkerframework.checker.units.qual.A;
-import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class EntityStatusUtil {
 

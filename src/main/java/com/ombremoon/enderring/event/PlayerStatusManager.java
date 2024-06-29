@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.client.KeyBinds;
 import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.capability.IPlayerStatus;
 import com.ombremoon.enderring.common.capability.PlayerStatus;
@@ -17,7 +18,6 @@ import com.ombremoon.enderring.util.FlaskUtil;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -35,11 +35,9 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
-import org.lwjgl.system.linux.Stat;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
 public class PlayerStatusManager {
@@ -135,7 +133,7 @@ public class PlayerStatusManager {
     }
 
     @SubscribeEvent
-    public static void onAbilityTick(TickEvent.PlayerTickEvent event) {
+    public static void onSpellActivateTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
 
         if (event.phase == TickEvent.Phase.START && !player.level().isClientSide) {
@@ -173,6 +171,21 @@ public class PlayerStatusManager {
                 itemStack.use(player.level(), player, InteractionHand.MAIN_HAND);
                 ModNetworking.getInstance().useQuickAccessItem();
             }*/
+        }
+    }
+
+    @SubscribeEvent
+    public static void onSpellChargeTick(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        if (event.phase != TickEvent.Phase.END) return;
+        if (!player.level().isClientSide) return;
+
+        if (!EntityStatusProvider.isPresent(player)) return;
+
+        if (EntityStatusUtil.isChannelling(player)) {
+            if (!KeyBinds.getCastKey().isDown()) {
+                ModNetworking.chargeSpell(false);
+            }
         }
     }
 

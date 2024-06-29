@@ -310,6 +310,10 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         return null;
     }
 
+    public Vec3 initRotation(LivingEntity owner) {
+        return null;
+    }
+
     protected boolean stopOnFirstEnemyHit() {
         return true;
     }

@@ -1,10 +1,16 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
+import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.util.EntityStatusUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.function.Supplier;
 
@@ -24,7 +30,21 @@ public abstract class ChannelledSpell extends AnimatedSpell {
     }
 
     @Override
-    public boolean canCharge() {
+    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellTick(playerPatch, level, blockPos, weapon);
+        if (!EntityStatusUtil.consumeFP(playerPatch.getOriginal(), this.fpTickCost, true) || !EntityStatusUtil.isChannelling(playerPatch.getOriginal())) {
+            this.endSpell();
+        }
+    }
+
+    @Override
+    protected void onSpellStop(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellStop(playerPatch, level, blockPos, weapon);
+        EntityStatusUtil.setChannelling(playerPatch.getOriginal(), false);
+    }
+
+    @Override
+    public boolean requiresConcentration() {
         return true;
     }
 

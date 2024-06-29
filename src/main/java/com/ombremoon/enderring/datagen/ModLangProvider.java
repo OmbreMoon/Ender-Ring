@@ -44,17 +44,24 @@ public class ModLangProvider extends LanguageProvider {
 
     //Include talismans that go up to plus one and no further
     private static final List<RegistryObject<Item>> PLUS_ONE_TALISMANS = List.of(
-
+            ItemInit.CLARIFYING_HORN_CHARM,
+            ItemInit.IMMUNIZING_HORN_CHARM,
+            ItemInit.STALWART_HORN_CHARM,
+            ItemInit.MOTTLED_NECKLACE
     );
 
     //Include talismans that go up to plus two and no higher/lower
-    private static final List<RegistryObject<Item>> PLUS_TWO_TALISMANS = List.of(ItemInit.DRAGONCREST_SHIELD_TALISMAN,
+    private static final List<RegistryObject<Item>> PLUS_TWO_TALISMANS = List.of(
+            ItemInit.DRAGONCREST_SHIELD_TALISMAN,
             ItemInit.ERDTREES_FAVOR,
             ItemInit.FLAMEDRAKE_TALISMAN,
             ItemInit.BOLTDRAKE_TALISMAN,
             ItemInit.HALIGDRAKE_TALISMAN,
             ItemInit.PEARLDRAKE_TALISMAN,
-            ItemInit.SPELLDRAKE_TALISMAN
+            ItemInit.SPELLDRAKE_TALISMAN,
+            ItemInit.CERULEAN_AMBER_MEDALLION,
+            ItemInit.VIRIDIAN_AMBER_MEDALLION,
+            ItemInit.CRIMSON_AMBER_MEDALLION
     );
 
     public ModLangProvider(PackOutput gen) {
@@ -149,6 +156,8 @@ public class ModLangProvider extends LanguageProvider {
         add(FlaskItem.NO_TEARS, "Wondrous Physick is currently holding no Crystal Tears");
         add("item.enderring.marikas_scarsealplus1", "Marika's Soreseal");
         add("item.enderring.radagons_scarsealplus1", "Radagon's Soreseal");
+        add("item.enderring.dragoncrest_shield_talismanplus3", "Dragoncrest Greatshield Talisman");
+        add("item.enderring.prince_of_deaths_pustuleplus1", "Prince of Death's Cyst");
     }
 
     protected String checkReplaceMenu(RegistryObject<MenuType<?>> registryObject) {

@@ -4,6 +4,7 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.object.world.effect.*;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -143,10 +144,12 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("07f0bb21-c796-4808-8fd4-18d8df9f6347"),
                             "Dragoncrest Shield Talisman",
-                            1.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE)
-                    .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 1, 1.13D)
-                    .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 2, 1.17D).build());
+                    .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 1, 0.13D)
+                    .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 2, 0.17D)
+                    .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 3, 0.20D)
+                    .addTranslation(3, "item.enderring.dragoncrest_shield_talismanplus3").build());
     public static final RegistryObject<MobEffect> SACRIFICIAL_TWIG = registerSimpleEffect("sacrificial_twig",
             new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> CRIMSON_SEED_TALISMAN = registerSimpleEffect("crimson_seed_talisman",
@@ -195,48 +198,48 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("0e5a7192-845d-4b22-a086-91dbd2fe4d3f"),
                             "Magic Scorpion Charm",
-                            1.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.MAGIC_DAMAGE)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("dabb5e21-b470-4a8b-ad42-2b630bee1a1c"),
                             "Magic Scorpion Charm",
-                            0.9F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE).build());
     public static final RegistryObject<MobEffect> FIRE_SCORPION_CHARM = registerStatusEffect("fire_scorpion_charm",
             new EffectBuilder(MobEffectCategory.NEUTRAL)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("5ef1281a-1a85-49b7-b716-53aa726d4019"),
                             "Fire Scorpion Charm",
-                            1.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.FIRE_DAMAGE)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("9a583800-cb26-45b1-9963-e53eb71d96c1"),
                             "Fire Scorpion Charm",
-                            0.9F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE).build());
     public static final RegistryObject<MobEffect> LIGHTNING_SCORPION_CHARM = registerStatusEffect("lightning_scorpion_charm",
             new EffectBuilder(MobEffectCategory.NEUTRAL)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("8a67de75-8618-4d9b-8d3c-59245627ec6a"),
                             "Lightning Scorpion Charm",
-                            1.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.LIGHT_DAMAGE)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("51070744-054b-4cd4-bdff-272cde582566"),
                             "Lightning Scorpion Charm",
-                            0.9F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE).build());
     public static final RegistryObject<MobEffect> SACRED_SCORPION_CHARM  = registerStatusEffect("sacred_scorpion_charm",
             new EffectBuilder(MobEffectCategory.NEUTRAL)
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("c1c461e0-1c81-4f1c-833f-8ef2dd785c0a"),
                                     "Sacred Scorpion Charm",
-                                    1.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                                    0.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.HOLY_DAMAGE)
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("1370a43c-ae66-464f-b78d-566660417a35"),
                                     "Sacred Scorpion Charm",
-                                    0.9F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                                    -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE).build());
     //TODO: If equip load is implemented please add that to erdtrees favor
     public static final RegistryObject<MobEffect> ERDTREES_FAVOR = registerStatusEffect("erdtrees_favor",
@@ -251,10 +254,10 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("3c973081-d8d4-4dea-ad93-570ea884af51"),
                             "Erdtree's Favor",
-                            1.07D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.07D, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EpicFightAttributes.MAX_STAMINA)
-                    .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 1, 1.085D)
-                    .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 2, 1.1D).build());
+                    .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 1, 0.085D)
+                    .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 2, 0.1D).build());
     public static final RegistryObject<MobEffect> RITUAL_SWORD_TALISMAN = registerStatusEffect("ritual_sword_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> RITUAL_SHIELD_TALISMAN = registerStatusEffect("ritual_shield_talisman",
@@ -262,7 +265,7 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("f981c6d2-3381-4633-bc94-5f7d3fbd813a"),
                             "Ritual Shield Talisman",
-                            1.3D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.3D, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE, EntityAttributeInit.HOLY_NEGATE,
                             EntityAttributeInit.LIGHT_NEGATE, EntityAttributeInit.FIRE_NEGATE,
                             EntityAttributeInit.MAGIC_NEGATE).buildHpEffect(true));
@@ -272,7 +275,7 @@ public class StatusEffectInit {
             new EffectBuilder(MobEffectCategory.BENEFICIAL).addAttribute(new AttributeModifier(
                             UUID.fromString("3849ab13-31af-4dec-bdc5-aa3af1047457"),
                             "Blue Feathered Branchsword",
-                            1.3D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.3D, AttributeModifier.Operation.MULTIPLY_TOTAL),
                     EntityAttributeInit.PHYS_NEGATE, EntityAttributeInit.HOLY_NEGATE,
                     EntityAttributeInit.LIGHT_NEGATE, EntityAttributeInit.FIRE_NEGATE,
                     EntityAttributeInit.MAGIC_NEGATE).buildHpEffect(false));
@@ -281,47 +284,110 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("412149bc-f790-4a06-a40c-9f024026eb65"),
                             "Spelldrake Talisman",
-                            1.13D, AttributeModifier.Operation.MULTIPLY_TOTAL
+                            0.13D, AttributeModifier.Operation.MULTIPLY_TOTAL
                     ), EntityAttributeInit.MAGIC_NEGATE)
-                    .addTier("412149bc-f790-4a06-a40c-9f024026eb65", 1, 1.17D)
-                    .addTier("412149bc-f790-4a06-a40c-9f024026eb65", 2, 1.2D).build());
+                    .addTier("412149bc-f790-4a06-a40c-9f024026eb65", 1, 0.17D)
+                    .addTier("412149bc-f790-4a06-a40c-9f024026eb65", 2, 0.2D).build());
     public static final RegistryObject<MobEffect> FLAMEDRAKE_TALISMAN = registerStatusEffect("flamedrake_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("9de8ffae-2deb-4b5e-84fa-ca69fec7cfdd"),
                             "Flamedrake Talisman",
-                            1.13D, AttributeModifier.Operation.MULTIPLY_TOTAL
+                            0.13D, AttributeModifier.Operation.MULTIPLY_TOTAL
                     ), EntityAttributeInit.FIRE_NEGATE)
-                    .addTier("9de8ffae-2deb-4b5e-84fa-ca69fec7cfdd", 1, 1.17D)
-                    .addTier("9de8ffae-2deb-4b5e-84fa-ca69fec7cfdd", 1, 1.2D).build());
+                    .addTier("9de8ffae-2deb-4b5e-84fa-ca69fec7cfdd", 1, 0.17D)
+                    .addTier("9de8ffae-2deb-4b5e-84fa-ca69fec7cfdd", 1, 0.2D).build());
     public static final RegistryObject<MobEffect> BOLTDRAKE_TALISMAN = registerStatusEffect("boltdrake_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("ac2e3caa-a368-4620-8d3a-07ffb9999259"),
                             "Boltdrake Talisman",
-                            1.13D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.13D, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.LIGHT_NEGATE)
-                    .addTier("ac2e3caa-a368-4620-8d3a-07ffb9999259", 1, 1.17D)
-                    .addTier("ac2e3caa-a368-4620-8d3a-07ffb9999259", 2, 1.2D).build());
+                    .addTier("ac2e3caa-a368-4620-8d3a-07ffb9999259", 1, 0.17D)
+                    .addTier("ac2e3caa-a368-4620-8d3a-07ffb9999259", 2, 0.2D).build());
     public static final RegistryObject<MobEffect> HALIGDRAKE_TALISMAN = registerStatusEffect("haligdrake_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("66ee0b5a-fdf9-49a8-803a-64e670317d97"),
                             "Haligdrake Talisman",
-                            1.13D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.13D, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.HOLY_NEGATE)
-                    .addTier("66ee0b5a-fdf9-49a8-803a-64e670317d97", 1, 1.17D)
-                    .addTier("66ee0b5a-fdf9-49a8-803a-64e670317d97", 1, 1.2D).build());
+                    .addTier("66ee0b5a-fdf9-49a8-803a-64e670317d97", 1, 0.17D)
+                    .addTier("66ee0b5a-fdf9-49a8-803a-64e670317d97", 1, 0.2D).build());
     public static final RegistryObject<MobEffect> PEARLDRAKE_TALISMAN = registerStatusEffect("pearldrake_talisman",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("ac8aa17e-3c5b-4120-8968-0cbadf272f02"),
                             "Pearldrake Talisman",
-                            1.05D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            0.05D, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.HOLY_NEGATE, EntityAttributeInit.LIGHT_NEGATE,
                             EntityAttributeInit.FIRE_NEGATE, EntityAttributeInit.MAGIC_NEGATE)
-                    .addTier("ac8aa17e-3c5b-4120-8968-0cbadf272f02", 1, 1.07D)
-                    .addTier("ac8aa17e-3c5b-4120-8968-0cbadf272f02", 2, 1.09D).build());
+                    .addTier("ac8aa17e-3c5b-4120-8968-0cbadf272f02", 1, 0.07D)
+                    .addTier("ac8aa17e-3c5b-4120-8968-0cbadf272f02", 2, 0.09D).build());
+    public static final RegistryObject<MobEffect> BLESSED_DEW_TALISMAN = registerStatusEffect("blessed_dew_talisman",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .setApplyTick((time, amp) -> time % 20 == 0).build());
+    public static final RegistryObject<MobEffect> CERULEAN_AMBER_MEDALLION = registerStatusEffect("cerulean_amber_medallion",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("9b84dd1f-ba39-4cec-afa7-dcd7aa1cc3f4"),
+                            "Cerulean Amber Medallion",
+                            0.07D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.MAX_FP)
+                    .addTier("9b84dd1f-ba39-4cec-afa7-dcd7aa1cc3f4", 1, 0.09D)
+                    .addTier("9b84dd1f-ba39-4cec-afa7-dcd7aa1cc3f4", 2, 0.11D).build());
+    public static final RegistryObject<MobEffect> VIRIDIAN_AMBER_MEDALLION = registerStatusEffect("viridian_amber_medallion",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("ac39b284-98c2-4a98-8518-d71ab1e94bf6"),
+                            "Viridian Amber Medallion",
+                            0.11D, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EpicFightAttributes.MAX_STAMINA)
+                    .addTier("ac39b284-98c2-4a98-8518-d71ab1e94bf6", 1, 0.13D)
+                    .addTier("ac39b284-98c2-4a98-8518-d71ab1e94bf6", 2, 0.15D).build());
+    public static final RegistryObject<MobEffect> IMMUNIZING_HORN_CHARM = registerStatusEffect("immunizing_horn_charm",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("e2e008c8-8dcb-48f7-a6e7-42bb6157dc7a"),
+                            "Immunizing Horn Charm",
+                            90D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.IMMUNITY)
+                    .addTier("e2e008c8-8dcb-48f7-a6e7-42bb6157dc7a", 1, 140D).build());
+    public static final RegistryObject<MobEffect> STALWART_HORN_CHARM = registerStatusEffect("stalwart_horn_charm",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("7999bc4a-52f5-4fab-a426-9172b8b9d3a2"),
+                            "Stalwart Horn Charm",
+                            90D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.ROBUSTNESS)
+                    .addTier("7999bc4a-52f5-4fab-a426-9172b8b9d3a2", 1, 140D).build());
+    public static final RegistryObject<MobEffect> CLARIFYING_HORN_CHARM = registerStatusEffect("clarifying_horn_charm",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("653fb08c-9ba5-45c1-99d7-60e1734d4a5f"),
+                            "Clarifying Horn Charm",
+                            90D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.FOCUS)
+                    .addTier("653fb08c-9ba5-45c1-99d7-60e1734d4a5f", 1, 140D).build());
+    public static final RegistryObject<MobEffect> MOTTLED_NECKLACE = registerStatusEffect("mottled_necklace",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("6944bd54-d28c-4c6d-b559-e1c50a4574d5"),
+                            "Mottled Necklace",
+                            40D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.IMMUNITY, EntityAttributeInit.ROBUSTNESS,
+                            EntityAttributeInit.FOCUS)
+                    .addTier("6944bd54-d28c-4c6d-b559-e1c50a4574d5", 1, 60D).build());
+    public static final RegistryObject<MobEffect> PRINCE_OF_DEATHS_PUSTULE = registerStatusEffect("prince_of_deaths_pustule",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("c0386557-a3b0-4c98-8493-6330e6adede7"),
+                            "Prince of Deaths Pustule",
+                            90D, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.VITALITY)
+                    .addTier("c0386557-a3b0-4c98-8493-6330e6adede7", 1, 140D)
+                    .addTranslation(1, "item.enderring.prince_of_deaths_pustuleplus1").build());
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(MobEffectCategory.HARMFUL, 234227227));

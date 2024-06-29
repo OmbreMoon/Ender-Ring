@@ -50,14 +50,12 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
         spellProjectile.setOwner(playerPatch.getOriginal());
         spellProjectile.setSpeedModifier(this.speedModifier);
         spellProjectile.setGravity(this.gravity);
-        if (this.shootFromCatalyst) {
-            spellProjectile.setPos(new Vec3(player.getX(), player.getEyeY() - (double)0.3F, player.getZ()));
-            spellProjectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
-            spellProjectile.setXRot(player.getXRot());
-            spellProjectile.setYRot(player.getYRot());
-        } else {
-            spellProjectile.setPos(spellProjectile.initPosition(player));
-        }
+
+        Vec3 vec3 = this.shootFromCatalyst ? new Vec3(player.getXRot(), player.getYRot(), 0.0F) : spellProjectile.initRotation(player);
+        spellProjectile.setPos(new Vec3(player.getX(), player.getEyeY() - (double)0.3F, player.getZ()));
+        spellProjectile.shootFromRotation(player, (float) vec3.x, (float) vec3.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
+        spellProjectile.setXRot((float) vec3.x);
+        spellProjectile.setYRot((float) vec3.y);
 
         if (spellProjectile.getPath() == SpellProjectileEntity.Path.HOMING) {
             spellProjectile.setTargetEntity(playerPatch.getTarget());
