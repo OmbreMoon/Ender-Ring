@@ -119,7 +119,7 @@ public class DamageUtil {
         if (entity.hasEffect(StatusEffectInit.RITUAL_SWORD_TALISMAN.get())
             && entity.getHealth() >= entity.getMaxHealth()) multiplier += 0.1F;
         if (entity.hasEffect(StatusEffectInit.RED_FEATHERED_BRANCHSWORD.get())
-            && entity.getHealth() <= entity.getMaxHealth()*0.2F) multiplier += 0.2F;
+            && entity.getHealth() <= entity.getMaxHealth() * 0.2F) multiplier += 0.2F;
 
         return multiplier;
     }
@@ -132,7 +132,7 @@ public class DamageUtil {
             double attrVal = EntityStatusUtil.getEntityAttribute(player, scaling.getAttribute());
             f += scaleVal * getSaturationValue(attrVal, weapon, weaponDamage, false) * 100;
         }
-        return 100 + f;
+        return 100 + f * getApMultipliers(player);
     }
 
     public static float calculateDefense(Player player, WeaponDamage weaponDamage) {
@@ -158,7 +158,7 @@ public class DamageUtil {
         return buildUp * getScalingUpgrade(weapon, WeaponScaling.ARC, weaponLevel) * f;
     }
 
-    public static float getDamageUpgrade(ScaledWeapon weapon, WeaponDamage weaponDamage, int weaponLevel) {
+    private static float getDamageUpgrade(ScaledWeapon weapon, WeaponDamage weaponDamage, int weaponLevel) {
         ReinforceType reinforceType = weapon.getBaseStats().getReinforceType();
         return reinforceType.getReinforceDamageParam(weaponDamage, weaponLevel) * weapon.getDamage().getDamageMap().get(weaponDamage);
     }

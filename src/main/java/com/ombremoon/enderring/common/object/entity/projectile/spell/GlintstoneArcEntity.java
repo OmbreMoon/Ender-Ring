@@ -30,6 +30,6 @@ public class GlintstoneArcEntity extends SpellProjectileEntity<GlintstoneArcSorc
 
     @Override
     public Path getPath() {
-        return Path.QUAD;
+        return Path.STRAIGHT;
     }
 }

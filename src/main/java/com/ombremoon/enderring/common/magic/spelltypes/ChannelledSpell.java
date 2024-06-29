@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.magic.spelltypes;
 
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -17,10 +18,10 @@ import java.util.function.Supplier;
 public abstract class ChannelledSpell extends AnimatedSpell {
     protected int fpTickCost;
 
-    public static Builder createChannelledSpellBuilder() {
-        return new Builder<>().setDuration(-1);
+    public static Builder<ChannelledSpell> createChannelledSpellBuilder() {
+        return new Builder<>();
     }
-    public ChannelledSpell(SpellType<?> spellType, Builder builder) {
+    public ChannelledSpell(SpellType<?> spellType, Builder<ChannelledSpell> builder) {
         super(spellType, builder);
         this.fpTickCost = builder.fpTickCost;
     }
@@ -69,8 +70,8 @@ public abstract class ChannelledSpell extends AnimatedSpell {
             return this;
         }
 
-        public Builder<T> setDuration(int duration) {
-            this.duration = duration;
+        public Builder<T> setStaminaCost(int staminaCost) {
+            this.staminaCost = staminaCost;
             return this;
         }
 
@@ -81,16 +82,6 @@ public abstract class ChannelledSpell extends AnimatedSpell {
 
         public Builder<T> setMotionValue(float motionValue) {
             this.motionValue = motionValue;
-            return this;
-        }
-
-        public Builder<T> setChargedMotionValue(float motionValue) {
-            this.chargedMotionValue = motionValue;
-            return this;
-        }
-
-        public Builder<T> setCanCharge(boolean canCharge) {
-            this.canCharge = canCharge;
             return this;
         }
 

@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.item.equipment.weapon.magic;
 
+import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class CatalystWeapon extends MeleeWeapon {
@@ -154,7 +156,11 @@ public class CatalystWeapon extends MeleeWeapon {
     }
 
     public boolean canCastSpell(Player player, ItemStack itemStack, AbstractSpell abstractSpell, boolean forceConsume) {
-        return this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), forceConsume) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player);
+        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+        if (ConfigHandler.REQUIRES_BATTLE_MODE.get() && !playerPatch.isBattleMode()) {
+            return false;
+        }
+        return this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), forceConsume) && playerPatch.consumeStamina(abstractSpell.getStaminaCost(player)) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player);
     }
 
     private boolean canCastSpell(Player player, AbstractSpell abstractSpell) {

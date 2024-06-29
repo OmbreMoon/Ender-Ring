@@ -1,10 +1,111 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
+import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.SpellProjectileEntity;
+import net.minecraft.sounds.SoundEvent;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+
+import java.util.function.Supplier;
 
 public abstract class MultiProjectileSpell<S extends MultiProjectileSpell<S, T>, T extends SpellProjectileEntity<S>> extends ProjectileSpell<S, T> {
+    private final int projectileCount;
+
     public MultiProjectileSpell(SpellType<?> spellType, ProjectileFactory<S, T> factory, Builder<S> builder) {
         super(spellType, factory, builder);
+        this.projectileCount = builder.projectileCount;
+    }
+
+    @Override
+    protected boolean shouldTickEffect(int duration) {
+        return super.shouldTickEffect(duration);
+    }
+
+    public static class Builder<T extends MultiProjectileSpell<T, ?>> extends ProjectileSpell.Builder<T> {
+        protected int projectileCount;
+
+        public Builder() {
+        }
+
+        public Builder<T> setMagicType(MagicType magicType) {
+            this.magicType = magicType;
+            return this;
+        }
+
+        public Builder<T> setRequirements(WeaponScaling weaponScaling, int statReq) {
+            this.createReqList(weaponScaling, statReq);
+            return this;
+        }
+
+        public Builder<T> setFPCost(int fpCost) {
+            this.fpCost = fpCost;
+            return this;
+        }
+
+        public Builder<T> setStaminaCost(int staminaCost) {
+            this.staminaCost = staminaCost;
+            return this;
+        }
+
+        public Builder<T> setDuration(int duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        public Builder<T> setMotionValue(float motionValue) {
+            this.motionValue = motionValue;
+            return this;
+        }
+
+        public Builder<T> setChargedMotionValue(float motionValue) {
+            this.chargedMotionValue = motionValue;
+            return this;
+        }
+
+        public Builder<T> setCanCharge(boolean canCharge) {
+            this.canCharge = canCharge;
+            return this;
+        }
+
+        public Builder<T> setCastSound(SoundEvent castSound) {
+            this.castSound = castSound;
+            return this;
+        }
+
+        public Builder<T> setLifetime(int lifetime) {
+            this.projectileLifetime = lifetime;
+            return this;
+        }
+
+        public Builder<T> setVelocity(float velocity) {
+            this.projectileVelocity = velocity;
+            return this;
+        }
+
+        public Builder<T> shootFromCatalyst() {
+            this.shootFromCatalyst = true;
+            return this;
+        }
+
+        public Builder<T> canClip() {
+            this.canClip = true;
+            return this;
+        }
+
+        public Builder<T> setSpeedModifier(float modifier) {
+            this.speedModifier = modifier;
+            return this;
+        }
+
+        public Builder<T> setGravity(float gravity) {
+            this.gravity = gravity;
+            return this;
+        }
+
+        public Builder<T> setAnimation(Supplier<StaticAnimation> animation) {
+            this.spellAnimation = animation;
+            return this;
+        }
     }
 }

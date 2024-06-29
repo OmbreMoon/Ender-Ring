@@ -34,6 +34,7 @@ public abstract class AbstractSpell {
     private final MagicType magicType;
     private final Set<Pair<WeaponScaling, Integer>> requiredStats;
     private final int fpCost;
+    private final int staminaCost;
     private final int duration;
     private final float motionValue;
     private final float chargedMotionValue;
@@ -47,7 +48,7 @@ public abstract class AbstractSpell {
     private float chargeAmount;
     private int ticks = 0;
     private boolean wasCharged = false;
-    private int chargeTicks = 0;
+    private int channelTicks = 0;
     public boolean isInactive = false;
     public boolean init = false;
     public float magicScaling;
@@ -62,6 +63,7 @@ public abstract class AbstractSpell {
         this.magicType = builder.magicType;
         this.requiredStats = builder.requiredStats;
         this.fpCost = builder.fpCost;
+        this.staminaCost = builder.staminaCost;
         this.duration = builder.duration;
         this.motionValue = builder.motionValue;
         this.chargedMotionValue = builder.chargedMotionValue;
@@ -81,6 +83,10 @@ public abstract class AbstractSpell {
         if (caster.hasEffect(StatusEffectInit.PRIMAL_GLINTSTONE_BLADE.get()))
             return Math.round((float) this.fpCost * 0.75F);
         return this.fpCost;
+    }
+
+    public int getStaminaCost(LivingEntity caster) {
+        return this.staminaCost;
     }
 
     public int getDuration() {
@@ -153,6 +159,7 @@ public abstract class AbstractSpell {
     public void tick() {
         if (!level.isClientSide) {
             ticks++;
+            Constants.LOG.info(String.valueOf(ticks));
             if (init) {
                 this.startSpell();
             } else if (!isInactive) {
@@ -175,7 +182,7 @@ public abstract class AbstractSpell {
     private void tickSpell() {
         this.onSpellTick(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
         if (EntityStatusUtil.isChannelling(this.playerPatch.getOriginal()))
-            this.chargeTicks++;
+            this.channelTicks++;
     }
 
     protected void endSpell() {
@@ -184,7 +191,7 @@ public abstract class AbstractSpell {
         this.isInactive = true;
         this.ticks = 0;
         this.wasCharged = false;
-        this.chargeTicks = 0;
+        this.channelTicks = 0;
     }
 
     protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
@@ -223,7 +230,7 @@ public abstract class AbstractSpell {
     }
 
     public boolean isChannelling() {
-        return this.chargeTicks > 0;
+        return this.channelTicks > 0;
     }
 
     public float getChargeAmount() {
@@ -276,6 +283,7 @@ public abstract class AbstractSpell {
         protected Set<Pair<WeaponScaling, Integer>> requiredStats = new LinkedHashSet<>();
         protected int duration = 1;
         protected int fpCost;
+        protected int staminaCost;
         protected float motionValue;
         protected float chargedMotionValue;
         protected boolean canCharge;
@@ -288,6 +296,11 @@ public abstract class AbstractSpell {
 
         public Builder<T> setFPCost(int fpCost) {
             this.fpCost = fpCost;
+            return this;
+        }
+
+        public Builder<T> setStaminaCost(int staminaCost) {
+            this.staminaCost = staminaCost;
             return this;
         }
 

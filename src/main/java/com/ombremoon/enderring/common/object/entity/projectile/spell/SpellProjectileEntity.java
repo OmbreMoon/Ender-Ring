@@ -30,16 +30,21 @@ import net.minecraftforge.network.NetworkHooks;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> extends Projectile {
     protected static final Logger LOGGER = Constants.LOG;
     protected static final EntityDataAccessor<Float> SPEED_MODIFIER = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> VELOCITY = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> CHARGE = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Integer> TARGET = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> INACTIVE = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.INT);
     private ScaledWeapon weapon;
     private T projectileSpell;
     private int lifetime;
     private int targetEntity;
+    private boolean isActive;
 
     protected SpellProjectileEntity(EntityType<? extends Projectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -68,7 +73,10 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
     protected void defineSynchedData() {
         this.entityData.define(SPEED_MODIFIER, 1.0F);
         this.entityData.define(GRAVITY, 0.0F);
+        this.entityData.define(VELOCITY, 0.0F);
+        this.entityData.define(CHARGE, 0.0F);
         this.entityData.define(TARGET, 0);
+        this.entityData.define(INACTIVE, 0);
     }
 
     /**
@@ -89,7 +97,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
     @Override
     public void tick() {
         super.tick();
-//        this.discard();
+        if (!this.level().isClientSide && this.projectileSpell == null) this.discard();
         Vec3 vec3 = this.getDeltaMovement();
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
             double d0 = vec3.horizontalDistance();
@@ -132,6 +140,11 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         if (this.isRemoved())
             return;
 
+        if (this.tickCount == this.getInactiveTicks()) {
+            this.isActive = true;
+            this.shootFromInactivity(this.getXRot(), this.getYRot(), 0.0F, this.getVelocity() * this.getCharge(), 1.0F);
+        }
+
         vec3 = this.getDeltaMovement();
         double d0 = vec3.x;
         double d1 = vec3.y;
@@ -142,45 +155,47 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         double d6 = vec3.horizontalDistance();
         Path path = this.getPath();
         float f = this.getSpeedModifier();
-        switch (path) {
-            case SPLINE -> {
-                LOGGER.info(String.valueOf(this.lifetime));
-            }
-            case QUAD -> {
-                this.setYRot((float)(-Mth.atan2(d0, d2) * (double)(180F / (float)Math.PI)));
-                this.setXRot((float)(-Mth.atan2(d1, d6) * (double)(180F / (float)Math.PI)));
-                this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
-                this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-                this.setDeltaMovement(vec3.scale((double)f));
-                if (!this.isNoGravity()) {
-                    Vec3 vec34 = this.getDeltaMovement();
-                    this.setDeltaMovement(vec34.x, vec34.y - this.getGravity(), vec34.z);
+        if (isActive) {
+            switch (path) {
+                case SPLINE -> {
+                    LOGGER.info(String.valueOf(this.lifetime));
                 }
-            }
-            case HOMING -> {
-                LivingEntity homingEntity = this.getTargetEntity();
-                if (homingEntity != null) {
-                    double distance = homingEntity.distanceToSqr(this);
-                    Vec3 direction = new Vec3(homingEntity.getX() - this.getX(), homingEntity.getEyeY() - 0.3F - this.getY(), homingEntity.getZ() - this.getZ());
-                    if (distance > 0) {
-                        direction = direction.normalize();
-                        double d7 = direction.horizontalDistance();
-                        Vec3 vec35 = this.getDeltaMovement();
-                        this.setYRot((float)(-Mth.atan2(direction.x, direction.z) * (double)(180F / (float)Math.PI)));
-                        this.setXRot((float)(-Mth.atan2(direction.y, d7) * (double)(180F / (float)Math.PI)));
-                        this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
-                        this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-                        this.setDeltaMovement(vec35.subtract(direction).scale((double)-f));
+                case QUAD -> {
+                    this.setYRot((float) (-Mth.atan2(d0, d2) * (double) (180F / (float) Math.PI)));
+                    this.setXRot((float) (-Mth.atan2(d1, d6) * (double) (180F / (float) Math.PI)));
+                    this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+                    this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+                    this.setDeltaMovement(vec3.scale((double) f));
+                    if (!this.isNoGravity()) {
+                        Vec3 vec34 = this.getDeltaMovement();
+                        this.setDeltaMovement(vec34.x, vec34.y - this.getGravity(), vec34.z);
                     }
-                } else {
-                    this.setDeltaMovement(vec3.scale((double)f));
                 }
+                case HOMING -> {
+                    LivingEntity homingEntity = this.getTargetEntity();
+                    if (homingEntity != null) {
+                        double distance = homingEntity.distanceToSqr(this);
+                        Vec3 direction = new Vec3(homingEntity.getX() - this.getX(), homingEntity.getEyeY() - 0.3F - this.getY(), homingEntity.getZ() - this.getZ());
+                        if (distance > 0) {
+                            direction = direction.normalize();
+                            double d7 = direction.horizontalDistance();
+                            Vec3 vec35 = this.getDeltaMovement();
+                            this.setYRot((float) (-Mth.atan2(direction.x, direction.z) * (double) (180F / (float) Math.PI)));
+                            this.setXRot((float) (-Mth.atan2(direction.y, d7) * (double) (180F / (float) Math.PI)));
+                            this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+                            this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+                            this.setDeltaMovement(vec35.subtract(direction).scale((double) -f));
+                        }
+                    } else {
+                        this.setDeltaMovement(vec3.scale((double) f));
+                    }
+                }
+                case CUSTOM -> {
+                    PathConsumer pathConsumer = this.getCustomPath();
+                    pathConsumer.accept(this);
+                }
+                default -> this.setDeltaMovement(vec3.scale((double) f));
             }
-            case CUSTOM -> {
-                PathConsumer pathConsumer = this.getCustomPath();
-                pathConsumer.accept(this);
-            }
-            default -> this.setDeltaMovement(vec3.scale((double)f));
         }
         this.setPos(d3, d4, d5);
         if (!this.level().isClientSide) {
@@ -230,12 +245,35 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         return ProjectileUtil.getEntityHitResult(this.level(), this, pStartVec, pEndVec, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
     }
 
-    @Override
-    public void shootFromRotation(Entity pShooter, float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
+    public void prepareShootFromRotation(float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
         float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
         float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
         float f2 = Mth.cos(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
-        this.shoot((double)f, (double)f1, (double)f2, pVelocity, pInaccuracy);
+        this.prepareShoot((double) f, (double) f1, (double) f2, pVelocity, pInaccuracy);
+    }
+
+    public void shootFromRotation(float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
+        float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        this.shoot((double) f, (double) f1, (double) f2, pVelocity, pInaccuracy);
+    }
+
+    public void shootFromInactivity(float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
+        float f = -Mth.sin(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        float f1 = -Mth.sin((pX + pZ) * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(pY * ((float)Math.PI / 180F)) * Mth.cos(pX * ((float)Math.PI / 180F));
+        Vec3 vec3 = (new Vec3(f, f1, f2)).normalize().add(this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy), this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy), this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy)).scale((double)pVelocity);
+        this.setDeltaMovement(vec3);
+    }
+
+    public void prepareShoot(double pX, double pY, double pZ, float pVelocity, float pInaccuracy) {
+        Vec3 vec3 = (new Vec3(pX, pY, pZ)).normalize().add(this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy), this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy), this.random.triangle(0.0D, 0.0172275D * (double)pInaccuracy)).scale((double)pVelocity);
+        double d0 = vec3.horizontalDistance();
+        this.setYRot((float)(Mth.atan2(vec3.x, vec3.z) * (double)(180F / (float)Math.PI)));
+        this.setXRot((float)(Mth.atan2(vec3.y, d0) * (double)(180F / (float)Math.PI)));
+        this.yRotO = this.getYRot();
+        this.xRotO = this.getXRot();
     }
 
     protected void tickDespawn() {
@@ -251,6 +289,10 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         };
     }
 
+    public void setActive(boolean active) {
+        this.isActive = active;
+    }
+
     public Path getPath() {
         return Path.STRAIGHT;
     }
@@ -261,6 +303,18 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
 
     public void setGravity(float gravity) {
         this.entityData.set(GRAVITY, gravity);
+    }
+
+    public void setVelocity(float velocity) {
+        this.entityData.set(VELOCITY, velocity);
+    }
+
+    public void setCharge(float charge) {
+        this.entityData.set(CHARGE, charge);
+    }
+
+    public void setCharge(int ticks) {
+        this.entityData.set(INACTIVE, ticks);
     }
 
     public float getSpeedModifier() {
@@ -275,6 +329,19 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         }
     }
 
+    public float getVelocity() {
+        if (!this.level().isClientSide) {
+            if (projectileSpell != null) {
+                return this.projectileSpell.getVelocity();
+            } else {
+                return 0.0F;
+            }
+        } else {
+            return this.entityData.get(VELOCITY);
+        }
+    }
+
+
     public float getGravity() {
         if (!this.level().isClientSide) {
             if (projectileSpell != null) {
@@ -284,6 +351,32 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
             }
         } else {
             return this.entityData.get(GRAVITY);
+        }
+    }
+
+
+    public float getCharge() {
+        if (!this.level().isClientSide) {
+            if (projectileSpell != null) {
+                return this.projectileSpell.getChargeAmount();
+            } else {
+                return 0.0F;
+            }
+        } else {
+            return this.entityData.get(CHARGE);
+        }
+    }
+
+
+    public int getInactiveTicks() {
+        if (!this.level().isClientSide) {
+            if (projectileSpell != null) {
+                return this.projectileSpell.getInactiveTicks();
+            } else {
+                return 0;
+            }
+        } else {
+            return this.entityData.get(INACTIVE);
         }
     }
 
@@ -306,12 +399,12 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         return (LivingEntity) this.level().getEntity(targetEntity);
     }
 
-    public Vec3 initPosition(LivingEntity owner) {
-        return null;
+    public List<Vec3> initPosition(LivingEntity owner) {
+        return List.of();
     }
 
-    public Vec3 initRotation(LivingEntity owner) {
-        return null;
+    public List<Vec3> initRotation(LivingEntity owner) {
+        return List.of();
     }
 
     protected boolean stopOnFirstEnemyHit() {

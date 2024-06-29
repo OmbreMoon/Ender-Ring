@@ -1,8 +1,8 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
-import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.SpellProjectileEntity;
@@ -18,12 +18,13 @@ import java.util.function.Supplier;
 
 public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends SpellProjectileEntity<S>> extends AnimatedSpell {
     private final ProjectileFactory<S, T> factory;
-    private int projectileLifetime;
-    private float projectileVelocity;
-    private boolean shootFromCatalyst;
-    private boolean canClip;
-    private float speedModifier;
-    private float gravity;
+    private final int projectileLifetime;
+    private final float projectileVelocity;
+    private final boolean shootFromCatalyst;
+    private final boolean canClip;
+    private final float speedModifier;
+    private final float gravity;
+    private final int inactiveTicks;
     protected T projectile;
 
     public static Builder createProjectileBuilder() {
@@ -39,38 +40,57 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
         this.canClip = builder.canClip;
         this.speedModifier = builder.speedModifier;
         this.gravity = builder.gravity;
+        this.inactiveTicks = builder.inactiveTicks;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         super.onSpellStart(playerPatch, level, blockPos, weapon);
+        this.projectile = this.factory.create(this.level, this.scaledWeapon, (S) this);
+    }
+
+    @Override
+    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellTick(playerPatch, level, blockPos, weapon);
         Player player = playerPatch.getOriginal();
-        T spellProjectile = this.factory.create(this.level, this.scaledWeapon, (S) this);
-        spellProjectile.setOwner(playerPatch.getOriginal());
-        spellProjectile.setSpeedModifier(this.speedModifier);
-        spellProjectile.setGravity(this.gravity);
+        this.projectile.setOwner(playerPatch.getOriginal());
+        this.projectile.setVelocity(this.projectileVelocity);
+        this.projectile.setSpeedModifier(this.speedModifier);
+        this.projectile.setGravity(this.gravity);
+        this.projectile.setCharge(this.getChargeAmount());
 
-        Vec3 vec3 = this.shootFromCatalyst ? new Vec3(player.getXRot(), player.getYRot(), 0.0F) : spellProjectile.initRotation(player);
-        spellProjectile.setPos(new Vec3(player.getX(), player.getEyeY() - (double)0.3F, player.getZ()));
-        spellProjectile.shootFromRotation(player, (float) vec3.x, (float) vec3.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
-        spellProjectile.setXRot((float) vec3.x);
-        spellProjectile.setYRot((float) vec3.y);
-
-        if (spellProjectile.getPath() == SpellProjectileEntity.Path.HOMING) {
-            spellProjectile.setTargetEntity(playerPatch.getTarget());
+        Vec3 vec31 = this.shootFromCatalyst ? new Vec3(player.getX(), player.getEyeY() - (double)0.3F, player.getZ()) : this.projectile.initPosition(player).get(0);
+        Vec3 vec32 = this.shootFromCatalyst ? new Vec3(player.getXRot(), player.getYRot(), 0.0F) : this.projectile.initRotation(player).get(0);
+        this.projectile.setPos(vec31.x, vec31.y, vec31.z);
+        if (this.inactiveTicks == 0) {
+            this.projectile.shootFromRotation((float) vec32.x, (float) vec32.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
+            this.projectile.setActive(true);
+        } else {
+            Constants.LOG.info(String.valueOf(vec32.x));
+            Constants.LOG.info(String.valueOf(vec32.y));
+            this.projectile.prepareShootFromRotation((float) vec32.x, (float) vec32.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
         }
-        this.projectile = spellProjectile;
-        level.addFreshEntity(spellProjectile);
+        this.projectile.setXRot((float) vec32.x);
+        this.projectile.setYRot((float) vec32.y);
+
+        if (this.projectile.getPath() == SpellProjectileEntity.Path.HOMING) {
+            this.projectile.setTargetEntity(playerPatch.getTarget());
+        }
+        level.addFreshEntity(this.projectile);
     }
 
     @Override
     protected boolean shouldTickEffect(int duration) {
-        return this.isInstantSpell() ? duration == 1 : super.shouldTickEffect(duration);
+        return this.isInstantSpell() ? duration == 2 : super.shouldTickEffect(duration);
     }
 
     public int getProjectileLifetime() {
         return this.projectileLifetime;
+    }
+
+    public float getVelocity() {
+        return this.projectileVelocity;
     }
 
     public boolean canClip() {
@@ -85,6 +105,10 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
         return this.gravity;
     }
 
+    public int getInactiveTicks() {
+        return this.inactiveTicks;
+    }
+
     public static class Builder<T extends ProjectileSpell<T, ?>> extends AnimatedSpell.Builder<T> {
         protected int projectileLifetime;
         protected float projectileVelocity;
@@ -92,6 +116,7 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
         protected boolean canClip = false;
         protected float speedModifier = 1.0F;
         protected float gravity;
+        protected int inactiveTicks;
 
         public Builder() {
         }
@@ -108,6 +133,11 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
 
         public Builder<T> setFPCost(int fpCost) {
             this.fpCost = fpCost;
+            return this;
+        }
+
+        public Builder<T> setStaminaCost(int staminaCost) {
+            this.staminaCost = staminaCost;
             return this;
         }
 
@@ -163,6 +193,11 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
 
         public Builder<T> setGravity(float gravity) {
             this.gravity = gravity;
+            return this;
+        }
+
+        public Builder<T> setInactiveTicks(int inactiveTicks) {
+            this.inactiveTicks = inactiveTicks;
             return this;
         }
 

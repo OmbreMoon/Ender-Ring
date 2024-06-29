@@ -61,6 +61,11 @@ public abstract class AnimatedSpell extends AbstractSpell {
             return this;
         }
 
+        public Builder<T> setStaminaCost(int staminaCost) {
+            this.staminaCost = staminaCost;
+            return this;
+        }
+
         public Builder<T> setDuration(int duration) {
             this.duration = duration;
             return this;

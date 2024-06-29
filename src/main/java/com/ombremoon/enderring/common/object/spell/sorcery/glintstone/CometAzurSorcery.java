@@ -14,8 +14,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class CometAzurSorcery extends ChannelledSpell {
 
-    @SuppressWarnings("unchecked")
-    public static Builder<CometAzurSorcery> createCometAzurSorcery() {
+    public static Builder<ChannelledSpell> createCometAzurSorcery() {
         return createChannelledSpellBuilder()
                 .setMagicType(MagicType.SORCERY)
                 .setFPCost(40)
@@ -24,7 +23,7 @@ public class CometAzurSorcery extends ChannelledSpell {
     }
 
     public CometAzurSorcery() {
-        super(SpellInit.COMET_AZUR.get(), createCometAzurSorcery());
+        this(SpellInit.COMET_AZUR.get(), createCometAzurSorcery());
     }
 
     public CometAzurSorcery(SpellType<?> spellType, Builder builder) {

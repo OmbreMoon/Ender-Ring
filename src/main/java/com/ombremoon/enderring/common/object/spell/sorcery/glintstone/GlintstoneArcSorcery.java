@@ -15,7 +15,7 @@ public class GlintstoneArcSorcery extends ProjectileSpell<GlintstoneArcSorcery, 
     public static ProjectileSpell.Builder<GlintstoneArcSorcery> createGlintstoneArcSorcery() {
         return createProjectileBuilder()
                 .setMagicType(MagicType.SORCERY)
-                .setDuration(10)
+                .setDuration(20)
                 .setFPCost(10)
                 .setRequirements(WeaponScaling.INT, 13)
                 .setMotionValue(1.48F)
@@ -23,9 +23,10 @@ public class GlintstoneArcSorcery extends ProjectileSpell<GlintstoneArcSorcery, 
                 .shootFromCatalyst()
                 .setLifetime(35)
                 .setVelocity(1.15F)
-                .setGravity(0.05F)
+//                .setGravity(0.05F)
                 .setSpeedModifier(0.99F)
                 .canClip()
+                .setInactiveTicks(10)
                 .setAnimation(() -> Animations.BIPED_DEATH);
     }
 
