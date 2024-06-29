@@ -24,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
 
@@ -81,6 +82,7 @@ public class ModLangProvider extends LanguageProvider {
         tabLang();
         originLang();
 
+        talismanTooltips();
         manualEntries();
         upgradedLang(PLUS_ONE_TALISMANS, 1);
         upgradedLang(PLUS_TWO_TALISMANS, 2);
@@ -158,6 +160,48 @@ public class ModLangProvider extends LanguageProvider {
         add("item.enderring.radagons_scarsealplus1", "Radagon's Soreseal");
         add("item.enderring.dragoncrest_shield_talismanplus3", "Dragoncrest Greatshield Talisman");
         add("item.enderring.prince_of_deaths_pustuleplus1", "Prince of Death's Cyst");
+        add("tooltip.enderring.more_info", "Hold shift for more info.");
+        add("curios.identifier.talismans", "Talismans");
+    }
+
+    protected void talismanTooltips() {
+        addTooltip(ItemInit.CRIMSON_AMBER_MEDALLION, "Raises maximum HP.");
+        addTooltip(ItemInit.CRIMSON_SEED_TALISMAN, "Boosts HP regeneration from Flask of Crimson Tears.");
+        addTooltip(ItemInit.BLESSED_DEW_TALISMAN, "Slowly restores HP.");
+        addTooltip(ItemInit.CERULEAN_AMBER_MEDALLION, "Raises maximum FP.");
+        addTooltip(ItemInit.CERULEAN_SEED_TALISMAN, "Boosts FP regeneration from Flask of Cerulean Tears.");
+        addTooltip(ItemInit.VIRIDIAN_AMBER_MEDALLION, "Raises maximum stamina.");
+        addTooltip(ItemInit.GREEN_TURTLE_TALISMAN, "Raises stamina recovery speed.");
+        addTooltip(ItemInit.ERDTREES_FAVOR, "Raises maximum HP and stamina.");
+        addTooltip(ItemInit.RADAGONS_SCARSEAL, "Raises Vigor, Endurance, Strength and Dexterity but increases damage taken.");
+        addTooltip(ItemInit.MARIKAS_SCARSEAL, "Raises Mind, Intelligence, Faith and Arcane but increases damage taken.");
+        addTooltip(ItemInit.STARSCOURGE_HEIRLOOM, "Raises Strength.");
+        addTooltip(ItemInit.PROSTHESIS_WEARER_HEIRLOOM, "Raises Dexterity.");
+        addTooltip(ItemInit.STARGAZER_HEIRLOOM, "Raises Intelligence.");
+        addTooltip(ItemInit.TWO_FINGERS_HEIRLOOM, "Raises Faith.");
+        addTooltip(ItemInit.DRAGONCREST_SHIELD_TALISMAN, "Boosts Physical Damage negation.");
+        addTooltip(ItemInit.SPELLDRAKE_TALISMAN, "Boosts Magic Damage negation.");
+        addTooltip(ItemInit.FLAMEDRAKE_TALISMAN, "Boosts Fire Damage negation.");
+        addTooltip(ItemInit.BOLTDRAKE_TALISMAN, "Boosts Lightning Damage negation.");
+        addTooltip(ItemInit.HALIGDRAKE_TALISMAN, "Boosts Holy Damage negation.");
+        addTooltip(ItemInit.PEARLDRAKE_TALISMAN, "Boosts Elemental Damage negation.");
+        addTooltip(ItemInit.IMMUNIZING_HORN_CHARM, "Raises Immunity.");
+        addTooltip(ItemInit.STALWART_HORN_CHARM, "Greatly raises Robustness.");
+        addTooltip(ItemInit.CLARIFYING_HORN_CHARM, "Raises Focus.");
+        addTooltip(ItemInit.MOTTLED_NECKLACE, "Raises Robustness, Immunity and Focus.");
+        addTooltip(ItemInit.PRINCE_OF_DEATHS_PUSTULE, "Raises Vitality.");
+        addTooltip(ItemInit.PRIMAL_GLINTSTONE_BLADE, "Spells consume less FP, but maximum HP is reduced.");
+        addTooltip(ItemInit.MAGIC_SCORPION_CHARM, "Raises Magic Damage, but lowers damage negation.");
+        addTooltip(ItemInit.FIRE_SCORPION_CHARM, "Raises Fire Damage, but lowers damage negation.");
+        addTooltip(ItemInit.LIGHTNING_SCORPION_CHARM, "Raises Lightning Damage, but lowers damage negation.");
+        addTooltip(ItemInit.SACRED_SCORPION_CHARM, "Raises Holy Damage, but lowers damage negation.");
+        addTooltip(ItemInit.RED_FEATHERED_BRANCHSWORD, "Raises attack power when HP is low.");
+        addTooltip(ItemInit.BLUE_FEATHERED_BRANCHSWORD, "Raises defense when HP is low.");
+        addTooltip(ItemInit.RITUAL_SHIELD_TALISMAN, "Raises defense when HP is at maximum.");
+        addTooltip(ItemInit.RITUAL_SWORD_TALISMAN, "Raises attack power when HP is at maximum.");
+        addTooltip(ItemInit.LONGTAIL_CAT_TALISMAN, "Renders the wearer immune to fall damage.");
+        addTooltip(ItemInit.SACRIFICIAL_TWIG, "Prevents rune loss on death, but will be lost its self in exchange.");
+
     }
 
     protected String checkReplaceMenu(RegistryObject<MenuType<?>> registryObject) {
@@ -175,4 +219,9 @@ public class ModLangProvider extends LanguageProvider {
     protected String checkReplace(String string) {
         return REPLACE_LIST.containsKey(string) ? REPLACE_LIST.get(string) : StringUtils.capitalize(string);
     }
+
+    protected void addTooltip(RegistryObject<Item> item, String translation) {
+        add(item.get().getDescriptionId().replace("item", "tooltip"), translation);
+    }
+
 }

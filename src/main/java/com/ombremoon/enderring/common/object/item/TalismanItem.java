@@ -48,8 +48,7 @@ public class TalismanItem extends Item implements ICurioItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(Component.translatable("tooltip." +
-                BuiltInRegistries.ITEM.getKey(this).toString().replace(":", ".")));
+        pTooltipComponents.add(Component.translatable(getDescriptionId().replace("item", "tooltip")));
         pTooltipComponents.add(CommonComponents.EMPTY);
 
         if (Screen.hasShiftDown() && this.effect.get() instanceof ModifiedAttributeEffect statusEffect) {
@@ -57,11 +56,13 @@ public class TalismanItem extends Item implements ICurioItem {
                 AttributeModifier.Operation operation = modifer.getOperation();
                 double amount = modifer.getAmount();
                 for (Supplier<Attribute> attribute : statusEffect.getAttributeMap().get(modifer)) {
-                    String descId = " " + attribute.get().getDescriptionId();
+                    String descId = attribute.get().getDescriptionId();
                     String tooltip = getTooltip(operation, amount);
 
                     pTooltipComponents.add(
-                            Component.literal(tooltip).append(Component.translatable(descId)).withStyle(ChatFormatting.BLUE)
+                            Component.literal(tooltip).append(CommonComponents.SPACE)
+                                    .append(Component.translatable(descId))
+                                    .withStyle(ChatFormatting.BLUE)
                     );
                 }
             }

@@ -97,8 +97,8 @@ public class StatusEffectInit {
     public static final RegistryObject<MobEffect> LIGHTNINGSHROUDING_CRACKED = registerSimpleEffect("lightningshrouding_cracked",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> CRIMSON_BUBBLE = registerSimpleEffect("crimson_bubble",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> CRIMSONWHORL_BUBBLE = registerSimpleEffect("crimsonwhorl_bubble",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+
     //TALISMANS
-    //TODO: fix crimson amber medallion values
     public static final RegistryObject<MobEffect> CRIMSON_AMBER_MEDALLION = registerStatusEffect("crimson_amber_medallion",
             new EffectBuilder(MobEffectCategory.BENEFICIAL)
                     .addAttribute(new AttributeModifier(
