@@ -29,4 +29,5 @@ public class CrystalTearItem extends Item {
         compoundTag.putInt("TearDuration", this.duration);
         return compoundTag;
     }
+
 }

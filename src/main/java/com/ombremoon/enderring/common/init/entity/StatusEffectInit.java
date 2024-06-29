@@ -36,7 +36,66 @@ public class StatusEffectInit {
     public static final RegistryObject<MobEffect> CERULEAN_CRYSTAL = registerSimpleEffect("cerulean_crystal_tear", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> OPALINE_BUBBLE = registerSimpleEffect("opaline_bubble_tear", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     public static final RegistryObject<MobEffect> CERULEAN_HIDDEN = registerSimpleEffect("cerulean_hidden_tear", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> CRIMSONSPILL_CRYSTAL = registerSimpleEffect("crimsonspill_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> CRIMSONBURST_CRYSTAL = registerSimpleEffect("crimsonburst_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> GREENSPILL_CRYSTAL = registerSimpleEffect("greenspill_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> GREENBURST_CRYSTAL = registerSimpleEffect("greenburst_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> STRENGTHKNOT_CRYSTAL = registerSimpleEffect("strengthknot_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> DEXTERITYKNOT_CRYSTAL = registerSimpleEffect("dexterityknot_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> INTELLIGENCEKNOT_CRYSTAL = registerSimpleEffect("intelligenceknot_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> FAITHKNOT_CRYSTAL = registerSimpleEffect("faithknot_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> OPALINEHARD_CRYSTAL = registerSimpleEffect("opalinehard_crystal",
+            new EffectBuilder(MobEffectCategory.BENEFICIAL)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d9b7d304-cc64-4b36-b086-7b8bdb408344"),
+                            "Opalinehard_Crystal",
+                            0.8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.PHYS_NEGATE)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d9b7d304-cc64-4b36-b086-7b8bdb408344"),
+                            "Opalinehard_Crystal",
+                            0.8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.FIRE_NEGATE)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d9b7d304-cc64-4b36-b086-7b8bdb408344"),
+                            "Opalinehard_Crystal",
+                            0.8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.HOLY_DEFENSE)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d9b7d304-cc64-4b36-b086-7b8bdb408344"),
+                            "Opalinehard_Crystal",
+                            0.8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.LIGHT_NEGATE)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d9b7d304-cc64-4b36-b086-7b8bdb408344"),
+                            "Opalinehard_Crystal",
+                            0.8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.MAGIC_NEGATE)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d9b7d304-cc64-4b36-b086-7b8bdb408344"),
+                            "Opalinehard_Crystal",
+                            0.8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.PIERCE_NEGATE)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d9b7d304-cc64-4b36-b086-7b8bdb408344"),
+                            "Opalinehard_Crystal",
+                            0.8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.SLASH_NEGATE)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("d9b7d304-cc64-4b36-b086-7b8bdb408344"),
+                            "Opalinehard_Crystal",
+                            0.8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.STRIKE_NEGATE).build()
+                    );
+    public static final RegistryObject<MobEffect> SPECKLEDHARD_CRYSTAL = registerSimpleEffect("speckledhard_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> LEADENHARD_CRYSTAL = registerSimpleEffect("leadenhard_crystal", new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
 
+    public static final RegistryObject<MobEffect> MAGICSHROUDING_CRACKED = registerSimpleEffect("magicshrouding_cracked",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> FLAMESHROUDING_CRACKED = registerSimpleEffect("flameshrouding_cracked",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> HOLYSHROUDING_CRACKED = registerSimpleEffect("holyshrouding_cracked",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> LIGHTNINGSHROUDING_CRACKED = registerSimpleEffect("lightningshrouding_cracked",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> CRIMSON_BUBBLE = registerSimpleEffect("crimson_bubble",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
+    public static final RegistryObject<MobEffect> CRIMSONWHORL_BUBBLE = registerSimpleEffect("crimsonwhorl_bubble",new EffectBuilder(MobEffectCategory.BENEFICIAL).build());
     //TALISMANS
     //TODO: fix crimson amber medallion values
     public static final RegistryObject<MobEffect> CRIMSON_AMBER_MEDALLION = registerStatusEffect("crimson_amber_medallion",
