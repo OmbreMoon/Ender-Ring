@@ -178,7 +178,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
                 }
                 case HOMING -> {
                     LivingEntity homingEntity = this.getTargetEntity();
-                    if (homingEntity != null) {
+                    if (homingEntity != null && homingEntity.isAlive()) {
                         double distance = homingEntity.distanceToSqr(this);
                         Vec3 direction = new Vec3(homingEntity.getX() - this.getX(), homingEntity.getEyeY() - 0.3F - this.getY(), homingEntity.getZ() - this.getZ());
                         if (distance > 0) {
@@ -189,8 +189,11 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
                             this.setXRot((float) (-Mth.atan2(direction.y, d7) * (double) (180F / (float) Math.PI)));
                             this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
                             this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-                            this.setDeltaMovement(vec35.subtract(direction).scale((double) -f));
+//                            this.setDeltaMovement(vec35.subtract(direction).scale((double) -f));
+                            this.setDeltaMovement(vec35.add(direction).scale((double) f * f));
                         }
+                    } else if (homingEntity != null && !homingEntity.isAlive()) {
+                        this.discard();
                     } else {
                         this.setDeltaMovement(vec3.scale((double) f));
                     }

@@ -18,7 +18,7 @@ public class GlintbladePhalanxSorcery extends MultiProjectileSpell<GlintbladePha
                 .setFPCost(18)
                 .setRequirements(WeaponScaling.INT, 22)
                 .setMotionValue(0.6F)
-                .setLifetime(80)
+                .setLifetime(50)
                 .setVelocity(1.8F)
                 .setSpeedModifier(0.99F)
                 .setInactiveTicks(40)
