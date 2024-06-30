@@ -1,16 +1,24 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
+import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.SpellProjectileEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.function.Supplier;
 
 public abstract class MultiProjectileSpell<S extends MultiProjectileSpell<S, T>, T extends SpellProjectileEntity<S>> extends ProjectileSpell<S, T> {
     private final int projectileCount;
+
+    public static Builder createMultiProjectileBuilder() {
+        return new Builder<>();
+    }
 
     public MultiProjectileSpell(SpellType<?> spellType, ProjectileFactory<S, T> factory, Builder<S> builder) {
         super(spellType, factory, builder);
@@ -18,12 +26,16 @@ public abstract class MultiProjectileSpell<S extends MultiProjectileSpell<S, T>,
     }
 
     @Override
-    protected boolean shouldTickEffect(int duration) {
-        return super.shouldTickEffect(duration);
+    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        if (this.projectileID < this.projectileCount) {
+            createProjectile(playerPatch, this.projectileID);
+            LOGGER.info(String.valueOf(this.projectileID));
+            this.projectileID++;
+        }
     }
 
     public static class Builder<T extends MultiProjectileSpell<T, ?>> extends ProjectileSpell.Builder<T> {
-        protected int projectileCount;
+        protected int projectileCount = 2;
 
         public Builder() {
         }
@@ -73,6 +85,12 @@ public abstract class MultiProjectileSpell<S extends MultiProjectileSpell<S, T>,
             return this;
         }
 
+        public Builder<T> setCount(int count) {
+            this.projectileCount = count;
+            if (count < 2) throw new IllegalArgumentException(String.format("Projectile spell count too small: %s", count));
+            return this;
+        }
+
         public Builder<T> setLifetime(int lifetime) {
             this.projectileLifetime = lifetime;
             return this;
@@ -100,6 +118,11 @@ public abstract class MultiProjectileSpell<S extends MultiProjectileSpell<S, T>,
 
         public Builder<T> setGravity(float gravity) {
             this.gravity = gravity;
+            return this;
+        }
+
+        public Builder<T> setInactiveTicks(int inactiveTicks) {
+            this.inactiveTicks = inactiveTicks;
             return this;
         }
 

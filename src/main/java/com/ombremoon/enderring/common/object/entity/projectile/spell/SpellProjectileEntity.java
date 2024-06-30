@@ -16,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -38,6 +39,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
     protected static final EntityDataAccessor<Float> GRAVITY = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float> VELOCITY = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float> CHARGE = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Integer> OWNER = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> TARGET = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> INACTIVE = SynchedEntityData.defineId(SpellProjectileEntity.class, EntityDataSerializers.INT);
     private ScaledWeapon weapon;
@@ -74,7 +76,8 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         this.entityData.define(SPEED_MODIFIER, 1.0F);
         this.entityData.define(GRAVITY, 0.0F);
         this.entityData.define(VELOCITY, 0.0F);
-        this.entityData.define(CHARGE, 0.0F);
+        this.entityData.define(CHARGE, 1.0F);
+        this.entityData.define(OWNER, 0);
         this.entityData.define(TARGET, 0);
         this.entityData.define(INACTIVE, 0);
     }
@@ -97,6 +100,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
     @Override
     public void tick() {
         super.tick();
+//        this.discard();
         if (!this.level().isClientSide && this.projectileSpell == null) this.discard();
         Vec3 vec3 = this.getDeltaMovement();
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
@@ -142,6 +146,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
 
         if (this.tickCount == this.getInactiveTicks()) {
             this.isActive = true;
+            log(/*this.getVelocity() * */this.getCharge());
             this.shootFromInactivity(this.getXRot(), this.getYRot(), 0.0F, this.getVelocity() * this.getCharge(), 1.0F);
         }
 
@@ -155,7 +160,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         double d6 = vec3.horizontalDistance();
         Path path = this.getPath();
         float f = this.getSpeedModifier();
-        if (isActive) {
+        if (this.isActive) {
             switch (path) {
                 case SPLINE -> {
                     LOGGER.info(String.valueOf(this.lifetime));
@@ -196,8 +201,22 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
                 }
                 default -> this.setDeltaMovement(vec3.scale((double) f));
             }
+            this.setPos(d3, d4, d5);
+        } else {
+            LivingEntity livingEntity = (LivingEntity) this.getOwner();
+            if (livingEntity != null) {
+                vec3 = this.getDeltaMovement();
+                double d10 = vec3.x;
+                double d11 = vec3.y;
+                double d12 = vec3.z;
+                double d13 = this.getX() + d10;
+                double d14 = this.getY() + d11;
+                double d15 = this.getZ() + d12;
+                Vec3 vec31 = this.getOwner().getDeltaMovement();
+                this.setDeltaMovement(vec31.x, vec31.y > 0 || vec31.y < -0.2 ? vec31.y : 0, vec31.z);
+                this.setPos(d13, d14, d15);
+            }
         }
-        this.setPos(d3, d4, d5);
         if (!this.level().isClientSide) {
             this.tickDespawn();
         }
@@ -289,6 +308,11 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         };
     }
 
+    protected Vec3 getTargetVector(LivingEntity target) {
+        Vec3 vec3 = target.getPosition(0.1F);
+        return this.position().vectorTo(vec3).normalize();
+    }
+
     public void setActive(boolean active) {
         this.isActive = active;
     }
@@ -313,7 +337,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         this.entityData.set(CHARGE, charge);
     }
 
-    public void setCharge(int ticks) {
+    public void setInactiveTicks(int ticks) {
         this.entityData.set(INACTIVE, ticks);
     }
 
@@ -360,7 +384,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
             if (projectileSpell != null) {
                 return this.projectileSpell.getChargeAmount();
             } else {
-                return 0.0F;
+                return 1.0F;
             }
         } else {
             return this.entityData.get(CHARGE);
@@ -380,6 +404,24 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         }
     }
 
+    @Override
+    public void setOwner(@Nullable Entity pOwner) {
+        super.setOwner(pOwner);
+        if (pOwner != null) {
+            this.entityData.set(OWNER, pOwner.getId());
+        }
+    }
+
+    @Nullable
+    @Override
+    public Entity getOwner() {
+        if (!this.level().isClientSide) {
+            return super.getOwner();
+        } else {
+            return getEntity(this.entityData.get(OWNER));
+        }
+    }
+
     public void setTargetEntity(LivingEntity targetEntity) {
         if (targetEntity != null) {
             this.targetEntity = targetEntity.getId();
@@ -389,13 +431,13 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
 
     protected LivingEntity getTargetEntity() {
         if (!this.level().isClientSide) {
-            return getTargetEntity(this.targetEntity);
+            return getEntity(this.targetEntity);
         } else {
-            return getTargetEntity(this.entityData.get(TARGET));
+            return getEntity(this.entityData.get(TARGET));
         }
     }
 
-    private LivingEntity getTargetEntity(int targetEntity) {
+    private LivingEntity getEntity(int targetEntity) {
         return (LivingEntity) this.level().getEntity(targetEntity);
     }
 
@@ -405,6 +447,14 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
 
     public List<Vec3> initRotation(LivingEntity owner) {
         return List.of();
+    }
+
+    protected Vec3 getDefaultSpawnPos(LivingEntity owner) {
+        return new Vec3(owner.getX(), owner.getEyeY() - (double)0.3F, owner.getZ());
+    }
+
+    protected Vec3 getDefaultRotation(LivingEntity owner) {
+        return new Vec3(owner.getXRot(), owner.getYRot(), 0.0F);
     }
 
     protected boolean stopOnFirstEnemyHit() {
@@ -423,6 +473,10 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    private static void log(Object o) {
+        LOGGER.info(String.valueOf(o));
     }
 
     public enum Path {

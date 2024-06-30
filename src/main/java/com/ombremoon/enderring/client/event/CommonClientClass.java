@@ -4,9 +4,11 @@ import com.ombremoon.enderring.client.ModelLocations;
 import com.ombremoon.enderring.client.model.MidasShoulderGuardTwoModel;
 import com.ombremoon.enderring.client.model.entity.TestDummyModel;
 import com.ombremoon.enderring.client.model.entity.mob.TorrentModel;
+import com.ombremoon.enderring.client.model.entity.projectile.spell.GlintbladePhalanxModel;
 import com.ombremoon.enderring.client.model.entity.projectile.spell.GlintstoneArcModel;
 import com.ombremoon.enderring.client.render.entity.TestDummyRenderer;
 import com.ombremoon.enderring.client.render.entity.mob.TorrentRenderer;
+import com.ombremoon.enderring.client.render.entity.projectile.spell.GlintbladePhalanxRenderer;
 import com.ombremoon.enderring.client.render.entity.projectile.spell.GlintstoneArcRenderer;
 import com.ombremoon.enderring.common.init.entity.MobInit;
 import com.ombremoon.enderring.common.init.entity.ProjectileInit;
@@ -25,7 +27,8 @@ public class CommonClientClass {
         return List.of(
                 new Renderers(MobInit.TEST_DUMMY, (context) -> new TestDummyRenderer(context, new TestDummyModel<>(context.bakeLayer(ModelLocations.TEST_DUMMY)))),
                 new Renderers(MobInit.TORRENT, (context) -> new TorrentRenderer(context, new TorrentModel<>(context.bakeLayer(ModelLocations.TORRENT)))),
-                new Renderers(ProjectileInit.GLINTSTONE_ARC, GlintstoneArcRenderer::new)
+                new Renderers(ProjectileInit.GLINTSTONE_ARC, GlintstoneArcRenderer::new),
+                new Renderers(ProjectileInit.GLINTSTONE_PHALANX, GlintbladePhalanxRenderer::new)
         );
     }
 
@@ -35,6 +38,7 @@ public class CommonClientClass {
                 new LayerDefinitions(ModelLocations.TEST_DUMMY, TestDummyModel.createBodyLayer()),
                 new LayerDefinitions(ModelLocations.TORRENT, TorrentModel.createBodyLayer()),
                 new LayerDefinitions(ModelLocations.GLINTSTONE_ARC, GlintstoneArcModel.createBodyLayer()),
+                new LayerDefinitions(ModelLocations.GLINTBLADE_PHALANX, GlintbladePhalanxModel.createBodyLayer()),
                 new LayerDefinitions(ModelLocations.MIDAS_SHOULDER_GUARD, MidasShoulderGuardTwoModel.createBodyLayer())
         ));
         return definitions;

@@ -45,7 +45,7 @@ public abstract class AbstractSpell {
     private ServerPlayerPatch playerPatch;
     private BlockPos blockPos;
     private String descriptionId;
-    private float chargeAmount;
+    private float chargeAmount = 1.0F;
     private int ticks = 0;
     private boolean wasCharged = false;
     private int channelTicks = 0;
@@ -159,7 +159,6 @@ public abstract class AbstractSpell {
     public void tick() {
         if (!level.isClientSide) {
             ticks++;
-            Constants.LOG.info(String.valueOf(ticks));
             if (init) {
                 this.startSpell();
             } else if (!isInactive) {

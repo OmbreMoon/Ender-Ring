@@ -21,13 +21,12 @@ public class GlintstoneArcSorcery extends ProjectileSpell<GlintstoneArcSorcery, 
                 .setMotionValue(1.48F)
                 .setChargedMotionValue(1.52F)
                 .shootFromCatalyst()
-                .setLifetime(35)
+                .setLifetime(140)
                 .setVelocity(1.15F)
 //                .setGravity(0.05F)
                 .setSpeedModifier(0.99F)
                 .canClip()
-                .setInactiveTicks(10)
-                .setAnimation(() -> Animations.BIPED_DEATH);
+                .setInactiveTicks(100);
     }
 
     public GlintstoneArcSorcery() {

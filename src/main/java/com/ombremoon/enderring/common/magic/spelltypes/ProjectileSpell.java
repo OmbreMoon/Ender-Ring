@@ -1,6 +1,5 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.magic.MagicType;
@@ -26,6 +25,7 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
     private final float gravity;
     private final int inactiveTicks;
     protected T projectile;
+    protected int projectileID = 0;
 
     public static Builder createProjectileBuilder() {
         return new Builder<>();
@@ -47,37 +47,40 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
     @Override
     protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         super.onSpellStart(playerPatch, level, blockPos, weapon);
-        this.projectile = this.factory.create(this.level, this.scaledWeapon, (S) this);
     }
 
     @Override
     protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         super.onSpellTick(playerPatch, level, blockPos, weapon);
+        createProjectile(playerPatch, this.projectileID);
+    }
+
+    protected void createProjectile(ServerPlayerPatch playerPatch, int id) {
         Player player = playerPatch.getOriginal();
-        this.projectile.setOwner(playerPatch.getOriginal());
-        this.projectile.setVelocity(this.projectileVelocity);
-        this.projectile.setSpeedModifier(this.speedModifier);
-        this.projectile.setGravity(this.gravity);
-        this.projectile.setCharge(this.getChargeAmount());
+        T spellProjectile = this.factory.create(this.level, this.scaledWeapon, (S) this);
+        spellProjectile.setOwner(playerPatch.getOriginal());
+        spellProjectile.setVelocity(this.projectileVelocity);
+        spellProjectile.setSpeedModifier(this.speedModifier);
+        spellProjectile.setGravity(this.gravity);
+        spellProjectile.setCharge(this.getChargeAmount());
+        spellProjectile.setInactiveTicks(this.inactiveTicks);
 
-        Vec3 vec31 = this.shootFromCatalyst ? new Vec3(player.getX(), player.getEyeY() - (double)0.3F, player.getZ()) : this.projectile.initPosition(player).get(0);
-        Vec3 vec32 = this.shootFromCatalyst ? new Vec3(player.getXRot(), player.getYRot(), 0.0F) : this.projectile.initRotation(player).get(0);
-        this.projectile.setPos(vec31.x, vec31.y, vec31.z);
+        Vec3 vec31 = this.shootFromCatalyst ? new Vec3(player.getX(), player.getEyeY() - (double)0.3F, player.getZ()) : spellProjectile.initPosition(player).get(id);
+        Vec3 vec32 = this.shootFromCatalyst ? new Vec3(player.getXRot(), player.getYRot(), 0.0F) : spellProjectile.initRotation(player).get(id);
+        spellProjectile.setPos(vec31.x, vec31.y, vec31.z);
         if (this.inactiveTicks == 0) {
-            this.projectile.shootFromRotation((float) vec32.x, (float) vec32.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
-            this.projectile.setActive(true);
+            spellProjectile.shootFromRotation((float) vec32.x, (float) vec32.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
+            spellProjectile.setActive(true);
         } else {
-            Constants.LOG.info(String.valueOf(vec32.x));
-            Constants.LOG.info(String.valueOf(vec32.y));
-            this.projectile.prepareShootFromRotation((float) vec32.x, (float) vec32.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
+            spellProjectile.prepareShootFromRotation((float) vec32.x, (float) vec32.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
         }
-        this.projectile.setXRot((float) vec32.x);
-        this.projectile.setYRot((float) vec32.y);
+        spellProjectile.setXRot((float) vec32.x);
+        spellProjectile.setYRot((float) vec32.y);
 
-        if (this.projectile.getPath() == SpellProjectileEntity.Path.HOMING) {
-            this.projectile.setTargetEntity(playerPatch.getTarget());
+        if (spellProjectile.getPath() == SpellProjectileEntity.Path.HOMING) {
+            spellProjectile.setTargetEntity(playerPatch.getTarget());
         }
-        level.addFreshEntity(this.projectile);
+        level.addFreshEntity(spellProjectile);
     }
 
     @Override

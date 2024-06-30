@@ -10,6 +10,7 @@ import com.ombremoon.enderring.common.object.entity.projectile.spell.GlintstoneA
 import com.ombremoon.enderring.common.object.entity.projectile.spell.GlintstonePebbleEntity;
 import com.ombremoon.enderring.common.object.spell.incantation.firemonk.CatchFlameIncantation;
 import com.ombremoon.enderring.common.object.spell.sorcery.glintstone.CometAzurSorcery;
+import com.ombremoon.enderring.common.object.spell.sorcery.glintstone.GlintbladePhalanxSorcery;
 import com.ombremoon.enderring.common.object.spell.sorcery.glintstone.GlintstoneArcSorcery;
 import com.ombremoon.enderring.common.object.spell.sorcery.glintstone.GlintstonePebbleSorcery;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -28,6 +29,7 @@ public class SpellInit {
     public static final RegistryObject<SpellType<GlintstonePebbleSorcery>> GLINTSTONE_PEBBLE = registerSpell("glintstone_pebble", GlintstonePebbleSorcery::new);
     public static final RegistryObject<SpellType<GlintstoneArcSorcery>> GLINTSTONE_ARC = registerSpell("glintstone_arc", GlintstoneArcSorcery::new);
     public static final RegistryObject<SpellType<CometAzurSorcery>> COMET_AZUR = registerSpell("comet_azur", CometAzurSorcery::new);
+    public static final RegistryObject<SpellType<GlintbladePhalanxSorcery>> GLINTBLADE_PHALANX = registerSpell("glintblade_phalanx", GlintbladePhalanxSorcery::new);
 
     //INCANTATIONS
     public static final RegistryObject<SpellType<AnimatedSpell>> CATCH_FLAME = registerSpell("catch_flame", CatchFlameIncantation::new);
