@@ -2,17 +2,13 @@ package com.ombremoon.enderring.common.object.world.effect;
 
 import com.mojang.logging.LogUtils;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import org.checkerframework.checker.units.qual.A;
-import org.jetbrains.annotations.Debug;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
-import org.w3c.dom.Attr;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -21,14 +17,15 @@ public class EffectBuilder {
     private final Logger log = LogUtils.getLogger();
 
     private MobEffectCategory category;
+    private EffectType type;
     private int color;
     private Map<String, Map<Integer, Double>> tiers;
     private Map<Integer, String> translations;
     private Map<AttributeModifier, List<Supplier<Attribute>>> attributes;
     private BiFunction<Integer, Integer, Boolean> applyTick;
 
-    public EffectBuilder(MobEffectCategory category) {
-        this.category = category;
+    public EffectBuilder(EffectType type) {
+        this.category = MobEffectCategory.BENEFICIAL;
         this.color = 234227227;
         this.applyTick = (a, b) -> true;
     }
@@ -46,6 +43,11 @@ public class EffectBuilder {
     public EffectBuilder setApplyTick(BiFunction<Integer, Integer, Boolean> apply) {
         if (this.attributes != null) LogUtils.getLogger().warn("Can not set apply ticks on an modified attribute effect.");
         this.applyTick = apply;
+        return this;
+    }
+
+    public EffectBuilder setCategory(MobEffectCategory category) {
+        this.category = category;
         return this;
     }
 
@@ -71,20 +73,20 @@ public class EffectBuilder {
 
     public StatusEffect build() {
         if (this.attributes == null) {
-            return new StatusEffect(category, color, translations, tiers, applyTick);
+            return new StatusEffect(type, color, translations, tiers, applyTick, category);
         } else {
             for (List<Supplier<Attribute>> attributesList : this.attributes.values()) {
                 if (attributesList.contains(EntityAttributeInit.VIGOR)
                     || attributesList.contains(EntityAttributeInit.ENDURANCE)
                     || attributesList.contains(EntityAttributeInit.MIND))
-                    return new MainAttributeEffect(category, color, attributes, translations, tiers);
+                    return new MainAttributeEffect(category, color, attributes, translations, tiers, type);
             }
-            return new ModifiedAttributeEffect(category, color, attributes, translations, tiers);
+            return new ModifiedAttributeEffect(category, color, attributes, translations, tiers, type);
         }
     }
 
     public HPEffect buildHpEffect(boolean maxHpEffect) {
-        return new HPEffect(category, color, attributes, translations, tiers, maxHpEffect);
+        return new HPEffect(category, color, attributes, translations, tiers, maxHpEffect, type);
     }
 
 }

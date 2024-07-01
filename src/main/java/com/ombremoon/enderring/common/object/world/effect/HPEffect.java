@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.world.effect;
 
+import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -13,8 +14,8 @@ import java.util.function.Supplier;
 public class HPEffect extends ModifiedAttributeEffect {
     private final boolean maxHp;
 
-    public HPEffect(MobEffectCategory category, int color, Map<AttributeModifier, List<Supplier<Attribute>>> attributes, Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, boolean maxHp) {
-        super(category, color, attributes, translations, tiers);
+    public HPEffect(MobEffectCategory category, int color, Map<AttributeModifier, List<Supplier<Attribute>>> attributes, Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, boolean maxHp, EffectType type) {
+        super(category, color, attributes, translations, tiers, type);
         this.maxHp = maxHp;
     }
 

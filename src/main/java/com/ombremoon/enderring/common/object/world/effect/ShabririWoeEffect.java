@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.world.effect;
 
+import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,8 +11,8 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class ShabririWoeEffect extends StatusEffect {
-    public ShabririWoeEffect(MobEffectCategory pCategory, int pColor) {
-        super(pCategory, pColor, null, null, null);
+    public ShabririWoeEffect(EffectType type, int pColor) {
+        super(type, pColor, null, null, null, MobEffectCategory.HARMFUL);
     }
 
     @Override

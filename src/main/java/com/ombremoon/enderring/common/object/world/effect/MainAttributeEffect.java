@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.world.effect;
 
+import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import com.ombremoon.enderring.network.ModNetworking;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -8,17 +9,15 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Attr;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 public class MainAttributeEffect extends ModifiedAttributeEffect {
 
-    public MainAttributeEffect(MobEffectCategory category, int color, Map<AttributeModifier, List<Supplier<Attribute>>> attributes, @Nullable Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers) {
-        super(category, color, attributes, translations, tiers);
+    public MainAttributeEffect(MobEffectCategory category, int color, Map<AttributeModifier, List<Supplier<Attribute>>> attributes, @Nullable Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, EffectType type) {
+        super(category, color, attributes, translations, tiers, type);
     }
 
     @Override

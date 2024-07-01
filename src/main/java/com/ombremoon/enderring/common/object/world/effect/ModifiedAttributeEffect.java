@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.common.object.world.effect;
 
+import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import com.ombremoon.enderring.util.EntityStatusUtil;
-import net.minecraft.world.effect.HealthBoostMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,22 +10,18 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Attr;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class ModifiedAttributeEffect extends StatusEffect {
     protected final Map<AttributeModifier, List<Supplier<Attribute>>> attributes;
 
-    public ModifiedAttributeEffect(MobEffectCategory category, int color, Map<AttributeModifier, List<Supplier<Attribute>>> attributes, Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers) {
-        super(category, color, translations, tiers, (a, b) -> false);
+    public ModifiedAttributeEffect(MobEffectCategory category, int color, Map<AttributeModifier, List<Supplier<Attribute>>> attributes, Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, EffectType type) {
+        super(type, color, translations, tiers, (a, b) -> false, category);
         this.attributes = attributes;
     }
 

@@ -11,12 +11,15 @@ import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.Catalys
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
+import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
+import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
 import com.ombremoon.enderring.event.custom.*;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.gameasset.Animations;
@@ -54,6 +58,24 @@ public class CommonModEvents {
             if (entitypatch instanceof PlayerPatch<?> playerPatch) {
                 CapabilitySkill skill = playerPatch.getSkillCapability();
                 skill.skillContainers[ExtendedSkillSlots.HEAVY_ATTACK.universalOrdinal()].setSkill(SkillInit.HEAVY_ATTACK);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEffectAdd(MobEffectEvent.Applicable event) {
+        if (!(event.getEffectInstance().getEffect() instanceof StatusEffect newEffect)) return;
+        if (newEffect.getEffectType() == EffectType.PERSISTENT
+                || newEffect.getEffectType() == EffectType.UNIQUE
+                || newEffect.getEffectType() == EffectType.BUILD_UP)
+            return;
+
+        for (MobEffectInstance effectInstance : event.getEntity().getActiveEffects()) {
+            if (effectInstance.getEffect() instanceof StatusEffect currentEffect) {
+                if (currentEffect.getEffectType().equals(newEffect.getEffectType())) {
+                    event.setCanceled(true);
+                    return;
+                }
             }
         }
     }

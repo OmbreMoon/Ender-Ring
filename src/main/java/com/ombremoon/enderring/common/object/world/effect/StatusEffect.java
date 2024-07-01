@@ -3,12 +3,12 @@ package com.ombremoon.enderring.common.object.world.effect;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
+import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,12 +26,14 @@ public class StatusEffect extends MobEffect {
     @Nullable public final Map<Integer, String> translationKeys;
     @Nullable private final Map<String, Map<Integer, Double>> tiers;
     private final BiFunction<Integer, Integer, Boolean> applyTick;
+    private final EffectType type;
 
-    public StatusEffect(MobEffectCategory pCategory, int pColor, @Nullable Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, BiFunction<Integer, Integer, Boolean> applyTick) {
-        super(pCategory, pColor);
+    public StatusEffect(EffectType type, int pColor, @Nullable Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, BiFunction<Integer, Integer, Boolean> applyTick, MobEffectCategory category) {
+        super(category, pColor);
         this.translationKeys = translations;
         this.tiers = tiers;
         this.applyTick = applyTick;
+        this.type = type;
     }
 
     @Override
@@ -94,6 +96,10 @@ public class StatusEffect extends MobEffect {
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
         return applyTick.apply(pDuration, pAmplifier);
+    }
+
+    public EffectType getEffectType() {
+        return this.type;
     }
 
     @Override
