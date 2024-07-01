@@ -160,7 +160,7 @@ public class CatalystWeapon extends MeleeWeapon {
         if (ConfigHandler.REQUIRES_BATTLE_MODE.get() && !playerPatch.isBattleMode()) {
             return false;
         }
-        return this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), forceConsume) && playerPatch.consumeStamina(abstractSpell.getStaminaCost(player)) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player);
+        return this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), abstractSpell, forceConsume) && playerPatch.consumeStamina(abstractSpell.getStaminaCost(player)) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player);
     }
 
     private boolean canCastSpell(Player player, AbstractSpell abstractSpell) {

@@ -6,6 +6,7 @@ import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.ERMob;
+import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
@@ -93,15 +94,18 @@ public class PlayerStatus implements IPlayerStatus {
     }
 
     @Override
-    public boolean consumeFP(float amount, boolean forceConsume) {
+    public boolean consumeFP(float amount, AbstractSpell abstractSpell, boolean forceConsume) {
         float currentFP = this.getFP();
         if (this.player.hasEffect(StatusEffectInit.CERULEAN_HIDDEN.get()) || this.player.getAbilities().instabuild) {
             return true;
         } else if (currentFP < amount) {
             return false;
         } else {
-            if (forceConsume)
-                this.setFP(currentFP - amount);
+            if (forceConsume) {
+                amount = EventFactory.getFPConsumption(this.player, amount, abstractSpell);
+                float fpCost = currentFP - amount;
+                this.setFP(fpCost);
+            }
             return true;
         }
     }

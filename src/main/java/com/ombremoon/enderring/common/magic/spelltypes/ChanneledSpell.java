@@ -34,7 +34,7 @@ public abstract class ChanneledSpell extends AnimatedSpell {
     @Override
     protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         super.onSpellTick(playerPatch, level, blockPos, weapon);
-        if (!EntityStatusUtil.consumeFP(playerPatch.getOriginal(), this.fpTickCost, true) || !EntityStatusUtil.isChannelling(playerPatch.getOriginal())) {
+        if (!EntityStatusUtil.consumeFP(playerPatch.getOriginal(), this.fpTickCost, this, true) || !EntityStatusUtil.isChannelling(playerPatch.getOriginal())) {
             this.endSpell();
         }
     }

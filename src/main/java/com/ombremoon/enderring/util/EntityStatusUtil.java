@@ -131,8 +131,8 @@ public class EntityStatusUtil {
         EntityStatusProvider.get(player).setFP((float) Math.min(getFP(player) + fpAmount, player.getAttributeValue(EntityAttributeInit.MAX_FP.get())));
     }
 
-    public static boolean consumeFP(Player player, float amount, boolean forceConsume) {
-        return EntityStatusProvider.get(player).consumeFP(amount, forceConsume);
+    public static boolean consumeFP(Player player, float amount, AbstractSpell abstractSpell, boolean forceConsume) {
+        return EntityStatusProvider.get(player).consumeFP(amount, abstractSpell, forceConsume);
     }
 
     public static void updateDefense(Player player, Attribute attribute) {

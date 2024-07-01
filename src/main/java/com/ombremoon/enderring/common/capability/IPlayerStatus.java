@@ -24,7 +24,7 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
 
     void setFP(float fpAmount);
 
-    boolean consumeFP(float amount, boolean forceConsume);
+    boolean consumeFP(float amount, AbstractSpell abstractSpell, boolean forceConsume);
 
     LinkedHashSet<SpellType<?>> getSpellSet();
 

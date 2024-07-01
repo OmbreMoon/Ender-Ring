@@ -48,7 +48,7 @@ public class DebugItem extends Item {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
                 this.setStats(pPlayer);
             } else {
-                EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.GLINTSTONE_ARC.get());
+                EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         } else {

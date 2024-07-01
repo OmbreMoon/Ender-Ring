@@ -2,7 +2,6 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.Saturations;
@@ -13,10 +12,9 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
-import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
+import com.ombremoon.enderring.event.custom.EventFactory;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,8 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import java.util.*;
-
-//TODO: ADD DAMAGE CALCULATION EVENTS
 
 public class DamageUtil {
     private static final int STAT_SCALE = ConfigHandler.STAT_SCALE.get();
@@ -105,12 +101,12 @@ public class DamageUtil {
                         f += damage * getScalingUpgrade(weapon, entry.getKey(), weaponLevel) * entry.getValue();
                     }
                 }
-                return ((damage + f) / STAT_SCALE) * getApMultipliers(livingEntity);
+                return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, ((damage + f) / STAT_SCALE) * getApMultipliers(livingEntity));
             } else {
-                return ((damage + (damage * -0.4F)) / STAT_SCALE) * getApMultipliers(livingEntity);
+                return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, ((damage + (damage * -0.4F)) / STAT_SCALE) * getApMultipliers(livingEntity));
             }
         } else {
-            return damage * getApMultipliers(livingEntity);
+            return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, damage * getApMultipliers(livingEntity));
         }
     }
 
@@ -132,7 +128,7 @@ public class DamageUtil {
             double attrVal = EntityStatusUtil.getEntityAttribute(player, scaling.getAttribute());
             f += scaleVal * getSaturationValue(attrVal, weapon, weaponDamage, false) * 100;
         }
-        return 100 + f * getApMultipliers(player);
+        return EventFactory.calculateCatalystScaling(player, weaponDamage, weapon, 100 + f * getApMultipliers(player));
     }
 
     public static float calculateDefense(Player player, WeaponDamage weaponDamage) {
@@ -140,7 +136,8 @@ public class DamageUtil {
         if (weaponDamage != WeaponDamage.LIGHTNING) {
             f += getSaturationValue(weaponDamage.getSaturation(), EntityStatusUtil.getEntityAttribute(player, weaponDamage.getWeaponScaling().getAttribute()), false);
         }
-        return (100 * (f + getSaturationValue(Saturations.RUNE_DEFENSE, EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get()), true))) / STAT_SCALE;
+        float def = (100 * (f + getSaturationValue(Saturations.RUNE_DEFENSE, EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get()), true))) / STAT_SCALE;
+        return EventFactory.calculateEntityDefense(player, weaponDamage, def);
     }
 
     public static float calculateResistance(Player player, Attribute attribute) {
@@ -150,7 +147,8 @@ public class DamageUtil {
         } else if (attribute == EntityAttributeInit.ARCANE.get()) {
             f += getSaturationValue(Saturations.VITALITY, EntityStatusUtil.getEntityAttribute(player, attribute), false);
         }
-        return 100 * (f + getSaturationValue(Saturations.RUNE_RESISTANCE, EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get()), false));
+        float resist = 100 * (f + getSaturationValue(Saturations.RUNE_RESISTANCE, EntityStatusUtil.getEntityAttribute(player, EntityAttributeInit.RUNE_LEVEL.get()), false));
+        return EventFactory.calculateEntityResistance(player, resist);
     }
 
     public static float calculateStatusBuildUp(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, int buildUp) {
