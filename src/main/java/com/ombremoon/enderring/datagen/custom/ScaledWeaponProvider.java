@@ -86,6 +86,15 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponDamage(25, 0, 0, 0, 0)
                 .weaponScaling(15, 0, 0, 83 ,0)
                 .weaponRequirements(4, 0, 0, 10, 0).build());
+
+        addWeapon(CommonClass.customLocation("giants_seal"), ScaledWeapon.Builder.create()
+                .defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.SEAL).reinforceType(ReinforceType.PURE_CATALYST_FRONT)
+                .physDamageType(PhysicalDamageType.STRIKE)
+                .saturation(14, 14, 14, 14, 14)
+                .weaponDamage(25, 0, 0, 0, 0)
+                .weaponScaling(15, 0, 0, 77, 0)
+                .weaponGuard(25, 15, 15, 15, 15)
+                .weaponRequirements(4, 0, 0, 14, 0).build());
     }
 
     protected void registerThrowingPots() {

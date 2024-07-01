@@ -165,6 +165,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             EquipmentInit.UCHIGATANA.get(),
             EquipmentInit.SHORTBOW.get(),
             EquipmentInit.LONGBOW.get(),
+            EquipmentInit.GIANT_SEAL.get(),
             EquipmentInit.LARGE_LEATHER_SHIELD.get(),
             EquipmentInit.BUCKLER.get(),
             EquipmentInit.SCRIPTURE_WOODEN_SHIELD.get(),

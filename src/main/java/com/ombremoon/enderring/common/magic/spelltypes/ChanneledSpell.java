@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.magic.spelltypes;
 
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.event.custom.EventFactory;
@@ -56,8 +57,8 @@ public abstract class ChanneledSpell extends AnimatedSpell {
         public Builder() {
         }
 
-        public Builder<T> setMagicType(MagicType magicType) {
-            this.magicType = magicType;
+        public Builder<T> setClassification(Classification classification) {
+            this.classification = classification;
             return this;
         }
 

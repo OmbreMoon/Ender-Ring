@@ -1,5 +1,7 @@
 package com.ombremoon.enderring.common.init.item;
 
+import com.ombremoon.enderring.common.magic.Classification;
+import com.ombremoon.enderring.common.magic.Classifications;
 import com.ombremoon.enderring.common.object.item.MidasGauntletItem;
 import com.ombremoon.enderring.common.object.item.equipment.ModdedArmor;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
@@ -66,6 +68,7 @@ public class EquipmentInit extends ItemInit {
     public static final RegistryObject<StaffWeapon> ASTROLOGER_STAFF = registerStaff("astrologers_staff");
     public static final RegistryObject<StaffWeapon> GLINTSTONE_STAFF = registerStaff("glintstone_staff");
     public static final RegistryObject<SealWeapon> FINGER_SEAL = registerSeal("finger_seal");
+    public static final RegistryObject<SealWeapon> GIANT_SEAL = registerSeal("giants_seal", 0.2F, Classifications.FIRE_MONK, Classifications.FIRE_GIANT);
 
     //Shields
     public static final RegistryObject<AbstractShield> LARGE_LEATHER_SHIELD = registerMediumShield("large_leather_shield");
@@ -103,11 +106,19 @@ public class EquipmentInit extends ItemInit {
     }
 
     protected static RegistryObject<SealWeapon> registerSeal(String name) {
-        return registerCatalyst(name, () -> new SealWeapon(itemProperties()));
+        return registerSeal(name, 0.0F, (Classification) null);
+    }
+
+    protected static RegistryObject<SealWeapon> registerSeal(String name, float spellBoost, Classification... classifications) {
+        return registerCatalyst(name, () -> new SealWeapon(itemProperties(), spellBoost, classifications));
     }
 
     protected static RegistryObject<StaffWeapon> registerStaff(String name) {
-        return registerCatalyst(name, () -> new StaffWeapon(itemProperties()));
+        return registerStaff(name, 0.0F, (Classification) null);
+    }
+
+    protected static RegistryObject<StaffWeapon> registerStaff(String name, float spellBoost, Classification... classifications) {
+        return registerCatalyst(name, () -> new StaffWeapon(itemProperties(), spellBoost, classifications));
     }
 
     protected static RegistryObject<AbstractShield> registerSmallShield(String name) {

@@ -25,11 +25,13 @@ public enum Saturations implements Saturation {
     RESISTANCE(new int[]{0, 30, 40, 60, 99}, new int[]{0, 0, 30, 40, 50}, new double[]{1, 1, 1, 1, 1}),
     VITALITY(new int[]{0, 15, 40, 60, 99}, new int[]{0, 15, 30, 40, 50}, new double[]{1, 1, 1, 1, 1});
 
-    private final int[] stat;
-    private final int[] grow;
-    private final double[] exp;
+    final int[] stat;
+    final int[] grow;
+    final double[] exp;
+    final int id;
 
     Saturations(int[] stat, int[] grow, double[] exp) {
+        this.id = Saturation.ENUM_MANAGER.assign(this);
         this.stat = stat;
         this.grow = grow;
         this.exp = exp;
@@ -60,5 +62,10 @@ public enum Saturations implements Saturation {
         if (stat.length != 5 || grow.length != 5 || exp.length != 5) {
             throw new IllegalStateException("Stat/Grow/Exp must all be size 5");
         }
+    }
+
+    @Override
+    public int universalOrdinal() {
+        return this.id;
     }
 }

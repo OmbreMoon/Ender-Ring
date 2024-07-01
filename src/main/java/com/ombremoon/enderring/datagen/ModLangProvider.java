@@ -40,7 +40,8 @@ public class ModLangProvider extends LanguageProvider {
             "sus", "",
             "shabriris", "Shabriri's",
             "radagons", "Radagon's",
-            "astrologers", "Astrologer's"
+            "astrologers", "Astrologer's",
+            "giants", "Giant's"
     );
 
     //Include talismans that go up to plus one and no further
@@ -207,6 +208,10 @@ public class ModLangProvider extends LanguageProvider {
         addTooltip(ItemInit.FLOCKS_CANVAS_TALISMAN, "Greatly raises the potency of Incantations.");
     }
 
+    protected void addTooltip(RegistryObject<Item> item, String translation) {
+        add(item.get().getDescriptionId().replace("item", "tooltip"), translation);
+    }
+
     protected String checkReplaceMenu(RegistryObject<MenuType<?>> registryObject) {
         return checkReplace(registryObject).replace(" Menu", "");
     }
@@ -221,10 +226,6 @@ public class ModLangProvider extends LanguageProvider {
 
     protected String checkReplace(String string) {
         return REPLACE_LIST.containsKey(string) ? REPLACE_LIST.get(string) : StringUtils.capitalize(string);
-    }
-
-    protected void addTooltip(RegistryObject<Item> item, String translation) {
-        add(item.get().getDescriptionId().replace("item", "tooltip"), translation);
     }
 
 }

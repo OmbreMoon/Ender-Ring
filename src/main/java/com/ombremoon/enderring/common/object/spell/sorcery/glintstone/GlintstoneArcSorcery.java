@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.spell.sorcery.glintstone;
 
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
+import com.ombremoon.enderring.common.magic.Classifications;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
@@ -14,7 +15,7 @@ public class GlintstoneArcSorcery extends ProjectileSpell<GlintstoneArcSorcery, 
     @SuppressWarnings("unchecked")
     public static ProjectileSpell.Builder<GlintstoneArcSorcery> createGlintstoneArcSorcery() {
         return createProjectileBuilder()
-                .setMagicType(MagicType.SORCERY)
+                .setClassification(Classifications.GLINTSTONE)
                 .setDuration(20)
                 .setFPCost(10)
                 .setRequirements(WeaponScaling.INT, 13)

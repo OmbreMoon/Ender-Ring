@@ -8,7 +8,6 @@ import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
-import com.ombremoon.enderring.event.custom.BuildSpellEvent;
 import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -21,12 +20,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractSpell {
@@ -35,6 +34,7 @@ public abstract class AbstractSpell {
     protected static int INSTANT_SPELL_DURATION = 10;
     private final SpellType<?> spellType;
     private final MagicType magicType;
+    private final Classification classification;
     private final Set<Pair<WeaponScaling, Integer>> requiredStats;
     private final int fpCost;
     private final int staminaCost;
@@ -48,6 +48,7 @@ public abstract class AbstractSpell {
     private ServerPlayerPatch playerPatch;
     private BlockPos blockPos;
     private String descriptionId;
+    protected float catalystBoost;
     private float chargeAmount = 1.0F;
     private int ticks = 0;
     private boolean wasCharged = false;
@@ -63,7 +64,8 @@ public abstract class AbstractSpell {
     public AbstractSpell(SpellType<?> spellType, Builder<? extends AbstractSpell> builder) {
         this.spellType = spellType;
         builder = EventFactory.getBuilder(spellType, builder);
-        this.magicType = builder.magicType;
+        this.classification = builder.classification;
+        this.magicType = this.classification.getMagicType();
         this.requiredStats = builder.requiredStats;
         this.fpCost = builder.fpCost;
         this.staminaCost = builder.staminaCost;
@@ -76,6 +78,10 @@ public abstract class AbstractSpell {
 
     public SpellType<?> getSpellType() {
         return this.spellType;
+    }
+
+    public Classification getClassification() {
+        return this.classification;
     }
 
     public MagicType getMagicType() {
@@ -201,19 +207,15 @@ public abstract class AbstractSpell {
     }
 
     protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-
     }
 
     protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-//        playerPatch.getOriginal().sendSystemMessage(Component.literal("Spell: ").append(Component.translatable(this.getSpellName().getString())));
     }
 
     protected void onSpellStop(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-
     }
 
     protected void onHurtTick(ServerPlayerPatch playerPatch, LivingEntity targetEntity, Level level, ScaledWeapon weapon) {
-
     }
 
     protected boolean shouldTickEffect(int duration) {
@@ -221,10 +223,9 @@ public abstract class AbstractSpell {
     }
 
     public float getScaledDamage() {
-        if (this.wasCharged) {
-            return this.magicScaling * this.chargedMotionValue / ConfigHandler.STAT_SCALE.get();
-        }
-        return this.magicScaling * this.motionValue / ConfigHandler.STAT_SCALE.get();
+        float f = this.magicScaling * (1 + this.catalystBoost)  / ConfigHandler.STAT_SCALE.get();
+        float motionValue = this.wasCharged ? this.chargedMotionValue : this.motionValue;
+        return f * motionValue;
     }
 
     public void checkHurt(LivingEntity livingEntity) {
@@ -272,7 +273,7 @@ public abstract class AbstractSpell {
         return this.scaledWeapon;
     }
 
-    public void initSpell(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon, float magicScaling, boolean wasCharged) {
+    public void initSpell(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon, float magicScaling, boolean wasCharged, Set<Classification> classifications, float spellBoost) {
         this.level = level;
         this.playerPatch = playerPatch;
         this.blockPos = blockPos;
@@ -280,12 +281,19 @@ public abstract class AbstractSpell {
         this.magicScaling = magicScaling;
         this.wasCharged = wasCharged;
 
+        for (var cl : classifications) {
+            if (this.classification == cl) {
+                this.catalystBoost = spellBoost;
+                break;
+            }
+        }
+
         EntityStatusUtil.activateSpell(playerPatch.getOriginal(), this);
         this.init = true;
     }
 
     public static class Builder<T extends AbstractSpell> {
-        protected MagicType magicType;
+        protected com.ombremoon.enderring.common.magic.Classification classification;
         protected Set<Pair<WeaponScaling, Integer>> requiredStats = new LinkedHashSet<>();
         protected int duration = 1;
         protected int fpCost;
@@ -295,8 +303,8 @@ public abstract class AbstractSpell {
         protected boolean canCharge;
         protected SoundEvent castSound;
 
-        public Builder<T> setMagicType(MagicType magicType) {
-            this.magicType = magicType;
+        public Builder<T> setClassification(com.ombremoon.enderring.common.magic.Classification classification) {
+            this.classification = classification;
             return this;
         }
 

@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.spell.sorcery.glintstone;
 
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
+import com.ombremoon.enderring.common.magic.Classifications;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.MultiProjectileSpell;
@@ -13,7 +14,7 @@ public class GlintbladePhalanxSorcery extends MultiProjectileSpell<GlintbladePha
     @SuppressWarnings("unchecked")
     public static MultiProjectileSpell.Builder<GlintbladePhalanxSorcery> createGlintbladePhalanxSorcery() {
         return createMultiProjectileBuilder()
-                .setMagicType(MagicType.SORCERY)
+                .setClassification(Classifications.CARIAN)
                 .setDuration(20)
                 .setFPCost(18)
                 .setRequirements(WeaponScaling.INT, 22)

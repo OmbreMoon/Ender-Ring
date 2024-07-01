@@ -1,19 +1,24 @@
 package com.ombremoon.enderring.common.object.spell.incantation.firemonk;
 
+import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
+import com.ombremoon.enderring.common.magic.Classifications;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.AnimatedSpell;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class CatchFlameIncantation extends AnimatedSpell {
 
     public static Builder<AnimatedSpell> createCatchFlameBuilder() {
         return createSimpleSpellBuilder()
-                .setMagicType(MagicType.INCANTATION)
+                .setClassification(Classifications.FIRE_MONK)
                 .setDuration(INSTANT_SPELL_DURATION)
                 .setFPCost(10)
                 .setRequirements(WeaponScaling.FAI, 8)
@@ -23,6 +28,12 @@ public class CatchFlameIncantation extends AnimatedSpell {
 
     public CatchFlameIncantation() {
         this(SpellInit.CATCH_FLAME.get(), createCatchFlameBuilder());
+    }
+
+    @Override
+    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        this.catalystBoost = 0;
+        super.onSpellStart(playerPatch, level, blockPos, weapon);
     }
 
     public CatchFlameIncantation(SpellType<?> spellType, Builder<AnimatedSpell> builder) {

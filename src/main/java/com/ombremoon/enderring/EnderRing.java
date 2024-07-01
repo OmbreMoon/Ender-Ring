@@ -5,6 +5,7 @@ import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.ai.MemoryTypeInit;
 import com.ombremoon.enderring.common.init.entity.ai.SensorsInit;
+import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.object.world.LevelledList;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillCategories;
@@ -54,6 +55,7 @@ public class EnderRing {
         WeaponCategory.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, ExtendedWeaponCategories.class);
         Saturation.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, Saturations.class);
         LevelledList.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, LevelledList.class);
+        Classification.ENUM_MANAGER.registerEnumCls(Constants.MOD_ID, Classification.class);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.COMMON_CONFIG, "enderring-common.toml");
     }
 

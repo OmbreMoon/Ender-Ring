@@ -3,6 +3,7 @@ package com.ombremoon.enderring.common.object.spell.sorcery.glintstone;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
+import com.ombremoon.enderring.common.magic.Classifications;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
@@ -19,7 +20,7 @@ public class GlintstonePebbleSorcery extends ProjectileSpell<GlintstonePebbleSor
     @SuppressWarnings("unchecked")
     public static ProjectileSpell.Builder<GlintstonePebbleSorcery> createGlinstonePebbleBuilder() {
         return createProjectileBuilder()
-                .setMagicType(MagicType.SORCERY)
+                .setClassification(Classifications.GLINTSTONE)
                 .setDuration(10)
                 .setFPCost(7)
                 .setRequirements(WeaponScaling.INT, 10)

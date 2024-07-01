@@ -3,6 +3,7 @@ package com.ombremoon.enderring.common.object.spell.sorcery.glintstone;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
+import com.ombremoon.enderring.common.magic.Classifications;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.ChanneledSpell;
@@ -16,7 +17,7 @@ public class CometAzurSorcery extends ChanneledSpell {
 
     public static Builder<ChanneledSpell> createCometAzurSorcery() {
         return createChannelledSpellBuilder()
-                .setMagicType(MagicType.SORCERY)
+                .setClassification(Classifications.PRIMEVAL)
                 .setFPCost(40)
                 .setFPTickCost(10)
                 .setRequirements(WeaponScaling.INT, 60);

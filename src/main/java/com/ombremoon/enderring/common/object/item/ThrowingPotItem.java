@@ -1,6 +1,5 @@
 package com.ombremoon.enderring.common.object.item;
 
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.object.entity.projectile.ThrowingPot;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -10,7 +9,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 

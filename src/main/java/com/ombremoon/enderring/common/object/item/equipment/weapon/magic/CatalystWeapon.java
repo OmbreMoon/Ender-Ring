@@ -7,6 +7,7 @@ import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.init.StatInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
+import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
@@ -27,8 +28,21 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class CatalystWeapon extends MeleeWeapon {
     private final MagicType magicType;
+    private Set<Classification> classifications;
+    private float spellBoost;
+
+    public CatalystWeapon(MagicType magicType, Properties properties, float spellBoost, Classification... classifications) {
+        this(magicType, properties);
+        this.classifications = new HashSet<>(Arrays.asList(classifications));
+        this.spellBoost = spellBoost;
+    }
 
     public CatalystWeapon(MagicType magicType, Properties properties) {
         super(-2.3F, properties);
@@ -91,7 +105,7 @@ public class CatalystWeapon extends MeleeWeapon {
                 if (this.canCastSpell(player, pStack, spell, true)) {
                     int i = this.getWeaponLevel(pStack);
                     WeaponDamage weaponDamage = this.magicType.getWeaponDamage();
-                    spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage), spell.canCharge());
+                    spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage), spell.canCharge(), this.classifications, this.spellBoost);
 
                     if (spell.canCharge())
                         spell.setChargeAmount(1.0F);
@@ -135,7 +149,7 @@ public class CatalystWeapon extends MeleeWeapon {
                     float f = AbstractSpell.getPowerForTime(spell, i);
                     WeaponDamage weaponDamage = this.magicType.getWeaponDamage();
                     if (!((double)f < 0.1D)) {
-                        spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, level, weaponDamage), false);
+                        spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, level, weaponDamage), false, this.classifications, this.spellBoost);
                         spell.setChargeAmount(f);
 
                         player.awardStat(Stats.ITEM_USED.get(this));

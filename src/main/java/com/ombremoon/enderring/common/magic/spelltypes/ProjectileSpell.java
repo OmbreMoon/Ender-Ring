@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.SpellProjectileEntity;
@@ -128,8 +129,8 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
         public Builder() {
         }
 
-        public Builder<T> setMagicType(MagicType magicType) {
-            this.magicType = magicType;
+        public Builder<T> setClassification(Classification classification) {
+            this.classification = classification;
             return this;
         }
 
