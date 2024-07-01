@@ -143,7 +143,11 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.IMMUNIZING_HORN_CHARM.get(),
             ItemInit.STALWART_HORN_CHARM.get(),
             ItemInit.MOTTLED_NECKLACE.get(),
-            ItemInit.PRINCE_OF_DEATHS_PUSTULE.get()
+            ItemInit.PRINCE_OF_DEATHS_PUSTULE.get(),
+            ItemInit.TWINBLADE_TALISMAN.get(),
+            ItemInit.CLAW_TALISMAN.get(),
+            ItemInit.LANCE_TALISMAN.get(),
+            ItemInit.FLOCKS_CANVAS_TALISMAN.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

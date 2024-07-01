@@ -201,7 +201,10 @@ public class ModLangProvider extends LanguageProvider {
         addTooltip(ItemInit.RITUAL_SWORD_TALISMAN, "Raises attack power when HP is at maximum.");
         addTooltip(ItemInit.LONGTAIL_CAT_TALISMAN, "Renders the wearer immune to fall damage.");
         addTooltip(ItemInit.SACRIFICIAL_TWIG, "Prevents rune loss on death, but will be lost its self in exchange.");
-
+        addTooltip(ItemInit.TWINBLADE_TALISMAN, "Enhances final hit of chain attacks.");
+        addTooltip(ItemInit.LANCE_TALISMAN, "Enhances attacks on horseback.");
+        addTooltip(ItemInit.CLAW_TALISMAN, "Enhances jump attacks.");
+        addTooltip(ItemInit.FLOCKS_CANVAS_TALISMAN, "Greatly raises the potency of Incantations.");
     }
 
     protected String checkReplaceMenu(RegistryObject<MenuType<?>> registryObject) {

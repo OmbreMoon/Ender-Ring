@@ -386,6 +386,14 @@ public class StatusEffectInit {
                             EntityAttributeInit.VITALITY)
                     .addTier("c0386557-a3b0-4c98-8493-6330e6adede7", 1, 140D)
                     .addTranslation(1, "item.enderring.prince_of_deaths_pustuleplus1").build());
+    public static final RegistryObject<MobEffect> TWINBLADE_TALISMAN = registerStatusEffect("twinblade_talisman",
+            new EffectBuilder(EffectType.PERSISTENT).build());
+    public static final RegistryObject<MobEffect> LANCE_TALISMAN = registerStatusEffect("lance_talisman",
+            new EffectBuilder(EffectType.PERSISTENT).build());
+    public static final RegistryObject<MobEffect> CLAW_TALISMAN = registerStatusEffect("claw_talisman",
+            new EffectBuilder(EffectType.PERSISTENT).build());
+    public static final RegistryObject<MobEffect> FLOCKS_CANVAS_TALISMAN = registerStatusEffect("flocks_canvas_talisman",
+            new EffectBuilder(EffectType.PERSISTENT).build());
 
     private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
         return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(234227227));

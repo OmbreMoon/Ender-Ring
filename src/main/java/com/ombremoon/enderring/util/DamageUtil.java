@@ -14,6 +14,8 @@ import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
+import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
+import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
 import com.ombremoon.enderring.event.custom.EventFactory;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -24,6 +26,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.*;
 
@@ -77,9 +81,19 @@ public class DamageUtil {
             if (typeDamage > 0) {
                 damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), scaledWeapon.getDamage().getPhysDamageTypes());
                 typeDamage = Math.max(typeDamage, 1.0F);
-                targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage);
+
+                targetEntity.hurt(damageSource, getMotionDamage(attackEntity, typeDamage, motionValue));
             }
         }
+    }
+
+    public static float getMotionDamage(LivingEntity attackEntity, float typeDamage, float motionValue) {
+        if (attackEntity.hasEffect(StatusEffectInit.LANCE_TALISMAN.get()) && attackEntity.isPassenger())
+            typeDamage *= 1.15F;
+        if (attackEntity.hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) && attackEntity.fallDistance > 0)
+            typeDamage *= 1.15F;
+
+        return motionValue != 0 ? typeDamage * motionValue : typeDamage;
     }
 
     public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType) {
@@ -101,21 +115,22 @@ public class DamageUtil {
                         f += damage * getScalingUpgrade(weapon, entry.getKey(), weaponLevel) * entry.getValue();
                     }
                 }
-                return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, ((damage + f) / STAT_SCALE) * getApMultipliers(livingEntity));
+                return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, ((damage + f) / STAT_SCALE) * getApMultipliers(livingEntity, weaponDamage));
             } else {
-                return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, ((damage + (damage * -0.4F)) / STAT_SCALE) * getApMultipliers(livingEntity));
+                return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, ((damage + (damage * -0.4F)) / STAT_SCALE) * getApMultipliers(livingEntity, weaponDamage));
             }
         } else {
-            return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, damage * getApMultipliers(livingEntity));
+            return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, damage * getApMultipliers(livingEntity, weaponDamage));
         }
     }
 
-    private static float getApMultipliers(LivingEntity entity) {
+    private static float getApMultipliers(LivingEntity entity, WeaponDamage weaponDamage) {
         float multiplier = 1.0F;
         if (entity.hasEffect(StatusEffectInit.RITUAL_SWORD_TALISMAN.get())
             && entity.getHealth() >= entity.getMaxHealth()) multiplier += 0.1F;
         if (entity.hasEffect(StatusEffectInit.RED_FEATHERED_BRANCHSWORD.get())
             && entity.getHealth() <= entity.getMaxHealth() * 0.2F) multiplier += 0.2F;
+        if (entity.hasEffect(StatusEffectInit.FLOCKS_CANVAS_TALISMAN.get()) && weaponDamage == WeaponDamage.HOLY) multiplier += 0.08F;
 
         return multiplier;
     }
@@ -128,7 +143,7 @@ public class DamageUtil {
             double attrVal = EntityStatusUtil.getEntityAttribute(player, scaling.getAttribute());
             f += scaleVal * getSaturationValue(attrVal, weapon, weaponDamage, false) * 100;
         }
-        return EventFactory.calculateCatalystScaling(player, weaponDamage, weapon, 100 + f * getApMultipliers(player));
+        return EventFactory.calculateCatalystScaling(player, weaponDamage, weapon, 100 + f * getApMultipliers(player, weaponDamage));
     }
 
     public static float calculateDefense(Player player, WeaponDamage weaponDamage) {

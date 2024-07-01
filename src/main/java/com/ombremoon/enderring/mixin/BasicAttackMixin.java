@@ -32,7 +32,9 @@ public class BasicAttackMixin {
         ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
         if (itemStack.getItem() instanceof MeleeWeapon && cap instanceof ExtendedWeaponCapability weaponCapability) {
             List<Float> motionValues = weaponCapability.getAutoMotionValues(playerPatch);
-            itemStack.getOrCreateTag().putFloat("MotionValue", motionValues.get(comboCounter));
+            float motionValue = motionValues.get(comboCounter);
+            if (comboCounter == motionValues.size()-1) motionValue += 0.45F;
+            itemStack.getOrCreateTag().putFloat("MotionValue", motionValue);
         }
     }
 }
