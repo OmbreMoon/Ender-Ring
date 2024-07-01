@@ -190,7 +190,7 @@ public class DamageUtil {
         return getSaturationValue(getSaturation(weapon, weaponDamage), attributeValue, runeSaturation);
     }
 
-    private static float getSaturationValue(Saturation saturation, double attributeValue, boolean runeSaturation) {
+    public static float getSaturationValue(Saturation saturation, double attributeValue, boolean runeSaturation) {
         int i = getStatIndex(saturation, attributeValue);
         float ratio = getSaturationRatio(saturation, i, attributeValue, runeSaturation);
 

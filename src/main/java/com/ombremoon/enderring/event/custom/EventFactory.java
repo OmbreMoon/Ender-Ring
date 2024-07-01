@@ -2,14 +2,16 @@ package com.ombremoon.enderring.event.custom;
 
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
-import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.AnimatedSpell;
 import com.ombremoon.enderring.common.magic.spelltypes.ChanneledSpell;
 import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class EventFactory {
 
@@ -61,9 +63,30 @@ public class EventFactory {
         return event.getNewDefenseAmount();
     }
 
+    public static float calculateEntityNegation(LivingEntity livingEntity, WeaponDamage weaponDamage, float negationAmount) {
+        CalculateEvent.Negation event = new CalculateEvent.Negation(livingEntity, weaponDamage, negationAmount);
+        if (MinecraftForge.EVENT_BUS.post(event)) return 0.0F;
+        return event.getNewNegationAmount();
+    }
+
     public static float calculateEntityResistance(LivingEntity livingEntity, float resistAmount) {
         CalculateEvent.Resistance event = new CalculateEvent.Resistance(livingEntity, resistAmount);
         if (MinecraftForge.EVENT_BUS.post(event)) return 0.0F;
         return event.getNewResistAmount();
+    }
+
+    public static void onSpellStart(AbstractSpell abstractSpell, LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon) {
+        SpellEvent.Start event = new SpellEvent.Start(abstractSpell, livingEntityPatch, level, blockPos, scaledWeapon);
+        if (MinecraftForge.EVENT_BUS.post(event)) return;
+    }
+
+    public static void onSpellTick(AbstractSpell abstractSpell, LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon, int ticks) {
+        SpellEvent.Tick event = new SpellEvent.Tick(abstractSpell, livingEntityPatch, level, blockPos, scaledWeapon, ticks);
+        if (MinecraftForge.EVENT_BUS.post(event)) return;
+    }
+
+    public static void onSpellStop(AbstractSpell abstractSpell, LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon) {
+        SpellEvent.Stop event = new SpellEvent.Stop(abstractSpell, livingEntityPatch, level, blockPos, scaledWeapon);
+        if (MinecraftForge.EVENT_BUS.post(event)) return;
     }
 }

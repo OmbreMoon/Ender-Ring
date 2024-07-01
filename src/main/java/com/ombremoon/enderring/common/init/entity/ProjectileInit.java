@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.init.entity;
 
+import com.ombremoon.enderring.common.object.entity.projectile.ThrowingPot;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.GlintbladePhalanxEntity;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.GlintstoneArcEntity;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.GlintstonePebbleEntity;
@@ -10,6 +11,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ProjectileInit {
     public static void init() {}
+
+    public static final RegistryObject<EntityType<ThrowingPot>> THROWING_POT = registerProjectile("throwing_pot", ThrowingPot::new, 0.25F, 0.25F);
 
     //SPELLS
     public static final RegistryObject<EntityType<GlintstonePebbleEntity>> GLINTSTONE_PEBBLE = registerProjectile("glintstone_pebble", GlintstonePebbleEntity::new, 0.5F, 0.5F);

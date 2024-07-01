@@ -102,6 +102,29 @@ public class CalculateEvent extends LivingEvent {
         }
     }
 
+    public static class Negation extends CalculateEvent {
+        private final float negationAmount;
+
+        private float newNegationAmount;
+
+        public Negation(LivingEntity entity, WeaponDamage weaponDamage, float negationAmount) {
+            super(entity, weaponDamage);
+            this.negationAmount = this.newNegationAmount = negationAmount;
+        }
+
+        public float getNegationAmount() {
+            return this.negationAmount;
+        }
+
+        public float getNewNegationAmount() {
+            return this.newNegationAmount;
+        }
+
+        public void setNegationAmount(float newNegationAmount) {
+            this.newNegationAmount = newNegationAmount;
+        }
+    }
+
     public static class Resistance extends CalculateEvent {
         private final float resistAmount;
 

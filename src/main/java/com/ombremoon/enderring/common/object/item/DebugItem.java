@@ -1,7 +1,9 @@
 package com.ombremoon.enderring.common.object.item;
 
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.gui.screen.PlayerStatusScreen;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.MobInit;
@@ -49,6 +51,7 @@ public class DebugItem extends Item {
                 this.setStats(pPlayer);
             } else {
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
+                Constants.LOG.info(String.valueOf(DamageUtil.getSaturationValue(Saturations.THROWING_STATUS, 10, false) * 100));
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
         } else {
@@ -65,7 +68,7 @@ public class DebugItem extends Item {
 //        EntityStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.DEXTERITY.get(), 30);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 99);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 35);
-//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 99);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 99);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 33);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.RUNE_LEVEL.get(), 132);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.PHYS_NEGATE.get(), 0);

@@ -77,7 +77,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         }
 
         public JsonObject toJsonObject() {
-            Preconditions.checkArgument(this.maxUpgrades > 0, "Max upgrades must be greater than 0");
+            Preconditions.checkArgument(this.maxUpgrades >= 0, "Max upgrades must be greater than or equal 0");
             Preconditions.checkArgument(this.maxUpgrades < 26, "Max upgrades must be less than or equal to 25");
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("maxUpgrades", this.maxUpgrades);
@@ -137,7 +137,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         private int fireDamage;
         private int lightDamage;
         private int holyDamage;
-        private PhysicalDamageType[] physDamageTypes;
+        private PhysicalDamageType[] physDamageTypes = new PhysicalDamageType[]{};
 
         @Override
         public CompoundTag serializeNBT() {
@@ -179,7 +179,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             Preconditions.checkArgument(this.fireDamage >= 0, "Fire damage must be greater than or equal to 0");
             Preconditions.checkArgument(this.lightDamage >= 0, "Lightning damage must be greater than or equal to 0");
             Preconditions.checkArgument(this.holyDamage >= 0, "Holy damage must be greater than or equal to 0");
-            Preconditions.checkArgument(this.physDamageTypes != null, "Weapon must have a physical damage type");
+//            Preconditions.checkArgument(this.physDamageTypes != null, "Weapon must have a physical damage type");
             JsonObject jsonObject = new JsonObject();
             if (this.physDamage > 0) jsonObject.addProperty("physDamage", this.physDamage);
             if (this.magDamage > 0) jsonObject.addProperty("magDamage", this.magDamage);
@@ -428,9 +428,11 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
 
         public boolean meetsRequirements(LivingEntity livingEntity, ScaledWeapon weapon, WeaponDamage weaponDamage) {
             final var list = weapon.getBaseStats().getElementID().getListMap().get(weaponDamage);
-            for (var scaling : list) {
-                if (EntityStatusUtil.getEntityAttribute(livingEntity, scaling.getAttribute()) < getReqMap().get(scaling)) {
-                    return false;
+            if (getReqMap().size() != 0) {
+                for (var scaling : list) {
+                    if (EntityStatusUtil.getEntityAttribute(livingEntity, scaling.getAttribute()) < getReqMap().get(scaling)) {
+                        return false;
+                    }
                 }
             }
             return true;

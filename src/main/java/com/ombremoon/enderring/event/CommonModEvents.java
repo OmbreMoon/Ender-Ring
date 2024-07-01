@@ -13,9 +13,7 @@ import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
-import com.ombremoon.enderring.event.custom.BuildSpellEvent;
-import com.ombremoon.enderring.event.custom.CalculateEvent;
-import com.ombremoon.enderring.event.custom.FPConsumeEvent;
+import com.ombremoon.enderring.event.custom.*;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
@@ -88,7 +86,7 @@ public class CommonModEvents {
                             float negation = 0;
                             if (weaponDamage.getDamageType() == ModDamageTypes.PHYSICAL) {
                                 var physicalDamageTypes = damageSource.getDamageTypes();
-                                if (physicalDamageTypes != null) {
+                                if (physicalDamageTypes.size() > 0) {
                                     float negateAvg = 0;
                                     for (PhysicalDamageType physicalDamage : physicalDamageTypes) {
                                         negateAvg += EntityStatusUtil.getEntityAttribute(livingEntity, physicalDamage.getAttribute()) / 100;
@@ -96,7 +94,7 @@ public class CommonModEvents {
                                     negation = 1 - (negateAvg / physicalDamageTypes.size());
                                 }
                             } else {
-                                negation = (float) (1 - (EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getNegateAttribute()) / 100));
+                                negation = EventFactory.calculateEntityNegation(livingEntity, weaponDamage, (float) (1 - (EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getNegateAttribute()) / 100)));
                             }
                             float attr = (float) EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getDefenseAttribute());
                             float modifiedDamage = getDamageAfterDefense(event.getAmount(), attr);
@@ -125,44 +123,5 @@ public class CommonModEvents {
             damageMult = 0.9F;
         }
         return damageMult * initialDamage;
-    }
-
-    @SubscribeEvent
-    public static void onTest(BuildSpellEvent event) {
-        /*SpellType<?> spellType = event.getSpellType();
-        if (spellType == SpellInit.CATCH_FLAME.get()) {
-            event.getBuilder().setFPCost(1);
-        }*/
-    }
-
-    @SubscribeEvent
-    public static void onTestTwo(BuildSpellEvent.Projectile event) {
-        SpellType<?> spellType = event.getSpellType();
-        if (spellType == SpellInit.GLINTSTONE_ARC.get()) {
-            event.getBuilder().setVelocity(5.0F).setInactiveTicks(1);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onTestThree(BuildSpellEvent.Animated event) {
-        SpellType<?> spellType = event.getSpellType();
-        if (spellType == SpellInit.GLINTSTONE_ARC.get()) {
-            event.getBuilder().setAnimation(() -> Animations.GREATSWORD_DASH);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onTestFour(FPConsumeEvent event) {
-        SpellType<?> spellType = event.getAbstractSpell().getSpellType();
-        if (spellType == SpellInit.CATCH_FLAME.get()) {
-            event.setNewFPAmount((float) EntityStatusUtil.getFP((Player) event.getEntity()));
-        }
-    }
-
-    @SubscribeEvent
-    public static void onTestFive(CalculateEvent.Damage event) {
-        if (event.getEntity().hasEffect(StatusEffectInit.LONGTAIL_CAT_TALISMAN.get()) && event.getDamageType() == WeaponDamage.PHYSICAL) {
-            event.setDamageAmount(event.getDamageAmount() * 2);
-        }
     }
 }

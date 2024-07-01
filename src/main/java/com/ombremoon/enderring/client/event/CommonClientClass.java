@@ -8,6 +8,7 @@ import com.ombremoon.enderring.client.model.entity.projectile.spell.GlintbladePh
 import com.ombremoon.enderring.client.model.entity.projectile.spell.GlintstoneArcModel;
 import com.ombremoon.enderring.client.render.entity.TestDummyRenderer;
 import com.ombremoon.enderring.client.render.entity.mob.TorrentRenderer;
+import com.ombremoon.enderring.client.render.entity.projectile.ThrowingPotRenderer;
 import com.ombremoon.enderring.client.render.entity.projectile.spell.GlintbladePhalanxRenderer;
 import com.ombremoon.enderring.client.render.entity.projectile.spell.GlintstoneArcRenderer;
 import com.ombremoon.enderring.common.init.entity.MobInit;
@@ -25,8 +26,14 @@ import java.util.function.Supplier;
 public class CommonClientClass {
     public static <T extends Entity> List<Renderers> getRenderers() {
         return List.of(
+                //MOBS
                 new Renderers(MobInit.TEST_DUMMY, (context) -> new TestDummyRenderer(context, new TestDummyModel<>(context.bakeLayer(ModelLocations.TEST_DUMMY)))),
                 new Renderers(MobInit.TORRENT, (context) -> new TorrentRenderer(context, new TorrentModel<>(context.bakeLayer(ModelLocations.TORRENT)))),
+
+                //PROJECTILES
+                new Renderers(ProjectileInit.THROWING_POT, ThrowingPotRenderer::new),
+
+                //SPELL PROJECTILES
                 new Renderers(ProjectileInit.GLINTSTONE_ARC, GlintstoneArcRenderer::new),
                 new Renderers(ProjectileInit.GLINTSTONE_PHALANX, GlintbladePhalanxRenderer::new)
         );

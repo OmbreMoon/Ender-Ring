@@ -21,6 +21,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
         registerCurvedSwords();
         registerHalberds();
         registerCatalysts();
+        registerThrowingPots();
     }
 
     protected void registerDaggers() {
@@ -85,5 +86,19 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponDamage(25, 0, 0, 0, 0)
                 .weaponScaling(15, 0, 0, 83 ,0)
                 .weaponRequirements(4, 0, 0, 10, 0).build());
+    }
+
+    protected void registerThrowingPots() {
+        addWeapon(CommonClass.customLocation("holy_water"), ScaledWeapon.Builder.create()
+                .elementID(AttackElement.HOLY_WATER_POT).reinforceType(ReinforceType.DEFAULT)
+                .saturation(0, 0, 0, 0, 4)
+                .weaponDamage(0, 0, 0, 0, 167)
+                .weaponScaling(0, 0, 0, 140, 0).build());
+
+        addWeapon(CommonClass.customLocation("roped_holy_water"), ScaledWeapon.Builder.create()
+                .elementID(AttackElement.HOLY_WATER_POT).reinforceType(ReinforceType.DEFAULT)
+                .saturation(0, 0, 0, 0, 4)
+                .weaponDamage(0, 0, 0, 0, 150)
+                .weaponScaling(0, 0, 0, 165, 0).build());
     }
 }

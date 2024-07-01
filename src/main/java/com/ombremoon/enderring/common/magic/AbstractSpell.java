@@ -178,6 +178,7 @@ public abstract class AbstractSpell {
     private void startSpell() {
         this.init = false;
         this.onSpellStart(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
+        EventFactory.onSpellStart(this, this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
     }
 
     //TODO: ADD CAN CAST SPELL CHECK
@@ -185,6 +186,8 @@ public abstract class AbstractSpell {
         this.onSpellTick(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
         if (EntityStatusUtil.isChannelling(this.playerPatch.getOriginal()))
             this.channelTicks++;
+
+        EventFactory.onSpellTick(this, this.playerPatch, this.level, this.blockPos, this.scaledWeapon, this.ticks);
     }
 
     protected void endSpell() {
@@ -194,6 +197,7 @@ public abstract class AbstractSpell {
         this.ticks = 0;
         this.wasCharged = false;
         this.channelTicks = 0;
+        EventFactory.onSpellStop(this, this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
     }
 
     protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
