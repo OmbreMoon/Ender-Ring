@@ -95,10 +95,10 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public boolean consumeFP(float amount, boolean forceConsume) {
         float currentFP = this.getFP();
-        if (currentFP < amount) {
-            return false;
-        } else if (this.player.hasEffect(StatusEffectInit.CERULEAN_HIDDEN.get()) || this.player.getAbilities().instabuild) {
+        if (this.player.hasEffect(StatusEffectInit.CERULEAN_HIDDEN.get()) || this.player.getAbilities().instabuild) {
             return true;
+        } else if (currentFP < amount) {
+            return false;
         } else {
             if (forceConsume)
                 this.setFP(currentFP - amount);

@@ -24,7 +24,7 @@ public class GlintstoneArcEntity extends SpellProjectileEntity<GlintstoneArcSorc
     }
 
     @Override
-    protected boolean stopOnFirstEnemyHit() {
+    protected boolean stopOnEnemyHit() {
         return false;
     }
 

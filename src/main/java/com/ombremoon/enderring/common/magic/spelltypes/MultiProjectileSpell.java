@@ -75,8 +75,8 @@ public abstract class MultiProjectileSpell<S extends MultiProjectileSpell<S, T>,
             return this;
         }
 
-        public Builder<T> setCanCharge(boolean canCharge) {
-            this.canCharge = canCharge;
+        public Builder<T> canCharge() {
+            this.canCharge = true;
             return this;
         }
 

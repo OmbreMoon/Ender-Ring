@@ -5,6 +5,7 @@ import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.event.custom.EventFactory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -24,11 +25,13 @@ public abstract class AnimatedSpell extends AbstractSpell {
         return new Builder<>();
     }
 
-    public AnimatedSpell(SpellType<?> spellType, Builder builder) {
+    public AnimatedSpell(SpellType<?> spellType, Builder<?> builder) {
         super(spellType, builder);
+        builder = EventFactory.getAnimatedBuilder(spellType, builder);
         if (builder.spellAnimation != null) {
+            Builder<?> finalBuilder = builder;
             this.spellAnimation = () -> {
-                return EpicFightMod.getInstance().animationManager.findAnimationByPath(((StaticAnimation) builder.spellAnimation.get()).getRegistryName().toString());
+                return EpicFightMod.getInstance().animationManager.findAnimationByPath(((StaticAnimation) finalBuilder.spellAnimation.get()).getRegistryName().toString());
             };
         }
     }
@@ -86,8 +89,8 @@ public abstract class AnimatedSpell extends AbstractSpell {
             return this;
         }
 
-        public Builder<T> setCanCharge(boolean canCharge) {
-            this.canCharge = canCharge;
+        public Builder<T> canCharge() {
+            this.canCharge = true;
             return this;
         }
 

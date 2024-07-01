@@ -1,10 +1,13 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.SpellProjectileEntity;
+import com.ombremoon.enderring.event.custom.EventFactory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +19,11 @@ import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import java.util.function.Supplier;
 
 public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends SpellProjectileEntity<S>> extends AnimatedSpell {
+    /*public static final Codec<ProjectileSpell<?, ?>> CODEC = RecordCodecBuilder.create(instance -> {
+        return instance.group(Codec.INT.fieldOf("projectileLifetime").orElse(1).forGetter(o -> {
+            return
+        })).apply(instance, ProjectileSpell::new)
+    });*/
     private final ProjectileFactory<S, T> factory;
     private final int projectileLifetime;
     private final float projectileVelocity;
@@ -31,9 +39,11 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
         return new Builder<>();
     }
 
+    @SuppressWarnings("unchecked")
     public ProjectileSpell(SpellType<?> spellType, ProjectileFactory<S, T> factory, Builder<S> builder) {
         super(spellType, builder);
         this.factory = factory;
+        builder = (Builder<S>) EventFactory.getProjectileBuilder(spellType, builder);
         this.projectileLifetime = builder.projectileLifetime;
         this.projectileVelocity = builder.projectileVelocity;
         this.shootFromCatalyst = builder.shootFromCatalyst;
@@ -41,12 +51,6 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
         this.speedModifier = builder.speedModifier;
         this.gravity = builder.gravity;
         this.inactiveTicks = builder.inactiveTicks;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellStart(playerPatch, level, blockPos, weapon);
     }
 
     @Override
@@ -159,8 +163,8 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
             return this;
         }
 
-        public Builder<T> setCanCharge(boolean canCharge) {
-            this.canCharge = canCharge;
+        public Builder<T> canCharge() {
+            this.canCharge = true;
             return this;
         }
 

@@ -1,9 +1,12 @@
 package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
 import com.ombremoon.enderring.common.init.entity.MobInit;
+import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.event.custom.BuildSpellEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;

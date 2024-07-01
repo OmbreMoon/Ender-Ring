@@ -2,27 +2,28 @@ package com.ombremoon.enderring.common.magic.spelltypes;
 
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
-import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.function.Supplier;
 
-public abstract class ChannelledSpell extends AnimatedSpell {
+public abstract class ChanneledSpell extends AnimatedSpell {
     protected int fpTickCost;
 
-    public static Builder<ChannelledSpell> createChannelledSpellBuilder() {
+    public static Builder<ChanneledSpell> createChannelledSpellBuilder() {
         return new Builder<>();
     }
-    public ChannelledSpell(SpellType<?> spellType, Builder<ChannelledSpell> builder) {
+
+    public ChanneledSpell(SpellType<?> spellType, Builder<ChanneledSpell> builder) {
         super(spellType, builder);
+        builder = EventFactory.getChanneledBuilder(spellType, builder);
         this.fpTickCost = builder.fpTickCost;
     }
 
@@ -49,7 +50,7 @@ public abstract class ChannelledSpell extends AnimatedSpell {
         return true;
     }
 
-    public static class Builder<T extends ChannelledSpell> extends AnimatedSpell.Builder<T> {
+    public static class Builder<T extends ChanneledSpell> extends AnimatedSpell.Builder<T> {
         protected int fpTickCost;
 
         public Builder() {

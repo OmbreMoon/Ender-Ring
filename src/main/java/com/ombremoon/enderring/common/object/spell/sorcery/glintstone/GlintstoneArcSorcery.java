@@ -21,6 +21,7 @@ public class GlintstoneArcSorcery extends ProjectileSpell<GlintstoneArcSorcery, 
                 .setMotionValue(1.48F)
                 .setChargedMotionValue(1.52F)
                 .shootFromCatalyst()
+                .canCharge()
                 .setLifetime(140)
                 .setVelocity(1.15F)
 //                .setGravity(0.05F)
@@ -45,10 +46,5 @@ public class GlintstoneArcSorcery extends ProjectileSpell<GlintstoneArcSorcery, 
     @Override
     public int getCastTime() {
         return 32;
-    }
-
-    @Override
-    public boolean canCharge() {
-        return true;
     }
 }

@@ -8,6 +8,8 @@ import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
+import com.ombremoon.enderring.event.custom.BuildSpellEvent;
+import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.Util;
@@ -19,6 +21,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
@@ -59,7 +62,7 @@ public abstract class AbstractSpell {
 
     public AbstractSpell(SpellType<?> spellType, Builder<? extends AbstractSpell> builder) {
         this.spellType = spellType;
-        //BUILD SPELL EVENT
+        builder = EventFactory.getBuilder(spellType, builder);
         this.magicType = builder.magicType;
         this.requiredStats = builder.requiredStats;
         this.fpCost = builder.fpCost;
@@ -323,8 +326,8 @@ public abstract class AbstractSpell {
             return this;
         }
 
-        public Builder<T> setCanCharge(boolean canCharge) {
-            this.canCharge = canCharge;
+        public Builder<T> canCharge() {
+            this.canCharge = true;
             return this;
         }
 

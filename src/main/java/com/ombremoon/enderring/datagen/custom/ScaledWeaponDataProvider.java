@@ -8,6 +8,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -26,8 +27,9 @@ public abstract class ScaledWeaponDataProvider implements DataProvider {
 
     protected abstract void registerWeapons();
 
-    //TODO: ADD EXCEPTION IF RESOURCE LOCATION DOES NOT LEAD TO ITEM
     protected void addWeapon(ResourceLocation resourceLocation, ScaledWeapon weapon) {
+        if (this.weaponMap.containsKey(resourceLocation)) throw new IllegalArgumentException(String.format("Attempted to duplicate weapon: %s", resourceLocation));
+        if (!ForgeRegistries.ITEMS.containsKey(resourceLocation)) throw new IllegalArgumentException(String.format("Attempted to register weapon for unknown item: %s", resourceLocation));
         this.weaponMap.put(resourceLocation, weapon);
     }
 

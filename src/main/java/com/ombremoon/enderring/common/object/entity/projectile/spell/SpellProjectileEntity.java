@@ -16,7 +16,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -146,7 +145,6 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
 
         if (this.tickCount == this.getInactiveTicks()) {
             this.isActive = true;
-            log(/*this.getVelocity() * */this.getCharge());
             this.shootFromInactivity(this.getXRot(), this.getYRot(), 0.0F, this.getVelocity() * this.getCharge(), 1.0F);
         }
 
@@ -205,7 +203,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
                 default -> this.setDeltaMovement(vec3.scale((double) f));
             }
             this.setPos(d3, d4, d5);
-        } else {
+        }/* else {
             LivingEntity livingEntity = (LivingEntity) this.getOwner();
             if (livingEntity != null) {
                 vec3 = this.getDeltaMovement();
@@ -219,7 +217,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
                 this.setDeltaMovement(vec31.x, vec31.y > 0 || vec31.y < -0.2 ? vec31.y : 0, vec31.z);
                 this.setPos(d13, d14, d15);
             }
-        }
+        }*/
         if (!this.level().isClientSide) {
             this.tickDespawn();
         }
@@ -242,7 +240,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
                     entity1.setLastHurtMob(livingEntity);
                 }
             }
-            if (this.stopOnFirstEnemyHit()) {
+            if (this.stopOnEnemyHit()) {
                 this.discard();
             }
         }
@@ -460,7 +458,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
         return new Vec3(owner.getXRot(), owner.getYRot(), 0.0F);
     }
 
-    protected boolean stopOnFirstEnemyHit() {
+    protected boolean stopOnEnemyHit() {
         return true;
     }
 

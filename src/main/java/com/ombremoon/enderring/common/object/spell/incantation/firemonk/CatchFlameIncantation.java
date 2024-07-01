@@ -25,7 +25,7 @@ public class CatchFlameIncantation extends AnimatedSpell {
         this(SpellInit.CATCH_FLAME.get(), createCatchFlameBuilder());
     }
 
-    public CatchFlameIncantation(SpellType<?> spellType, Builder<? extends AbstractSpell> builder) {
+    public CatchFlameIncantation(SpellType<?> spellType, Builder<AnimatedSpell> builder) {
         super(spellType, builder);
     }
 
