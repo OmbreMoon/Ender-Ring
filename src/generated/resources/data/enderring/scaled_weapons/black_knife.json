@@ -2,6 +2,7 @@
   "base": {
     "elementID": 10000,
     "maxUpgrades": 10,
+    "name": "enderring:black_knife",
     "reinforceType": "enderring:unique",
     "saturations": [
       0,

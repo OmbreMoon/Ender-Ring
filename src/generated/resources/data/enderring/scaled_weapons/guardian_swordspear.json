@@ -3,6 +3,7 @@
     "elementID": 10000,
     "infusable": true,
     "maxUpgrades": 25,
+    "name": "enderring:guardian_swordspear",
     "reinforceType": "enderring:default",
     "saturations": [
       0,

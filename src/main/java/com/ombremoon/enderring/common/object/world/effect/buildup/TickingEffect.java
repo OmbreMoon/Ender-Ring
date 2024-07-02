@@ -20,25 +20,25 @@ public class TickingEffect extends BuildUpStatusEffect {
     public void applyStatusTick(LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
         float f = 0;
         ResourceKey<DamageType> damageType = null;
-        /*if (this == StatusEffectInit.POISON.get()) {
+        if (this == StatusEffectInit.POISON.get()) {
             damageType = ModDamageTypes.POISON;
             if (weapon != null) {
-                if (weapon.getBaseStats().getItem(Constants.MOD_ID).is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
+                if (weapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
                     Constants.LOG.info("Womp womp");
                 } else {
-                    f = pLivingEntity.getMaxHealth() * 0.07F + 0.5F;
+                    f = pLivingEntity.getMaxHealth() * 0.07F + 0.47F;
                 }
             }
         } else if (this == StatusEffectInit.SCARLET_ROT.get()) {
             damageType = ModDamageTypes.SCARLET_ROT;
             if (weapon != null) {
-                if (weapon.getBaseStats().getItem(Constants.MOD_ID).is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
+                if (weapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
                     Constants.LOG.info("Pomp Pomp");
                 } else {
                     f = pLivingEntity.getMaxHealth() * 0.18F + 1.0F;
                 }
             }
-        }*/
+        }
         pLivingEntity.hurt(DamageUtil.moddedDamageSource(pLivingEntity.level(), damageType), f);
     }
 }

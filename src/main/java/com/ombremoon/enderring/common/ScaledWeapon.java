@@ -7,13 +7,11 @@ import com.ombremoon.enderring.common.data.AttackElement;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
-import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -37,6 +35,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
     public Status getStatus() { return this.status; }
 
     public static class Base implements INBTSerializable<CompoundTag> {
+        private String name = "";
         private int maxUpgrades;
         private boolean infusable;
         private boolean twoHandBonus;
@@ -47,6 +46,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         @Override
         public CompoundTag serializeNBT() {
             CompoundTag nbt = new CompoundTag();
+            nbt.putString("Name", this.name);
             nbt.putInt("MaxUpgrades", this.maxUpgrades);
             nbt.putBoolean("Infusable", this.infusable);
             nbt.putBoolean("TwoHandBonus", this.twoHandBonus);
@@ -59,6 +59,9 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
+            if (nbt.contains("Name", 8)) {
+                this.name = nbt.getString("Name");
+            }
             if (nbt.contains("MaxUpgrades", 99)) {
                 this.maxUpgrades = nbt.getInt("MaxUpgrades");
             }
@@ -84,6 +87,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             Preconditions.checkArgument(this.maxUpgrades >= 0, "Max upgrades must be greater than or equal 0");
             Preconditions.checkArgument(this.maxUpgrades < 26, "Max upgrades must be less than or equal to 25");
             JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("name", this.name);
             jsonObject.addProperty("maxUpgrades", this.maxUpgrades);
             if (this.infusable) jsonObject.addProperty("infusable", true);
             if (this.twoHandBonus) jsonObject.addProperty("twoHandBonus", true);
@@ -97,6 +101,10 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             jsonObject.add("saturations", jsonArray);
 
             return jsonObject;
+        }
+
+        public String getName() {
+            return name;
         }
 
         public int getMaxUpgrades() {
@@ -123,8 +131,17 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this.saturations;
         }
 
+        public ItemStack getItem() {
+            try {
+                return ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(name)).getDefaultInstance();
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
+
         public Base copy() {
             Base base = new Base();
+            base.name = this.name;
             base.maxUpgrades = this.maxUpgrades;
             base.infusable = this.infusable;
             base.twoHandBonus = this.twoHandBonus;
@@ -230,16 +247,6 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             if (this.fireDamage > 0) damageMap.put(WeaponDamage.FIRE, this.fireDamage);
             if (this.lightDamage > 0) damageMap.put(WeaponDamage.LIGHTNING, this.lightDamage);
             if (this.holyDamage > 0) damageMap.put(WeaponDamage.HOLY, this.holyDamage);
-            return damageMap;
-        }
-
-        public Map<WeaponDamage, Float> getScaledDamageMap(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel) {
-            Map<WeaponDamage, Float> damageMap = new TreeMap<>();
-            if (DamageUtil.getPhysicalAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.PHYSICAL, DamageUtil.getPhysicalAP(weapon, livingEntity, weaponLevel));
-            if (DamageUtil.getMagicalAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.MAGICAL, DamageUtil.getMagicalAP(weapon, livingEntity, weaponLevel));
-            if (DamageUtil.getFireAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.FIRE, DamageUtil.getFireAP(weapon, livingEntity, weaponLevel));
-            if (DamageUtil.getLightningAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.LIGHTNING, DamageUtil.getLightningAP(weapon, livingEntity, weaponLevel));
-            if (DamageUtil.getHolyAP(weapon, livingEntity, weaponLevel) > 0) damageMap.put(WeaponDamage.HOLY, DamageUtil.getHolyAP(weapon, livingEntity, weaponLevel));
             return damageMap;
         }
 
@@ -745,6 +752,11 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
 
         public ScaledWeapon build() {
             return this.scaledWeapon.copy();
+        }
+
+        public Builder name(ResourceLocation name) {
+            this.scaledWeapon.base.name = name.toString();
+            return this;
         }
 
         public Builder defaultMaxUpgrades() {

@@ -2,6 +2,7 @@
   "base": {
     "elementID": 20000,
     "maxUpgrades": 25,
+    "name": "enderring:glintstone_staff",
     "reinforceType": "enderring:pure_catalyst_front",
     "saturations": [
       14,

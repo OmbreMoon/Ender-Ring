@@ -3,6 +3,7 @@
     "elementID": 10000,
     "infusable": true,
     "maxUpgrades": 25,
+    "name": "enderring:scimitar",
     "reinforceType": "enderring:default",
     "saturations": [
       0,
