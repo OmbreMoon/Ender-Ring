@@ -118,12 +118,12 @@ public class DamageUtil {
     private static float getApMultipliers(LivingEntity entity, WeaponDamage weaponDamage) {
         float multiplier = 1.0F;
         if (entity.hasEffect(StatusEffectInit.RITUAL_SWORD_TALISMAN.get())
-            && entity.getHealth() >= entity.getMaxHealth()) multiplier += 0.1F;
+            && entity.getHealth() >= entity.getMaxHealth()) multiplier *= 0.1F;
         if (entity.hasEffect(StatusEffectInit.RED_FEATHERED_BRANCHSWORD.get())
-            && entity.getHealth() <= entity.getMaxHealth() * 0.2F) multiplier += 0.2F;
-        if (entity.hasEffect(StatusEffectInit.FLOCKS_CANVAS_TALISMAN.get()) && weaponDamage == WeaponDamage.HOLY) multiplier += 0.08F;
-        if (entity.hasEffect(StatusEffectInit.LANCE_TALISMAN.get()) && entity.isPassenger()) multiplier += 0.15F;
-        if (entity.hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) && entity.fallDistance > 0) multiplier += 0.15F;
+            && entity.getHealth() <= entity.getMaxHealth() * 0.2F) multiplier *= 0.2F;
+        if (entity.hasEffect(StatusEffectInit.FLOCKS_CANVAS_TALISMAN.get()) && weaponDamage == WeaponDamage.HOLY) multiplier *= 0.08F;
+        if (entity.hasEffect(StatusEffectInit.LANCE_TALISMAN.get()) && entity.isPassenger()) multiplier *= 0.15F;
+        if (entity.hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) && entity.fallDistance > 0) multiplier *= 0.15F;
 
         return multiplier;
     }
