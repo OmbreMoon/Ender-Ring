@@ -402,7 +402,10 @@ public class StatusEffectInit {
             new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> FLOCKS_CANVAS_TALISMAN = registerStatusEffect("flocks_canvas_talisman",
             new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
-
+    public static final RegistryObject<MobEffect> TAKERS_CAMEO = registerStatusEffect("takers_cameo",
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
+    public static final RegistryObject<MobEffect> ANCESTRAL_SPIRITS_HORN = registerStatusEffect("ancestral_spirits_horn",
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
 
     private static RegistryObject<MobEffect> registerSimpleEffect(String name, StatusEffect effect) {
         return STATUS_EFFECTS.register(name, () -> effect);

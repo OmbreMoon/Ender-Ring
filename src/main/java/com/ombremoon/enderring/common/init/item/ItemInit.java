@@ -144,6 +144,8 @@ public class ItemInit {
     public static final RegistryObject<Item> LANCE_TALISMAN = registerTalisman("lance_talisman", StatusEffectInit.LANCE_TALISMAN);
     public static final RegistryObject<Item> CLAW_TALISMAN = registerTalisman("claw_talisman", StatusEffectInit.CLAW_TALISMAN);
     public static final RegistryObject<Item> FLOCKS_CANVAS_TALISMAN = registerTalisman("flocks_canvas_talisman", StatusEffectInit.FLOCKS_CANVAS_TALISMAN);
+    public static final RegistryObject<Item> TAKERS_CAMEO = registerTalisman("takers_cameo", StatusEffectInit.TAKERS_CAMEO);
+    public static final RegistryObject<Item> ANCESTRAL_SPIRITS_HORN = registerTalisman("ancestral_spirits_horn", StatusEffectInit.ANCESTRAL_SPIRITS_HORN);
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);

@@ -147,7 +147,9 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.TWINBLADE_TALISMAN.get(),
             ItemInit.CLAW_TALISMAN.get(),
             ItemInit.LANCE_TALISMAN.get(),
-            ItemInit.FLOCKS_CANVAS_TALISMAN.get()
+            ItemInit.FLOCKS_CANVAS_TALISMAN.get(),
+            ItemInit.ANCESTRAL_SPIRITS_HORN.get(),
+            ItemInit.TAKERS_CAMEO.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

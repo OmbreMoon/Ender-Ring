@@ -25,7 +25,7 @@ public class ExtendedWeaponCapabilityPresets {
 
     protected static ExtendedWeaponCapability.Builder greatSwordBuilder() {
         return ExtendedWeaponCapability.builder()
-                .category(ExtendedWeaponCategories.GREATSWORD)
+                .category(CapabilityItem.WeaponCategories.GREATSWORD)
                 .styleProvider(playerPatch -> playerPatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == CapabilityItem.WeaponCategories.GREATSWORD ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND)
                 .collider(ColliderPreset.GREATSWORD)
                 .newStyleCombo(CapabilityItem.Styles.ONE_HAND, Animations.GREATSWORD_AUTO1, Animations.GREATSWORD_AUTO2, Animations.GREATSWORD_AUTO1, Animations.GREATSWORD_AUTO2, Animations.GREATSWORD_DASH, Animations.GREATSWORD_AIR_SLASH)
@@ -50,7 +50,7 @@ public class ExtendedWeaponCapabilityPresets {
                 .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_GREATSWORD)
                 .weaponCombinationPredicator(entityPatch -> {
                     WeaponCategory category = EpicFightCapabilities.getItemStackCapability(entityPatch.getOriginal().getOffhandItem()).getWeaponCategory();
-                    return category == ExtendedWeaponCategories.GREATSWORD || category == CapabilityItem.WeaponCategories.GREATSWORD;
+                    return category == CapabilityItem.WeaponCategories.GREATSWORD;
                 })
                 .hitSound(EpicFightSounds.BLADE_HIT.get())
                 .hitParticle(EpicFightParticles.HIT_BLADE.get());

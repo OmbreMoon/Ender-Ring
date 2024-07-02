@@ -32,6 +32,7 @@ import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -96,6 +97,14 @@ public class CommonModEvents {
         }
         if (itemStack.getItem() instanceof CatalystWeapon catalyst && event.getSlotType() == EquipmentSlot.MAINHAND) {
             if (catalyst.getMagicScaling(itemStack) > 0) event.addModifier(catalyst.getMagicType().getAttribute(), new AttributeModifier(SCALING_UUID, "Weapon modifier", catalyst.getMagicScaling(itemStack), AttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingDeath(LivingDeathEvent event) {
+        if (event.getSource().getEntity() instanceof Player player) {
+            if (player.hasEffect(StatusEffectInit.ANCESTRAL_SPIRITS_HORN.get())) EntityStatusUtil.increaseFP(player, 3);
+            if (player.hasEffect(StatusEffectInit.TAKERS_CAMEO.get())) player.heal((player.getMaxHealth()*0.03F) + 2F);
         }
     }
 
