@@ -19,9 +19,22 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
     protected void registerWeapons() {
         registerDaggers();
         registerCurvedSwords();
+        registerGreatSwords();
         registerHalberds();
         registerCatalysts();
         registerThrowingPots();
+    }
+
+    protected void registerGreatSwords() {
+        addWeapon(CommonClass.customLocation("lordsworns_greatsword"), ScaledWeapon.Builder.create()
+                .name(CommonClass.customLocation("lordsworns_greatsword")).defaultMaxUpgrades().infusable()
+                .twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.DEFAULT)
+                .physDamageType(PhysicalDamageType.STANDARD, PhysicalDamageType.PIERCE)
+                .saturation(0, 0, 0, 0 , 0)
+                .weaponDamage(136, 0, 0, 0, 0)
+                .weaponScaling(43, 37, 0, 0, 0)
+                .weaponGuard(65, 35, 35, 35, 35)
+                .weaponRequirements(16, 10, 0,0,0).build());
     }
 
     protected void registerDaggers() {

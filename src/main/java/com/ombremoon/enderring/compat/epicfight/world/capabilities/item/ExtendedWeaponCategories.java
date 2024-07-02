@@ -3,6 +3,7 @@ package com.ombremoon.enderring.compat.epicfight.world.capabilities.item;
 import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
 public enum ExtendedWeaponCategories implements WeaponCategory {
+    GREATSWORD,
     STRAIGHT_SWORD;
 
     final int id;

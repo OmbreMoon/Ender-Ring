@@ -38,6 +38,9 @@ public class EquipmentInit extends ItemInit {
     public static final RegistryObject<StraightSwordWeapon> LONGSWORD = registerStraightSword("longsword");
     public static final RegistryObject<StraightSwordWeapon> BROADSWORD = registerStraightSword("broadsword");
 
+    //Great swords
+    public static final RegistryObject<GreatSwordWeapon> LORDSWORNS_GREATSWORD = registerGreakSword("lordsworns_greatsword");
+
     //Thrusting Swords
     public static final RegistryObject<ThrustingSwordWeapon> ESTOC = registerThrustingSword("estoc");
 
@@ -159,6 +162,10 @@ public class EquipmentInit extends ItemInit {
 
     protected static RegistryObject<KatanaWeapon> registerKatana(String name) {
         return registerMeleeWeapon(name, () -> new KatanaWeapon(itemProperties()));
+    }
+
+    protected static RegistryObject<GreatSwordWeapon> registerGreakSword(String name) {
+        return registerMeleeWeapon(name, () -> new GreatSwordWeapon(itemProperties()));
     }
 
     protected static RegistryObject<CurvedSwordWeapon> registerCurvedSword(String name) {

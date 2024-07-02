@@ -152,6 +152,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     static final Item[] EQUIP_EXCLUSION_LIST = {
             EquipmentInit.DAGGER.get(),
+            EquipmentInit.LORDSWORNS_GREATSWORD.get(),
             EquipmentInit.GREAT_KNIFE.get(),
             EquipmentInit.BLACK_KNIFE.get(),
             EquipmentInit.SHORT_SWORD.get(),
