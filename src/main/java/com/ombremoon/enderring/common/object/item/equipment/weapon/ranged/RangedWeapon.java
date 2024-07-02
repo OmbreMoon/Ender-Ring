@@ -4,6 +4,6 @@ import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapo
 
 public class RangedWeapon extends AbstractWeapon {
     public RangedWeapon(Properties pProperties) {
-        super(pProperties);
+        super(pProperties.stacksTo(1));
     }
 }

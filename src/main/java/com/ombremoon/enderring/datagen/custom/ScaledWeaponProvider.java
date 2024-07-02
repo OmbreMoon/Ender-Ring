@@ -31,6 +31,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .saturation(0, 0, 0, 0, 0)
                 .weaponDamage(74, 0, 0, 0, 0)
                 .weaponScaling(35, 65, 0, 0, 0)
+                .weaponGuard(35, 20, 20, 20, 20)
                 .weaponRequirements(5, 9, 0, 0, 0).build());
 
         addWeapon(CommonClass.customLocation("black_knife"), ScaledWeapon.Builder.create()
@@ -39,6 +40,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .saturation(0, 0, 0, 0, 4)
                 .weaponDamage(66, 0, 0, 0, 65)
                 .weaponScaling(10, 55, 0, 35, 0)
+                .weaponGuard(26, 15, 15, 15, 42)
                 .weaponRequirements(8, 12, 0, 18, 0).build());
     }
 

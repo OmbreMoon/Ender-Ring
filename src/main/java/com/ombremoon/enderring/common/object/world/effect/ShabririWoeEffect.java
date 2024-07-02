@@ -9,10 +9,11 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class ShabririWoeEffect extends StatusEffect {
-    public ShabririWoeEffect(EffectType type, int pColor) {
-        super(type, pColor, null, null, null, MobEffectCategory.HARMFUL);
+    public ShabririWoeEffect(EffectType type, BiFunction<Integer, Integer, Boolean> applyTick, int pColor) {
+        super(type, pColor, null, null, applyTick, MobEffectCategory.HARMFUL);
     }
 
     @Override

@@ -1,10 +1,14 @@
 package com.ombremoon.enderring.common.init.entity;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.object.world.effect.*;
+import com.ombremoon.enderring.common.object.world.effect.EffectBuilder;
+import com.ombremoon.enderring.common.object.world.effect.ShabririWoeEffect;
+import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
+import com.ombremoon.enderring.common.object.world.effect.buildup.BloodLossEffect;
+import com.ombremoon.enderring.common.object.world.effect.buildup.FrostbiteEffect;
+import com.ombremoon.enderring.common.object.world.effect.buildup.SleepEffect;
 import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -28,7 +32,13 @@ public class StatusEffectInit {
                             EntityAttributeInit.ROBUSTNESS).build());
 
     //STATUS EFFECTS
-    public static final RegistryObject<MobEffect> POISON = registerIncrementalEffect("poison");
+    public static final RegistryObject<MobEffect> POISON = registerStatusEffect("poison", new BloodLossEffect(234227227));
+    public static final RegistryObject<MobEffect> SCARLET_ROT = registerStatusEffect("scarlet_rot", new BloodLossEffect(234227227));
+    public static final RegistryObject<MobEffect> BLOOD_LOSS = registerStatusEffect("blood_loss", new BloodLossEffect(234227227));
+    public static final RegistryObject<MobEffect> FROSTBITE = registerStatusEffect("frostbite", new FrostbiteEffect(234227227));
+    public static final RegistryObject<MobEffect> SLEEP = registerStatusEffect("sleep", new SleepEffect(234227227));
+    public static final RegistryObject<MobEffect> MADNESS = registerStatusEffect("frostbite", new FrostbiteEffect(234227227));
+    public static final RegistryObject<MobEffect> DEATH_BLIGHT = registerStatusEffect("frostbite", new FrostbiteEffect(234227227));
 
     //CRYSTAL TEARS
     public static final RegistryObject<MobEffect> CRIMSON_CRYSTAL = registerSimpleEffect("crimson_crystal_tear", new EffectBuilder(EffectType.UNIQUE).build());
@@ -107,7 +117,7 @@ public class StatusEffectInit {
                     .addTier("8d56064f-619a-40f5-bc91-d74f9735d964",1, 0.07F)
                     .addTier("8d56064f-619a-40f5-bc91-d74f9735d964",2, 0.08F).build());
     public static final RegistryObject<MobEffect> SHABRIRIS_WOE = registerStatusEffect("shabriris_woe",
-            new ShabririWoeEffect(EffectType.PERSISTENT, 234227227));
+            new ShabririWoeEffect(EffectType.PERSISTENT, (i, j) -> true, 234227227));
     public static final RegistryObject<MobEffect> GREEN_TURTLE = registerStatusEffect("green_turtle_talisman",
             new EffectBuilder(EffectType.PERSISTENT)
                     .addAttribute(new AttributeModifier(
@@ -395,9 +405,6 @@ public class StatusEffectInit {
     public static final RegistryObject<MobEffect> FLOCKS_CANVAS_TALISMAN = registerStatusEffect("flocks_canvas_talisman",
             new EffectBuilder(EffectType.PERSISTENT).build());
 
-    private static RegistryObject<MobEffect> registerIncrementalEffect(String name) {
-        return STATUS_EFFECTS.register(name, () -> new IncrementalStatusEffect(234227227));
-    }
 
     private static RegistryObject<MobEffect> registerSimpleEffect(String name, StatusEffect effect) {
         return STATUS_EFFECTS.register(name, () -> effect);

@@ -723,6 +723,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         scaledWeapon.damage = this.damage.copy();
         scaledWeapon.scaling = this.scaling.copy();
         scaledWeapon.requirements = this.requirements.copy();
+        scaledWeapon.guard = this.guard.copy();
+        scaledWeapon.status = this.status.copy();
         return scaledWeapon;
     }
 

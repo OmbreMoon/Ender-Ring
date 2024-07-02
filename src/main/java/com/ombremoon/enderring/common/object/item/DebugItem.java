@@ -62,7 +62,7 @@ public class DebugItem extends Item {
     }
 
     private void setStats(Player player) {
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 1, true);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 50, true);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 99);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 99);
 //        EntityStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.DEXTERITY.get(), 30);

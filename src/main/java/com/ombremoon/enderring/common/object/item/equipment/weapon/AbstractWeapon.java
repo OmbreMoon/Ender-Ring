@@ -31,7 +31,7 @@ public class AbstractWeapon extends Item implements Scalable {
     private ScaledWeapon weapon = new ScaledWeapon();
 
     public AbstractWeapon(Properties pProperties) {
-        super(pProperties.stacksTo(1));
+        super(pProperties);
     }
 
     @Override

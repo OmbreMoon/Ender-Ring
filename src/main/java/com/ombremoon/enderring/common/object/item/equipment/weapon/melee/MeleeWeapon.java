@@ -6,8 +6,8 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
-import com.ombremoon.enderring.common.object.world.effect.IncrementalStatusEffect;
-import com.ombremoon.enderring.common.object.world.effect.StatusEffectInstance;
+import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
+import com.ombremoon.enderring.common.object.world.effect.buildup.StatusEffectInstance;
 import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -27,7 +27,7 @@ public class MeleeWeapon extends AbstractWeapon {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public MeleeWeapon(float attackSpeed, Properties pProperties) {
-        super(pProperties);
+        super(pProperties.stacksTo(1));
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
@@ -38,7 +38,7 @@ public class MeleeWeapon extends AbstractWeapon {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            pPlayer.addEffect(new StatusEffectInstance(this.getModifiedWeapon(itemStack), (IncrementalStatusEffect) StatusEffectInit.POISON.get(), 200));
+            pPlayer.addEffect(new StatusEffectInstance(this.getModifiedWeapon(itemStack), (BuildUpStatusEffect) StatusEffectInit.BLOOD_LOSS.get()));
             itemStack.getTag().putInt("WeaponLevel", 10);
 //            itemStack.getOrCreateTag().getCompound("Weapon").getCompound("Base").putInt("MaxUpgrades", 26);
 //            Constants.LOG.info(String.valueOf(itemStack.getOrCreateTag().getCompound("Weapon")));

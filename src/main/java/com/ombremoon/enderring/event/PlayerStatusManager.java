@@ -11,6 +11,7 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
+import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -98,7 +99,7 @@ public class PlayerStatusManager {
             return;
 
         if (event.getSource().is(DamageTypes.FALL) && player.hasEffect(StatusEffectInit.LONGTAIL_CAT_TALISMAN.get())) {
-            if (player.getHealth() - event.getAmount() > 0) {
+            if (player.getMaxHealth() - event.getAmount() > 0) {
                 event.setCanceled(true);
                 return;
             }
@@ -127,6 +128,14 @@ public class PlayerStatusManager {
         if (player.hasEffect(StatusEffectInit.OPALINE_BUBBLE.get()) && (event.getSource().getEntity() != null || event.getSource().is(DamageTypes.EXPLOSION))) {
             player.removeEffect(StatusEffectInit.OPALINE_BUBBLE.get());
             damage *= 0.1F;
+        }
+        if (player.hasEffect(StatusEffectInit.FROSTBITE.get())) {
+            damage *= 1.2F;
+            if (event.getSource().is(ModDamageTypes.FIRE))
+                player.removeEffect(StatusEffectInit.FROSTBITE.get());
+        }
+        if (player.hasEffect(StatusEffectInit.SLEEP.get())) {
+            player.removeEffect(StatusEffectInit.SLEEP.get());
         }
         event.setAmount(damage);
         Constants.LOG.info(String.valueOf(event.getAmount()));

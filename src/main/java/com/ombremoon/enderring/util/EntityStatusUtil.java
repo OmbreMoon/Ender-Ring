@@ -315,12 +315,5 @@ public class EntityStatusUtil {
     private static void setCachedItem(Player player, ItemStack itemStack) {
         EntityStatusProvider.get(player).setCachedItem(itemStack);
     }
-    public static void healPlayerOnDamageTaken(Player player){
-        float maxHealth = player.getMaxHealth();
-        float curHealth = player.getHealth();
-
-        float damageTaken = maxHealth-curHealth;
-        player.heal(damageTaken);
-    }
 
 }

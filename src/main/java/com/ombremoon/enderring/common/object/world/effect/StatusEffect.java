@@ -43,54 +43,8 @@ public class StatusEffect extends MobEffect {
         } else if (this == StatusEffectInit.CERULEAN_CRYSTAL.get() && pLivingEntity instanceof Player player) {
             EntityStatusUtil.increaseFP(player, (float) (player.getAttributeValue(EntityAttributeInit.MAX_FP.get()) / 2));
         } else if (this == StatusEffectInit.BLESSED_DEW_TALISMAN.get()) {
-            pLivingEntity.heal(0.1F);
+            pLivingEntity.heal(0.13F);
         }
-        else if(this == StatusEffectInit.CRIMSONSPILL_CRYSTAL.get() && pLivingEntity instanceof Player player){
-            EntityStatusUtil.increaseBaseStat(player, Attributes.MAX_HEALTH,10,false);
-        }
-        else if(this == StatusEffectInit.CRIMSONBURST_CRYSTAL.get() && pLivingEntity instanceof ServerPlayer player){
-            player.heal(10);
-        }
-        else if(this == StatusEffectInit.GREENSPILL_CRYSTAL.get() && pLivingEntity instanceof Player player){
-            EntityStatusUtil.increaseBaseStat(player, EpicFightAttributes.MAX_STAMINA.get(),10,false);
-        }
-        else if(this == StatusEffectInit.GREENBURST_CRYSTAL.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,EpicFightAttributes.STAMINA_REGEN.get(),10,false);
-        }else if(this == StatusEffectInit.STRENGTHKNOT_CRYSTAL.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,Attributes.ATTACK_DAMAGE,10,false);
-        }else if(this == StatusEffectInit.DEXTERITYKNOT_CRYSTAL.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,EntityAttributeInit.DEXTERITY.get(),10,false);
-        }else if(this == StatusEffectInit.INTELLIGENCEKNOT_CRYSTAL.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,EntityAttributeInit.INTELLIGENCE.get(),10,false);
-        }else if(this == StatusEffectInit.FAITHKNOT_CRYSTAL.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,EntityAttributeInit.FAITH.get(),10,false);
-        }
-        else if(this == StatusEffectInit.SPECKLEDHARD_CRYSTAL.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,Attributes.ARMOR,10,false);
-            player.removeAllEffects();
-        }
-
-        //TODO::POISE OF EFM
-        else if(this == StatusEffectInit.LEADENHARD_CRYSTAL.get() && pLivingEntity instanceof Player player) {
-            //EntityStatusUtil.increaseBaseStat(player,EntityAttributeInit.POISE.get(),10,false);
-        }
-
-        else if(this == StatusEffectInit.MAGICSHROUDING_CRACKED.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,EntityAttributeInit.MAGIC_DAMAGE.get(),10,false);
-        }else if(this == StatusEffectInit.FLAMESHROUDING_CRACKED.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,EntityAttributeInit.FIRE_DAMAGE.get(),10,false);
-        }else if(this == StatusEffectInit.HOLYSHROUDING_CRACKED.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,EntityAttributeInit.HOLY_DAMAGE.get(),10,false);
-        }else if(this == StatusEffectInit.LIGHTNINGSHROUDING_CRACKED.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.increaseBaseStat(player,EntityAttributeInit.LIGHT_DAMAGE.get(),10,false);
-        }else if(this == StatusEffectInit.CRIMSON_BUBBLE.get() && pLivingEntity instanceof Player player) {
-            if(player.isDeadOrDying()){
-                player.heal(5);
-            }
-        }else if(this == StatusEffectInit.CRIMSONWHORL_BUBBLE.get() && pLivingEntity instanceof Player player) {
-            EntityStatusUtil.healPlayerOnDamageTaken(player);
-        }
-
     }
 
     @Override
@@ -117,5 +71,4 @@ public class StatusEffect extends MobEffect {
         }
         return this.tiers.get(uuid).get(amp);
     }
-
 }
