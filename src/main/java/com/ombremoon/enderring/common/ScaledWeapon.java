@@ -570,6 +570,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         private int sleep;
         private int madness;
         private int deathBlight;
+        private int statusDuration;
 
         @Override
         public CompoundTag serializeNBT() {
@@ -581,6 +582,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             nbt.putInt("Sleep", this.sleep);
             nbt.putInt("Madness", this.madness);
             nbt.putInt("DeathBlight", this.deathBlight);
+            nbt.putInt("StatusDuration", this.statusDuration);
             return nbt;
         }
 
@@ -607,6 +609,9 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             if (nbt.contains("DeathBlight", 99)) {
                 this.deathBlight = nbt.getInt("DeathBlight");
             }
+            if (nbt.contains("StatusDuration", 99)) {
+                this.statusDuration = nbt.getInt("StatusDuration");
+            }
         }
 
         public JsonObject toJsonObject() {
@@ -617,6 +622,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             Preconditions.checkArgument(this.sleep >= 0, "Sleep build up must be greater than or equal to 0");
             Preconditions.checkArgument(this.madness >= 0, "Madness build up must be greater than or equal to 0");
             Preconditions.checkArgument(this.deathBlight >= 0, "Death blight build up must be greater than or equal to 0");
+            Preconditions.checkArgument(this.statusDuration >= 0, "Status duration must be greater than or equal to 0");
             JsonObject jsonObject = new JsonObject();
             if (this.poison > 0) jsonObject.addProperty("poison", this.poison);
             if (this.scarletRot > 0) jsonObject.addProperty("scarletRot", this.scarletRot);
@@ -625,6 +631,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             if (this.sleep > 0) jsonObject.addProperty("sleep", this.sleep);
             if (this.madness > 0) jsonObject.addProperty("madness", this.madness);
             if (this.deathBlight > 0) jsonObject.addProperty("deathBlight", this.deathBlight);
+            if (this.statusDuration > 0) jsonObject.addProperty("statusDuration", this.statusDuration);
             return jsonObject;
         }
 
@@ -657,6 +664,22 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             return this.deathBlight;
         }
 
+        public int getStatusDuration() {
+            return this.statusDuration;
+        }
+
+        public Map<StatusType, Integer> getStatusMap() {
+            Map<StatusType, Integer> statusMap = new TreeMap<>();
+            if (this.poison > 0) statusMap.put(StatusType.POISON, this.poison);
+            if (this.scarletRot > 0) statusMap.put(StatusType.SCARLET_ROT, this.scarletRot);
+            if (this.bloodLoss > 0) statusMap.put(StatusType.BLOOD_LOSS, this.bloodLoss);
+            if (this.frostBite > 0) statusMap.put(StatusType.FROSTBITE, this.frostBite);
+            if (this.sleep > 0) statusMap.put(StatusType.SLEEP, this.sleep);
+            if (this.madness > 0) statusMap.put(StatusType.MADNESS, this.madness);
+            if (this.deathBlight > 0) statusMap.put(StatusType.DEATH_BLIGHT, this.deathBlight);
+            return statusMap;
+        }
+
         public Status copy() {
             Status status = new Status();
             status.poison = this.poison;
@@ -665,6 +688,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             status.frostBite = this.frostBite;
             status.madness = this.madness;
             status.deathBlight = this.deathBlight;
+            status.statusDuration = this.statusDuration;
             return status;
         }
     }
@@ -843,6 +867,46 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             this.scaledWeapon.guard.fireGuard = fireGuard;
             this.scaledWeapon.guard.lightGuard = lightGuard;
             this.scaledWeapon.guard.holyGuard = holyGuard;
+            return this;
+        }
+
+        public Builder poisonBuildUp(int poison) {
+            this.scaledWeapon.status.poison = poison;
+            return this;
+        }
+
+        public Builder scarletRotBuildUp(int scarletRot) {
+            this.scaledWeapon.status.scarletRot = scarletRot;
+            return this;
+        }
+
+        public Builder bloodLossBuildUp(int bloodLoss) {
+            this.scaledWeapon.status.bloodLoss = bloodLoss;
+            return this;
+        }
+
+        public Builder frostbiteBuildUp(int frostBite) {
+            this.scaledWeapon.status.frostBite = frostBite;
+            return this;
+        }
+
+        public Builder sleepBuildUp(int sleep) {
+            this.scaledWeapon.status.sleep = sleep;
+            return this;
+        }
+
+        public Builder madnessBuildUp(int madness) {
+            this.scaledWeapon.status.madness = madness;
+            return this;
+        }
+
+        public Builder deathBlightBuildUp(int deathBlight) {
+            this.scaledWeapon.status.deathBlight = deathBlight;
+            return this;
+        }
+
+        public Builder statusDuration(int duration) {
+            this.scaledWeapon.status.statusDuration = duration;
             return this;
         }
     }

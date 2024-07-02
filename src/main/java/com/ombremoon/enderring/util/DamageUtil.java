@@ -2,6 +2,7 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
+import com.ombremoon.enderring.common.StatusType;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.Saturations;
@@ -10,15 +11,19 @@ import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
+import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
+import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
-import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
-import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
+import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
+import com.ombremoon.enderring.common.object.world.effect.buildup.StatusEffectInstance;
 import com.ombremoon.enderring.event.custom.EventFactory;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,8 +31,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.*;
 
@@ -82,7 +85,41 @@ public class DamageUtil {
                 damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), scaledWeapon.getDamage().getPhysDamageTypes());
                 typeDamage = Math.max(typeDamage, 1.0F);
 
-                targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage);
+                if (targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage)) {
+                    handleStatusBuildUp(attackEntity, targetEntity, scaledWeapon, null, damageSource);
+                }
+            }
+        }
+    }
+
+    public static void handleStatusBuildUp(LivingEntity attackEntity, LivingEntity targetEntity, ScaledWeapon scaledWeapon, SpellType<?> spellType, DamageSource damageSource) {
+        if (targetEntity instanceof Player || targetEntity instanceof LevelledMob levelledMob && !levelledMob.isImmuneTo(damageSource)) {
+            var statusMap = scaledWeapon.getStatus().getStatusMap();
+            for (var entry : statusMap.entrySet()) {
+                var status = entry.getKey();
+                int buildUp = entry.getValue();
+                attemptBuildUp(attackEntity, targetEntity, scaledWeapon, spellType, status, buildUp);
+            }
+        }
+    }
+
+    private static void attemptBuildUp(LivingEntity attackEntity, LivingEntity targetEntity, ScaledWeapon scaledWeapon, SpellType<?> spellType, StatusType statusType, int buildUp) {
+        BuildUpStatusEffect effect = statusType.getEffect();
+        if (!targetEntity.hasEffect(effect)) {
+            EntityDataAccessor<Integer> status = targetEntity instanceof Player ? statusType.getPlayerStatus() : statusType.getEntityStatus();
+            Attribute resist = targetEntity instanceof Player ? statusType.getPlayerResist() : statusType.getEntityResist();
+            int threshold = (int) EntityStatusUtil.getEntityAttribute(targetEntity, resist);
+            targetEntity.getEntityData().set(status, (int) Mth.clamp(calculateStatusBuildUp(attackEntity, buildUp), 0, threshold));
+
+            if (targetEntity.getEntityData().get(status) >= threshold) {
+                targetEntity.addEffect(new StatusEffectInstance(scaledWeapon, spellType, effect, scaledWeapon.getStatus().getStatusDuration()));
+                if (effect.isInstantenous()) {
+                    effect.applyInstantaneousEffect(attackEntity, null, targetEntity, scaledWeapon, spellType);
+                }
+
+                if (targetEntity instanceof LevelledMob levelledMob) {
+                    //increment resistance
+                }
             }
         }
     }
@@ -159,9 +196,9 @@ public class DamageUtil {
         return EventFactory.calculateEntityResistance(player, resist);
     }
 
-    public static float calculateStatusBuildUp(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, int buildUp) {
+    public static float calculateStatusBuildUp(LivingEntity livingEntity, int buildUp) {
         float f = getSaturationValue(Saturations.STATUS_EFFECT, EntityStatusUtil.getEntityAttribute(livingEntity, EntityAttributeInit.ARCANE.get()), false);
-        return buildUp * getScalingUpgrade(weapon, WeaponScaling.ARC, weaponLevel) * f;
+        return buildUp * f;
     }
 
     private static float getDamageUpgrade(ScaledWeapon weapon, WeaponDamage weaponDamage, int weaponLevel) {

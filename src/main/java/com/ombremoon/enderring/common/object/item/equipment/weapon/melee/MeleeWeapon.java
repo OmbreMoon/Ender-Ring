@@ -4,11 +4,14 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.data.Saturations;
+import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
 import com.ombremoon.enderring.common.object.world.effect.buildup.StatusEffectInstance;
 import com.ombremoon.enderring.util.DamageUtil;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -38,17 +41,9 @@ public class MeleeWeapon extends AbstractWeapon {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            pPlayer.addEffect(new StatusEffectInstance(this.getModifiedWeapon(itemStack), null, (BuildUpStatusEffect) StatusEffectInit.POISON.get(), 100));
-            itemStack.getTag().putInt("WeaponLevel", 10);
-//            itemStack.getOrCreateTag().getCompound("Weapon").getCompound("Base").putInt("MaxUpgrades", 26);
-            Constants.LOG.info(String.valueOf(itemStack.getOrCreateTag().getCompound("Weapon")));
+            pPlayer.addEffect(new StatusEffectInstance(this.getModifiedWeapon(itemStack), null, (BuildUpStatusEffect) StatusEffectInit.SCARLET_ROT.get(), 600));
 //            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
-            /*ExtendedWeaponCapability weaponCapability = EFMCapabilityUtil.getWeaponCapability(serverPlayerPatch);
-            if (weaponCapability != null) {
-                weaponCapability.swapAshOfWar(itemStack, weaponCapability.getAshOfWar(itemStack) == SkillInit.SWEEPING_EDGE_NEW ? SkillInit.GUILLOTINE_AXE_NEW : SkillInit.SWEEPING_EDGE_NEW);
-                Constants.LOG.info(String.valueOf(weaponCapability.getAshOfWar(itemStack)));
-            }*/
-
+            Constants.LOG.info(String.valueOf(66 + DamageUtil.getSaturationValue(Saturations.STATUS_EFFECT, EntityStatusUtil.getEntityAttribute(pPlayer, EntityAttributeInit.ARCANE.get()), false) * 66));
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }

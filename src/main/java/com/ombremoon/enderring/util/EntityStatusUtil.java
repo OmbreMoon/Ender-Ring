@@ -13,6 +13,7 @@ import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.network.ModNetworking;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -133,6 +134,10 @@ public class EntityStatusUtil {
 
     public static boolean consumeFP(Player player, float amount, AbstractSpell abstractSpell, boolean forceConsume) {
         return EntityStatusProvider.get(player).consumeFP(amount, abstractSpell, forceConsume);
+    }
+
+    public void increaseBuildUp(LivingEntity livingEntity, EntityDataAccessor<Float> accessor, float amount, float limit) {
+        livingEntity.getEntityData().set(accessor,  Mth.clamp(amount, 0.0F, limit));
     }
 
     public static void updateDefense(Player player, Attribute attribute) {

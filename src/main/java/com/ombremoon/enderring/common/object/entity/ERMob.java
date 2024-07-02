@@ -45,13 +45,13 @@ import java.util.Optional;
 
 public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements LevelledMob, SmartBrainOwner<ERMob<T>> {
     protected static final Logger LOGGER = Constants.LOG;
-    protected static final EntityDataAccessor<Float> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Float> SCARLET_ROT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Float> BLOOD_LOSS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Float> FROSTBITE = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Float> SLEEP = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Float> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Float> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Integer> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> SCARLET_ROT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> BLOOD_LOSS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> FROSTBITE = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> SLEEP = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
 
     protected ERMob(EntityType<? extends ERMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -60,13 +60,13 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(POISON, 0.0F);
-        this.getEntityData().define(SCARLET_ROT, 0.0F);
-        this.getEntityData().define(BLOOD_LOSS, 0.0F);
-        this.getEntityData().define(FROSTBITE, 0.0F);
-        this.getEntityData().define(SLEEP, 0.0F);
-        this.getEntityData().define(MADNESS, 0.0F);
-        this.getEntityData().define(DEATH_BLIGHT, 0.0F);
+        this.getEntityData().define(POISON, 0);
+        this.getEntityData().define(SCARLET_ROT, 0);
+        this.getEntityData().define(BLOOD_LOSS, 0);
+        this.getEntityData().define(FROSTBITE, 0);
+        this.getEntityData().define(SLEEP, 0);
+        this.getEntityData().define(MADNESS, 0);
+        this.getEntityData().define(DEATH_BLIGHT, 0);
     }
 
     @Override
@@ -168,6 +168,6 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
                 .add(EntityAttributeInit.PHYS_DEFENSE.get()).add(EntityAttributeInit.MAGIC_DEFENSE.get()).add(EntityAttributeInit.FIRE_DEFENSE.get()).add(EntityAttributeInit.LIGHT_DEFENSE.get()).add(EntityAttributeInit.HOLY_DEFENSE.get())
                 .add(EntityAttributeInit.PHYS_NEGATE.get()).add(EntityAttributeInit.MAGIC_NEGATE.get()).add(EntityAttributeInit.FIRE_NEGATE.get()).add(EntityAttributeInit.LIGHT_NEGATE.get()).add(EntityAttributeInit.HOLY_NEGATE.get())
                 .add(EntityAttributeInit.STRIKE_NEGATE.get()).add(EntityAttributeInit.SLASH_NEGATE.get()).add(EntityAttributeInit.PIERCE_NEGATE.get())
-                .add(EntityAttributeInit.POISON_RESIST.get()).add(EntityAttributeInit.SCARLET_ROT_RESIST.get()).add(EntityAttributeInit.HEMORRHAGE_RESIST.get()).add(EntityAttributeInit.FROSTBITE_RESIST.get()).add(EntityAttributeInit.SLEEP_RESIST.get()).add(EntityAttributeInit.MADNESS_RESIST.get());
+                .add(EntityAttributeInit.POISON_RESIST.get()).add(EntityAttributeInit.SCARLET_ROT_RESIST.get()).add(EntityAttributeInit.HEMORRHAGE_RESIST.get()).add(EntityAttributeInit.FROSTBITE_RESIST.get()).add(EntityAttributeInit.SLEEP_RESIST.get()).add(EntityAttributeInit.MADNESS_RESIST.get()).add(EntityAttributeInit.DEATH_BLIGHT_RESIST.get());
     }
 }

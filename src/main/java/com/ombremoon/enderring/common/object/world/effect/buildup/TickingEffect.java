@@ -26,7 +26,7 @@ public class TickingEffect extends BuildUpStatusEffect {
                 if (weapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
                     Constants.LOG.info("Womp womp");
                 } else {
-                    f = pLivingEntity.getMaxHealth() * 0.07F + 0.47F;
+                    f = pLivingEntity.getMaxHealth() * 0.0007F + 0.47F;
                 }
             }
         } else if (this == StatusEffectInit.SCARLET_ROT.get()) {
@@ -35,7 +35,7 @@ public class TickingEffect extends BuildUpStatusEffect {
                 if (weapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
                     Constants.LOG.info("Pomp Pomp");
                 } else {
-                    f = pLivingEntity.getMaxHealth() * 0.18F + 1.0F;
+                    f = pLivingEntity.getMaxHealth() * 0.0018F + 1.0F;
                 }
             }
         }

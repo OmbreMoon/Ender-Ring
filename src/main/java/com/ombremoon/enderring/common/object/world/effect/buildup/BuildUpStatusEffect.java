@@ -31,7 +31,7 @@ public class BuildUpStatusEffect extends StatusEffect {
     public void applyStatusTick(LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
     }
 
-    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType, int pAmplifier, double pHealth) {
+    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
         if (this == StatusEffectInit.SLEEP.get()) {
             float time = 60.0F;
             if (pLivingEntity instanceof Player player) {
