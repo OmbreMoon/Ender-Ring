@@ -9,12 +9,12 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
-import com.ombremoon.enderring.common.object.world.effect.buildup.StatusEffectInstance;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -41,8 +41,8 @@ public class MeleeWeapon extends AbstractWeapon {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            pPlayer.addEffect(new StatusEffectInstance(this.getModifiedWeapon(itemStack), null, (BuildUpStatusEffect) StatusEffectInit.DEATH_BLIGHT.get(), 1));
-            ((BuildUpStatusEffect) StatusEffectInit.DEATH_BLIGHT.get()).applyInstantaneousEffect(null, null, pPlayer, null, null);
+            pPlayer.addEffect(new MobEffectInstance(((BuildUpStatusEffect) StatusEffectInit.MADNESS.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)), 20));
+            ((BuildUpStatusEffect) StatusEffectInit.MADNESS.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)).applyInstantaneousEffect(null, null, pPlayer);
 //            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
             Constants.LOG.info(String.valueOf(66 + DamageUtil.getSaturationValue(Saturations.STATUS_EFFECT, EntityStatusUtil.getEntityAttribute(pPlayer, EntityAttributeInit.ARCANE.get()), false) * 66));
         }
@@ -53,7 +53,7 @@ public class MeleeWeapon extends AbstractWeapon {
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         float motionValue = pStack.getTag().getFloat("MotionValue");
         DamageUtil.conditionalHurt(pStack, this.getModifiedWeapon(pStack), pAttacker, pTarget, motionValue);
-        return super.hurtEnemy(pStack, pTarget, pAttacker);
+        return true;
     }
 
     @Override

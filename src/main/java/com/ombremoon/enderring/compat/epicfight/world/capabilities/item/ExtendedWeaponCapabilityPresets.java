@@ -1,14 +1,11 @@
 package com.ombremoon.enderring.compat.epicfight.world.capabilities.item;
 
-import com.mojang.datafixers.types.Func;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.animation.types.AimAnimation;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.ColliderPreset;
-import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -25,7 +22,7 @@ public class ExtendedWeaponCapabilityPresets {
 
     protected static ExtendedWeaponCapability.Builder greatSwordBuilder() {
         return ExtendedWeaponCapability.builder()
-                .category(CapabilityItem.WeaponCategories.GREATSWORD)
+                .category(ExtendedWeaponCategories.GREAT_SWORD)
                 .styleProvider(playerPatch -> playerPatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == CapabilityItem.WeaponCategories.GREATSWORD ? CapabilityItem.Styles.TWO_HAND : CapabilityItem.Styles.ONE_HAND)
                 .collider(ColliderPreset.GREATSWORD)
                 .newStyleCombo(CapabilityItem.Styles.ONE_HAND, Animations.GREATSWORD_AUTO1, Animations.GREATSWORD_AUTO2, Animations.GREATSWORD_AUTO1, Animations.GREATSWORD_AUTO2, Animations.GREATSWORD_DASH, Animations.GREATSWORD_AIR_SLASH)
@@ -50,7 +47,7 @@ public class ExtendedWeaponCapabilityPresets {
                 .livingMotionModifier(CapabilityItem.Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_GREATSWORD)
                 .weaponCombinationPredicator(entityPatch -> {
                     WeaponCategory category = EpicFightCapabilities.getItemStackCapability(entityPatch.getOriginal().getOffhandItem()).getWeaponCategory();
-                    return category == CapabilityItem.WeaponCategories.GREATSWORD;
+                    return category == ExtendedWeaponCategories.GREAT_SWORD || category == CapabilityItem.WeaponCategories.GREATSWORD;
                 })
                 .hitSound(EpicFightSounds.BLADE_HIT.get())
                 .hitParticle(EpicFightParticles.HIT_BLADE.get());

@@ -72,8 +72,8 @@ public class PlayerStatusScreen extends Screen {
         pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.FAITH.get())), getProperLocation(EntityAttributeInit.FAITH.get(), x2, x1), y + 152, textColor);
         pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.ARCANE.get())), getProperLocation(EntityAttributeInit.ARCANE.get(), x2, x1), y + 162, textColor);
 
-        pGuiGraphics.drawString(this.font, Component.literal(Mth.floor(player.getHealth()) + "/" + Mth.floor(player.getMaxHealth())), getProperLocation(Mth.floor(player.getHealth()), x6, x5, x4), y + 62, textColor);
-        pGuiGraphics.drawString(this.font, Component.literal(Mth.floor(EntityStatusUtil.getFP(player)) + "/" + getAttribute(EntityAttributeInit.MAX_FP.get())), getProperLocation(Mth.floor(EntityStatusUtil.getFP(player)), x6, x5, x4), y + 74, textColor);
+        pGuiGraphics.drawString(this.font, Component.literal(Mth.floor(player.getHealth()) + "/" + Mth.floor(player.getMaxHealth())), getProperLocation(Mth.floor(player.getHealth()), player.getMaxHealth() > 99 ? x6 - 6 : x6, player.getMaxHealth() > 99 ? x5 - 6 : x5, x4 - 1), y + 62, textColor);
+        pGuiGraphics.drawString(this.font, Component.literal(Mth.floor(EntityStatusUtil.getFP(player)) + "/" + getAttribute(EntityAttributeInit.MAX_FP.get())), getProperLocation(Mth.floor(EntityStatusUtil.getFP(player)), getAttributeAmount(EntityAttributeInit.MAX_FP.get()) > 99 ? x6 - 6 : x6, getAttributeAmount(EntityAttributeInit.MAX_FP.get()) > 99 ? x5 - 6 : x5, x4), y + 74, textColor);
         pGuiGraphics.drawString(this.font, Component.literal(Mth.floor(playerPatch.getStamina()) + "/" + getAttribute(EpicFightAttributes.MAX_STAMINA.get())), getProperLocation(Mth.floor(playerPatch.getStamina()), x6, x5, x4), y + 85, textColor);
         pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.RUNE_LEVEL.get())), getProperLocation(EntityAttributeInit.RUNE_LEVEL.get(), x6 + 18, x6 + 12, x6 + 6), y + 98, textColor);
 
@@ -120,6 +120,11 @@ public class PlayerStatusScreen extends Screen {
     private String getAttribute(Attribute attribute) {
         Player player = Minecraft.getInstance().player;
         return String.valueOf(Mth.floor(EntityStatusUtil.getEntityAttribute(player, attribute)));
+    }
+
+    private int getAttributeAmount(Attribute attribute) {
+        Player player = Minecraft.getInstance().player;
+        return Mth.floor(EntityStatusUtil.getEntityAttribute(player, attribute));
     }
 
     private String getNegation(Attribute attribute) {

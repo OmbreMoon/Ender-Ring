@@ -2,22 +2,18 @@ package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponDamage;
-import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
-import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.CatalystWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
-import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
-import com.ombremoon.enderring.common.object.world.effect.buildup.StatusEffectInstance;
 import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
-import com.ombremoon.enderring.event.custom.*;
+import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
@@ -26,6 +22,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
@@ -36,10 +33,8 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.skill.CapabilitySkill;
 
@@ -102,6 +97,9 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
+        if (event.getEntity() instanceof Husk) {
+            Constants.LOG.info(String.valueOf(event.getSource().getEntity()));
+        }
         if (event.getSource().getEntity() instanceof Player player) {
             if (player.hasEffect(StatusEffectInit.ANCESTRAL_SPIRITS_HORN.get())) EntityStatusUtil.increaseFP(player, 3);
             if (player.hasEffect(StatusEffectInit.TAKERS_CAMEO.get())) player.heal((player.getMaxHealth()*0.03F) + 2F);

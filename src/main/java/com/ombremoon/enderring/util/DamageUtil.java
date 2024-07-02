@@ -2,13 +2,13 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
+import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.StatusType;
+import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.Saturations;
-import com.ombremoon.enderring.common.ScaledWeapon;
-import com.ombremoon.enderring.common.WeaponDamage;
-import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.SpellType;
@@ -18,7 +18,6 @@ import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
-import com.ombremoon.enderring.common.object.world.effect.buildup.StatusEffectInstance;
 import com.ombremoon.enderring.event.custom.EventFactory;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -26,6 +25,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
@@ -82,7 +83,7 @@ public class DamageUtil {
 
             //Ensures that type damage is 1 when between 0 and 1
             if (typeDamage > 0) {
-                damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), scaledWeapon.getDamage().getPhysDamageTypes());
+                damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), attackEntity, scaledWeapon.getDamage().getPhysDamageTypes());
                 typeDamage = Math.max(typeDamage, 1.0F);
 
                 if (targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage)) {
@@ -104,7 +105,7 @@ public class DamageUtil {
     }
 
     private static void attemptBuildUp(LivingEntity attackEntity, LivingEntity targetEntity, ScaledWeapon scaledWeapon, SpellType<?> spellType, StatusType statusType, int buildUp) {
-        BuildUpStatusEffect effect = statusType.getEffect();
+        BuildUpStatusEffect effect = statusType.getEffect().setScaledWeapon(scaledWeapon).setSpellType(spellType);
         if (!targetEntity.hasEffect(effect)) {
             EntityDataAccessor<Integer> status = targetEntity instanceof Player ? statusType.getPlayerStatus() : statusType.getEntityStatus();
             Attribute resist = targetEntity instanceof Player ? statusType.getPlayerResist() : statusType.getEntityResist();
@@ -113,9 +114,9 @@ public class DamageUtil {
             targetEntity.getEntityData().set(status, (int) Mth.clamp(currentStatus + calculateStatusBuildUp(attackEntity, buildUp), 0, threshold));
 
             if (targetEntity.getEntityData().get(status) >= threshold) {
-                targetEntity.addEffect(new StatusEffectInstance(scaledWeapon, spellType, effect, scaledWeapon.getStatus().getStatusDuration()));
+                targetEntity.addEffect(new MobEffectInstance(effect, scaledWeapon.getStatus().getStatusDuration(), 0, true, true));
                 if (effect.isInstantenous()) {
-                    effect.applyInstantaneousEffect(attackEntity, null, targetEntity, scaledWeapon, spellType);
+                    effect.applyInstantaneousEffect(attackEntity, null, targetEntity);
                 }
 
                 if (targetEntity instanceof LevelledMob levelledMob) {
@@ -126,11 +127,19 @@ public class DamageUtil {
     }
 
     public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType) {
-        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType));
+        return moddedDamageSource(level, damageType, null);
     }
 
-    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, PhysicalDamageType... damageTypes) {
-        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType)).addPhysicalDamage(damageTypes);
+    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, LivingEntity attackEntity) {
+        return moddedDamageSource(level, damageType, attackEntity, attackEntity);
+    }
+
+    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity indirectEntity, LivingEntity attackEntity) {
+        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), indirectEntity, attackEntity);
+    }
+
+    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, LivingEntity attackEntity, PhysicalDamageType... damageTypes) {
+        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), attackEntity, attackEntity).addPhysicalDamage(damageTypes);
     }
 
     private static float calculateDamage(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, WeaponDamage weaponDamage) {

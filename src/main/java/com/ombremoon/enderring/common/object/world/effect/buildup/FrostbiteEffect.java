@@ -1,7 +1,5 @@
 package com.ombremoon.enderring.common.object.world.effect.buildup;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
-import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.world.entity.Entity;
@@ -19,7 +17,7 @@ public class FrostbiteEffect extends BuildUpStatusEffect {
     }
 
     @Override
-    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
+    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity) {
         float f = pLivingEntity instanceof Player ? 0.1F : 0.07F;
         pLivingEntity.hurt(DamageUtil.moddedDamageSource(pLivingEntity.level(), ModDamageTypes.FROSTBITE), pLivingEntity.getMaxHealth() * f + 2.0F);
         this.addAttributeModifier(EpicFightAttributes.STAMINA_REGEN.get(), FROSTBITE, -0.5F, AttributeModifier.Operation.MULTIPLY_TOTAL);

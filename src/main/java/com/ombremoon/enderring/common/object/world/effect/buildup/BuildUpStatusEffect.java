@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.world.effect.buildup;
 
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.SpellType;
@@ -20,6 +21,9 @@ import yesman.epicfight.world.damagesource.StunType;
 import java.util.function.BiFunction;
 
 public class BuildUpStatusEffect extends StatusEffect {
+    protected ScaledWeapon scaledWeapon;
+    protected SpellType<?> spellType;
+
     public BuildUpStatusEffect(int pColor) {
         super(EffectType.BUILD_UP, pColor, null, null, (a, b) -> true, MobEffectCategory.HARMFUL);
     }
@@ -28,10 +32,7 @@ public class BuildUpStatusEffect extends StatusEffect {
         super(EffectType.BUILD_UP, pColor, null, null, applyTick, MobEffectCategory.HARMFUL);
     }
 
-    public void applyStatusTick(LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
-    }
-
-    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
+    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity) {
         if (this == StatusEffectInit.SLEEP.get()) {
             float time = 60.0F;
             if (pLivingEntity instanceof Player player) {
@@ -45,6 +46,7 @@ public class BuildUpStatusEffect extends StatusEffect {
             if (pLivingEntity instanceof Player player) {
                 EntityStatusUtil.consumeFP(player, EntityStatusUtil.getMaxFP(player) * 0.1F + 30.0F, null, true);
             }
+            Constants.LOG.info(String.valueOf(this.scaledWeapon.serializeNBT()));
 
             this.stunEntity(pLivingEntity, 0.83F);
         } else if (this == StatusEffectInit.DEATH_BLIGHT.get()) {
@@ -62,5 +64,15 @@ public class BuildUpStatusEffect extends StatusEffect {
         if (livingEntityPatch != null) {
             livingEntityPatch.applyStun(StunType.SHORT, time);
         }
+    }
+
+    public BuildUpStatusEffect setScaledWeapon(ScaledWeapon scaledWeapon) {
+        this.scaledWeapon = scaledWeapon;
+        return this;
+    }
+
+    public BuildUpStatusEffect setSpellType(SpellType<?> spellType) {
+        this.spellType = spellType;
+        return this;
     }
 }

@@ -53,13 +53,13 @@ public class StatusEffectInstance extends MobEffectInstance {
     public SpellType<?> getSpellType() {
         return this.spellType;
     }
-
+/*
     @Override
     public void applyEffect(LivingEntity pEntity) {
         if (this.hasRemainingDuration()) {
             this.effect.applyStatusTick(pEntity, this.weapon, this.spellType);
         }
-    }
+    }*/
 
     private boolean hasRemainingDuration() {
         return this.isInfiniteDuration() || this.getDuration() > 0;

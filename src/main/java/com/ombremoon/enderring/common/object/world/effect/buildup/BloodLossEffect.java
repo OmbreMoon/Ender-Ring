@@ -1,7 +1,5 @@
 package com.ombremoon.enderring.common.object.world.effect.buildup;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
-import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.world.entity.Entity;
@@ -14,12 +12,7 @@ public class BloodLossEffect extends BuildUpStatusEffect {
     }
 
     @Override
-    public void applyStatusTick(LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
-        pLivingEntity.hurt(DamageUtil.moddedDamageSource(pLivingEntity.level(), ModDamageTypes.BLOOD_LOSS), pLivingEntity.getMaxHealth() * 0.15F + 6.7F);
-    }
-
-    @Override
-    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
+    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity) {
         pLivingEntity.hurt(DamageUtil.moddedDamageSource(pLivingEntity.level(), ModDamageTypes.BLOOD_LOSS), pLivingEntity.getMaxHealth() * 0.15F + 6.7F);
     }
 

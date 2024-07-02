@@ -232,7 +232,7 @@ public abstract class AbstractSpell {
         DamageInstance damageInstance = this.createDamageInstance();
         if (damageInstance != null) {
             onHurtTick(this.playerPatch, livingEntity, this.level, this.scaledWeapon);
-            livingEntity.hurt(DamageUtil.moddedDamageSource(this.level, damageInstance.damageType()), damageInstance.amount());
+            livingEntity.hurt(DamageUtil.moddedDamageSource(this.level, damageInstance.damageType(), this.playerPatch.getOriginal()), damageInstance.amount());
         }
     }
 

@@ -17,13 +17,13 @@ public class TickingEffect extends BuildUpStatusEffect {
     }
 
     @Override
-    public void applyStatusTick(LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         float f = 0;
         ResourceKey<DamageType> damageType = null;
         if (this == StatusEffectInit.POISON.get()) {
             damageType = ModDamageTypes.POISON;
-            if (weapon != null) {
-                if (weapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
+            if (this.scaledWeapon != null) {
+                if (this.scaledWeapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
                     Constants.LOG.info("Womp womp");
                 } else {
                     f = pLivingEntity.getMaxHealth() * 0.0007F + 0.47F;
@@ -31,8 +31,8 @@ public class TickingEffect extends BuildUpStatusEffect {
             }
         } else if (this == StatusEffectInit.SCARLET_ROT.get()) {
             damageType = ModDamageTypes.SCARLET_ROT;
-            if (weapon != null) {
-                if (weapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
+            if (this.scaledWeapon != null) {
+                if (this.scaledWeapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
                     Constants.LOG.info("Pomp Pomp");
                 } else {
                     f = pLivingEntity.getMaxHealth() * 0.0018F + 1.0F;
