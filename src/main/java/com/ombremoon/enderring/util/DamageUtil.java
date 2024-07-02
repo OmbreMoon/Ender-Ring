@@ -109,7 +109,8 @@ public class DamageUtil {
             EntityDataAccessor<Integer> status = targetEntity instanceof Player ? statusType.getPlayerStatus() : statusType.getEntityStatus();
             Attribute resist = targetEntity instanceof Player ? statusType.getPlayerResist() : statusType.getEntityResist();
             int threshold = (int) EntityStatusUtil.getEntityAttribute(targetEntity, resist);
-            targetEntity.getEntityData().set(status, (int) Mth.clamp(calculateStatusBuildUp(attackEntity, buildUp), 0, threshold));
+            int currentStatus = targetEntity.getEntityData().get(status);
+            targetEntity.getEntityData().set(status, (int) Mth.clamp(currentStatus + calculateStatusBuildUp(attackEntity, buildUp), 0, threshold));
 
             if (targetEntity.getEntityData().get(status) >= threshold) {
                 targetEntity.addEffect(new StatusEffectInstance(scaledWeapon, spellType, effect, scaledWeapon.getStatus().getStatusDuration()));
@@ -198,7 +199,7 @@ public class DamageUtil {
 
     public static float calculateStatusBuildUp(LivingEntity livingEntity, int buildUp) {
         float f = getSaturationValue(Saturations.STATUS_EFFECT, EntityStatusUtil.getEntityAttribute(livingEntity, EntityAttributeInit.ARCANE.get()), false);
-        return buildUp * f;
+        return buildUp * f + buildUp;
     }
 
     private static float getDamageUpgrade(ScaledWeapon weapon, WeaponDamage weaponDamage, int weaponLevel) {

@@ -19,7 +19,7 @@ public class FrostbiteEffect extends BuildUpStatusEffect {
     }
 
     @Override
-    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType, int pAmplifier, double pHealth) {
+    public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
         float f = pLivingEntity instanceof Player ? 0.1F : 0.07F;
         pLivingEntity.hurt(DamageUtil.moddedDamageSource(pLivingEntity.level(), ModDamageTypes.FROSTBITE), pLivingEntity.getMaxHealth() * f + 2.0F);
         this.addAttributeModifier(EpicFightAttributes.STAMINA_REGEN.get(), FROSTBITE, -0.5F, AttributeModifier.Operation.MULTIPLY_TOTAL);
