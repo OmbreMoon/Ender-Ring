@@ -82,18 +82,9 @@ public class DamageUtil {
                 damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), scaledWeapon.getDamage().getPhysDamageTypes());
                 typeDamage = Math.max(typeDamage, 1.0F);
 
-                targetEntity.hurt(damageSource, getMotionDamage(attackEntity, typeDamage, motionValue));
+                targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage);
             }
         }
-    }
-
-    public static float getMotionDamage(LivingEntity attackEntity, float typeDamage, float motionValue) {
-        if (attackEntity.hasEffect(StatusEffectInit.LANCE_TALISMAN.get()) && attackEntity.isPassenger())
-            typeDamage *= 1.15F;
-        if (attackEntity.hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) && attackEntity.fallDistance > 0)
-            typeDamage *= 1.15F;
-
-        return motionValue != 0 ? typeDamage * motionValue : typeDamage;
     }
 
     public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType) {
@@ -131,6 +122,8 @@ public class DamageUtil {
         if (entity.hasEffect(StatusEffectInit.RED_FEATHERED_BRANCHSWORD.get())
             && entity.getHealth() <= entity.getMaxHealth() * 0.2F) multiplier += 0.2F;
         if (entity.hasEffect(StatusEffectInit.FLOCKS_CANVAS_TALISMAN.get()) && weaponDamage == WeaponDamage.HOLY) multiplier += 0.08F;
+        if (entity.hasEffect(StatusEffectInit.LANCE_TALISMAN.get()) && entity.isPassenger()) multiplier += 0.15F;
+        if (entity.hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) && entity.fallDistance > 0) multiplier += 0.15F;
 
         return multiplier;
     }

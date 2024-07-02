@@ -21,7 +21,7 @@ public class ModifiedAttributeEffect extends StatusEffect {
     protected final Map<AttributeModifier, List<Supplier<Attribute>>> attributes;
 
     public ModifiedAttributeEffect(MobEffectCategory category, int color, Map<AttributeModifier, List<Supplier<Attribute>>> attributes, Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, EffectType type) {
-        super(type, color, translations, tiers, (a, b) -> false, category);
+        super(type, color, translations, tiers, null, category);
         this.attributes = attributes;
     }
 
@@ -33,11 +33,6 @@ public class ModifiedAttributeEffect extends StatusEffect {
                 addAttributeModifier(pLivingEntity, attribute, modifier, getAttributeModifierValue(pAmplifier, modifier));
             }
         }
-    }
-
-    @Override
-    public boolean isInstantenous() {
-        return true;
     }
 
     @Override

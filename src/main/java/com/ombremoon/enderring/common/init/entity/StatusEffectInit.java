@@ -157,11 +157,11 @@ public class StatusEffectInit {
                     .addTier("07f0bb21-c796-4808-8fd4-18d8df9f6347", 3, 0.20D)
                     .addTranslation(3, "item.enderring.dragoncrest_shield_talismanplus3").build());
     public static final RegistryObject<MobEffect> SACRIFICIAL_TWIG = registerSimpleEffect("sacrificial_twig",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> CRIMSON_SEED_TALISMAN = registerSimpleEffect("crimson_seed_talisman",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> CERULEAN_SEED_TALISMAN = registerSimpleEffect("cerulean_seed_talisman",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> STARSCOURGE_HEIRLOOM = registerSimpleEffect("starscourge_heirloom",
             new EffectBuilder(EffectType.PERSISTENT)
                     .addAttribute(new AttributeModifier(
@@ -191,7 +191,7 @@ public class StatusEffectInit {
                             5F, AttributeModifier.Operation.ADDITION),
                             EntityAttributeInit.FAITH).build());
     public static final RegistryObject<MobEffect> LONGTAIL_CAT_TALISMAN = registerStatusEffect("longtail_cat_talisman",
-            new EffectBuilder(EffectType.FALL_DAMAGE).build());
+            new EffectBuilder(EffectType.FALL_DAMAGE).isInstantaneous().build());
     public static final RegistryObject<MobEffect> PRIMAL_GLINTSTONE_BLADE = registerStatusEffect("primal_glintstone_blade",
             new EffectBuilder(EffectType.PERSISTENT)
                     .addAttribute(new AttributeModifier(
@@ -265,7 +265,7 @@ public class StatusEffectInit {
                     .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 1, 0.085D)
                     .addTier("3c973081-d8d4-4dea-ad93-570ea884af51", 2, 0.1D).build());
     public static final RegistryObject<MobEffect> RITUAL_SWORD_TALISMAN = registerStatusEffect("ritual_sword_talisman",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> RITUAL_SHIELD_TALISMAN = registerStatusEffect("ritual_shield_talisman",
             new EffectBuilder(EffectType.PERSISTENT)
                     .addAttribute(new AttributeModifier(
@@ -276,7 +276,7 @@ public class StatusEffectInit {
                             EntityAttributeInit.LIGHT_NEGATE, EntityAttributeInit.FIRE_NEGATE,
                             EntityAttributeInit.MAGIC_NEGATE).buildHpEffect(true));
     public static final RegistryObject<MobEffect> RED_FEATHERED_BRANCHSWORD = registerStatusEffect("red_feathered_branchsword",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> BLUE_FEATHERED_BRANCHSWORD = registerStatusEffect("blue_feathered_branchsword",
             new EffectBuilder(EffectType.PERSISTENT).addAttribute(new AttributeModifier(
                             UUID.fromString("3849ab13-31af-4dec-bdc5-aa3af1047457"),
@@ -395,13 +395,13 @@ public class StatusEffectInit {
                     .addTier("c0386557-a3b0-4c98-8493-6330e6adede7", 1, 140D)
                     .addTranslation(1, "item.enderring.prince_of_deaths_pustuleplus1").build());
     public static final RegistryObject<MobEffect> TWINBLADE_TALISMAN = registerStatusEffect("twinblade_talisman",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> LANCE_TALISMAN = registerStatusEffect("lance_talisman",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> CLAW_TALISMAN = registerStatusEffect("claw_talisman",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> FLOCKS_CANVAS_TALISMAN = registerStatusEffect("flocks_canvas_talisman",
-            new EffectBuilder(EffectType.PERSISTENT).build());
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
 
 
     private static RegistryObject<MobEffect> registerSimpleEffect(String name, StatusEffect effect) {

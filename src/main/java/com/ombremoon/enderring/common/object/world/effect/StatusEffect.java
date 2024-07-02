@@ -26,14 +26,21 @@ public class StatusEffect extends MobEffect {
     @Nullable public final Map<Integer, String> translationKeys;
     @Nullable private final Map<String, Map<Integer, Double>> tiers;
     private final BiFunction<Integer, Integer, Boolean> applyTick;
+    private final boolean instant;
     private final EffectType type;
 
     public StatusEffect(EffectType type, int pColor, @Nullable Map<Integer, String> translations, Map<String, Map<Integer, Double>> tiers, BiFunction<Integer, Integer, Boolean> applyTick, MobEffectCategory category) {
         super(category, pColor);
         this.translationKeys = translations;
         this.tiers = tiers;
-        this.applyTick = applyTick;
         this.type = type;
+        if (applyTick == null) {
+            this.applyTick = (a, b) -> false;
+            this.instant = true;
+        } else {
+            this.applyTick = applyTick;
+            this.instant = false;
+        }
     }
 
     @Override
@@ -50,6 +57,11 @@ public class StatusEffect extends MobEffect {
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
         return applyTick.apply(pDuration, pAmplifier);
+    }
+
+    @Override
+    public boolean isInstantenous() {
+        return this.instant;
     }
 
     public EffectType getEffectType() {

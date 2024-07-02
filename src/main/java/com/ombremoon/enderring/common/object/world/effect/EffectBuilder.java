@@ -26,6 +26,7 @@ public class EffectBuilder {
 
     public EffectBuilder(EffectType type) {
         this.category = MobEffectCategory.BENEFICIAL;
+        this.type = type;
         this.color = 234227227;
         this.applyTick = (a, b) -> true;
     }
@@ -43,6 +44,11 @@ public class EffectBuilder {
     public EffectBuilder setApplyTick(BiFunction<Integer, Integer, Boolean> apply) {
         if (this.attributes != null) LogUtils.getLogger().warn("Can not set apply ticks on an modified attribute effect.");
         this.applyTick = apply;
+        return this;
+    }
+
+    public EffectBuilder isInstantaneous() {
+        this.applyTick = null;
         return this;
     }
 
