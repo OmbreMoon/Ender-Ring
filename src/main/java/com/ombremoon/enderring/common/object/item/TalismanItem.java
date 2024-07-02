@@ -51,7 +51,7 @@ public class TalismanItem extends Item implements ICurioItem {
         pTooltipComponents.add(Component.translatable(getDescriptionId().replace("item", "tooltip")));
         pTooltipComponents.add(CommonComponents.EMPTY);
 
-        if (Screen.hasShiftDown() && this.effect.get() instanceof ModifiedAttributeEffect statusEffect) {
+        if (Screen.hasShiftDown() && this.effect != null && this.effect.get() instanceof ModifiedAttributeEffect statusEffect) {
             for (AttributeModifier modifer : statusEffect.getAttributeMap().keySet()) {
                 AttributeModifier.Operation operation = modifer.getOperation();
                 double amount = modifer.getAmount();
@@ -66,7 +66,7 @@ public class TalismanItem extends Item implements ICurioItem {
                     );
                 }
             }
-        } else if (!Screen.hasShiftDown() && this.effect.get() instanceof ModifiedAttributeEffect) {
+        } else if (!Screen.hasShiftDown() && this.effect != null &&this.effect.get() instanceof ModifiedAttributeEffect) {
             pTooltipComponents.add(Component.translatable("tooltip.enderring.more_info")
                     .withStyle(ChatFormatting.GRAY));
         }
@@ -87,6 +87,10 @@ public class TalismanItem extends Item implements ICurioItem {
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        if (this.getEffect() == null) {
+            ICurioItem.super.onEquip(slotContext, prevStack, stack);
+            return;
+        }
         LivingEntity livingEntity = slotContext.entity();
         if (!livingEntity.hasEffect(this.getEffect())) {
             int amp = getTier(stack);
@@ -105,12 +109,9 @@ public class TalismanItem extends Item implements ICurioItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         Player player = (Player) slotContext.entity();
 
-        int slots = CurioHelper.getTalismanStacks(player).getSlots();
-        for (int i = 0; i < slots; i++) {
-            if (stack.getItem() == CurioHelper.getTalismanStacks(player).getStackInSlot(i).getItem()) {
-                ICurioItem.super.onUnequip(slotContext, newStack, stack);
-                return;
-            }
+        if (this.getEffect() == null || CurioHelper.hasTalisman(player, this)) {
+            ICurioItem.super.onUnequip(slotContext, newStack, stack);
+            return;
         }
 
         MobEffect mobEffect = this.getEffect();
@@ -121,7 +122,7 @@ public class TalismanItem extends Item implements ICurioItem {
     }
 
     public MobEffect getEffect() {
-        return this.effect.get();
+        return this.effect != null ? this.effect.get() : null;
     }
 
     public int getTier(ItemStack stack) {

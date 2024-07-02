@@ -208,6 +208,8 @@ public class ModLangProvider extends LanguageProvider {
         addTooltip(ItemInit.FLOCKS_CANVAS_TALISMAN, "Greatly raises the potency of Incantations.");
         addTooltip(ItemInit.TAKERS_CAMEO, "Restores HP upon defeating enemies.");
         addTooltip(ItemInit.ANCESTRAL_SPIRITS_HORN, "Restores FP upon defeating enemies.");
+        addTooltip(ItemInit.KINDRED_OF_ROTS_EXULTATION, "Poisoning or Rot in vicinity increases attack power.");
+        addTooltip(ItemInit.LORD_OF_BLOODS_EXULTATION, "Blood loss in vicinity increases attack power.");
     }
 
     protected void addTooltip(RegistryObject<Item> item, String translation) {

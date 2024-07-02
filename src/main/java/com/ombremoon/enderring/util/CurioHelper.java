@@ -4,6 +4,7 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.RegistryObject;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
@@ -21,6 +22,18 @@ public class CurioHelper {
 
     public static IDynamicStackHandler getTalismanStacks(Player player) {
         return getCurioStacks(player, TALISMAN);
+    }
+
+    public static boolean hasTalisman(Player player, Item talisman) {
+        IDynamicStackHandler talismans = getTalismanStacks(player);
+        for (int i = 0; i < talismans.getSlots(); i++) {
+            if (talismans.getStackInSlot(i).is(talisman)) return true;
+        }
+        return false;
+    }
+
+    public static boolean hasTalisman(Player player, RegistryObject<Item> talisman) {
+        return hasTalisman(player, talisman.get());
     }
 
     public static ItemStack getQuickAccessStack(Player player, int slot) {

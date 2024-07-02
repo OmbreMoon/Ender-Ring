@@ -22,12 +22,14 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -146,6 +148,8 @@ public class ItemInit {
     public static final RegistryObject<Item> FLOCKS_CANVAS_TALISMAN = registerTalisman("flocks_canvas_talisman", StatusEffectInit.FLOCKS_CANVAS_TALISMAN);
     public static final RegistryObject<Item> TAKERS_CAMEO = registerTalisman("takers_cameo", StatusEffectInit.TAKERS_CAMEO);
     public static final RegistryObject<Item> ANCESTRAL_SPIRITS_HORN = registerTalisman("ancestral_spirits_horn", StatusEffectInit.ANCESTRAL_SPIRITS_HORN);
+    public static final RegistryObject<Item> KINDRED_OF_ROTS_EXULTATION = registerTalisman("kindred_of_rots_exultation", null);
+    public static final RegistryObject<Item> LORD_OF_BLOODS_EXULTATION = registerTalisman("lord_of_bloods_exultation", null);
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);

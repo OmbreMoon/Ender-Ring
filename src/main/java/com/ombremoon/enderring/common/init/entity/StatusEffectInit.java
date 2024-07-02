@@ -7,6 +7,7 @@ import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import com.ombremoon.enderring.common.object.world.effect.buildup.*;
 import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -406,6 +407,10 @@ public class StatusEffectInit {
             new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
     public static final RegistryObject<MobEffect> ANCESTRAL_SPIRITS_HORN = registerStatusEffect("ancestral_spirits_horn",
             new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
+    public static final RegistryObject<MobEffect> KINDRED_OF_ROTS_EXULTATION = registerStatusEffect("kindred_of_rots_exultation",
+            new EffectBuilder(EffectType.PERSISTENT).setColor(0x6E260E).isInstantaneous().build());
+    public static final RegistryObject<MobEffect> LORD_OF_BLOODS_EXULTATION = registerStatusEffect("lord_of_bloods_exultation",
+            new EffectBuilder(EffectType.PERSISTENT).setColor(0x780606).isInstantaneous().build());
 
     private static RegistryObject<MobEffect> registerSimpleEffect(String name, StatusEffect effect) {
         return STATUS_EFFECTS.register(name, () -> effect);
