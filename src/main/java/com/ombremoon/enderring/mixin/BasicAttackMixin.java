@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.mixin;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,7 +34,7 @@ public class BasicAttackMixin {
         if (itemStack.getItem() instanceof MeleeWeapon && cap instanceof ExtendedWeaponCapability weaponCapability) {
             List<Float> motionValues = weaponCapability.getAutoMotionValues(playerPatch);
             float motionValue = motionValues.get(comboCounter);
-            if (comboCounter == motionValues.size()-3) motionValue += 0.45F;
+            if (player.hasEffect(StatusEffectInit.TWINBLADE_TALISMAN.get()) && comboCounter == motionValues.size()-3) motionValue += 0.45F;
             itemStack.getOrCreateTag().putFloat("MotionValue", motionValue);
         }
     }
