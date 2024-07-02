@@ -14,6 +14,13 @@ public class BloodLossEffect extends BuildUpStatusEffect {
     }
 
     @Override
+    public void applyStatusTick(LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType) {
+        super.applyStatusTick(pLivingEntity, weapon, spellType);
+        pLivingEntity.hurt(DamageUtil.moddedDamageSource(pLivingEntity.level(), ModDamageTypes.BLOOD_LOSS), pLivingEntity.getMaxHealth() * 0.15F + 6.7F);
+
+    }
+
+    @Override
     public void applyInstantaneousEffect(@Nullable Entity pSource, @Nullable Entity pIndirectSource, LivingEntity pLivingEntity, ScaledWeapon weapon, SpellType<?> spellType, int pAmplifier, double pHealth) {
         pLivingEntity.hurt(DamageUtil.moddedDamageSource(pLivingEntity.level(), ModDamageTypes.BLOOD_LOSS), pLivingEntity.getMaxHealth() * 0.15F + 6.7F);
     }

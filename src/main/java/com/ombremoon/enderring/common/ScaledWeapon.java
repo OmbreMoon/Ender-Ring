@@ -10,9 +10,12 @@ import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
 
@@ -77,6 +80,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         }
 
         public JsonObject toJsonObject() {
+//            Preconditions.checkArgument(ForgeRegistries.ITEMS.containsKey(this.name), "Weapon location must be identical to that of item location");
             Preconditions.checkArgument(this.maxUpgrades >= 0, "Max upgrades must be greater than or equal 0");
             Preconditions.checkArgument(this.maxUpgrades < 26, "Max upgrades must be less than or equal to 25");
             JsonObject jsonObject = new JsonObject();

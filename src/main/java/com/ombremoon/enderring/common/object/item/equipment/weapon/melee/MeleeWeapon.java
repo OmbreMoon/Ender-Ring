@@ -38,10 +38,10 @@ public class MeleeWeapon extends AbstractWeapon {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            pPlayer.addEffect(new StatusEffectInstance(this.getModifiedWeapon(itemStack), (BuildUpStatusEffect) StatusEffectInit.BLOOD_LOSS.get()));
+            pPlayer.addEffect(new StatusEffectInstance(this.getModifiedWeapon(itemStack), null, (BuildUpStatusEffect) StatusEffectInit.POISON.get(), 100));
             itemStack.getTag().putInt("WeaponLevel", 10);
 //            itemStack.getOrCreateTag().getCompound("Weapon").getCompound("Base").putInt("MaxUpgrades", 26);
-//            Constants.LOG.info(String.valueOf(itemStack.getOrCreateTag().getCompound("Weapon")));
+            Constants.LOG.info(String.valueOf(itemStack.getOrCreateTag().getCompound("Weapon")));
 //            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
             /*ExtendedWeaponCapability weaponCapability = EFMCapabilityUtil.getWeaponCapability(serverPlayerPatch);
             if (weaponCapability != null) {

@@ -11,12 +11,16 @@ public class StatusEffectInstance extends MobEffectInstance {
     private final SpellType<?> spellType;
     private final BuildUpStatusEffect effect;
 
+    public StatusEffectInstance(BuildUpStatusEffect pEffect) {
+        this(null, null, pEffect, 1);
+    }
+
     public StatusEffectInstance(SpellType<?> spellType, BuildUpStatusEffect pEffect) {
-        this(null, spellType, pEffect, 0);
+        this(null, spellType, pEffect, 1);
     }
 
     public StatusEffectInstance(ScaledWeapon weapon, BuildUpStatusEffect pEffect) {
-        this(weapon, null, pEffect, 0);
+        this(weapon, null, pEffect, 1);
     }
 
     public StatusEffectInstance(ScaledWeapon weapon, SpellType<?> spellType, BuildUpStatusEffect pEffect) {

@@ -123,7 +123,7 @@ public class EntityStatusUtil {
 //        ModNetworking.syncCap(player);
     }
 
-    public static double getMaxFP(Player player) {
+    public static float getMaxFP(Player player) {
         return EntityStatusProvider.get(player).getMaxFP();
     }
 

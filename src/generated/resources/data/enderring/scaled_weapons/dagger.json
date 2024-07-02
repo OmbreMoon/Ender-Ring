@@ -20,7 +20,13 @@
       "pierce"
     ]
   },
-  "guard": {},
+  "guard": {
+    "fireGuard": 20,
+    "holyGuard": 20,
+    "lightGuard": 20,
+    "magicGuard": 20,
+    "physGuard": 35
+  },
   "requirements": {
     "dexReq": 9,
     "strReq": 5

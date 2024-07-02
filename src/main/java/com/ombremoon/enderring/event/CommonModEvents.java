@@ -12,6 +12,8 @@ import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWe
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
+import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
+import com.ombremoon.enderring.common.object.world.effect.buildup.StatusEffectInstance;
 import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
@@ -28,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,6 +38,7 @@ import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.skill.CapabilitySkill;
 
@@ -92,6 +96,16 @@ public class CommonModEvents {
         }
         if (itemStack.getItem() instanceof CatalystWeapon catalyst && event.getSlotType() == EquipmentSlot.MAINHAND) {
             if (catalyst.getMagicScaling(itemStack) > 0) event.addModifier(catalyst.getMagicType().getAttribute(), new AttributeModifier(SCALING_UUID, "Weapon modifier", catalyst.getMagicScaling(itemStack), AttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingAttack(LivingAttackEvent event) {
+        LivingEntity livingEntity = event.getEntity();
+        if (!(livingEntity instanceof Player)) {
+            if (livingEntity.hasEffect(StatusEffectInit.SLEEP.get())) {
+                livingEntity.removeEffect(StatusEffectInit.SLEEP.get());
+            }
         }
     }
 

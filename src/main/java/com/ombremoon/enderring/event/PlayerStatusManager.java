@@ -58,7 +58,7 @@ public class PlayerStatusManager {
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
         if (event.getLevel() instanceof ServerLevel && event.getEntity() instanceof ServerPlayer player) {
-            player.getEntityData().set(PlayerStatus.FP, (float) EntityStatusUtil.getMaxFP(player));
+            player.getEntityData().set(PlayerStatus.FP, EntityStatusUtil.getMaxFP(player));
             ModNetworking.syncCap(player);
         }
     }
