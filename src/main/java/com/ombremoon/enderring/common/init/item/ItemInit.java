@@ -153,6 +153,9 @@ public class ItemInit {
     public static final RegistryObject<Item> ANCESTRAL_SPIRITS_HORN = registerTalisman("ancestral_spirits_horn", StatusEffectInit.ANCESTRAL_SPIRITS_HORN);
     public static final RegistryObject<Item> KINDRED_OF_ROTS_EXULTATION = registerTalisman("kindred_of_rots_exultation", null);
     public static final RegistryObject<Item> LORD_OF_BLOODS_EXULTATION = registerTalisman("lord_of_bloods_exultation", null);
+    public static final RegistryObject<Item> WINGED_SWORD_INSIGNIA = registerTalisman("winged_sword_insignia", null, 1);
+    public static final RegistryObject<Item> DAEDICARS_WOE = registerTalisman("daedicars_woe", StatusEffectInit.DAEDICARS_WOE);
+    public static final RegistryObject<Item> ARROWS_STING_TALISMAN = registerTalisman("arrows_string_talisman", StatusEffectInit.ARROWS_STING_TALISMAN);
 
     public static final RegistryObject<CreativeModeTab> TAB = registerCreativeModeTab(Constants.MOD_ID, ItemInit.DEBUG, GENERAL_LIST);
     public static final RegistryObject<CreativeModeTab> TALISMAN = registerTalismanTab("talismans", ItemInit.CRIMSON_AMBER_MEDALLION);

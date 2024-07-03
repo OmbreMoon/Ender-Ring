@@ -23,6 +23,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -143,6 +145,11 @@ public class CommonModEvents {
                         Constants.LOG.info(String.valueOf(event.getAmount()));
                     }
                 }
+            }
+        }
+        if (event.getSource().getEntity() instanceof AbstractArrow && event.getSource().getEntity() instanceof Player player) {
+            if (player.hasEffect(StatusEffectInit.ARROWS_STING_TALISMAN.get())) {
+                event.setAmount(event.getAmount() * 1.1F);
             }
         }
     }

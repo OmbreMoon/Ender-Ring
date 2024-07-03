@@ -125,9 +125,9 @@ public class ModLangProvider extends LanguageProvider {
     }
 
     protected void tabLang() {
-        add("itemGroup." + Constants.MOD_ID + ".tab", Constants.MOD_NAME);
-        add("itemGroup.talismans.tab", Constants.ABBR_NAME + " Talismans");
-        add("itemGroup.equipment.tab", Constants.ABBR_NAME + " Equipment");
+        add("itemgroup." + Constants.MOD_ID + ".tab", Constants.MOD_NAME);
+        add("itemgroup.talismans.tab", Constants.ABBR_NAME + " Talismans");
+        add("itemgroup.equipment.tab", Constants.ABBR_NAME + " Equipment");
     }
 
     protected void attributeLang(RegistryObject<Attribute> entry) {
@@ -160,6 +160,9 @@ public class ModLangProvider extends LanguageProvider {
         add("item.enderring.marikas_scarsealplus1", "Marika's Soreseal");
         add("item.enderring.radagons_scarsealplus1", "Radagon's Soreseal");
         add("item.enderring.dragoncrest_shield_talismanplus3", "Dragoncrest Greatshield Talisman");
+        add("item.enderring.winged_sword_insigniaplus1", "Rotten Winged Sword Insignia");
+        add("item.enderring.rotten_winged_sword_insigniaplus1", "Rotten Winged Sword Insignia +1");
+        add("item.enderring.rotten_winged_sword_insigniaplus2", "Rotten Winged Sword Insignia +2");
         add("item.enderring.prince_of_deaths_pustuleplus1", "Prince of Death's Cyst");
         add("tooltip.enderring.more_info", "Hold shift for more info.");
         add("curios.identifier.talismans", "Talismans");
@@ -210,6 +213,9 @@ public class ModLangProvider extends LanguageProvider {
         addTooltip(ItemInit.ANCESTRAL_SPIRITS_HORN, "Restores FP upon defeating enemies.");
         addTooltip(ItemInit.KINDRED_OF_ROTS_EXULTATION, "Poisoning or Rot in vicinity increases attack power.");
         addTooltip(ItemInit.LORD_OF_BLOODS_EXULTATION, "Blood loss in vicinity increases attack power.");
+        addTooltip(ItemInit.WINGED_SWORD_INSIGNIA, "Raises attack power with successive attacks.");
+        addTooltip(ItemInit.DAEDICARS_WOE, "Increases damage taken.");
+        addTooltip(ItemInit.ARROWS_STING_TALISMAN, "Raises attack power of arrows and bolts.");
     }
 
     protected void addTooltip(RegistryObject<Item> item, String translation) {

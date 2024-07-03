@@ -14,6 +14,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.checkerframework.checker.units.qual.A;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import java.util.UUID;
@@ -411,7 +412,29 @@ public class StatusEffectInit {
             new EffectBuilder(EffectType.PERSISTENT).setColor(0x6E260E).isInstantaneous().build());
     public static final RegistryObject<MobEffect> LORD_OF_BLOODS_EXULTATION = registerStatusEffect("lord_of_bloods_exultation",
             new EffectBuilder(EffectType.PERSISTENT).setColor(0x780606).isInstantaneous().build());
-
+    public static final RegistryObject<MobEffect> WINGED_SWORD_INSIGNIA = registerStatusEffect("winged_sword_insignia",
+            new EffectBuilder(EffectType.PERSISTENT)
+                    .addTier("none", 0, 1.03F)
+                    .addTier("none", 1, 1.05F)
+                    .addTier("none", 2, 1.10F)
+                    .addTier("none", 3, 1.06F)
+                    .addTier("none", 4, 1.08F)
+                    .addTier("none", 5, 1.13F)
+                    .addTranslation(3, "item.enderring.winged_sword_insigniaplus1")
+                    .addTranslation(4, "item.enderring.rotten_winged_sword_insigniaplus1")
+                    .addTranslation(5, "item.enderring.rotten_winged_sword_insigniaplus2").build());
+    public static final RegistryObject<MobEffect> DAEDICARS_WOE = registerStatusEffect("daedicars_woe",
+            new EffectBuilder(EffectType.PERSISTENT)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("30e80278-862c-466b-b23b-adc46b01ac7f"),
+                            "Daedicar's Woe",
+                            -1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                            EntityAttributeInit.FIRE_NEGATE, EntityAttributeInit.HOLY_NEGATE, EntityAttributeInit.LIGHT_NEGATE,
+                            EntityAttributeInit.MAGIC_NEGATE, EntityAttributeInit.PHYS_NEGATE, EntityAttributeInit.PIERCE_NEGATE,
+                            EntityAttributeInit.SLASH_NEGATE, EntityAttributeInit.STRIKE_NEGATE).build());
+    public static final RegistryObject<MobEffect> ARROWS_STING_TALISMAN = registerStatusEffect("arrows_sting_talisman",
+            new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
+    
     private static RegistryObject<MobEffect> registerSimpleEffect(String name, StatusEffect effect) {
         return STATUS_EFFECTS.register(name, () -> effect);
     }

@@ -2,15 +2,20 @@ package com.ombremoon.enderring.common.object.item.equipment.weapon.melee;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.mojang.logging.LogUtils;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
+import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
+import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
+import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -23,8 +28,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
+import yesman.epicfight.gameasset.EpicFightSkills;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.SkillDataKey;
+import yesman.epicfight.skill.SkillDataKeys;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.entity.eventlistener.SkillConsumeEvent;
+
+import java.util.List;
 
 public class MeleeWeapon extends AbstractWeapon {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
@@ -50,9 +64,51 @@ public class MeleeWeapon extends AbstractWeapon {
 
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        float motionValue = pStack.getTag().getFloat("MotionValue");
+        PlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pAttacker, PlayerPatch.class);
+        SkillContainer container = playerPatch.getSkill(EpicFightSkills.BASIC_ATTACK);
+        int combo = container.getDataManager().getDataValue(SkillDataKeys.COMBO_COUNTER.get());
+
+        List<Float> motionValues = EFMUtil.getWeaponCapability(playerPatch).getAutoMotionValues(playerPatch);
+        float motionValue = motionValues.get(combo);
+
+        if (pTarget.hasEffect(StatusEffectInit.TWINBLADE_TALISMAN.get())
+                && combo == motionValues.size()-3) motionValue *= 1.45F;
+
+        ServerPlayer player = (ServerPlayer) pAttacker;
+        IDynamicStackHandler stacks = CurioHelper.getTalismanStacks(player);
+        for (int i = 0; i < stacks.getSlots(); i++) {
+            if (stacks.getStackInSlot(i).is(ItemInit.WINGED_SWORD_INSIGNIA.get())) {
+                addWingedSwordEffect((ServerPlayer) pAttacker, combo == 1, stacks.getStackInSlot(i));
+                break;
+            }
+        }
+        LogUtils.getLogger().debug("Combo: " + combo);
+
         DamageUtil.conditionalHurt(pStack, this.getModifiedWeapon(pStack), pAttacker, pTarget, motionValue);
         return true;
+    }
+
+    private static void addWingedSwordEffect(ServerPlayer player, boolean firstAttack, ItemStack talisman) {
+        if (player.hasEffect(StatusEffectInit.WINGED_SWORD_INSIGNIA.get())) {
+            MobEffectInstance instance = player.getEffect(StatusEffectInit.WINGED_SWORD_INSIGNIA.get());
+            if (instance.getAmplifier() != 2 && instance.getAmplifier() != 5) {
+                player.addEffect(new MobEffectInstance(StatusEffectInit.WINGED_SWORD_INSIGNIA.get(),
+                        30,
+                        instance.getAmplifier() + 1,
+                        false,
+                        false));
+            } else player.addEffect(new MobEffectInstance(instance.getEffect(), 30,
+                    instance.getAmplifier(), false, false));
+        } else if (!firstAttack) {
+            int amp = talisman.getTag().getInt("tier");
+            if (amp == 0) {
+                player.addEffect(new MobEffectInstance(StatusEffectInit.WINGED_SWORD_INSIGNIA.get(), 30,
+                        0, false, false));
+            } else {
+                player.addEffect(new MobEffectInstance(StatusEffectInit.WINGED_SWORD_INSIGNIA.get(), 30,
+                        3, false, false));
+            }
+        }
     }
 
     @Override
