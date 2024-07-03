@@ -39,12 +39,14 @@ public class ThrowingPotItem extends AbstractWeapon {
                 throwingPot.setOwner(pPlayer);
                 throwingPot.shootFromRotation(pPlayer, (float) (d0 * pPlayer.getXRot()), (float) (d1 + pPlayer.getYRot()), 0.0F, 0.5F, 1.0F);
                 pLevel.addFreshEntity(throwingPot);
-            }
-        }
 
-        pPlayer.awardStat(Stats.ITEM_USED.get(this));
-        if (!pPlayer.getAbilities().instabuild) {
-            itemStack.shrink(1);
+                pPlayer.awardStat(Stats.ITEM_USED.get(this));
+                if (!pPlayer.getAbilities().instabuild) {
+                    itemStack.shrink(1);
+                }
+            } else {
+                return InteractionResultHolder.pass(itemStack);
+            }
         }
 
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);

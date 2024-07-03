@@ -126,17 +126,24 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponScaling(0, 0, 0, 165, 0).build());
 
         addWeapon(CommonClass.customLocation("fetid_pot"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("fetid_pot")).elementID(AttackElement.FETID_POT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("fetid_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.DEFAULT)
                 .saturation(3, 0, 0, 0, 0)
                 .weaponDamage(1, 0, 0, 0, 0)
                 .weaponScaling(0, 0, 0, 0, 65)
                 .poisonBuildUp(200).statusDuration(600).build());
 
         addWeapon(CommonClass.customLocation("roped_fetid_pot"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("roped_fetid_pot")).elementID(AttackElement.FETID_POT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("roped_fetid_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.DEFAULT)
                 .saturation(3, 0, 0, 0, 0)
                 .weaponDamage(1, 0, 0, 0, 0)
                 .weaponScaling(0, 0, 0, 0, 65)
                 .poisonBuildUp(200).statusDuration(600).build());
+
+        addWeapon(CommonClass.customLocation("sleep_pot"), ScaledWeapon.Builder.create()
+                .name(CommonClass.customLocation("sleep_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.DEFAULT)
+                .saturation(3, 0, 0, 0, 0)
+                .weaponDamage(1, 0, 0, 0, 0)
+                .weaponScaling(0, 0, 0, 0, 65)
+                .sleepBuildUp(29).statusDuration(1200).build());
     }
 }

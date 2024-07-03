@@ -115,7 +115,9 @@ public class DamageUtil {
             targetEntity.getEntityData().set(status, (int) Mth.clamp(currentStatus + calculateStatusBuildUp(attackEntity, buildUp), 0, threshold));
 
             if (targetEntity.getEntityData().get(status) >= threshold) {
-                targetEntity.addEffect(new MobEffectInstance(effect, scaledWeapon.getStatus().getStatusDuration(), 0, true, true));
+                targetEntity.getEntityData().set(status, 0);
+                int duration = effect == StatusEffectInit.SLEEP.get() && targetEntity instanceof Player ? 20 : scaledWeapon.getStatus().getStatusDuration();
+                targetEntity.addEffect(new MobEffectInstance(effect, duration, 0, true, true));
                 if (effect.isInstantenous()) {
                     effect.applyInstantaneousEffect(attackEntity, null, targetEntity);
                 }

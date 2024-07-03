@@ -107,6 +107,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.ROPED_HOLY_WATER.get(),
             ItemInit.FETID_POT.get(),
             ItemInit.ROPED_FETID_WATER.get(),
+            ItemInit.SLEEP_POT.get(),
             ItemInit.MISSIONARY_COOKBOOK_ONE.get(),
             ItemInit.NOMADIC_WARRIOR_COOKBOOK_ONE.get(),
             ItemInit.NOMADIC_WARRIOR_COOKBOOK_TWO.get(),

@@ -25,7 +25,7 @@ public class AttackElement {
     public static final AttackElement DRAGON_COMMUNION_SEAL = Builder.create(30030).physical(WeaponScaling.FAI, WeaponScaling.ARC).magical(WeaponScaling.FAI, WeaponScaling.ARC).fire(WeaponScaling.FAI, WeaponScaling.ARC).lightning(WeaponScaling.FAI, WeaponScaling.ARC).holy(WeaponScaling.FAI, WeaponScaling.ARC).build();
     public static final AttackElement FRENZIED_FLAME_SEAL = Builder.create(30040).physical(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).magical(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).fire(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).lightning(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).holy(WeaponScaling.STR, WeaponScaling.DEX, WeaponScaling.INT, WeaponScaling.FAI).build();
     public static final AttackElement HOLY_WATER_POT = Builder.create(200350).holy(WeaponScaling.FAI).build();
-    public static final AttackElement FETID_POT = Builder.create(200330).holy(WeaponScaling.ARC).build();
+    public static final AttackElement ARCANE_POT = Builder.create(200330).holy(WeaponScaling.ARC).build();
 
     //TODO: ADD EVENT
     static {
@@ -45,7 +45,7 @@ public class AttackElement {
         registerElementID(DRAGON_COMMUNION_SEAL);
         registerElementID(FRENZIED_FLAME_SEAL);
         registerElementID(HOLY_WATER_POT);
-        registerElementID(FETID_POT);
+        registerElementID(ARCANE_POT);
     }
 
     public static void registerElementID(AttackElement attackElement) {
