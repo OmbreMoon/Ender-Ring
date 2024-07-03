@@ -41,10 +41,9 @@ public class MeleeWeapon extends AbstractWeapon {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            pPlayer.addEffect(new MobEffectInstance(((BuildUpStatusEffect) StatusEffectInit.MADNESS.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)), 20));
-            ((BuildUpStatusEffect) StatusEffectInit.MADNESS.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)).applyInstantaneousEffect(null, null, pPlayer);
+            pPlayer.addEffect(new MobEffectInstance(((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)), 20));
+            ((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)).applyInstantaneousEffect(null, null, pPlayer);
 //            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
-            Constants.LOG.info(String.valueOf(66 + DamageUtil.getSaturationValue(Saturations.STATUS_EFFECT, EntityStatusUtil.getEntityAttribute(pPlayer, EntityAttributeInit.ARCANE.get()), false) * 66));
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }

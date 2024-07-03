@@ -16,6 +16,10 @@ public class ThrowingPotItem extends AbstractWeapon {
     private final boolean isRoped;
     private final int fpCost;
 
+    public ThrowingPotItem(boolean isRoped, Properties pProperties) {
+        this(isRoped, 0, pProperties.stacksTo(20));
+    }
+
     public ThrowingPotItem(boolean isRoped, int fpCost, Properties pProperties) {
         super(pProperties.stacksTo(20));
         this.isRoped = isRoped;

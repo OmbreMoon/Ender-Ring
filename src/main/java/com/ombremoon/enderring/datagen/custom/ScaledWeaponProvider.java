@@ -18,23 +18,11 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
     @Override
     protected void registerWeapons() {
         registerDaggers();
-        registerCurvedSwords();
         registerGreatSwords();
+        registerCurvedSwords();
         registerHalberds();
         registerCatalysts();
         registerThrowingPots();
-    }
-
-    protected void registerGreatSwords() {
-        addWeapon(CommonClass.customLocation("lordsworns_greatsword"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("lordsworns_greatsword")).defaultMaxUpgrades().infusable()
-                .twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.DEFAULT)
-                .physDamageType(PhysicalDamageType.STANDARD, PhysicalDamageType.PIERCE)
-                .saturation(0, 0, 0, 0 , 0)
-                .weaponDamage(136, 0, 0, 0, 0)
-                .weaponScaling(43, 37, 0, 0, 0)
-                .weaponGuard(65, 35, 35, 35, 35)
-                .weaponRequirements(16, 10, 0,0,0).build());
     }
 
     protected void registerDaggers() {
@@ -55,6 +43,18 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponScaling(10, 55, 0, 35, 0)
                 .weaponGuard(26, 15, 15, 15, 42)
                 .weaponRequirements(8, 12, 0, 18, 0).build());
+    }
+
+    protected void registerGreatSwords() {
+        addWeapon(CommonClass.customLocation("lordsworns_greatsword"), ScaledWeapon.Builder.create()
+                .name(CommonClass.customLocation("lordsworns_greatsword")).defaultMaxUpgrades().infusable()
+                .twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.DEFAULT)
+                .physDamageType(PhysicalDamageType.STANDARD, PhysicalDamageType.PIERCE)
+                .saturation(0, 0, 0, 0 , 0)
+                .weaponDamage(136, 0, 0, 0, 0)
+                .weaponScaling(43, 37, 0, 0, 0)
+                .weaponGuard(65, 35, 35, 35, 35)
+                .weaponRequirements(16, 10, 0,0,0).build());
     }
 
     protected void registerCurvedSwords() {
@@ -79,7 +79,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
 
     protected void registerCatalysts() {
         addWeapon(CommonClass.customLocation("glintstone_staff"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("glintstone_staff")).defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.STAFF).reinforceType(ReinforceType.PURE_CATALYST_FRONT)
+                .name(CommonClass.customLocation("glintstone_staff")).defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.STAFF).reinforceType(ReinforceType.STANDARD_CATALYST)
                 .physDamageType(PhysicalDamageType.STRIKE)
                 .saturation(14, 14, 14, 14, 14)
                 .weaponDamage(25, 0, 0, 0, 0)
@@ -87,7 +87,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponRequirements(6, 0, 10, 0, 0).build());
 
         addWeapon(CommonClass.customLocation("astrologers_staff"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("astrologers_staff")).defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.STAFF).reinforceType(ReinforceType.PURE_CATALYST_FRONT)
+                .name(CommonClass.customLocation("astrologers_staff")).defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.STAFF).reinforceType(ReinforceType.STANDARD_CATALYST)
                 .physDamageType(PhysicalDamageType.STRIKE)
                 .saturation(14, 14, 14, 14, 14)
                 .weaponDamage(25, 0, 0, 0, 0)
@@ -95,7 +95,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponRequirements(7, 0, 16, 0, 0).build());
 
         addWeapon(CommonClass.customLocation("finger_seal"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("finger_seal")).defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.SEAL).reinforceType(ReinforceType.PURE_CATALYST_FRONT)
+                .name(CommonClass.customLocation("finger_seal")).defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.SEAL).reinforceType(ReinforceType.STANDARD_CATALYST)
                 .physDamageType(PhysicalDamageType.STRIKE)
                 .saturation(14, 14, 14, 14, 14)
                 .weaponDamage(25, 0, 0, 0, 0)
@@ -103,7 +103,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponRequirements(4, 0, 0, 10, 0).build());
 
         addWeapon(CommonClass.customLocation("giants_seal"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("giants_seal")).defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.SEAL).reinforceType(ReinforceType.PURE_CATALYST_FRONT)
+                .name(CommonClass.customLocation("giants_seal")).defaultMaxUpgrades().twoHandBonus().elementID(AttackElement.SEAL).reinforceType(ReinforceType.STANDARD_CATALYST)
                 .physDamageType(PhysicalDamageType.STRIKE)
                 .saturation(14, 14, 14, 14, 14)
                 .weaponDamage(25, 0, 0, 0, 0)
@@ -124,5 +124,19 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .saturation(0, 0, 0, 0, 4)
                 .weaponDamage(0, 0, 0, 0, 150)
                 .weaponScaling(0, 0, 0, 165, 0).build());
+
+        addWeapon(CommonClass.customLocation("fetid_pot"), ScaledWeapon.Builder.create()
+                .name(CommonClass.customLocation("fetid_pot")).elementID(AttackElement.FETID_POT).reinforceType(ReinforceType.DEFAULT)
+                .saturation(3, 0, 0, 0, 0)
+                .weaponDamage(1, 0, 0, 0, 0)
+                .weaponScaling(0, 0, 0, 0, 65)
+                .poisonBuildUp(200).statusDuration(600).build());
+
+        addWeapon(CommonClass.customLocation("roped_fetid_pot"), ScaledWeapon.Builder.create()
+                .name(CommonClass.customLocation("roped_fetid_pot")).elementID(AttackElement.FETID_POT).reinforceType(ReinforceType.DEFAULT)
+                .saturation(3, 0, 0, 0, 0)
+                .weaponDamage(1, 0, 0, 0, 0)
+                .weaponScaling(0, 0, 0, 0, 65)
+                .poisonBuildUp(200).statusDuration(600).build());
     }
 }

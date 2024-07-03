@@ -3,7 +3,7 @@
     "elementID": 20000,
     "maxUpgrades": 25,
     "name": "enderring:astrologers_staff",
-    "reinforceType": "enderring:pure_catalyst_front",
+    "reinforceType": "enderring:standard_catalyst",
     "saturations": [
       14,
       14,

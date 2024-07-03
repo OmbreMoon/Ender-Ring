@@ -4,7 +4,6 @@ import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.WeaponScaling;
 import net.minecraft.resources.ResourceLocation;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 
@@ -81,10 +80,10 @@ public class ReinforceType {
             .baseScaling(PHYSICAL, 0.8F).baseScaling(List.of(WeaponScaling.INT, WeaponScaling.FAI), 0.8F).baseScaling(WeaponScaling.ARC, 1.0F).multScaling(0.04F)
             .breakpointAt10(PHYSICAL, 0.02F).breakpointAt10(List.of(WeaponScaling.INT, WeaponScaling.FAI), 0.02F).breakpointAt10(WeaponScaling.ARC, 0.03F).breakpointAt20(0.02F).build();
 
-    public static final ReinforceType PURE_CATALYST_FRONT = Builder.create(CommonClass.customLocation("pure_catalyst_front"))
+    public static final ReinforceType STANDARD_CATALYST = Builder.create(CommonClass.customLocation("standard_catalyst"))
             .baseDamage(1.0F).multDamage(0.03F).baseScaling(1.0F).multScaling(0.08F).build();
 
-    public static final ReinforceType PURE_CATALYST_BACK = Builder.create(CommonClass.customLocation("pure_catalyst_back"))
+    public static final ReinforceType UNIQUE_CATALYST = Builder.create(CommonClass.customLocation("unique_catalyst"))
             .baseDamage(1.0F).multDamage(0.145F).baseScaling(1.0F).multScaling(0.2F).build();
 
     public static final ReinforceType UNIQUE = Builder.create(CommonClass.customLocation("unique"))
@@ -129,8 +128,8 @@ public class ReinforceType {
         registerType(POISON);
         registerType(BLOOD);
         registerType(OCCULT);
-        registerType(PURE_CATALYST_FRONT);
-        registerType(PURE_CATALYST_BACK);
+        registerType(STANDARD_CATALYST);
+        registerType(UNIQUE_CATALYST);
         registerType(UNIQUE);
         registerType(SMALL_SHIELD);
         registerType(MEDIUM_SHIELD);

@@ -4,12 +4,14 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.EquipmentInit;
+import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 public class TickingEffect extends BuildUpStatusEffect {
     public TickingEffect(int pColor) {
@@ -23,8 +25,9 @@ public class TickingEffect extends BuildUpStatusEffect {
         if (this == StatusEffectInit.POISON.get()) {
             damageType = ModDamageTypes.POISON;
             if (this.scaledWeapon != null) {
-                if (this.scaledWeapon.getBaseStats().getItem().is(EquipmentInit.GUARDIAN_SWORDSPEAR.get())) {
-                    Constants.LOG.info("Womp womp");
+                ItemStack itemStack = this.scaledWeapon.getBaseStats().getItem();
+                if (itemStack.is(ItemInit.FETID_POT.get()) || itemStack.is(ItemInit.ROPED_FETID_WATER.get())) {
+                    f = pLivingEntity.getMaxHealth() * 0.0014F + 0.8F;
                 } else {
                     f = pLivingEntity.getMaxHealth() * 0.0007F + 0.47F;
                 }

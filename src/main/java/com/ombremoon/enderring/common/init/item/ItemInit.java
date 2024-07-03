@@ -81,6 +81,8 @@ public class ItemInit {
     //CONSUMABLES
     public static final RegistryObject<Item> HOLY_WATER = registerGeneralItem("holy_water", () -> new ThrowingPotItem(false, 5, itemProperties()));
     public static final RegistryObject<Item> ROPED_HOLY_WATER = registerGeneralItem("roped_holy_water", () -> new ThrowingPotItem(true, 5, itemProperties()));
+    public static final RegistryObject<Item> FETID_POT = registerGeneralItem("fetid_pot", () -> new ThrowingPotItem(false, itemProperties()));
+    public static final RegistryObject<Item> ROPED_FETID_WATER = registerGeneralItem("roped_fetid_pot", () -> new ThrowingPotItem(true, itemProperties()));
     public static final RegistryObject<Item> INVIGORATING_CURED_MEAT = registerSimpleItem("invigorating_cured_meat", itemProperties().food(new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(StatusEffectInit.INVIGORATING_MEAT.get(), 1200), 1.0F).build()));
     public static final RegistryObject<Item> INVIGORATING_CURED_WHITE_MEAT = registerSimpleItem("invigorating_cured_white_meat", itemProperties().food(new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(StatusEffectInit.INVIGORATING_MEAT.get(), 2400, 1), 1.0F).build()));
 

@@ -22,7 +22,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
@@ -97,12 +96,9 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
-        if (event.getEntity() instanceof Husk) {
-            Constants.LOG.info(String.valueOf(event.getSource().getEntity()));
-        }
         if (event.getSource().getEntity() instanceof Player player) {
             if (player.hasEffect(StatusEffectInit.ANCESTRAL_SPIRITS_HORN.get())) EntityStatusUtil.increaseFP(player, 3);
-            if (player.hasEffect(StatusEffectInit.TAKERS_CAMEO.get())) player.heal((player.getMaxHealth()*0.03F) + 2F);
+            if (player.hasEffect(StatusEffectInit.TAKERS_CAMEO.get())) player.heal((player.getMaxHealth() * 0.03F) + 2F);
         }
     }
 

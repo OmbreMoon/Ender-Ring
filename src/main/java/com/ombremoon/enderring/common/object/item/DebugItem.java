@@ -19,6 +19,7 @@ import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import com.ombremoon.enderring.util.FlaskUtil;
+import com.ombremoon.enderring.util.math.NoiseGenerator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,9 +52,10 @@ public class DebugItem extends Item {
                 this.setStats(pPlayer);
             } else {
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
-                Constants.LOG.info(String.valueOf(DamageUtil.getSaturationValue(Saturations.THROWING_STATUS, 10, false) * 100));
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
+            NoiseGenerator noise = new NoiseGenerator();
+            Constants.LOG.info(String.valueOf(noise.noise(100, 100)));
         } else {
             if (!pPlayer.isCrouching())
                 Minecraft.getInstance().setScreen(new PlayerStatusScreen(Component.literal("Status")));

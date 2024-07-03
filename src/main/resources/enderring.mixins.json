@@ -12,7 +12,8 @@
     "InventoryEffectRenderMixin"
   ],
   "client": [
-    "ControllEngineMixin"
+    "ControllEngineMixin",
+    "CameraMixin"
   ],
   "injectors": {
     "defaultRequire": 1
