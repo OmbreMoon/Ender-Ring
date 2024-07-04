@@ -170,7 +170,6 @@ public class ModItemModelProvider extends ItemModelProvider {
             EquipmentInit.LONGSWORD.get(),
             EquipmentInit.BROADSWORD.get(),
             EquipmentInit.ESTOC.get(),
-            EquipmentInit.BATTLE_AXE.get(),
             EquipmentInit.CLUB.get(),
             EquipmentInit.SHORT_SPEAR.get(),
             EquipmentInit.HALBERD.get(),
@@ -179,6 +178,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             EquipmentInit.LONGBOW.get(),
             EquipmentInit.GIANT_SEAL.get(),
             EquipmentInit.LARGE_LEATHER_SHIELD.get(),
+            EquipmentInit.RIVETED_WOODEN_SHIELD.get(),
             EquipmentInit.BUCKLER.get(),
             EquipmentInit.SCRIPTURE_WOODEN_SHIELD.get(),
             EquipmentInit.RIFT_SHIELD.get(),
@@ -195,10 +195,10 @@ public class ModItemModelProvider extends ItemModelProvider {
     };
 
     static final Item[] EXCLUSION_LIST_1 = {
+            EquipmentInit.BATTLE_AXE.get(),
             EquipmentInit.GLINTSTONE_STAFF.get(),
             EquipmentInit.ASTROLOGER_STAFF.get(),
             EquipmentInit.GUARDIAN_SWORDSPEAR.get(),
-            EquipmentInit.RIVETED_WOODEN_SHIELD.get()
     };
 
 }

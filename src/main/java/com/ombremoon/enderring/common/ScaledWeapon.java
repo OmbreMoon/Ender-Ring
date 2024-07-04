@@ -83,7 +83,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         }
 
         public JsonObject toJsonObject() {
-//            Preconditions.checkArgument(ForgeRegistries.ITEMS.containsKey(this.name), "Weapon location must be identical to that of item location");
+            Preconditions.checkArgument(!this.name.equals(""), "Weapon must be assigned to an item");
             Preconditions.checkArgument(this.maxUpgrades >= 0, "Max upgrades must be greater than or equal 0");
             Preconditions.checkArgument(this.maxUpgrades < 26, "Max upgrades must be less than or equal to 25");
             JsonObject jsonObject = new JsonObject();

@@ -64,14 +64,14 @@ public class DebugItem extends Item {
     }
 
     private void setStats(Player player) {
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 50, true);
-//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 99);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 99);
-//        EntityStatusUtil.setBaseStat(pPlayer, EntityAttributeInit.DEXTERITY.get(), 30);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 99);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 25, true);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 22);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 35);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 99);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 34);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 22);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 9);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 31);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 33);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.RUNE_LEVEL.get(), 132);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.PHYS_NEGATE.get(), 0);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.HOLY_NEGATE.get(), 0);

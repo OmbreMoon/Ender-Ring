@@ -2,6 +2,7 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.StatusType;
 import com.ombremoon.enderring.common.WeaponDamage;

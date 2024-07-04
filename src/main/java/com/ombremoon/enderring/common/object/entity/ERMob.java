@@ -2,15 +2,11 @@ package com.ombremoon.enderring.common.object.entity;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.item.EquipmentInit;
-import com.ombremoon.enderring.common.init.item.ItemInit;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.world.LevelledList;
 import com.ombremoon.enderring.common.object.world.LevelledLists;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.ERMobPatch;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,16 +20,15 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -42,6 +37,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements LevelledMob, SmartBrainOwner<ERMob<T>> {
     protected static final Logger LOGGER = Constants.LOG;
@@ -148,6 +144,14 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
 
     public void setSpiritAsh(boolean spiritAsh) {
         this.entityData.set(SPIRIT_ASH, spiritAsh);
+    }
+
+    protected Predicate<LivingEntity> neutralAttackCondition() {
+        if (this.getBrain() != null) {
+            Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
+            return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID();
+        }
+        return livingEntity -> false;
     }
 
     //TODO: CHANGE TO UNIVERSAL VALUE ENUM

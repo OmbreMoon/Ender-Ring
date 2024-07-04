@@ -20,6 +20,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
         registerDaggers();
         registerGreatSwords();
         registerCurvedSwords();
+        registerAxes();
         registerHalberds();
         registerCatalysts();
         registerThrowingPots();
@@ -65,6 +66,17 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
                 .weaponDamage(106, 0, 0, 0, 0)
                 .weaponScaling(25, 57, 0 ,0 ,0)
                 .weaponRequirements(7, 13, 0, 0, 0).build());
+    }
+
+    protected void registerAxes() {
+        addWeapon(CommonClass.customLocation("battle_axe"), ScaledWeapon.Builder.create()
+                .name(CommonClass.customLocation("battle_axe")).defaultMaxUpgrades().infusable().twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.STANDARD)
+                .physDamageType(PhysicalDamageType.STANDARD)
+                .saturation(0, 0, 0, 0, 0)
+                .weaponDamage(128, 0, 0, 0, 0)
+                .weaponScaling(48, 33, 0, 0, 0)
+                .weaponGuard(47, 31, 31, 31, 31)
+                .weaponRequirements(12, 8, 0, 0, 0).build());
     }
 
     protected void registerHalberds() {

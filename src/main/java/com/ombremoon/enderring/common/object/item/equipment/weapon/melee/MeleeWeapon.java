@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.logging.LogUtils;
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.client.render.ERArmorRenderer;
+import com.ombremoon.enderring.client.render.ERWeaponRenderer;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
@@ -12,9 +14,12 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
 import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -28,6 +33,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.skill.SkillContainer;
@@ -36,11 +49,15 @@ import yesman.epicfight.skill.SkillDataKeys;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.entity.eventlistener.SkillConsumeEvent;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class MeleeWeapon extends AbstractWeapon {
+public class MeleeWeapon extends AbstractWeapon implements GeoItem {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public MeleeWeapon(float attackSpeed, Properties pProperties) {
@@ -64,15 +81,19 @@ public class MeleeWeapon extends AbstractWeapon {
 
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        PlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(pAttacker, PlayerPatch.class);
+        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(pAttacker, PlayerPatch.class);
         SkillContainer container = playerPatch.getSkill(EpicFightSkills.BASIC_ATTACK);
         int combo = container.getDataManager().getDataValue(SkillDataKeys.COMBO_COUNTER.get());
 
-        List<Float> motionValues = EFMUtil.getWeaponCapability(playerPatch).getAutoMotionValues(playerPatch);
-        float motionValue = motionValues.get(combo);
+        float motionValue = 1.0F;
+        CapabilityItem capability = playerPatch.getHoldingItemCapability(InteractionHand.MAIN_HAND);
+        if (capability instanceof ExtendedWeaponCapability weaponCapability) {
+            List<Float> motionValues = weaponCapability.getAutoMotionValues(playerPatch);
+            motionValue = motionValues.get(combo);
+        }
 
         if (pTarget.hasEffect(StatusEffectInit.TWINBLADE_TALISMAN.get())
-                && combo == motionValues.size()-3) motionValue *= 1.45F;
+                && combo == capability.getAutoAttckMotion(playerPatch).size() - 3) motionValue *= 1.45F;
 
         ServerPlayer player = (ServerPlayer) pAttacker;
         IDynamicStackHandler stacks = CurioHelper.getTalismanStacks(player);
@@ -151,5 +172,30 @@ public class MeleeWeapon extends AbstractWeapon {
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private ERWeaponRenderer renderer;
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new ERWeaponRenderer();
+
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
     }
 }
