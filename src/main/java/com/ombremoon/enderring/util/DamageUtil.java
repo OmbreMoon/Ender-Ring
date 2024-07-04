@@ -95,11 +95,11 @@ public class DamageUtil {
     }
 
     public static void handleStatusBuildUp(LivingEntity attackEntity, LivingEntity targetEntity, ScaledWeapon scaledWeapon, SpellType<?> spellType, DamageSource damageSource) {
-        if (targetEntity instanceof Player || targetEntity instanceof LevelledMob levelledMob && !levelledMob.isImmuneTo(damageSource)) {
-            var statusMap = scaledWeapon.getStatus().getStatusMap();
-            for (var entry : statusMap.entrySet()) {
-                var status = entry.getKey();
-                int buildUp = entry.getValue();
+        var statusMap = scaledWeapon.getStatus().getStatusMap();
+        for (var entry : statusMap.entrySet()) {
+            var status = entry.getKey();
+            int buildUp = entry.getValue();
+            if (targetEntity instanceof Player || targetEntity instanceof LevelledMob levelledMob && !levelledMob.isImmuneTo(targetEntity, status, damageSource)) {
                 attemptBuildUp(attackEntity, targetEntity, scaledWeapon, spellType, status, buildUp);
             }
         }

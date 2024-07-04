@@ -11,6 +11,7 @@ import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
+import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,8 +26,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -87,6 +90,17 @@ public class CatalystWeapon extends MeleeWeapon {
     public int getUseDuration(ItemStack pStack) {
         SpellType<?> spellType = EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(pStack.getTag(), "Spell"));
         return spellType != null ? spellType.createSpell().getCastTime() : 1;
+    }
+
+    @Override
+    public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
+        super.onUseTick(pLevel, pLivingEntity, pStack, pRemainingUseDuration);
+        if (!pLevel.isClientSide) {
+            if (pRemainingUseDuration == this.getUseDuration(pStack)) {
+                LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(pLivingEntity, LivingEntityPatch.class);
+                livingEntityPatch.playAnimationSynchronized(livingEntityPatch.getHitAnimation(StunType.SHORT), 0.0F);
+            }
+        }
     }
 
     @Override

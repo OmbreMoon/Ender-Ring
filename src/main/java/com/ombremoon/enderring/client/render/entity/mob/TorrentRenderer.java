@@ -2,7 +2,7 @@ package com.ombremoon.enderring.client.render.entity.mob;
 
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.client.model.entity.mob.TorrentModel;
-import com.ombremoon.enderring.common.object.entity.mob.Torrent;
+import com.ombremoon.enderring.common.object.entity.mob.creature.Torrent;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

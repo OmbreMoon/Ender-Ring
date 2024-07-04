@@ -53,7 +53,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
 
             nbt.putIntArray("Saturations", this.saturations != null ? Arrays.stream(this.saturations).mapToInt(Saturations::ordinal).toArray() : new int[]{0, 0, 0, 0, 0});
             nbt.putInt("ElementID", this.elementID != null ? this.elementID.getElementId() : AttackElement.DEFAULT_ID);
-            nbt.putString("ReinforceType", this.reinforceType != null ? this.reinforceType.getTypeId().toString() : ReinforceType.DEFAULT.getTypeId().toString());
+            nbt.putString("ReinforceType", this.reinforceType != null ? this.reinforceType.getTypeId().toString() : ReinforceType.STANDARD.getTypeId().toString());
             return nbt;
         }
 

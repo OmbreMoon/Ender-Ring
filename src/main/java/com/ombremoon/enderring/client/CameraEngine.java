@@ -14,8 +14,8 @@ public class CameraEngine {
         Vec3 vec3 = camera.getPosition();
         Method method = Camera.class.getDeclaredMethod("setPosition", double.class, double.class, double.class);
         method.setAccessible(true);
-        float intensity = 1.0F;
-//        method.invoke(camera, vec3.x + getNoise(1, 0.25F, intensity, time * 3), vec3.y + getNoise(2, 0.25F, intensity, time * 3), vec3.z + getNoise(3, 0.25F, intensity, time * 3));
+        float intensity = 0F;
+//        method.invoke(camera, vec3.x + getNoise(1, 0.25F, intensity, time * 10), vec3.y + getNoise(2, 0.25F, intensity, time * 10), vec3.z + getNoise(3, 0.25F, intensity, time * 10));
     }
 
     private static double getNoise(int seed, float maxOffset, float intensity, int x) {

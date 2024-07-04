@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.common.object.item.equipment;
 
 import com.ombremoon.enderring.common.init.entity.MobInit;
-import com.ombremoon.enderring.common.object.entity.mob.Torrent;
+import com.ombremoon.enderring.common.object.entity.mob.creature.Torrent;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;

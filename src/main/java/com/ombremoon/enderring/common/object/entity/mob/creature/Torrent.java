@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common.object.entity.mob;
+package com.ombremoon.enderring.common.object.entity.mob.creature;
 
 import com.ombremoon.enderring.common.init.entity.MobInit;
 import com.ombremoon.enderring.util.EntityStatusUtil;

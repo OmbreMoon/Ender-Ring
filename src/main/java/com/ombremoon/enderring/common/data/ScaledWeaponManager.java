@@ -27,7 +27,6 @@ import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-//TODO: CHANGE ABSTRACT WEAPON TO INTERFACE FOR MOD COMPAT
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
 public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Scalable, ScaledWeapon>> {
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();

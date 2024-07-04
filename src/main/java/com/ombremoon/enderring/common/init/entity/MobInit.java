@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.common.init.entity;
 
 import com.ombremoon.enderring.common.object.entity.npc.TestDummy;
-import com.ombremoon.enderring.common.object.entity.mob.Torrent;
+import com.ombremoon.enderring.common.object.entity.mob.creature.Torrent;
 import com.ombremoon.enderring.common.object.entity.npc.Hewg;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

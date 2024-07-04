@@ -4,7 +4,7 @@
     "infusable": true,
     "maxUpgrades": 25,
     "name": "enderring:dagger",
-    "reinforceType": "enderring:default",
+    "reinforceType": "enderring:standard",
     "saturations": [
       0,
       0,

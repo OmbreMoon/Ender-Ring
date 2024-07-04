@@ -60,13 +60,13 @@ public class EntityAttributeInit {
     public static final RegistryObject<Attribute> LIGHT_NEGATE = registerAttribute("lightning_negation", 0.0D, -100.0D, 100.0D, true);
     public static final RegistryObject<Attribute> HOLY_NEGATE = registerAttribute("holy_negation", 0.0D, -100.0D, 100.0D, true);
 
-    public static final RegistryObject<Attribute> POISON_RESIST = registerAttribute("poison_resist", 0.0D, 0.0D, 2048.0D, true);
-    public static final RegistryObject<Attribute> SCARLET_ROT_RESIST = registerAttribute("scarlet_rot_resist", 0.0D, 0.0D, 2048.0D, true);
-    public static final RegistryObject<Attribute> HEMORRHAGE_RESIST = registerAttribute("hemorrhage_resist", 0.0D, 0.0D, 2048.0D, true);
-    public static final RegistryObject<Attribute> FROSTBITE_RESIST = registerAttribute("frostbite_resist", 0.0D, 0.0D, 2048.0D, true);
-    public static final RegistryObject<Attribute> SLEEP_RESIST = registerAttribute("sleep_resist", 0.0D, 0.0D, 2048.0D, true);
-    public static final RegistryObject<Attribute> MADNESS_RESIST = registerAttribute("madness_resist", 0.0D, 0.0D, 2048.0D, true);
-    public static final RegistryObject<Attribute> DEATH_BLIGHT_RESIST = registerAttribute("death_blight_resist", 0.0D, 0.0D, 2048.0D, true);
+    public static final RegistryObject<Attribute> POISON_RESIST = registerAttribute("poison_resist", -1.0D, -1.0D, 2048.0D, true);
+    public static final RegistryObject<Attribute> SCARLET_ROT_RESIST = registerAttribute("scarlet_rot_resist", -1.0D, -1.0D, 2048.0D, true);
+    public static final RegistryObject<Attribute> HEMORRHAGE_RESIST = registerAttribute("hemorrhage_resist", -1.0D, -1.0D, 2048.0D, true);
+    public static final RegistryObject<Attribute> FROSTBITE_RESIST = registerAttribute("frostbite_resist", -1.0D, -1.0D, 2048.0D, true);
+    public static final RegistryObject<Attribute> SLEEP_RESIST = registerAttribute("sleep_resist", -1.0D, -1.0D, 2048.0D, true);
+    public static final RegistryObject<Attribute> MADNESS_RESIST = registerAttribute("madness_resist", -1.0D, -1.0D, 2048.0D, true);
+    public static final RegistryObject<Attribute> DEATH_BLIGHT_RESIST = registerAttribute("death_blight_resist", -1.0D, -1.0D, 2048.0D, true);
 
     public static RegistryObject<Attribute> registerAttribute(String name, double defaultVal, double minVal, double maxVal, boolean syncable) {
         return ATTRIBUTES.register(name, () -> new RangedAttribute("attributes.resourceLocation." + Constants.MOD_ID + "." + name, defaultVal, minVal, maxVal).setSyncable(syncable));

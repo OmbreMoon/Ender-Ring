@@ -45,6 +45,7 @@ import java.util.Optional;
 
 public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements LevelledMob, SmartBrainOwner<ERMob<T>> {
     protected static final Logger LOGGER = Constants.LOG;
+    public static final EntityDataAccessor<Boolean> SPIRIT_ASH = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> SCARLET_ROT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLOOD_LOSS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
@@ -52,6 +53,7 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     public static final EntityDataAccessor<Integer> SLEEP = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
+    protected static int IMMUNE = -1;
 
     protected ERMob(EntityType<? extends ERMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -60,6 +62,7 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.getEntityData().define(SPIRIT_ASH, false);
         this.getEntityData().define(POISON, 0);
         this.getEntityData().define(SCARLET_ROT, 0);
         this.getEntityData().define(BLOOD_LOSS, 0);
@@ -137,6 +140,14 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
 
     protected float getOffHandWeaponDropChance() {
         return 0.0F;
+    }
+
+    public boolean isSpiritAsh() {
+        return this.entityData.get(SPIRIT_ASH);
+    }
+
+    public void setSpiritAsh(boolean spiritAsh) {
+        this.entityData.set(SPIRIT_ASH, spiritAsh);
     }
 
     //TODO: CHANGE TO UNIVERSAL VALUE ENUM

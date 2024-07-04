@@ -11,7 +11,7 @@ public class ReinforceType {
     private static final List<WeaponScaling> MAGICAL = List.of(WeaponScaling.INT, WeaponScaling.FAI, WeaponScaling.ARC);
     private static final List<WeaponScaling> PHYSICAL = List.of(WeaponScaling.STR, WeaponScaling.DEX);
 
-    public static final ReinforceType DEFAULT = Builder.create(CommonClass.customLocation("default"))
+    public static final ReinforceType STANDARD = Builder.create(CommonClass.customLocation("standard"))
             .baseDamage(1.0F).multDamage(0.058F)
             .baseScaling(1.0F).multScaling(PHYSICAL, 0.02F).multScaling(MAGICAL, 0.04F)
             .breakpointAt10(MAGICAL, 0.03F).breakpointAt20(MAGICAL, 0.02F).build();
@@ -114,7 +114,7 @@ public class ReinforceType {
 
     //TODO: ADD EVENT
     static {
-        registerType(DEFAULT);
+        registerType(STANDARD);
         registerType(HEAVY);
         registerType(COLOSSAL_HEAVY);
         registerType(KEEN);
@@ -143,7 +143,7 @@ public class ReinforceType {
     }
 
     public static ReinforceType getTypeFromLocation(ResourceLocation resourceLocation) {
-        return reinforceTypeMap.getOrDefault(resourceLocation, DEFAULT);
+        return reinforceTypeMap.getOrDefault(resourceLocation, STANDARD);
     }
 
     private final ResourceLocation typeId;

@@ -71,6 +71,7 @@ public class ThrowingPot extends ThrowableItemProjectile {
         super.onHit(pResult);
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, (byte) 3);
+            //TODO: SPAWN AOE CLOUD
             this.discard();
         }
     }

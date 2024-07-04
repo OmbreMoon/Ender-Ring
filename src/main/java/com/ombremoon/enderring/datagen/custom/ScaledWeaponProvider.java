@@ -27,7 +27,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
 
     protected void registerDaggers() {
         addWeapon(CommonClass.customLocation("dagger"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("dagger")).defaultMaxUpgrades().infusable().twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("dagger")).defaultMaxUpgrades().infusable().twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.STANDARD)
                 .physDamageType(PhysicalDamageType.SLASH, PhysicalDamageType.PIERCE)
                 .saturation(0, 0, 0, 0, 0)
                 .weaponDamage(74, 0, 0, 0, 0)
@@ -48,7 +48,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
     protected void registerGreatSwords() {
         addWeapon(CommonClass.customLocation("lordsworns_greatsword"), ScaledWeapon.Builder.create()
                 .name(CommonClass.customLocation("lordsworns_greatsword")).defaultMaxUpgrades().infusable()
-                .twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.DEFAULT)
+                .twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.STANDARD)
                 .physDamageType(PhysicalDamageType.STANDARD, PhysicalDamageType.PIERCE)
                 .saturation(0, 0, 0, 0 , 0)
                 .weaponDamage(136, 0, 0, 0, 0)
@@ -59,7 +59,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
 
     protected void registerCurvedSwords() {
         addWeapon(CommonClass.customLocation("scimitar"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("scimitar")).defaultMaxUpgrades().infusable().twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("scimitar")).defaultMaxUpgrades().infusable().twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.STANDARD)
                 .physDamageType(PhysicalDamageType.SLASH)
                 .saturation(0, 0, 0, 0, 0)
                 .weaponDamage(106, 0, 0, 0, 0)
@@ -69,7 +69,7 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
 
     protected void registerHalberds() {
         addWeapon(CommonClass.customLocation("guardian_swordspear"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("guardian_swordspear")).defaultMaxUpgrades().infusable().twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("guardian_swordspear")).defaultMaxUpgrades().infusable().twoHandBonus().elementID(AttackElement.DEFAULT).reinforceType(ReinforceType.STANDARD)
                 .physDamageType(PhysicalDamageType.STANDARD, PhysicalDamageType.PIERCE)
                 .saturation(0, 0, 0, 0, 0)
                 .weaponDamage(139, 0, 0, 0, 0)
@@ -114,33 +114,33 @@ public class ScaledWeaponProvider extends ScaledWeaponDataProvider {
 
     protected void registerThrowingPots() {
         addWeapon(CommonClass.customLocation("holy_water"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("holy_water")).elementID(AttackElement.HOLY_WATER_POT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("holy_water")).elementID(AttackElement.HOLY_WATER_POT).reinforceType(ReinforceType.STANDARD)
                 .saturation(0, 0, 0, 0, 4)
                 .weaponDamage(0, 0, 0, 0, 167)
                 .weaponScaling(0, 0, 0, 140, 0).build());
 
         addWeapon(CommonClass.customLocation("roped_holy_water"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("roped_holy_water")).elementID(AttackElement.HOLY_WATER_POT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("roped_holy_water")).elementID(AttackElement.HOLY_WATER_POT).reinforceType(ReinforceType.STANDARD)
                 .saturation(0, 0, 0, 0, 4)
                 .weaponDamage(0, 0, 0, 0, 150)
                 .weaponScaling(0, 0, 0, 165, 0).build());
 
         addWeapon(CommonClass.customLocation("fetid_pot"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("fetid_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("fetid_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.STANDARD)
                 .saturation(3, 0, 0, 0, 0)
                 .weaponDamage(1, 0, 0, 0, 0)
                 .weaponScaling(0, 0, 0, 0, 65)
                 .poisonBuildUp(200).statusDuration(600).build());
 
         addWeapon(CommonClass.customLocation("roped_fetid_pot"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("roped_fetid_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("roped_fetid_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.STANDARD)
                 .saturation(3, 0, 0, 0, 0)
                 .weaponDamage(1, 0, 0, 0, 0)
                 .weaponScaling(0, 0, 0, 0, 65)
                 .poisonBuildUp(200).statusDuration(600).build());
 
         addWeapon(CommonClass.customLocation("sleep_pot"), ScaledWeapon.Builder.create()
-                .name(CommonClass.customLocation("sleep_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.DEFAULT)
+                .name(CommonClass.customLocation("sleep_pot")).elementID(AttackElement.ARCANE_POT).reinforceType(ReinforceType.STANDARD)
                 .saturation(3, 0, 0, 0, 0)
                 .weaponDamage(1, 0, 0, 0, 0)
                 .weaponScaling(0, 0, 0, 0, 65)
