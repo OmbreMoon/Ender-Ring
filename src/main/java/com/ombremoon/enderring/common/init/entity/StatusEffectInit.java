@@ -412,7 +412,7 @@ public class StatusEffectInit {
             new EffectBuilder(EffectType.PERSISTENT).setColor(0x6E260E).isInstantaneous().build());
     public static final RegistryObject<MobEffect> LORD_OF_BLOODS_EXULTATION = registerStatusEffect("lord_of_bloods_exultation",
             new EffectBuilder(EffectType.PERSISTENT).setColor(0x780606).isInstantaneous().build());
-    public static final RegistryObject<MobEffect> WINGED_SWORD_INSIGNIA = registerStatusEffect("winged_sword_insignia",
+    public static final RegistryObject<MobEffect> ATTACK_POWER_BUFF = registerStatusEffect("attack_power_buff",
             new EffectBuilder(EffectType.PERSISTENT)
                     .addTier("none", 0, 1.03F)
                     .addTier("none", 1, 1.05F)
@@ -420,9 +420,15 @@ public class StatusEffectInit {
                     .addTier("none", 3, 1.06F)
                     .addTier("none", 4, 1.08F)
                     .addTier("none", 5, 1.13F)
+                    .addTier("none", 6, 1.04F)
+                    .addTier("none", 7, 1.06F)
+                    .addTier("none", 8, 1.11F)
                     .addTranslation(3, "item.enderring.winged_sword_insigniaplus1")
-                    .addTranslation(4, "item.enderring.rotten_winged_sword_insigniaplus1")
-                    .addTranslation(5, "item.enderring.rotten_winged_sword_insigniaplus2").build());
+                    .addTranslation(4, "effect.enderring.rotten_winged_sword_insigniaplus1")
+                    .addTranslation(5, "effect.enderring.rotten_winged_sword_insigniaplus2")
+                    .addTranslation(6, "item.enderring.millicents_prosthesis")
+                    .addTranslation(7, "effect.enderring.millicents_prosthesisplus1")
+                    .addTranslation(8, "effect.enderring.millicents_prosthesisplus2").build());
     public static final RegistryObject<MobEffect> DAEDICARS_WOE = registerStatusEffect("daedicars_woe",
             new EffectBuilder(EffectType.PERSISTENT)
                     .addAttribute(new AttributeModifier(
@@ -434,7 +440,14 @@ public class StatusEffectInit {
                             EntityAttributeInit.SLASH_NEGATE, EntityAttributeInit.STRIKE_NEGATE).build());
     public static final RegistryObject<MobEffect> ARROWS_STING_TALISMAN = registerStatusEffect("arrows_sting_talisman",
             new EffectBuilder(EffectType.PERSISTENT).isInstantaneous().build());
-    
+    public static final RegistryObject<MobEffect> MILLICENTS_PROSTHESIS = registerStatusEffect("millicents_prosthesis",
+            new EffectBuilder(EffectType.PERSISTENT)
+                    .addAttribute(new AttributeModifier(
+                            UUID.fromString("82b93ece-ba6e-4cb4-b440-e4232e4eede3"),
+                            "Millicent's Prosthesis",
+                            5F, AttributeModifier.Operation.ADDITION),
+                            EntityAttributeInit.DEXTERITY).build());
+
     private static RegistryObject<MobEffect> registerSimpleEffect(String name, StatusEffect effect) {
         return STATUS_EFFECTS.register(name, () -> effect);
     }

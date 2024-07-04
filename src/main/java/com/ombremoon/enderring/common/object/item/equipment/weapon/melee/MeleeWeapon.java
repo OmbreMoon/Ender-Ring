@@ -77,7 +77,8 @@ public class MeleeWeapon extends AbstractWeapon {
         ServerPlayer player = (ServerPlayer) pAttacker;
         IDynamicStackHandler stacks = CurioHelper.getTalismanStacks(player);
         for (int i = 0; i < stacks.getSlots(); i++) {
-            if (stacks.getStackInSlot(i).is(ItemInit.WINGED_SWORD_INSIGNIA.get())) {
+            ItemStack stack = stacks.getStackInSlot(i);
+            if (stack.is(ItemInit.WINGED_SWORD_INSIGNIA.get()) || stack.is(ItemInit.MILLICENTS_PROSTHESIS.get())    ) {
                 addWingedSwordEffect((ServerPlayer) pAttacker, combo == 1, stacks.getStackInSlot(i));
                 break;
             }
@@ -89,10 +90,10 @@ public class MeleeWeapon extends AbstractWeapon {
     }
 
     private static void addWingedSwordEffect(ServerPlayer player, boolean firstAttack, ItemStack talisman) {
-        if (player.hasEffect(StatusEffectInit.WINGED_SWORD_INSIGNIA.get())) {
-            MobEffectInstance instance = player.getEffect(StatusEffectInit.WINGED_SWORD_INSIGNIA.get());
-            if (instance.getAmplifier() != 2 && instance.getAmplifier() != 5) {
-                player.addEffect(new MobEffectInstance(StatusEffectInit.WINGED_SWORD_INSIGNIA.get(),
+        if (player.hasEffect(StatusEffectInit.ATTACK_POWER_BUFF.get())) {
+            MobEffectInstance instance = player.getEffect(StatusEffectInit.ATTACK_POWER_BUFF.get());
+            if (instance.getAmplifier()+1 % 3 != 0) {
+                player.addEffect(new MobEffectInstance(StatusEffectInit.ATTACK_POWER_BUFF.get(),
                         30,
                         instance.getAmplifier() + 1,
                         false,
@@ -100,14 +101,14 @@ public class MeleeWeapon extends AbstractWeapon {
             } else player.addEffect(new MobEffectInstance(instance.getEffect(), 30,
                     instance.getAmplifier(), false, false));
         } else if (!firstAttack) {
-            int amp = talisman.getTag().getInt("tier");
-            if (amp == 0) {
-                player.addEffect(new MobEffectInstance(StatusEffectInit.WINGED_SWORD_INSIGNIA.get(), 30,
-                        0, false, false));
-            } else {
-                player.addEffect(new MobEffectInstance(StatusEffectInit.WINGED_SWORD_INSIGNIA.get(), 30,
-                        3, false, false));
-            }
+            int amplifier = 0;
+            if (talisman.is(ItemInit.WINGED_SWORD_INSIGNIA.get())) {
+                int amp = talisman.getTag().getInt("tier");
+                amplifier = amp*3;
+            } else if (talisman.is(ItemInit.MILLICENTS_PROSTHESIS.get())) amplifier = 6;
+
+            player.addEffect(new MobEffectInstance(StatusEffectInit.ATTACK_POWER_BUFF.get(), 30,
+                    amplifier, false, false));
         }
     }
 

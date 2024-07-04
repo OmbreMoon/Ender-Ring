@@ -176,9 +176,9 @@ public class DamageUtil {
         if (entity.hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) && entity.fallDistance > 0) multiplier *= 1.15F;
         if (entity.hasEffect(StatusEffectInit.KINDRED_OF_ROTS_EXULTATION.get())) multiplier *= 1.20F;
         if (entity.hasEffect(StatusEffectInit.LORD_OF_BLOODS_EXULTATION.get())) multiplier *= 1.20F;
-        if (entity.hasEffect(StatusEffectInit.WINGED_SWORD_INSIGNIA.get())) {
-            int amp = entity.getEffect(StatusEffectInit.WINGED_SWORD_INSIGNIA.get()).getAmplifier();
-            multiplier *= ((StatusEffect) StatusEffectInit.WINGED_SWORD_INSIGNIA.get()).getTier("none", amp);
+        if (entity.hasEffect(StatusEffectInit.ATTACK_POWER_BUFF.get())) {
+            int amp = entity.getEffect(StatusEffectInit.ATTACK_POWER_BUFF.get()).getAmplifier();
+            multiplier *= ((StatusEffect) StatusEffectInit.ATTACK_POWER_BUFF.get()).getTier("none", amp);
         }
 
         return multiplier;

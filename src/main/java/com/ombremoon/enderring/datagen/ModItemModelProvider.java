@@ -157,7 +157,8 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.KINDRED_OF_ROTS_EXULTATION.get(),
             ItemInit.WINGED_SWORD_INSIGNIA.get(),
             ItemInit.DAEDICARS_WOE.get(),
-            ItemInit.ARROWS_STING_TALISMAN.get()
+            ItemInit.ARROWS_STING_TALISMAN.get(),
+            ItemInit.MILLICENTS_PROSTHESIS.get()
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {

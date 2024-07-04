@@ -161,8 +161,10 @@ public class ModLangProvider extends LanguageProvider {
         add("item.enderring.radagons_scarsealplus1", "Radagon's Soreseal");
         add("item.enderring.dragoncrest_shield_talismanplus3", "Dragoncrest Greatshield Talisman");
         add("item.enderring.winged_sword_insigniaplus1", "Rotten Winged Sword Insignia");
-        add("item.enderring.rotten_winged_sword_insigniaplus1", "Rotten Winged Sword Insignia +1");
-        add("item.enderring.rotten_winged_sword_insigniaplus2", "Rotten Winged Sword Insignia +2");
+        add("effect.enderring.rotten_winged_sword_insigniaplus1", "Rotten Winged Sword Insignia +1");
+        add("effect.enderring.rotten_winged_sword_insigniaplus2", "Rotten Winged Sword Insignia +2");
+        add("effect.enderring.millicents_prosthesisplus1", "Millicents Prosthesis +1");
+        add("effect.enderring.millicents_prosthesisplus2", "Millicents Prosthesis +2");
         add("item.enderring.prince_of_deaths_pustuleplus1", "Prince of Death's Cyst");
         add("tooltip.enderring.more_info", "Hold shift for more info.");
         add("curios.identifier.talismans", "Talismans");
@@ -216,6 +218,7 @@ public class ModLangProvider extends LanguageProvider {
         addTooltip(ItemInit.WINGED_SWORD_INSIGNIA, "Raises attack power with successive attacks.");
         addTooltip(ItemInit.DAEDICARS_WOE, "Increases damage taken.");
         addTooltip(ItemInit.ARROWS_STING_TALISMAN, "Raises attack power of arrows and bolts.");
+        addTooltip(ItemInit.MILLICENTS_PROSTHESIS, "Boosts Dexterity, raises attack power with successive attacks.");
     }
 
     protected void addTooltip(RegistryObject<Item> item, String translation) {
