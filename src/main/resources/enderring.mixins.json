@@ -6,6 +6,7 @@
   "refmap": "enderring.mixins.refmap.json",
   "mixins": [
     "DuckRangedAttribute",
+    "BasicAttackMixin",
     "AirAttackMixin",
     "EntityPatchProviderMixin",
     "InventoryEffectRenderMixin"

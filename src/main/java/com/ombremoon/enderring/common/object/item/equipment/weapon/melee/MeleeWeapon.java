@@ -14,6 +14,7 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
 import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.DamageUtil;
@@ -72,6 +73,7 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
+            Constants.LOG.info(String.valueOf(serverPlayerPatch.getSkill(ExtendedSkillSlots.HEAVY_ATTACK).getSkill()));
             pPlayer.addEffect(new MobEffectInstance(((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)), 20));
             ((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)).applyInstantaneousEffect(null, null, pPlayer);
 //            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
@@ -84,16 +86,7 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
         PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(pAttacker, PlayerPatch.class);
         SkillContainer container = playerPatch.getSkill(EpicFightSkills.BASIC_ATTACK);
         int combo = container.getDataManager().getDataValue(SkillDataKeys.COMBO_COUNTER.get());
-
-        float motionValue = 1.0F;
-        CapabilityItem capability = playerPatch.getHoldingItemCapability(InteractionHand.MAIN_HAND);
-        if (capability instanceof ExtendedWeaponCapability weaponCapability) {
-            List<Float> motionValues = weaponCapability.getAutoMotionValues(playerPatch);
-            motionValue = motionValues.get(combo);
-        }
-
-        if (pTarget.hasEffect(StatusEffectInit.TWINBLADE_TALISMAN.get())
-                && combo == capability.getAutoAttckMotion(playerPatch).size() - 3) motionValue *= 1.45F;
+        float motionValue = pStack.getTag().getFloat("MotionValue");
 
         ServerPlayer player = (ServerPlayer) pAttacker;
         IDynamicStackHandler stacks = CurioHelper.getTalismanStacks(player);

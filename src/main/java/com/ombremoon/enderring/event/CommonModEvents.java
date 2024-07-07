@@ -28,10 +28,7 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -55,11 +52,9 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
         EntityPatch<Entity> entitypatch = EpicFightCapabilities.getEntityPatch(event.getEntity(), EntityPatch.class);
-        if (entitypatch != null && !entitypatch.isInitialized()) {
-            if (entitypatch instanceof PlayerPatch<?> playerPatch) {
-                CapabilitySkill skill = playerPatch.getSkillCapability();
-                skill.skillContainers[ExtendedSkillSlots.HEAVY_ATTACK.universalOrdinal()].setSkill(SkillInit.HEAVY_ATTACK);
-            }
+        if (entitypatch instanceof PlayerPatch<?> playerPatch) {
+            CapabilitySkill skill = playerPatch.getSkillCapability();
+            skill.skillContainers[ExtendedSkillSlots.HEAVY_ATTACK.universalOrdinal()].setSkill(SkillInit.HEAVY_ATTACK);
         }
     }
 
@@ -112,6 +107,11 @@ public class CommonModEvents {
                 livingEntity.removeEffect(StatusEffectInit.SLEEP.get());
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void test(LivingEquipmentChangeEvent event) {
+        Constants.LOG.info("Changed!");
     }
 
     @SubscribeEvent

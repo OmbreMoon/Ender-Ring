@@ -208,7 +208,7 @@ public class ExtendedWeaponCapability extends WeaponCapability {
         }
 
         public Builder heavyMotionValues(Style style, Float... heavyMotionValues) {
-            this.autoMotionValues.put(style, Lists.newArrayList(heavyMotionValues));
+            this.heavyAutoMotionValues.put(style, Lists.newArrayList(heavyMotionValues));
             return this;
         }
 
