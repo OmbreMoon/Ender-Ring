@@ -158,7 +158,21 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.WINGED_SWORD_INSIGNIA.get(),
             ItemInit.DAEDICARS_WOE.get(),
             ItemInit.ARROWS_STING_TALISMAN.get(),
-            ItemInit.MILLICENTS_PROSTHESIS.get()
+            ItemInit.CRIMSONSPILL_CRYSTAL.get(),
+            ItemInit.CRIMSONBURST_CRYSTAL.get(),
+            ItemInit.GREENSPILL_CRYSTAL.get(),
+            ItemInit.GREENBURST_CRYSTAL.get(),
+            ItemInit.STRENGTHKNOT_CRYSTAL.get(),
+            ItemInit.DEXTERITYKNOT_CRYSTAL.get(),
+            ItemInit.FAITHKNOT_CRYSTAL.get(),
+            ItemInit.INTELLIGENCEKNOT_CRYSTAL.get(),
+            ItemInit.OPALINEHARD_CRYSTAL.get(),
+            ItemInit.SPECKLEDHARD_CRYSTAL.get(),
+            ItemInit.LIGHTNINGSHROUDING_CRACKED.get(),
+            ItemInit.HOLYSHROUDING_CRACKED.get(),
+            ItemInit.FLAMESHROUDING_CRACKED.get(),
+            ItemInit.MAGICSHROUDING_CRACKED.get()
+
     };
 
     static final Item[] EQUIP_EXCLUSION_LIST = {
