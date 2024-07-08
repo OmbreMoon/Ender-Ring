@@ -39,6 +39,7 @@ public class PlayerStatus extends EntityStatus implements IPlayerStatus {
 //    private AbstractSpell recentlyActivatedSpell;
     private boolean channelling;
     private EntityType<?> spiritSummon;
+    private int spiritLevel;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
     private int talismanPouches;
@@ -167,6 +168,16 @@ public class PlayerStatus extends EntityStatus implements IPlayerStatus {
     @Override
     public void setSpiritSummon(EntityType<?> spiritSummon) {
         this.spiritSummon = spiritSummon;
+    }
+
+    @Override
+    public int getSpiritLevel() {
+        return spiritLevel;
+    }
+
+    @Override
+    public void setSpiritLevel(int spiritLevel) {
+        this.spiritLevel = spiritLevel;
     }
 
     @Override

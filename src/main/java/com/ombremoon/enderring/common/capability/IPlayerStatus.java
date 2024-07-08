@@ -30,6 +30,9 @@ public interface IPlayerStatus extends IEntityStatus {
 
     void setSpiritSummon(EntityType<?> spiritSummon);
 
+    int getSpiritLevel();
+    void setSpiritLevel(int level);
+
     boolean isSpawnedTorrent();
 
     void setSpawnTorrent(boolean spawnTorrent);

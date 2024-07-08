@@ -249,6 +249,25 @@ public class EntityStatusUtil {
         ModNetworking.syncCap(player);
     }
 
+    /**
+     * Gets the spirit level of the currently equipped spirit ash
+     * @param player the player that has the spirit ash
+     * @return number of upgrades the equipped spirit ash has had
+     */
+    public static int getSpiritLevel(Player player) {
+        return EntityStatusProvider.get(player).getSpiritLevel();
+    }
+
+    /**
+     * Set the level of the currently equipped spirit ashe
+     * @param player the player holding using the spirit ash
+     * @param level the level of the spirit ash, 0 for unupgraded
+     */
+    public static void setSpiritLevel(ServerPlayer player, int level) {
+        EntityStatusProvider.get(player).setSpiritLevel(level);
+        ModNetworking.syncCap(player);
+    }
+
     public static boolean isTorrentSpawnedOrIncapacitated(Player player) {
         return EntityStatusProvider.get(player).getTorrentHealth() <= 0 || EntityStatusProvider.get(player).isSpawnedTorrent();
     }
