@@ -172,8 +172,6 @@ public class ModItemModelProvider extends ItemModelProvider {
             EquipmentInit.ESTOC.get(),
             EquipmentInit.CLUB.get(),
             EquipmentInit.SHORT_SPEAR.get(),
-            EquipmentInit.HALBERD.get(),
-            EquipmentInit.UCHIGATANA.get(),
             EquipmentInit.SHORTBOW.get(),
             EquipmentInit.LONGBOW.get(),
             EquipmentInit.GIANT_SEAL.get(),
@@ -197,6 +195,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     static final Item[] EXCLUSION_LIST_1 = {
             EquipmentInit.SCIMITAR.get(),
             EquipmentInit.BATTLE_AXE.get(),
+            EquipmentInit.HALBERD.get(),
+            EquipmentInit.UCHIGATANA.get(),
             EquipmentInit.GLINTSTONE_STAFF.get(),
             EquipmentInit.ASTROLOGER_STAFF.get(),
             EquipmentInit.GUARDIAN_SWORDSPEAR.get(),

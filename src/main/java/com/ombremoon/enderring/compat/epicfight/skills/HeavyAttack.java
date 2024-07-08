@@ -1,5 +1,7 @@
 package com.ombremoon.enderring.compat.epicfight.skills;
 
+import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillCategories;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
@@ -112,11 +114,10 @@ public class HeavyAttack extends Skill {
                 comboCounter %= comboSize - 2;
             }
 
-            /*if (itemStack.getItem() instanceof MeleeWeapon) {
-                Constants.LOG.info(String.valueOf(comboCounter));
+            if (itemStack.getItem() instanceof MeleeWeapon) {
                 List<Float> motionValues = cap.getHeavyAutoMotionValues(executer);
                 itemStack.getOrCreateTag().putFloat("MotionValue", motionValues.get(comboCounter));
-            }*/
+            }
 
             animation = combo.get(comboCounter);
             comboCounter = dashAttack ? 0 : comboCounter + 1;

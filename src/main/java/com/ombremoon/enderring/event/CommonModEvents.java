@@ -111,7 +111,7 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void test(LivingEquipmentChangeEvent event) {
-        Constants.LOG.info("Changed!");
+//        Constants.LOG.info("Changed!");
     }
 
     @SubscribeEvent
