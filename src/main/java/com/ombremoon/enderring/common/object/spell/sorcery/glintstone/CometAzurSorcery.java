@@ -11,6 +11,7 @@ import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class CometAzurSorcery extends ChanneledSpell {
@@ -32,9 +33,9 @@ public class CometAzurSorcery extends ChanneledSpell {
     }
 
     @Override
-    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellTick(playerPatch, level, blockPos, weapon);
-        playerPatch.getOriginal().sendSystemMessage(Component.literal("BEAM!!!!"));
+    protected void onSpellTick(LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellTick(livingEntityPatch, level, blockPos, weapon);
+        livingEntityPatch.getOriginal().sendSystemMessage(Component.literal("BEAM!!!!"));
     }
 
     @Override

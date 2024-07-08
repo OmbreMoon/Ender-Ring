@@ -87,10 +87,10 @@ public class PlayerStatusScreen extends Screen {
         pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.HOLY_DEFENSE.get()) + " / " + getNegation(EntityAttributeInit.HOLY_NEGATE.get())), getProperLocation(EntityAttributeInit.HOLY_DEFENSE.get(), x8 - 1, x7 - 1), y + 147, textColor);
 
         //TODO: FIX FIRST RESIST POSITION
-        pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.IMMUNITY.get()) + " / " + getArmorResistance(EntityAttributeInit.IMMUNITY.get())), getProperLocation(EntityAttributeInit.IMMUNITY.get(), 0, x8 - 4, x7 - 5), y + 178, textColor);
-        pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.ROBUSTNESS.get()) + " / " + getArmorResistance(EntityAttributeInit.ROBUSTNESS.get())), getProperLocation(EntityAttributeInit.ROBUSTNESS.get(), 0, x8 - 4, x7 - 5), y + 190, textColor);
-        pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.FOCUS.get()) + " / " + getArmorResistance(EntityAttributeInit.FOCUS.get())), getProperLocation(EntityAttributeInit.FOCUS.get(), 0, x8 - 4, x7 - 5), y + 201, textColor);
-        pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.VITALITY.get()) + " / " + getArmorResistance(EntityAttributeInit.VITALITY.get())), getProperLocation(EntityAttributeInit.VITALITY.get(), 0, x8 - 4, x7 - 5), y + 212, textColor);
+        pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.IMMUNITY.get()) + " / " + getArmorResistance(EntityAttributeInit.IMMUNITY.get())), getProperLocation(EntityAttributeInit.IMMUNITY.get(), x8, x8 - 4, x7 - 5), y + 178, textColor);
+        pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.ROBUSTNESS.get()) + " / " + getArmorResistance(EntityAttributeInit.ROBUSTNESS.get())), getProperLocation(EntityAttributeInit.ROBUSTNESS.get(), x8, x8 - 4, x7 - 5), y + 190, textColor);
+        pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.FOCUS.get()) + " / " + getArmorResistance(EntityAttributeInit.FOCUS.get())), getProperLocation(EntityAttributeInit.FOCUS.get(), x8, x8 - 4, x7 - 5), y + 201, textColor);
+        pGuiGraphics.drawString(this.font, Component.literal(getAttribute(EntityAttributeInit.VITALITY.get()) + " / " + getArmorResistance(EntityAttributeInit.VITALITY.get())), getProperLocation(EntityAttributeInit.VITALITY.get(), x8, x8 - 4, x7 - 5), y + 212, textColor);
 
 //        Constants.LOG.info(SpellInit.COMET_AZUR.get().createSpell().getSpellTexture().toString());
 

@@ -1,5 +1,6 @@
 package com.ombremoon.enderring;
 
+import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.data.Saturation;
 import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
@@ -61,6 +62,7 @@ public class EnderRing {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(ModNetworking::registerPackets);
+        event.enqueueWork(EntityStatusProvider::registerEntityStatuses);
         event.enqueueWork(() -> {
             EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.VIGOR.get(), EntityAttributeInit.IMMUNITY.get());
             EntityAttributeInit.ATTRIBUTE_MAP.put(EntityAttributeInit.ENDURANCE.get(), EntityAttributeInit.ROBUSTNESS.get());

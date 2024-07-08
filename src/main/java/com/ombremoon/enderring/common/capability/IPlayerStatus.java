@@ -1,3 +1,4 @@
+/*
 package com.ombremoon.enderring.common.capability;
 
 import com.ombremoon.enderring.common.magic.AbstractSpell;
@@ -71,3 +72,4 @@ public interface IPlayerStatus extends IEntityStatus {
 
 //    void resetTalismanPouches();
 }
+*/

@@ -1,30 +1,22 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.magic.Classification;
-import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.SpellProjectileEntity;
 import com.ombremoon.enderring.event.custom.EventFactory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.function.Supplier;
 
 public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends SpellProjectileEntity<S>> extends AnimatedSpell {
-    /*public static final Codec<ProjectileSpell<?, ?>> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(Codec.INT.fieldOf("projectileLifetime").orElse(1).forGetter(o -> {
-            return
-        })).apply(instance, ProjectileSpell::new)
-    });*/
     private final ProjectileFactory<S, T> factory;
     private final int projectileLifetime;
     private final float projectileVelocity;
@@ -55,23 +47,23 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
     }
 
     @Override
-    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+    protected void onSpellTick(LivingEntityPatch<?> playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         super.onSpellTick(playerPatch, level, blockPos, weapon);
         createProjectile(playerPatch, this.projectileID);
     }
 
-    protected void createProjectile(ServerPlayerPatch playerPatch, int id) {
-        Player player = playerPatch.getOriginal();
+    protected void createProjectile(LivingEntityPatch<?> livingEntityPatch, int id) {
+        LivingEntity caster = livingEntityPatch.getOriginal();
         T spellProjectile = this.factory.create(this.level, this.scaledWeapon, (S) this);
-        spellProjectile.setOwner(playerPatch.getOriginal());
+        spellProjectile.setOwner(livingEntityPatch.getOriginal());
         spellProjectile.setVelocity(this.projectileVelocity);
         spellProjectile.setSpeedModifier(this.speedModifier);
         spellProjectile.setGravity(this.gravity);
         spellProjectile.setCharge(this.getChargeAmount());
         spellProjectile.setInactiveTicks(this.inactiveTicks);
 
-        Vec3 vec31 = this.shootFromCatalyst ? new Vec3(player.getX(), player.getEyeY() - (double)0.3F, player.getZ()) : spellProjectile.initPosition(player).get(id);
-        Vec3 vec32 = this.shootFromCatalyst ? new Vec3(player.getXRot(), player.getYRot(), 0.0F) : spellProjectile.initRotation(player).get(id);
+        Vec3 vec31 = this.shootFromCatalyst ? new Vec3(caster.getX(), caster.getEyeY() - (double)0.3F, caster.getZ()) : spellProjectile.initPosition(caster).get(id);
+        Vec3 vec32 = this.shootFromCatalyst ? new Vec3(caster.getXRot(), caster.getYRot(), 0.0F) : spellProjectile.initRotation(caster).get(id);
         spellProjectile.setPos(vec31.x, vec31.y, vec31.z);
         if (this.inactiveTicks == 0) {
             spellProjectile.shootFromRotation((float) vec32.x, (float) vec32.y, 0.0F, this.projectileVelocity * this.getChargeAmount(), 1.0F);
@@ -83,7 +75,7 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
         spellProjectile.setYRot((float) vec32.y);
 
         if (spellProjectile.getPath() == SpellProjectileEntity.Path.HOMING) {
-            spellProjectile.setTargetEntity(playerPatch.getTarget());
+            spellProjectile.setTargetEntity(livingEntityPatch.getTarget());
         }
         level.addFreshEntity(spellProjectile);
     }

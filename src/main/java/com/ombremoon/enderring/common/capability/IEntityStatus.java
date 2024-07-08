@@ -1,3 +1,4 @@
+/*
 package com.ombremoon.enderring.common.capability;
 
 import com.ombremoon.enderring.common.magic.AbstractSpell;
@@ -10,6 +11,10 @@ import net.minecraftforge.common.util.INBTSerializable;
 import java.util.LinkedHashSet;
 
 public interface IEntityStatus extends INBTSerializable<CompoundTag> {
+
+    void initStatus(LivingEntity livingEntity);
+
+    boolean isInitialized();
 
     LinkedHashSet<SpellType<?>> getSpellSet();
 
@@ -25,3 +30,4 @@ public interface IEntityStatus extends INBTSerializable<CompoundTag> {
 
     void defineEntityData(LivingEntity livingEntity);
 }
+*/

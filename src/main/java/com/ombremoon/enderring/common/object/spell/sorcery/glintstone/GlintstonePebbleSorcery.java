@@ -12,6 +12,7 @@ import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
@@ -34,11 +35,6 @@ public class GlintstonePebbleSorcery extends ProjectileSpell<GlintstonePebbleSor
 
     public GlintstonePebbleSorcery(SpellType<?> spellType, ProjectileFactory<GlintstonePebbleSorcery, GlintstonePebbleEntity> factory, ProjectileSpell.Builder<GlintstonePebbleSorcery> builder) {
         super(spellType, factory, builder);
-    }
-
-    @Override
-    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellStart(playerPatch, level, blockPos, weapon);
     }
 
     @Override

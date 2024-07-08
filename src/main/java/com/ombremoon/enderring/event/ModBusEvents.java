@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.capability.EntityStatus;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
@@ -9,6 +10,7 @@ import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.event.custom.BuildSpellEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,6 +21,11 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBusEvents {
+
+    @SubscribeEvent
+    public static void onCapabilityRegister(RegisterCapabilitiesEvent event) {
+        event.register(EntityStatus.class);
+    }
 
     @SubscribeEvent
     public static void onPlayerAttributeModification(EntityAttributeModificationEvent event) {

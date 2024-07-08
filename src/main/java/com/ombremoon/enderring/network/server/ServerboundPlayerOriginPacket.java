@@ -4,6 +4,7 @@ import com.ombremoon.enderring.client.gui.screen.StarterScreen;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.item.ArmorInit;
 import com.ombremoon.enderring.network.ModNetworking;
+import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -57,15 +58,15 @@ public class ServerboundPlayerOriginPacket {
     }
 
     private static void setCharacterBaseStats(ServerPlayer serverPlayer, StarterScreen.Base characterBase) {
-        setAttributeValue(serverPlayer, EntityAttributeInit.RUNE_LEVEL.get(), characterBase.getLevel());
-        setAttributeValue(serverPlayer, EntityAttributeInit.VIGOR.get(), characterBase.getVigor());
-        setAttributeValue(serverPlayer, EntityAttributeInit.MIND.get(), characterBase.getMind());
-        setAttributeValue(serverPlayer, EntityAttributeInit.ENDURANCE.get(), characterBase.getEndurance());
-        setAttributeValue(serverPlayer, EntityAttributeInit.STRENGTH.get(), characterBase.getStrength());
-        setAttributeValue(serverPlayer, EntityAttributeInit.DEXTERITY.get(), characterBase.getDexterity());
-        setAttributeValue(serverPlayer, EntityAttributeInit.INTELLIGENCE.get(), characterBase.getIntelligence());
-        setAttributeValue(serverPlayer, EntityAttributeInit.FAITH.get(), characterBase.getFaith());
-        setAttributeValue(serverPlayer, EntityAttributeInit.ARCANE.get(), characterBase.getArcane());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.RUNE_LEVEL.get(), characterBase.getLevel());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.VIGOR.get(), characterBase.getVigor());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.MIND.get(), characterBase.getMind());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.ENDURANCE.get(), characterBase.getEndurance());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.STRENGTH.get(), characterBase.getStrength());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.DEXTERITY.get(), characterBase.getDexterity());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.INTELLIGENCE.get(), characterBase.getIntelligence());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.FAITH.get(), characterBase.getFaith());
+        EntityStatusUtil.setBaseStat(serverPlayer, EntityAttributeInit.ARCANE.get(), characterBase.getArcane());
     }
 
     private static void handleArmorUpdate(ServerPlayer serverPlayer, StarterScreen.Base characterBase) {
@@ -87,9 +88,5 @@ public class ServerboundPlayerOriginPacket {
         Item item = keepsake.getItem();
         if (item != null)
             serverPlayer.addItem(new ItemStack(item));
-    }
-
-    private static void setAttributeValue(ServerPlayer serverPlayer, Attribute attribute, double attributeValue) {
-        serverPlayer.getAttributes().getInstance(attribute).setBaseValue(attributeValue);
     }
 }

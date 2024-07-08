@@ -8,9 +8,12 @@ import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.function.Supplier;
@@ -33,17 +36,20 @@ public abstract class ChanneledSpell extends AnimatedSpell {
     }
 
     @Override
-    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellTick(playerPatch, level, blockPos, weapon);
-        if (!EntityStatusUtil.consumeFP(playerPatch.getOriginal(), this.fpTickCost, this, true) || !EntityStatusUtil.isChannelling(playerPatch.getOriginal())) {
-            this.endSpell();
+    protected void onSpellTick(LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellTick(livingEntityPatch, level, blockPos, weapon);
+        if (livingEntityPatch instanceof PlayerPatch<?> playerPatch) {
+            if (!EntityStatusUtil.consumeFP(playerPatch.getOriginal(), this.fpTickCost, this, true) || !EntityStatusUtil.isChannelling(playerPatch.getOriginal())) {
+                this.endSpell();
+            }
         }
     }
 
     @Override
-    protected void onSpellStop(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellStop(playerPatch, level, blockPos, weapon);
-        EntityStatusUtil.setChannelling(playerPatch.getOriginal(), false);
+    protected void onSpellStop(LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellStop(livingEntityPatch, level, blockPos, weapon);
+        if (livingEntityPatch instanceof PlayerPatch<?> playerPatch)
+            EntityStatusUtil.setChannelling((ServerPlayer) playerPatch.getOriginal(), false);
     }
 
     @Override

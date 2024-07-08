@@ -2,8 +2,8 @@ package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.KeyBinds;
+import com.ombremoon.enderring.common.capability.EntityStatus;
 import com.ombremoon.enderring.common.capability.EntityStatusProvider;
-import com.ombremoon.enderring.common.capability.IPlayerStatus;
 import com.ombremoon.enderring.common.capability.PlayerStatus;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
@@ -22,6 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -45,12 +46,21 @@ public class PlayerStatusManager {
     public static final List<RegistryObject<Item>> FLASKS = List.of(ItemInit.WONDROUS_PHYSICK_FLASK, ItemInit.CRIMSON_FLASK, ItemInit.CERULEAN_FLASK);
 
     @SubscribeEvent
-    public static void onAttachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof Player player) {
+    public static void onAttachEntityCapability(AttachCapabilitiesEvent<Entity> event) {
+        /*if (event.getObject() instanceof Player player) {
             var provider = new EntityStatusProvider(player);
             if (!EntityStatusProvider.isPresent(player)) {
                 var cap = provider.getCapability(EntityStatusProvider.ENTITY_STATUS).orElse(null);
 //                var cap = provider.getCapability(EntityStatusProvider.PLAYER_STATUS).orElse(null);
+                event.addCapability(EntityStatusProvider.CAPABILITY_LOCATION, provider);
+            }
+        }*/
+        Entity entity = event.getObject();
+        if (entity instanceof LivingEntity livingEntity) {
+            var provider = new EntityStatusProvider(livingEntity);
+            if (provider.hasCap()) {
+                var cap = provider.getCapability(EntityStatusProvider.ENTITY_STATUS).orElse(null);
+                cap.initStatus(livingEntity);
                 event.addCapability(EntityStatusProvider.CAPABILITY_LOCATION, provider);
             }
         }
@@ -58,9 +68,17 @@ public class PlayerStatusManager {
 
     @SubscribeEvent
     public static void onEntityJoinLevel(EntityJoinLevelEvent event) {
-        if (event.getLevel() instanceof ServerLevel && event.getEntity() instanceof ServerPlayer player) {
-            player.getEntityData().set(PlayerStatus.FP, EntityStatusUtil.getMaxFP(player));
-            ModNetworking.syncCap(player);
+        if (event.getEntity() instanceof LivingEntity livingEntity) {
+            if (livingEntity instanceof Player) {
+                EntityStatus<?> entityStatus = EntityStatusUtil.getEntityStatus(livingEntity, EntityStatus.class);
+                if (entityStatus != null/* && !entityStatus.isInitialized()*/) {
+                    entityStatus.defineEntityData(livingEntity);
+                    if (event.getLevel() instanceof ServerLevel && livingEntity instanceof ServerPlayer player) {
+                        player.getEntityData().set(PlayerStatus.FP, EntityStatusUtil.getMaxFP(player));
+                        ModNetworking.syncCap(player);
+                    }
+                }
+            }
         }
     }
 
@@ -88,8 +106,6 @@ public class PlayerStatusManager {
                 EntityStatusUtil.setBaseStat(newPlayer, attribute, (int) oldPlayer.getAttributeBaseValue(attribute), true);
             }
             newPlayer.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.MAX_HEALTH));
-            newPlayer.getEntityData().set(PlayerStatus.FP, (float) newPlayer.getAttributeValue(EntityAttributeInit.MAX_FP.get()));
-//            newPlayer.getEntityData().set(PlayerStatus.RUNES, 0);
             ModNetworking.updateMainAttributes(true);
         }
     }
@@ -170,7 +186,7 @@ public class PlayerStatusManager {
         if (itemStack == EntityStatusUtil.getCachedItem(player) || !(itemStack.getItem() instanceof IQuickAccess)) return;
 
         if (EntityStatusUtil.isUsingQuickAccess(player)) {
-            IPlayerStatus playerStatus = (IPlayerStatus) EntityStatusProvider.get(player);
+            PlayerStatus playerStatus =  EntityStatusProvider.get(player);
             if (itemStack != ItemStack.EMPTY) {
                 int j = playerStatus.getUseItemTicks();
                 if (j >= 0) {

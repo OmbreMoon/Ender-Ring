@@ -22,24 +22,12 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.LinkedHashSet;
 
-public class PlayerStatus extends EntityStatus implements IPlayerStatus {
+public class PlayerStatus extends EntityStatus<Player> {
     public static final EntityDataAccessor<Float> FP = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> RUNES = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> SCARLET_ROT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> BLOOD_LOSS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> FROSTBITE = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> SLEEP = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    private final Player player;
-//    private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
-//    private ObjectOpenHashSet<AbstractSpell> activeSpells = new ObjectOpenHashSet<>();
-//    private SpellType<?> selectedSpell;
-//    private AbstractSpell recentlyActivatedSpell;
+    private Player player;
     private boolean channelling;
     private EntityType<?> spiritSummon;
-    private int spiritLevel;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
     private int talismanPouches;
@@ -48,21 +36,27 @@ public class PlayerStatus extends EntityStatus implements IPlayerStatus {
     private boolean usingQuickAccess;
     private ItemStack cachedItem;
     private int useItemTicks;
-    private boolean initialized;
 
-    public PlayerStatus(Player player) {
-        super(player);
-        this.player = player;
-        player.getEntityData().define(FP, 0.0F);
-        player.getEntityData().define(RUNES, 0);
+    public PlayerStatus() {
     }
 
     @Override
+    public void initStatus(LivingEntity livingEntity) {
+        this.player = (Player) livingEntity;
+        super.initStatus(livingEntity);
+    }
+
+    @Override
+    public void defineEntityData(LivingEntity livingEntity) {
+        super.defineEntityData(livingEntity);
+        livingEntity.getEntityData().define(FP, 0.0F);
+        livingEntity.getEntityData().define(RUNES, 0);
+    }
+
     public void setRunes(int runeAmount) {
         this.player.getEntityData().set(RUNES, runeAmount);
     }
 
-    @Override
     public boolean consumeRunes(int amount, boolean forceConsume) {
         int runesHeld = this.getRunes();
         if (runesHeld < amount) {
@@ -75,18 +69,15 @@ public class PlayerStatus extends EntityStatus implements IPlayerStatus {
         }
     }
 
-    @Override
     public int getRunes() {
         return this.player.getEntityData().get(RUNES);
     }
 
-    @Override
     public float getMaxFP() {
         AttributeInstance maxFP = this.player.getAttribute(EntityAttributeInit.MAX_FP.get());
         return (float)(maxFP == null ? 0.0 : maxFP.getValue());
     }
 
-    @Override
     public boolean consumeFP(float amount, AbstractSpell abstractSpell, boolean forceConsume) {
         float currentFP = this.getFP();
         if (this.player.hasEffect(StatusEffectInit.CERULEAN_HIDDEN.get()) || this.player.getAbilities().instabuild) {
@@ -103,175 +94,98 @@ public class PlayerStatus extends EntityStatus implements IPlayerStatus {
         }
     }
 
-    @Override
     public float getFP() {
         return this.getMaxFP() == 0.0F ? 0.0F : this.player.getEntityData().get(FP);
     }
 
-    @Override
     public void setFP(float value) {
         float fpAmount = Math.max(Math.min(value, this.getMaxFP()), 0.0F);
         this.player.getEntityData().set(FP, fpAmount);
     }
-    /*
 
-    @Override
-    public LinkedHashSet<SpellType<?>> getSpellSet() {
-        return this.spellSet;
-    }
-
-    @Override
-    public ObjectOpenHashSet<AbstractSpell> getActiveSpells() {
-        return this.activeSpells;
-    }
-
-    @Override
-    public AbstractSpell getRecentlyActivatedSpell() {
-        return this.recentlyActivatedSpell;
-    }
-
-    @Override
-    public void setRecentlyActivatedSpell(AbstractSpell recentlyActivatedSpell) {
-        this.recentlyActivatedSpell = recentlyActivatedSpell;
-    }
-
-    @Override
-    public SpellType<?> getSelectedSpell() {
-        return this.selectedSpell;
-    }
-
-    @Override
-    public void setSelectedSpell(SpellType<?> selectedSpell) {
-        this.selectedSpell = selectedSpell;
-    }*/
-
-    @Override
-    public void defineEntityData(LivingEntity livingEntity) {
-
-    }
-
-    @Override
     public boolean isChannelling() {
         return this.channelling;
     }
 
-    @Override
     public void setChannelling(boolean channelling) {
         this.channelling = channelling;
     }
 
-    @Override
     public EntityType<?> getSpiritSummon() {
         return this.spiritSummon;
     }
 
-    @Override
     public void setSpiritSummon(EntityType<?> spiritSummon) {
         this.spiritSummon = spiritSummon;
     }
-
-    @Override
-    public int getSpiritLevel() {
-        return spiritLevel;
-    }
-
-    @Override
-    public void setSpiritLevel(int spiritLevel) {
-        this.spiritLevel = spiritLevel;
-    }
-
-    @Override
+    
     public boolean isSpawnedTorrent() {
         return this.isTorrentSpawned;
     }
 
-    @Override
     public void setSpawnTorrent(boolean spawnTorrent) {
         this.isTorrentSpawned = spawnTorrent;
     }
 
-    @Override
     public double getTorrentHealth() {
         return this.torrentHealth;
     }
 
-    @Override
+    
     public void setTorrentHealth(double torrentHealth) {
         this.torrentHealth = torrentHealth;
     }
 
-    @Override
     public int getTalismanPouches() {
         return this.talismanPouches;
     }
-
-    @Override
+    
     public void increaseTalismanPouches() {
         this.talismanPouches = Math.min(this.talismanPouches + 1, 3);
     }
 
-    @Override
     public int getMemoryStones() {
         return this.memoryStones;
     }
 
-    @Override
     public void increaseMemoryStones() {
         this.memoryStones = Math.min(this.memoryStones + 1, 8);
     }
-
-    @Override
+    
     public int getQuickAccessSlot() {
         return this.quickAccessSlot;
     }
 
-    @Override
     public void setQuickAccessSlot(int slot) {
         this.quickAccessSlot = slot;
     }
-
-    @Override
+    
     public boolean isUsingQuickAccess() {
         return this.usingQuickAccess;
     }
-
-    @Override
+    
     public void setUsingQuickAccess(boolean usingQuickAccess) {
         this.usingQuickAccess = usingQuickAccess;
     }
 
-    @Override
     public ItemStack getCachedItem() {
         return this.cachedItem;
     }
 
-    @Override
     public void setCachedItem(ItemStack cachedItem) {
         this.cachedItem = cachedItem;
     }
 
-    @Override
     public int getUseItemTicks() {
         return this.useItemTicks;
     }
 
-    @Override
     public void setUseItemTicks(int ticks) {
         this.useItemTicks = ticks;
     }
 
     @Override
     public CompoundTag serializeNBT() {
-        /*CompoundTag compoundTag = new CompoundTag();
-        ListTag spellList = new ListTag();
-
-        if (this.selectedSpell != null)
-            compoundTag.putString("SelectedSpell", this.selectedSpell.getResourceLocation().toString());
-
-        for (SpellType<?> spellType : spellSet) {
-            spellList.add(EntityStatusUtil.storeSpell(spellType));
-        }
-        compoundTag.put("Spells", spellList);*/
         CompoundTag compoundTag = super.serializeNBT();
         compoundTag.putBoolean("Channelling", this.channelling);
         compoundTag.putBoolean("Torrent", this.isTorrentSpawned);
@@ -286,16 +200,6 @@ public class PlayerStatus extends EntityStatus implements IPlayerStatus {
     @Override
     public void deserializeNBT(CompoundTag nbt) {
         super.deserializeNBT(nbt);
-        /*if (nbt.contains("SelectedSpell", 8)) {
-            this.selectedSpell = EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(nbt, "SelectedSpell"));
-        }
-        if (nbt.contains("Spells", 9)) {
-            ListTag spellList = nbt.getList("Spells", 10);
-            for (int i = 0; i < spellList.size(); i++) {
-                CompoundTag compoundTag = spellList.getCompound(i);
-                this.spellSet.add(EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(compoundTag, "Spell")));
-            }
-        }*/
         if (nbt.contains("Channelling", 99)) {
             this.channelling = nbt.getBoolean("Channelling");
         }

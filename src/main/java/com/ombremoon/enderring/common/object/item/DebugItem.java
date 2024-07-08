@@ -3,6 +3,8 @@ package com.ombremoon.enderring.common.object.item;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.gui.screen.PlayerStatusScreen;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.capability.EntityStatus;
+import com.ombremoon.enderring.common.capability.PlayerStatus;
 import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
@@ -46,11 +48,13 @@ public class DebugItem extends Item {
         if (!pLevel.isClientSide) {
             ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
             if (pPlayer.isCrouching()) {
-                ModNetworking.openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
+//                ModNetworking.openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
             } else if (pPlayer.isInWater()) {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
-                this.setStats(pPlayer);
             } else {
+//                this.setStats(pPlayer);
+                PlayerStatus playerStatus = EntityStatusUtil.getEntityStatus(pPlayer, PlayerStatus.class);
+                Constants.LOG.info(String.valueOf(pPlayer.getEntityData().hasItem(EntityStatus.BLOOD_LOSS)));
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
@@ -62,15 +66,15 @@ public class DebugItem extends Item {
     }
 
     private void setStats(Player player) {
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 25, true);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 22);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 35);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 34);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 22);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 9);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 31);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 33);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.RUNE_LEVEL.get(), 132);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 1, true);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.RUNE_LEVEL.get(), 1);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.PHYS_NEGATE.get(), 0);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.HOLY_NEGATE.get(), 0);
     }

@@ -19,13 +19,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractSpell {
@@ -45,7 +45,7 @@ public abstract class AbstractSpell {
     private final SoundEvent castSound;
     protected Level level;
     protected ScaledWeapon scaledWeapon;
-    private ServerPlayerPatch playerPatch;
+    private LivingEntityPatch<?> livingEntityPatch;
     private BlockPos blockPos;
     private String descriptionId;
     protected float catalystBoost;
@@ -183,39 +183,41 @@ public abstract class AbstractSpell {
 
     private void startSpell() {
         this.init = false;
-        this.onSpellStart(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
-        EventFactory.onSpellStart(this, this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
+        this.onSpellStart(this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon);
+        EventFactory.onSpellStart(this, this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon);
     }
 
     //TODO: ADD CAN CAST SPELL CHECK
     private void tickSpell() {
-        this.onSpellTick(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
-        if (EntityStatusUtil.isChannelling(this.playerPatch.getOriginal()))
-            this.channelTicks++;
+        this.onSpellTick(this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon);
+        if (this.livingEntityPatch.getOriginal() instanceof Player player) {
+            if (EntityStatusUtil.isChannelling(player))
+                this.channelTicks++;
+        }
 
-        EventFactory.onSpellTick(this, this.playerPatch, this.level, this.blockPos, this.scaledWeapon, this.ticks);
+        EventFactory.onSpellTick(this, this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon, this.ticks);
     }
 
     protected void endSpell() {
-        this.onSpellStop(this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
+        this.onSpellStop(this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon);
         this.init = false;
         this.isInactive = true;
         this.ticks = 0;
         this.wasCharged = false;
         this.channelTicks = 0;
-        EventFactory.onSpellStop(this, this.playerPatch, this.level, this.blockPos, this.scaledWeapon);
+        EventFactory.onSpellStop(this, this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon);
     }
 
-    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+    protected void onSpellTick(LivingEntityPatch<?> playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
     }
 
-    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+    protected void onSpellStart(LivingEntityPatch<?> playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
     }
 
-    protected void onSpellStop(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+    protected void onSpellStop(LivingEntityPatch<?> playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
     }
 
-    protected void onHurtTick(ServerPlayerPatch playerPatch, LivingEntity targetEntity, Level level, ScaledWeapon weapon) {
+    protected void onHurtTick(LivingEntityPatch<?> playerPatch, LivingEntity targetEntity, Level level, ScaledWeapon weapon) {
     }
 
     protected boolean shouldTickEffect(int duration) {
@@ -231,8 +233,8 @@ public abstract class AbstractSpell {
     public void checkHurt(LivingEntity livingEntity) {
         DamageInstance damageInstance = this.createDamageInstance();
         if (damageInstance != null) {
-            onHurtTick(this.playerPatch, livingEntity, this.level, this.scaledWeapon);
-            livingEntity.hurt(DamageUtil.moddedDamageSource(this.level, damageInstance.damageType(), this.playerPatch.getOriginal()), damageInstance.amount());
+            onHurtTick(this.livingEntityPatch, livingEntity, this.level, this.scaledWeapon);
+            livingEntity.hurt(DamageUtil.moddedDamageSource(this.level, damageInstance.damageType(), this.livingEntityPatch.getOriginal()), damageInstance.amount());
         }
     }
 
@@ -265,17 +267,17 @@ public abstract class AbstractSpell {
         return null;
     }
 
-    public ServerPlayerPatch getCaster() {
-        return this.playerPatch;
+    public LivingEntityPatch<?> getCaster() {
+        return this.livingEntityPatch;
     }
 
     public ScaledWeapon getCatalyst() {
         return this.scaledWeapon;
     }
 
-    public void initSpell(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon, float magicScaling, boolean wasCharged, Set<Classification> classifications, float spellBoost) {
+    public void initSpell(LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon scaledWeapon, float magicScaling, boolean wasCharged, Set<Classification> classifications, float spellBoost) {
         this.level = level;
-        this.playerPatch = playerPatch;
+        this.livingEntityPatch = livingEntityPatch;
         this.blockPos = blockPos;
         this.scaledWeapon = scaledWeapon;
         this.magicScaling = magicScaling;
@@ -288,7 +290,7 @@ public abstract class AbstractSpell {
             }
         }
 
-        EntityStatusUtil.activateSpell(playerPatch.getOriginal(), this);
+        EntityStatusUtil.activateSpell(livingEntityPatch.getOriginal(), this);
         this.init = true;
     }
 

@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import yesman.epicfight.api.animation.AnimationProvider;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.main.EpicFightMod;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
@@ -42,11 +43,13 @@ public abstract class AnimatedSpell extends AbstractSpell {
     }
 
     @Override
-    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellStart(playerPatch, level, blockPos, weapon);
-        if (playerPatch.isBattleMode() && this.spellAnimation != null) {
+    protected void onSpellStart(LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+        super.onSpellStart(livingEntityPatch, level, blockPos, weapon);
+        if (spellAnimation == null)
+            return;
+
+        if (livingEntityPatch instanceof PlayerPatch<?> playerPatch && playerPatch.isBattleMode())
             playerPatch.playAnimationSynchronized(this.spellAnimation.get(), 0.0F);
-        }
     }
 
     public static class Builder<T extends AnimatedSpell> extends AbstractSpell.Builder<T> {

@@ -1,13 +1,12 @@
 package com.ombremoon.enderring.util;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.capability.IPlayerStatus;
-import com.ombremoon.enderring.common.capability.PlayerStatus;
-import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.capability.EntityStatus;
+import com.ombremoon.enderring.common.capability.EntityStatusProvider;
+import com.ombremoon.enderring.common.capability.PlayerStatus;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.network.ModNetworking;
@@ -25,14 +24,27 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
 public class EntityStatusUtil {
+
+    @SuppressWarnings("unchecked")
+    public static <T extends EntityStatus<?>> T getEntityStatus(LivingEntity livingEntity, Class<T> status) {
+        if (livingEntity != null) {
+            EntityStatus<?> entityStatus = EntityStatusProvider.get(livingEntity);
+            if (entityStatus != null && status.isAssignableFrom(entityStatus.getClass())) {
+                return (T) entityStatus;
+            }
+        }
+        return null;
+    }
+
+    public static PlayerStatus getPlayerStatus(Player player) {
+        return getEntityStatus(player, PlayerStatus.class);
+    }
 
     public static int getRuneLevel(Player player) {
         return (int) player.getAttributeValue(EntityAttributeInit.RUNE_LEVEL.get());
@@ -112,28 +124,27 @@ public class EntityStatusUtil {
     }
 
     public static boolean consumeRunes(Player player, int amount, boolean forceConsume) {
-        return EntityStatusProvider.get(player).consumeRunes(amount, forceConsume);
+        return getPlayerStatus(player).consumeRunes(amount, forceConsume);
     }
 
     public static double getFP(Player player) {
-        return EntityStatusProvider.get(player).getFP();
+        return getPlayerStatus(player).getFP();
     }
 
     public static void setFP(ServerPlayer player, float fpAmount) {
-        EntityStatusProvider.get(player).setFP(fpAmount);
-//        ModNetworking.syncCap(player);
+        getPlayerStatus(player).setFP(fpAmount);
     }
 
     public static float getMaxFP(Player player) {
-        return EntityStatusProvider.get(player).getMaxFP();
+        return getPlayerStatus(player).getMaxFP();
     }
 
     public static void increaseFP(Player player, float fpAmount) {
-        EntityStatusProvider.get(player).setFP((float) Math.min(getFP(player) + fpAmount, player.getAttributeValue(EntityAttributeInit.MAX_FP.get())));
+        getPlayerStatus(player).setFP((float) Math.min(getFP(player) + fpAmount, player.getAttributeValue(EntityAttributeInit.MAX_FP.get())));
     }
 
     public static boolean consumeFP(Player player, float amount, AbstractSpell abstractSpell, boolean forceConsume) {
-        return EntityStatusProvider.get(player).consumeFP(amount, abstractSpell, forceConsume);
+        return getPlayerStatus(player).consumeFP(amount, abstractSpell, forceConsume);
     }
 
     public void increaseBuildUp(LivingEntity livingEntity, EntityDataAccessor<Float> accessor, float amount, float limit) {
@@ -201,104 +212,90 @@ public class EntityStatusUtil {
         return ResourceLocation.tryParse(compoundTag.getString(tagKey));
     }
 
-    public static ObjectOpenHashSet<AbstractSpell> getActiveSpells(Player player) {
-        return EntityStatusProvider.get(player).getActiveSpells();
+    @SuppressWarnings("unchecked")
+    public static ObjectOpenHashSet<AbstractSpell> getActiveSpells(LivingEntity livingEntity) {
+        return getEntityStatus(livingEntity, EntityStatus.class).getActiveSpells();
     }
 
-    public static void activateSpell(Player player, AbstractSpell abstractSpell) {
-        getActiveSpells(player).add(abstractSpell);
-        setRecentlyActivatedSpell(player, abstractSpell);
+    public static void activateSpell(LivingEntity livingEntity, AbstractSpell abstractSpell) {
+        getActiveSpells(livingEntity).add(abstractSpell);
+        setRecentlyActivatedSpell(livingEntity, abstractSpell);
     }
 
-    public static LinkedHashSet<SpellType<?>> getSpellSet(Player player) {
-        return EntityStatusProvider.get(player).getSpellSet();
+    @SuppressWarnings("unchecked")
+    public static LinkedHashSet<SpellType<?>> getSpellSet(LivingEntity livingEntity) {
+        return getEntityStatus(livingEntity, EntityStatus.class).getSpellSet();
     }
 
-    public static AbstractSpell getRecentlyActivatedSpell(Player player) {
-        return EntityStatusProvider.get(player).getRecentlyActivatedSpell();
+    public static AbstractSpell getRecentlyActivatedSpell(LivingEntity livingEntity) {
+        return getEntityStatus(livingEntity, EntityStatus.class).getRecentlyActivatedSpell();
     }
 
-    public static void setRecentlyActivatedSpell(Player player, AbstractSpell abstractSpell) {
-        EntityStatusProvider.get(player).setRecentlyActivatedSpell(abstractSpell);
+    public static void setRecentlyActivatedSpell(LivingEntity livingEntity, AbstractSpell abstractSpell) {
+        getEntityStatus(livingEntity, EntityStatus.class).setRecentlyActivatedSpell(abstractSpell);
     }
 
-    public static SpellType<?> getSelectedSpell(Player player) {
-        return EntityStatusProvider.get(player).getSelectedSpell();
+    public static SpellType<?> getSelectedSpell(LivingEntity livingEntity) {
+        return getEntityStatus(livingEntity, EntityStatus.class).getSelectedSpell();
     }
 
-    public static void setSelectedSpell(ServerPlayer player, SpellType<?> spellType) {
-        EntityStatusProvider.get(player).setSelectedSpell(spellType);
-        ModNetworking.syncCap(player);
+    @SuppressWarnings("unchecked")
+    public static void setSelectedSpell(LivingEntity livingEntity, SpellType<?> spellType) {
+        getEntityStatus(livingEntity, EntityStatus.class).setSelectedSpell(spellType);
+        if (livingEntity instanceof ServerPlayer player) {
+            ModNetworking.syncCap(player);
+        }
     }
 
     public static boolean isChannelling(Player player) {
-        return EntityStatusProvider.get(player).isChannelling();
+        return getPlayerStatus(player).isChannelling();
     }
 
     public static void setChannelling(ServerPlayer player, boolean channelling) {
-        EntityStatusProvider.get(player).setChannelling(channelling);
+        getPlayerStatus(player).setChannelling(channelling);
         ModNetworking.syncCap(player);
     }
 
     public static EntityType<?> getSpiritSummon(Player player) {
-        return EntityStatusProvider.get(player).getSpiritSummon();
+        return getPlayerStatus(player).getSpiritSummon();
     }
 
     public static void setSpiritSummon(ServerPlayer player, EntityType<?> spiritSummon) {
-        EntityStatusProvider.get(player).setSpiritSummon(spiritSummon);
-        ModNetworking.syncCap(player);
-    }
-
-    /**
-     * Gets the spirit level of the currently equipped spirit ash
-     * @param player the player that has the spirit ash
-     * @return number of upgrades the equipped spirit ash has had
-     */
-    public static int getSpiritLevel(Player player) {
-        return EntityStatusProvider.get(player).getSpiritLevel();
-    }
-
-    /**
-     * Set the level of the currently equipped spirit ashe
-     * @param player the player holding using the spirit ash
-     * @param level the level of the spirit ash, 0 for unupgraded
-     */
-    public static void setSpiritLevel(ServerPlayer player, int level) {
-        EntityStatusProvider.get(player).setSpiritLevel(level);
+        getPlayerStatus(player).setSpiritSummon(spiritSummon);
         ModNetworking.syncCap(player);
     }
 
     public static boolean isTorrentSpawnedOrIncapacitated(Player player) {
-        return EntityStatusProvider.get(player).getTorrentHealth() <= 0 || EntityStatusProvider.get(player).isSpawnedTorrent();
+        return getPlayerStatus(player).getTorrentHealth() <= 0 || getPlayerStatus(player).isSpawnedTorrent();
     }
 
     public static void setTorrentSpawned(Player player, boolean isSpawned) {
-        EntityStatusProvider.get(player).setSpawnTorrent(isSpawned);
+        getPlayerStatus(player).setSpawnTorrent(isSpawned);
     }
 
     public static double getTorrentHealth(Player player) {
-        return EntityStatusProvider.get(player).getTorrentHealth();
+        return getPlayerStatus(player).getTorrentHealth();
     }
 
     public static void setTorrentHealth(Player player, double health) {
-        EntityStatusProvider.get(player).setTorrentHealth(health);
+        getPlayerStatus(player).setTorrentHealth(health);
     }
 
     public static int getTalismanPouches(Player player) {
-        return EntityStatusProvider.get(player).getTalismanPouches();
+        return getPlayerStatus(player).getTalismanPouches();
     }
 
     public static void increaseTalismanPouches(ServerPlayer player) {
-        EntityStatusProvider.get(player).increaseTalismanPouches();
+        getPlayerStatus(player).increaseTalismanPouches();
         ModNetworking.syncCap(player);
     }
 
     public static int getMemoryStones(Player player) {
-        return EntityStatusProvider.get(player).getMemoryStones();
+        return getPlayerStatus(player).getMemoryStones();
     }
 
     public static void increaseMemoryStones(ServerPlayer player) {
-        EntityStatusProvider.get(player).increaseMemoryStones();
+        getPlayerStatus(player).increaseMemoryStones();
         ModNetworking.syncCap(player);
     }
 
@@ -307,20 +304,20 @@ public class EntityStatusUtil {
     }
 
     public static int getQuickAccessSlot(Player player) {
-        return EntityStatusProvider.get(player).getQuickAccessSlot();
+        return getPlayerStatus(player).getQuickAccessSlot();
     }
 
     public static void setQuickAccessSlot(ServerPlayer player, int slot) {
-        EntityStatusProvider.get(player).setQuickAccessSlot(slot);
+        getPlayerStatus(player).setQuickAccessSlot(slot);
         ModNetworking.syncCap(player);
     }
 
     public static boolean isUsingQuickAccess(Player player) {
-        return EntityStatusProvider.get(player).isUsingQuickAccess();
+        return getPlayerStatus(player).isUsingQuickAccess();
     }
 
     public static void setUsingQuickAccess(Player player, boolean usingQuickAccess) {
-        IPlayerStatus playerStatus = EntityStatusProvider.get(player);
+        PlayerStatus playerStatus = EntityStatusProvider.get(player);
         playerStatus.setUsingQuickAccess(usingQuickAccess);
 
         if (usingQuickAccess) {
@@ -333,11 +330,11 @@ public class EntityStatusUtil {
     }
 
     public static ItemStack getCachedItem(Player player) {
-        return EntityStatusProvider.get(player).getCachedItem();
+        return getPlayerStatus(player).getCachedItem();
     }
 
     private static void setCachedItem(Player player, ItemStack itemStack) {
-        EntityStatusProvider.get(player).setCachedItem(itemStack);
+        getPlayerStatus(player).setCachedItem(itemStack);
     }
 
 }

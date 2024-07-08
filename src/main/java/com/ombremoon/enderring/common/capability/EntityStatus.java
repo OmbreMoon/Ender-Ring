@@ -1,12 +1,8 @@
 package com.ombremoon.enderring.common.capability;
 
-import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
-import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.ERMob;
-import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
@@ -14,15 +10,12 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.LinkedHashSet;
 
-public class EntityStatus implements IEntityStatus {
+public class EntityStatus<T extends LivingEntity> implements INBTSerializable<CompoundTag> {
     public static final EntityDataAccessor<Integer> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> SCARLET_ROT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> BLOOD_LOSS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
@@ -30,14 +23,51 @@ public class EntityStatus implements IEntityStatus {
     public static final EntityDataAccessor<Integer> SLEEP = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    protected final LivingEntity livingEntity;
+    protected T livingEntity;
     protected LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
     protected ObjectOpenHashSet<AbstractSpell> activeSpells = new ObjectOpenHashSet<>();
     protected SpellType<?> selectedSpell;
     protected AbstractSpell recentlyActivatedSpell;
+    protected boolean initialized = false;
 
-    public EntityStatus(LivingEntity livingEntity) {
-        this.livingEntity = livingEntity;
+    public EntityStatus() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public void initStatus(LivingEntity livingEntity) {
+        this.livingEntity = (T) livingEntity;
+    }
+
+    public boolean isInitialized() {
+        return this.initialized = true;
+    }
+
+    public LinkedHashSet<SpellType<?>> getSpellSet() {
+        return this.spellSet;
+    }
+
+    public ObjectOpenHashSet<AbstractSpell> getActiveSpells() {
+        return this.activeSpells;
+    }
+
+    public AbstractSpell getRecentlyActivatedSpell() {
+        return this.recentlyActivatedSpell;
+    }
+
+    public void setRecentlyActivatedSpell(AbstractSpell recentlyActivatedSpell) {
+        this.recentlyActivatedSpell = recentlyActivatedSpell;
+    }
+
+    public SpellType<?> getSelectedSpell() {
+        return this.selectedSpell;
+    }
+
+    public void setSelectedSpell(SpellType<?> selectedSpell) {
+        this.selectedSpell = selectedSpell;
+    }
+
+    public void defineEntityData(LivingEntity livingEntity) {
+        this.initialized = true;
         livingEntity.getEntityData().define(POISON, 0);
         livingEntity.getEntityData().define(SCARLET_ROT, 0);
         livingEntity.getEntityData().define(BLOOD_LOSS, 0);
@@ -45,41 +75,6 @@ public class EntityStatus implements IEntityStatus {
         livingEntity.getEntityData().define(SLEEP, 0);
         livingEntity.getEntityData().define(MADNESS, 0);
         livingEntity.getEntityData().define(DEATH_BLIGHT, 0);
-    }
-
-    @Override
-    public LinkedHashSet<SpellType<?>> getSpellSet() {
-        return this.spellSet;
-    }
-
-    @Override
-    public ObjectOpenHashSet<AbstractSpell> getActiveSpells() {
-        return this.activeSpells;
-    }
-
-    @Override
-    public AbstractSpell getRecentlyActivatedSpell() {
-        return this.recentlyActivatedSpell;
-    }
-
-    @Override
-    public void setRecentlyActivatedSpell(AbstractSpell recentlyActivatedSpell) {
-        this.recentlyActivatedSpell = recentlyActivatedSpell;
-    }
-
-    @Override
-    public SpellType<?> getSelectedSpell() {
-        return this.selectedSpell;
-    }
-
-    @Override
-    public void setSelectedSpell(SpellType<?> selectedSpell) {
-        this.selectedSpell = selectedSpell;
-    }
-
-    @Override
-    public void defineEntityData(LivingEntity livingEntity) {
-
     }
 
     @Override

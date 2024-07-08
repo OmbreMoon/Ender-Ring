@@ -12,6 +12,7 @@ import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
+import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.ExtendedServerPlayerPatch;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.server.level.ServerPlayer;
@@ -116,7 +117,7 @@ public class CatalystWeapon extends MeleeWeapon {
             ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
             AbstractSpell spell = spellType.createSpell();
             if (spell != null && playerPatch != null) {
-                if (this.canCastSpell(player, pStack, spell, true)) {
+                if (this.canCastSpell((ServerPlayer) player, pStack, spell)) {
                     int i = this.getWeaponLevel(pStack);
                     WeaponDamage weaponDamage = this.magicType.getWeaponDamage();
                     spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage), spell.canCharge(), this.classifications, this.spellBoost);
@@ -130,10 +131,10 @@ public class CatalystWeapon extends MeleeWeapon {
                     player.awardStat(Stats.ITEM_USED.get(this));
                     player.awardStat(this.magicType == MagicType.SORCERY ? StatInit.SORCERIES_CAST.get() : StatInit.INCANTATIONS_CAST.get());
 
-                    ItemCooldowns cooldowns = player.getCooldowns();
-                    if (!cooldowns.isOnCooldown(this) && this.canCastSpell(player, pStack, spell, false)) {
+                    /*ItemCooldowns cooldowns = player.getCooldowns();
+                    if (!cooldowns.isOnCooldown(this) && this.canCastSpell((ServerPlayer) player, pStack, spell)) {
                         cooldowns.addCooldown(this, spell.isInstantSpell() ? 10 : spell.getCastTime());
-                    }
+                    }*/
                 }
             }
         }
@@ -148,17 +149,16 @@ public class CatalystWeapon extends MeleeWeapon {
         ScaledWeapon weapon = this.getModifiedWeapon(pStack);
         if (!pLevel.isClientSide && spellType != null) {
             AbstractSpell recentSpell = EntityStatusUtil.getRecentlyActivatedSpell(player);
-//            if (recentSpell != null && recentSpell.wasCharged())
             if (recentSpell != null && recentSpell.requiresConcentration())
                 return;
 
-            ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
+            ExtendedServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ExtendedServerPlayerPatch.class);
             AbstractSpell spell = spellType.createSpell();
             if (playerPatch != null && spell != null && spell.canCharge()) {
                 int i = this.getUseDuration(pStack) - pTimeCharged;
                 if (i < 0) return;
 
-                if (this.canCastSpell(player, pStack, spell, true)) {
+                if (this.canCastSpell((ServerPlayer) player, pStack, spell)) {
                     int level = this.getWeaponLevel(pStack);
                     float f = AbstractSpell.getPowerForTime(spell, i);
                     WeaponDamage weaponDamage = this.magicType.getWeaponDamage();
@@ -169,10 +169,10 @@ public class CatalystWeapon extends MeleeWeapon {
                         player.awardStat(Stats.ITEM_USED.get(this));
                         player.awardStat(this.magicType == MagicType.SORCERY ? StatInit.SORCERIES_CAST.get() : StatInit.INCANTATIONS_CAST.get());
 
-                        ItemCooldowns cooldowns = player.getCooldowns();
-                        if (!cooldowns.isOnCooldown(this) && this.canCastSpell(player, pStack, spell, false)) {
+                        /*ItemCooldowns cooldowns = player.getCooldowns();
+                        if (!cooldowns.isOnCooldown(this) && this.canCastSpell((ServerPlayer) player, pStack, spell)) {
                             cooldowns.addCooldown(this, spell.isInstantSpell() ? 10 : spell.getCastTime());
-                        }
+                        }*/
                     }
                 }
             }
@@ -183,12 +183,17 @@ public class CatalystWeapon extends MeleeWeapon {
         return this.magicType;
     }
 
-    public boolean canCastSpell(Player player, ItemStack itemStack, AbstractSpell abstractSpell, boolean forceConsume) {
-        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+    public boolean canCastSpell(ServerPlayer player, ItemStack itemStack, AbstractSpell abstractSpell) {
+        ExtendedServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ExtendedServerPlayerPatch.class);
         if (ConfigHandler.REQUIRES_BATTLE_MODE.get() && !playerPatch.isBattleMode()) {
             return false;
+        } else if (this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), abstractSpell, false) && playerPatch.consumeStamina(abstractSpell.getStaminaCost(player), false) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player)) {
+            EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), abstractSpell, true);
+            playerPatch.consumeStamina(abstractSpell.getStaminaCost(player), true);
+            return true;
+        } else {
+            return false;
         }
-        return this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), abstractSpell, forceConsume) && playerPatch.consumeStamina(abstractSpell.getStaminaCost(player)) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player);
     }
 
     private boolean canCastSpell(Player player, AbstractSpell abstractSpell) {

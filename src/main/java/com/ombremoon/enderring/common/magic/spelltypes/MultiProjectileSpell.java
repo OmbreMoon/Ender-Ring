@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.function.Supplier;
@@ -27,9 +28,9 @@ public abstract class MultiProjectileSpell<S extends MultiProjectileSpell<S, T>,
     }
 
     @Override
-    protected void onSpellTick(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+    protected void onSpellTick(LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         if (this.projectileID < this.projectileCount) {
-            createProjectile(playerPatch, this.projectileID);
+            createProjectile(livingEntityPatch, this.projectileID);
             LOGGER.info(String.valueOf(this.projectileID));
             this.projectileID++;
         }

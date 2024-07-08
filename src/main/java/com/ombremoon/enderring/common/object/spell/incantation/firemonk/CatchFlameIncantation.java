@@ -12,6 +12,7 @@ import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class CatchFlameIncantation extends AnimatedSpell {
@@ -21,6 +22,7 @@ public class CatchFlameIncantation extends AnimatedSpell {
                 .setClassification(Classifications.FIRE_MONK)
                 .setDuration(INSTANT_SPELL_DURATION)
                 .setFPCost(10)
+                .setStaminaCost(3)
                 .setRequirements(WeaponScaling.FAI, 8)
                 .setMotionValue(2.25F)
                 .setAnimation(() -> AnimationInit.CATCH_FLAME);
@@ -31,9 +33,9 @@ public class CatchFlameIncantation extends AnimatedSpell {
     }
 
     @Override
-    protected void onSpellStart(ServerPlayerPatch playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
+    protected void onSpellStart(LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
         this.catalystBoost = 0;
-        super.onSpellStart(playerPatch, level, blockPos, weapon);
+        super.onSpellStart(livingEntityPatch, level, blockPos, weapon);
     }
 
     public CatchFlameIncantation(SpellType<?> spellType, Builder<AnimatedSpell> builder) {

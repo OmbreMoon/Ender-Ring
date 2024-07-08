@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.network.client;
 
-import com.ombremoon.enderring.common.capability.IPlayerStatus;
 import com.ombremoon.enderring.common.capability.EntityStatusProvider;
+import com.ombremoon.enderring.common.capability.PlayerStatus;
 import com.ombremoon.enderring.network.ModNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,7 +31,7 @@ public class ClientboundUseQuickAccessPacket {
             final var handler = context.getNetworkManager().getPacketListener();
             if (handler instanceof ClientGamePacketListener) {
                 Minecraft minecraft = Minecraft.getInstance();
-                IPlayerStatus playerStatus = EntityStatusProvider.get(minecraft.player);
+                PlayerStatus playerStatus = EntityStatusProvider.get(minecraft.player);
                 playerStatus.setUseItemTicks(packet.ticks);
                 useItem(playerStatus, minecraft, true);
                 if (packet.ticks <= 0) {
@@ -43,7 +43,7 @@ public class ClientboundUseQuickAccessPacket {
         ctx.get().setPacketHandled(true);
     }
 
-    public static void useItem(IPlayerStatus playerStatus, Minecraft minecraft, boolean usingItem) {
+    public static void useItem(PlayerStatus playerStatus, Minecraft minecraft, boolean usingItem) {
         playerStatus.setUsingQuickAccess(usingItem);
         minecraft.options.keyUse.setDown(usingItem);
 //        minecraft.options.keyHotbarSlots[playerStatus.getCachedSlot()].consumeClick();
