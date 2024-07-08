@@ -85,7 +85,7 @@ public class EnderRing {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onFirstSpawn(EntityJoinLevelEvent event) {
-        FirstSpawnEvent.onSpawn(event.getLevel(), event.getEntity());
+        FirstSpawnEvent.onServerSpawn(event.getLevel(), event.getEntity());
     }
 
     @SubscribeEvent

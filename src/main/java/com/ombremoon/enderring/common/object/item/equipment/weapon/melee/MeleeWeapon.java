@@ -4,22 +4,15 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.logging.LogUtils;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.client.render.ERArmorRenderer;
+import com.ombremoon.enderring.client.CameraEngine;
 import com.ombremoon.enderring.client.render.ERWeaponRenderer;
 import com.ombremoon.enderring.common.WeaponDamage;
-import com.ombremoon.enderring.common.data.Saturations;
-import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
-import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
-import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
-import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.DamageUtil;
-import com.ombremoon.enderring.util.EntityStatusUtil;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -35,26 +28,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillDataKey;
 import yesman.epicfight.skill.SkillDataKeys;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-import yesman.epicfight.world.capabilities.item.CapabilityItem;
-import yesman.epicfight.world.capabilities.item.WeaponCapability;
-import yesman.epicfight.world.entity.eventlistener.SkillConsumeEvent;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class MeleeWeapon extends AbstractWeapon implements GeoItem {
@@ -73,10 +58,13 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            Constants.LOG.info(String.valueOf(serverPlayerPatch.getSkill(ExtendedSkillSlots.HEAVY_ATTACK).getSkill()));
-            pPlayer.addEffect(new MobEffectInstance(((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)), 20));
-            ((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)).applyInstantaneousEffect(null, null, pPlayer);
+//            pPlayer.addEffect(new MobEffectInstance(((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)), 20));
+//            ((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)).applyInstantaneousEffect(null, null, pPlayer);
 //            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
+        } else {
+            CameraEngine cameraEngine = CameraEngine.getOrAssignEngine(pPlayer);
+//            cameraEngine.shakeScreen(pPlayer.getRandom().nextInt(), 15, 0.5F, 10, 0.25F);
+            cameraEngine.shakeScreen();
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }
