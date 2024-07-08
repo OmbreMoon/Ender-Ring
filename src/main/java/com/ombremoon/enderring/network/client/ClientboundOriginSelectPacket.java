@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.network.client;
 
+import com.ombremoon.enderring.client.CameraEngine;
 import com.ombremoon.enderring.client.gui.screen.StarterScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -29,6 +30,7 @@ public class ClientboundOriginSelectPacket {
             final var context = ctx.get();
             final var handler = context.getNetworkManager().getPacketListener();
             if (handler instanceof ClientGamePacketListener) {
+                CameraEngine.getOrAssignEngine(Minecraft.getInstance().player);
                 Minecraft.getInstance().setScreen(new StarterScreen.CharacterBaseScreen(packet.title));
             }
         });

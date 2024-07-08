@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common;
 
+import com.ombremoon.enderring.common.capability.EntityStatus;
 import com.ombremoon.enderring.common.capability.PlayerStatus;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
@@ -10,13 +11,13 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 
 public enum StatusType {
-    POISON(StatusEffectInit.POISON.get(), PlayerStatus.POISON, ERMob.POISON, EntityAttributeInit.IMMUNITY.get(), EntityAttributeInit.POISON_RESIST.get()),
-    SCARLET_ROT(StatusEffectInit.SCARLET_ROT.get(), PlayerStatus.SCARLET_ROT, ERMob.SCARLET_ROT, EntityAttributeInit.IMMUNITY.get(), EntityAttributeInit.SCARLET_ROT_RESIST.get()),
-    BLOOD_LOSS(StatusEffectInit.BLOOD_LOSS.get(), PlayerStatus.BLOOD_LOSS, ERMob.BLOOD_LOSS, EntityAttributeInit.ROBUSTNESS.get(), EntityAttributeInit.HEMORRHAGE_RESIST.get()),
-    FROSTBITE(StatusEffectInit.FROSTBITE.get(), PlayerStatus.FROSTBITE, ERMob.FROSTBITE, EntityAttributeInit.ROBUSTNESS.get(), EntityAttributeInit.FROSTBITE_RESIST.get()),
-    SLEEP(StatusEffectInit.SLEEP.get(), PlayerStatus.SLEEP, ERMob.SLEEP, EntityAttributeInit.FOCUS.get(), EntityAttributeInit.SLEEP_RESIST.get()),
-    MADNESS(StatusEffectInit.MADNESS.get(), PlayerStatus.MADNESS, ERMob.MADNESS, EntityAttributeInit.FOCUS.get(), EntityAttributeInit.MADNESS_RESIST.get()),
-    DEATH_BLIGHT(StatusEffectInit.DEATH_BLIGHT.get(), PlayerStatus.DEATH_BLIGHT, ERMob.DEATH_BLIGHT, EntityAttributeInit.VITALITY.get(), EntityAttributeInit.DEATH_BLIGHT_RESIST.get());
+    POISON(StatusEffectInit.POISON.get(), EntityStatus.POISON, ERMob.POISON, EntityAttributeInit.IMMUNITY.get(), EntityAttributeInit.POISON_RESIST.get()),
+    SCARLET_ROT(StatusEffectInit.SCARLET_ROT.get(), EntityStatus.SCARLET_ROT, ERMob.SCARLET_ROT, EntityAttributeInit.IMMUNITY.get(), EntityAttributeInit.SCARLET_ROT_RESIST.get()),
+    BLOOD_LOSS(StatusEffectInit.BLOOD_LOSS.get(), EntityStatus.BLOOD_LOSS, ERMob.BLOOD_LOSS, EntityAttributeInit.ROBUSTNESS.get(), EntityAttributeInit.HEMORRHAGE_RESIST.get()),
+    FROSTBITE(StatusEffectInit.FROSTBITE.get(), EntityStatus.FROSTBITE, ERMob.FROSTBITE, EntityAttributeInit.ROBUSTNESS.get(), EntityAttributeInit.FROSTBITE_RESIST.get()),
+    SLEEP(StatusEffectInit.SLEEP.get(), EntityStatus.SLEEP, ERMob.SLEEP, EntityAttributeInit.FOCUS.get(), EntityAttributeInit.SLEEP_RESIST.get()),
+    MADNESS(StatusEffectInit.MADNESS.get(), EntityStatus.MADNESS, ERMob.MADNESS, EntityAttributeInit.FOCUS.get(), EntityAttributeInit.MADNESS_RESIST.get()),
+    DEATH_BLIGHT(StatusEffectInit.DEATH_BLIGHT.get(), EntityStatus.DEATH_BLIGHT, ERMob.DEATH_BLIGHT, EntityAttributeInit.VITALITY.get(), EntityAttributeInit.DEATH_BLIGHT_RESIST.get());
 
     private final MobEffect effect;
     private final EntityDataAccessor<Integer> playerStatus;

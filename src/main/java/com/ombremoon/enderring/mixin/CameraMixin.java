@@ -1,8 +1,11 @@
 package com.ombremoon.enderring.mixin;
 
+import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.client.CameraEngine;
 import com.ombremoon.enderring.util.math.NoiseGenerator;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,19 +27,25 @@ public abstract class CameraMixin {
 
     @Unique
     private void handleScreenShake(Camera camera) {
-        int time = camera.getEntity().tickCount;
+        CameraEngine cameraEngine = CameraEngine.getOrAssignEngine((Player) camera.getEntity());
         Vec3 vec3 = camera.getPosition();
-        float intensity = 0F;
-//        this.setPosition(vec3.x + getNoise(1, 0.25F, intensity, time * 10), vec3.y + getNoise(2, 0.25F, intensity, time * 10), vec3.z + getNoise(3, 0.25F, intensity, time * 10));
+        int time = camera.getEntity().tickCount;
+        if (cameraEngine != null && cameraEngine.shouldShakeCamera()) {
+            int seed = cameraEngine.getSeed();
+            float intensity = cameraEngine.getShakeIntensity();
+            float offset = cameraEngine.getMaxOffset();
+            int freq = cameraEngine.getShakeFrequency();
+            double d0 = getNoise(seed, offset, intensity, time * freq);
+            double d1 = getNoise(seed + 1, offset, intensity, time * freq);
+            double d2 = getNoise(seed + 2, offset, intensity, time * freq);
+            this.setPosition(vec3.x + d0, vec3.y + d1, vec3.z + d2);
+        }
     }
 
     private static double getNoise(int seed, float maxOffset, float intensity, int x) {
         NoiseGenerator noiseGenerator = new NoiseGenerator(seed);
         return maxOffset * intensity * noiseGenerator.noise(x);
     }
-
-//
-//    public static boolean hasScreenShake()
 
     @Unique
     public Camera self() {

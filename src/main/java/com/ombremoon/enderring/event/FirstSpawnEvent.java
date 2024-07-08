@@ -2,8 +2,10 @@ package com.ombremoon.enderring.event;
 
 import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.client.CameraEngine;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.ModFunctions;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
@@ -19,7 +21,7 @@ public class FirstSpawnEvent {
     public static final Component CHARACTER_ORIGIN = Component.translatable(Constants.MOD_ID + ".menu.character_origin");
 
 
-    public static void onSpawn(Level level, Entity entity) {
+    public static void onServerSpawn(Level level, Entity entity) {
         if (level.isClientSide) return;
         if (!(entity instanceof Player)) return;
         var player = (ServerPlayer) entity;

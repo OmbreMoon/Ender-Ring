@@ -15,13 +15,14 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.LinkedHashSet;
 
-public class PlayerStatus implements IPlayerStatus {
+public class PlayerStatus extends EntityStatus implements IPlayerStatus {
     public static final EntityDataAccessor<Float> FP = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> RUNES = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> POISON = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
@@ -32,12 +33,13 @@ public class PlayerStatus implements IPlayerStatus {
     public static final EntityDataAccessor<Integer> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     private final Player player;
-    private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
-    private ObjectOpenHashSet<AbstractSpell> activeSpells = new ObjectOpenHashSet<>();
-    private SpellType<?> selectedSpell;
-    private AbstractSpell recentlyActivatedSpell;
+//    private LinkedHashSet<SpellType<?>> spellSet = new LinkedHashSet<>();
+//    private ObjectOpenHashSet<AbstractSpell> activeSpells = new ObjectOpenHashSet<>();
+//    private SpellType<?> selectedSpell;
+//    private AbstractSpell recentlyActivatedSpell;
     private boolean channelling;
     private EntityType<?> spiritSummon;
+    private int spiritLevel;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
     private int talismanPouches;
@@ -49,19 +51,10 @@ public class PlayerStatus implements IPlayerStatus {
     private boolean initialized;
 
     public PlayerStatus(Player player) {
+        super(player);
         this.player = player;
-//        if (!initialized) {
         player.getEntityData().define(FP, 0.0F);
         player.getEntityData().define(RUNES, 0);
-        player.getEntityData().define(POISON, 0);
-        player.getEntityData().define(SCARLET_ROT, 0);
-        player.getEntityData().define(BLOOD_LOSS, 0);
-        player.getEntityData().define(FROSTBITE, 0);
-        player.getEntityData().define(SLEEP, 0);
-        player.getEntityData().define(MADNESS, 0);
-        player.getEntityData().define(DEATH_BLIGHT, 0);
-//            this.initialized = true;
-//        }
     }
 
     @Override
@@ -120,6 +113,7 @@ public class PlayerStatus implements IPlayerStatus {
         float fpAmount = Math.max(Math.min(value, this.getMaxFP()), 0.0F);
         this.player.getEntityData().set(FP, fpAmount);
     }
+    /*
 
     @Override
     public LinkedHashSet<SpellType<?>> getSpellSet() {
@@ -149,6 +143,11 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public void setSelectedSpell(SpellType<?> selectedSpell) {
         this.selectedSpell = selectedSpell;
+    }*/
+
+    @Override
+    public void defineEntityData(LivingEntity livingEntity) {
+
     }
 
     @Override
@@ -169,6 +168,16 @@ public class PlayerStatus implements IPlayerStatus {
     @Override
     public void setSpiritSummon(EntityType<?> spiritSummon) {
         this.spiritSummon = spiritSummon;
+    }
+
+    @Override
+    public int getSpiritLevel() {
+        return spiritLevel;
+    }
+
+    @Override
+    public void setSpiritLevel(int spiritLevel) {
+        this.spiritLevel = spiritLevel;
     }
 
     @Override
@@ -253,7 +262,7 @@ public class PlayerStatus implements IPlayerStatus {
 
     @Override
     public CompoundTag serializeNBT() {
-        CompoundTag compoundTag = new CompoundTag();
+        /*CompoundTag compoundTag = new CompoundTag();
         ListTag spellList = new ListTag();
 
         if (this.selectedSpell != null)
@@ -262,7 +271,8 @@ public class PlayerStatus implements IPlayerStatus {
         for (SpellType<?> spellType : spellSet) {
             spellList.add(EntityStatusUtil.storeSpell(spellType));
         }
-        compoundTag.put("Spells", spellList);
+        compoundTag.put("Spells", spellList);*/
+        CompoundTag compoundTag = super.serializeNBT();
         compoundTag.putBoolean("Channelling", this.channelling);
         compoundTag.putBoolean("Torrent", this.isTorrentSpawned);
         compoundTag.putDouble("TorrentHealth", this.torrentHealth);
@@ -275,7 +285,8 @@ public class PlayerStatus implements IPlayerStatus {
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        if (nbt.contains("SelectedSpell", 8)) {
+        super.deserializeNBT(nbt);
+        /*if (nbt.contains("SelectedSpell", 8)) {
             this.selectedSpell = EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(nbt, "SelectedSpell"));
         }
         if (nbt.contains("Spells", 9)) {
@@ -284,7 +295,7 @@ public class PlayerStatus implements IPlayerStatus {
                 CompoundTag compoundTag = spellList.getCompound(i);
                 this.spellSet.add(EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(compoundTag, "Spell")));
             }
-        }
+        }*/
         if (nbt.contains("Channelling", 99)) {
             this.channelling = nbt.getBoolean("Channelling");
         }

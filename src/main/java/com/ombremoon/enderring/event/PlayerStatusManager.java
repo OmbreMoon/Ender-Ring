@@ -49,7 +49,8 @@ public class PlayerStatusManager {
         if (event.getObject() instanceof Player player) {
             var provider = new EntityStatusProvider(player);
             if (!EntityStatusProvider.isPresent(player)) {
-                var cap = provider.getCapability(EntityStatusProvider.PLAYER_STATUS).orElse(null);
+                var cap = provider.getCapability(EntityStatusProvider.ENTITY_STATUS).orElse(null);
+//                var cap = provider.getCapability(EntityStatusProvider.PLAYER_STATUS).orElse(null);
                 event.addCapability(EntityStatusProvider.CAPABILITY_LOCATION, provider);
             }
         }
@@ -169,7 +170,7 @@ public class PlayerStatusManager {
         if (itemStack == EntityStatusUtil.getCachedItem(player) || !(itemStack.getItem() instanceof IQuickAccess)) return;
 
         if (EntityStatusUtil.isUsingQuickAccess(player)) {
-            IPlayerStatus playerStatus = EntityStatusProvider.get(player);
+            IPlayerStatus playerStatus = (IPlayerStatus) EntityStatusProvider.get(player);
             if (itemStack != ItemStack.EMPTY) {
                 int j = playerStatus.getUseItemTicks();
                 if (j >= 0) {
