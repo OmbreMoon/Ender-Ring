@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -57,7 +58,7 @@ public class ClientEvents {
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
             event.register(KeyBinds.OPEN_QUICK_ACCESS_BINDING);
             event.register(KeyBinds.CYCLE_QUICK_ACCESS_BINDING);
-            event.register(KeyBinds.USE_QUICK_ACCESS_BINDING);
+            event.register(KeyBinds.OPEN_PLAYER_STATUS_BINDING);
             event.register(KeyBinds.HEAVY_ATTACK_BINDING);
             event.register(KeyBinds.ASH_OF_WAR_BINDING);
         }
@@ -96,9 +97,10 @@ public class ClientEvents {
             if (KeyBinds.CYCLE_QUICK_ACCESS_BINDING.consumeClick()) {
                 ModNetworking.cycleQuickAccessItem();
             }
-            if (KeyBinds.USE_QUICK_ACCESS_BINDING.consumeClick()) {
-                if (!EntityStatusUtil.isUsingQuickAccess(player))
-                    ModNetworking.useQuickAccessItem();
+            if (KeyBinds.OPEN_PLAYER_STATUS_BINDING.consumeClick()) {
+                Minecraft.getInstance().setScreen(new PlayerStatusScreen(Component.literal("Status")));
+                /*if (!EntityStatusUtil.isUsingQuickAccess(player))
+                    ModNetworking.useQuickAccessItem();*/
             }
         }
 

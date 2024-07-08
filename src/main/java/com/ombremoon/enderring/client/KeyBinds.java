@@ -11,7 +11,7 @@ public class KeyBinds {
     public static final String KEY_CATEGORY_ER = "key.category.enderring.er";
     public static final String KEY_OPEN_QUICK_ACCESS = "key.enderring.open_quick_access";
     public static final String KEY_CYCLE_QUICK_ACCESS = "key.enderring.cycle_quick_access";
-    public static final String KEY_USE_QUICK_ACCESS = "key.enderring.use_quick_access";
+    public static final String KEY_OPEN_PLAYER_STATUS = "key.enderring.open_player_status";
     public static final String KEY_HEAVY_ATTACK = "key.enderring.heavy_attack";
     public static final String KEY_ASH_OF_WAR = "key.enderring.ash_of_war";
 
@@ -21,7 +21,7 @@ public class KeyBinds {
     public static final KeyMapping CYCLE_QUICK_ACCESS_BINDING = new KeyMapping(KEY_CYCLE_QUICK_ACCESS, KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_U, KEY_CATEGORY_ER);
 
-    public static final KeyMapping USE_QUICK_ACCESS_BINDING = new KeyMapping(KEY_USE_QUICK_ACCESS, KeyConflictContext.IN_GAME,
+    public static final KeyMapping OPEN_PLAYER_STATUS_BINDING = new KeyMapping(KEY_OPEN_PLAYER_STATUS, KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_I, KEY_CATEGORY_ER);
 
     public static final KeyMapping HEAVY_ATTACK_BINDING = new CombatKeyMapping(KEY_HEAVY_ATTACK,

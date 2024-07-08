@@ -58,9 +58,6 @@ public class DebugItem extends Item {
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);
-        } else {
-            if (!pPlayer.isCrouching())
-                Minecraft.getInstance().setScreen(new PlayerStatusScreen(Component.literal("Status")));
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }
