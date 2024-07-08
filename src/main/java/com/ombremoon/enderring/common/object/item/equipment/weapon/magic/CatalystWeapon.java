@@ -95,12 +95,12 @@ public class CatalystWeapon extends MeleeWeapon {
     @Override
     public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
         super.onUseTick(pLevel, pLivingEntity, pStack, pRemainingUseDuration);
-        if (!pLevel.isClientSide) {
+        /*if (!pLevel.isClientSide) {
             if (pRemainingUseDuration == this.getUseDuration(pStack)) {
                 LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(pLivingEntity, LivingEntityPatch.class);
                 livingEntityPatch.playAnimationSynchronized(livingEntityPatch.getHitAnimation(StunType.SHORT), 0.0F);
             }
-        }
+        }*/
     }
 
     @Override

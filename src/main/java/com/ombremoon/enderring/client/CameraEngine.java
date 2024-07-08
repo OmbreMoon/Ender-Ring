@@ -31,10 +31,6 @@ public class CameraEngine {
         this.player = player;
     }
 
-    public Player getCameraPlayer() {
-        return this.player;
-    }
-
     public static CameraEngine getOrAssignEngine(Player player) {
         if (!ENGINE.containsKey(player.getUUID())) {
             ENGINE.put(player.getUUID(), new CameraEngine(player));

@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.*;
 
-public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
+public interface IPlayerStatus extends IEntityStatus {
 
     int getRunes();
 
@@ -25,18 +25,6 @@ public interface IPlayerStatus extends INBTSerializable<CompoundTag> {
     void setFP(float fpAmount);
 
     boolean consumeFP(float amount, AbstractSpell abstractSpell, boolean forceConsume);
-
-    LinkedHashSet<SpellType<?>> getSpellSet();
-
-    ObjectOpenHashSet<AbstractSpell> getActiveSpells();
-
-    AbstractSpell getRecentlyActivatedSpell();
-
-    void setRecentlyActivatedSpell(AbstractSpell spellType);
-
-    SpellType<?> getSelectedSpell();
-
-    void setSelectedSpell(SpellType<?> spellType);
 
     EntityType<?> getSpiritSummon();
 
