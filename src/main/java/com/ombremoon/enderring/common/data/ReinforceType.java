@@ -146,6 +146,10 @@ public class ReinforceType {
         return reinforceTypeMap.getOrDefault(resourceLocation, STANDARD);
     }
 
+    public static Map<ResourceLocation, ReinforceType> getRegistry() {
+        return reinforceTypeMap;
+    }
+
     private final ResourceLocation typeId;
     private Map<WeaponDamage, Float> baseDamage = new TreeMap<>();
     private Map<WeaponDamage, Float> multDamage = new TreeMap<>();
@@ -161,6 +165,10 @@ public class ReinforceType {
 
     public ResourceLocation getTypeId() {
         return this.typeId;
+    }
+
+    public String getName() {
+        return this.typeId.getPath();
     }
 
     public float getReinforceScaleParam(WeaponScaling weaponScaling, int weaponLevel) {

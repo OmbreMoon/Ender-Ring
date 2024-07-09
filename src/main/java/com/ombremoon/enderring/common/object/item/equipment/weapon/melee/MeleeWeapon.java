@@ -7,6 +7,7 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.CameraEngine;
 import com.ombremoon.enderring.client.render.ERWeaponRenderer;
 import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
@@ -58,14 +59,10 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            if (itemStack.getTag() != null)
-                Constants.LOG.info(String.valueOf(itemStack.getTag().get("Weapon")));
-//            pPlayer.addEffect(new MobEffectInstance(((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)), 20));
-//            ((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)).applyInstantaneousEffect(null, null, pPlayer);
-//            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
+            itemStack.getOrCreateTag().putString("Affinity", ReinforceType.STANDARD.getTypeId().toString());
+            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
         } else {
             CameraEngine cameraEngine = CameraEngine.getOrAssignEngine(pPlayer);
-//            cameraEngine.shakeScreen(pPlayer.getRandom().nextInt(), 15, 0.5F, 10, 0.25F);
             cameraEngine.shakeScreen();
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);

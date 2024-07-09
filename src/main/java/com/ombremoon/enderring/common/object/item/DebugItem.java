@@ -5,6 +5,7 @@ import com.ombremoon.enderring.client.gui.screen.PlayerStatusScreen;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.capability.EntityStatus;
 import com.ombremoon.enderring.common.capability.PlayerStatus;
+import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.Saturations;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
@@ -52,7 +53,8 @@ public class DebugItem extends Item {
             } else if (pPlayer.isInWater()) {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
             } else {
-                this.setStats(pPlayer);
+//                this.setStats(pPlayer);
+                Constants.LOG.info(ReinforceType.BLOOD.getName());
                 PlayerStatus playerStatus = EntityStatusUtil.getEntityStatus(pPlayer, PlayerStatus.class);
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
             }
@@ -67,7 +69,7 @@ public class DebugItem extends Item {
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 1);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 1);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 2);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 1);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 1);
         EntityStatusUtil.setBaseStat(player, EntityAttributeInit.RUNE_LEVEL.get(), 1);

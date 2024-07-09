@@ -1,8 +1,10 @@
 package com.ombremoon.enderring.common.object.item.equipment.weapon;
 
+import com.google.common.collect.Maps;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
+import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.ScaledWeaponManager;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillSlots;
@@ -26,9 +28,12 @@ import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.provider.ItemCapabilityProvider;
 
+import java.util.Map;
+
 public class AbstractWeapon extends Item implements Scalable {
     public static Logger LOGGER = Constants.LOG;
     private ScaledWeapon weapon = new ScaledWeapon();
+    private final Map<ReinforceType, ScaledWeapon> affinities = Maps.newHashMap();
 
     public AbstractWeapon(Properties pProperties) {
         super(pProperties);
@@ -37,6 +42,16 @@ public class AbstractWeapon extends Item implements Scalable {
     @Override
     public void setWeapon(ScaledWeaponManager.Wrapper wrapper) {
         this.weapon = wrapper.getWeapon();
+    }
+
+    @Override
+    public Map<ReinforceType, ScaledWeapon> getAffinity() {
+        return this.affinities;
+    }
+
+    @Override
+    public void setAffinities(ReinforceType type, ScaledWeaponManager.Wrapper wrapper) {
+        this.affinities.put(type, wrapper.getWeapon());
     }
 
     @Override
@@ -50,7 +65,7 @@ public class AbstractWeapon extends Item implements Scalable {
 
     public void setWeaponLevel(ItemStack itemStack, int weaponLevel) {
         itemStack.getOrCreateTag().putInt("WeaponLevel", weaponLevel);
-    }
+    }/*
 
     @Override
     public ScaledWeapon getModifiedWeapon(ItemStack stack) {
@@ -59,7 +74,7 @@ public class AbstractWeapon extends Item implements Scalable {
             return ScaledWeapon.create(nbt.getCompound("Weapon"));
         }
         return this.weapon;
-    }
+    }*/
 
     @Override
     public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {

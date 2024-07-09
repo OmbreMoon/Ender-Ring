@@ -157,7 +157,7 @@ public class CommonModEvents {
     private static float getDamageAfterDefense(float initialDamage, float defense) {
         float maapRatio = initialDamage / defense;
         float damageMult;
-        if (maapRatio < 0.12) {
+        if (maapRatio < 0.125) {
             damageMult = 0.1F;
         } else if (maapRatio < 1) {
             damageMult = (float) (0.1 + 0.3 * Math.pow((0.125 - maapRatio) / 0.88, 2));

@@ -35,7 +35,7 @@ public class ScaledWeaponManager extends SimplePreparableReloadListener<Map<Scal
     private static final JsonDeserializer<AttackElement> ATTACK_ELEMENT = (json, typeOfT, context) -> AttackElement.getElementFromId(json.getAsInt());
     private static final JsonDeserializer<Saturations> SATURATION = (json, typeOfT, context) -> Saturations.getSaturationById(json.getAsInt());
     private static final JsonDeserializer<PhysicalDamageType> PHYSICAL_DAMAGE = (json, typeOfT, context) -> PhysicalDamageType.valueOf(json.getAsString().toUpperCase(Locale.ROOT));
-    private static final Gson GSON_INSTANCE = Util.make(() -> {
+    public static final Gson GSON_INSTANCE = Util.make(() -> {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(ResourceLocation.class, RESOURCE_LOCATION);
         builder.registerTypeAdapter(ReinforceType.class, REINFORCE_TYPE);
