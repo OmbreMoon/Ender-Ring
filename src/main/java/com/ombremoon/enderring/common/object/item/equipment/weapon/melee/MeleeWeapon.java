@@ -58,6 +58,8 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
+            if (itemStack.getTag() != null)
+                Constants.LOG.info(String.valueOf(itemStack.getTag().get("Weapon")));
 //            pPlayer.addEffect(new MobEffectInstance(((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)), 20));
 //            ((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).setScaledWeapon(this.getModifiedWeapon(itemStack)).applyInstantaneousEffect(null, null, pPlayer);
 //            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));

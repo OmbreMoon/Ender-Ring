@@ -155,6 +155,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.TAKERS_CAMEO.get(),
             ItemInit.LORD_OF_BLOODS_EXULTATION.get(),
             ItemInit.KINDRED_OF_ROTS_EXULTATION.get(),
+            ItemInit.MILLICENTS_PROSTHESIS.get(),
             ItemInit.WINGED_SWORD_INSIGNIA.get(),
             ItemInit.DAEDICARS_WOE.get(),
             ItemInit.ARROWS_STING_TALISMAN.get(),

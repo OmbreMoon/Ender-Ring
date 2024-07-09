@@ -1,4 +1,5 @@
 {
+  "affinities": {},
   "base": {
     "elementID": 20000,
     "maxUpgrades": 25,

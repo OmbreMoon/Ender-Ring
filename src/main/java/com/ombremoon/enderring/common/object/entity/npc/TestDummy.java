@@ -8,6 +8,7 @@ import com.ombremoon.enderring.common.object.entity.ERMonster;
 import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.misc.RepeatableBehaviour;
+import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,8 @@ import net.minecraft.world.scores.Team;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.SequentialBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.ConditionlessAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
@@ -86,19 +89,12 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
                 new SetWalkTargetToAttackTarget<>()
                         .speedMod((entity, target) -> 1.25F),
                 new OneRandomBehaviour<>(
-                        new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 1")),
-                        new SequentialBehaviour(
-                                new MoveToWalkTarget<>().whenStarting(mob -> Constants.LOG.info("slam 2")),
-                                new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 3"))
-                        )
-                )
-//                new OneRandomBehaviour<>(
                         /*new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME),
                         new SequentialBehaviour<TestDummy>(
                                 new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_AIRSLASH),
                                 new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_AIRSLASH)
                         ).stopIf(entity -> entity.getTarget() == null || !entity.getSensing().hasLineOfSight(entity.getTarget()) || !entity.isWithinMeleeAttackRange(entity.getTarget())),
-                        new AllApplicableBehaviours<TestDummy>(
+                        new FirstApplicableBehavior<TestDummy>(
                                 new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH),
                                 new SequentialBehaviour(
                                         new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.FIST_AUTO1),
@@ -106,15 +102,17 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
                                                 new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH),
                                                 new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_DASH))
                                 )
-                        ).stopIf(entity -> !entity.isWithinMeleeAttackRange(entity.getTarget()))*//*
+                        ).stopIf(entity -> !entity.isWithinMeleeAttackRange(entity.getTarget()))*/
                         new OneRandomBehaviour<>(
-                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 1")),
+//                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 1")),
+//                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_DASH).whenStarting(mob -> Constants.LOG.info("dash 1")),
                                 new SequentialBehaviour(
-                                        new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 2")),
-                                        new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 3"))
+                                        new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME).whenStarting(mob -> Constants.LOG.info("slam 2")),
+                                        new ConditionlessAttack<>(20).whenStarting(mob -> Constants.LOG.info("slam 3"))
                                 )
-                        )*/
-                        /*new ContinuousBehaviour<TestDummy>(
+                        )
+                        /*
+                        new ContinuousBehaviour<TestDummy>(
                                 new AnimatedMeleeBehavior<>(30).behaviorAnim(Animations.TRIDENT_AUTO3).whenStarting(mob -> Constants.LOG.info("circle 1")),
                                 new TrueOneRandomBehaviour(
                                         new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH),
@@ -132,7 +130,7 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
                                         )
                                 )
                         ).stopIf(entity -> entity.getTarget() == null || !entity.getSensing().hasLineOfSight(entity.getTarget()) || !entity.isWithinMeleeAttackRange(entity.getTarget()))*/
-//                )
+                )
         );
     }
 

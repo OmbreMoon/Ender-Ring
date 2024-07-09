@@ -1,10 +1,24 @@
 {
+  "affinities": {
+    "enderring:heavy": [
+      {
+        "elementID": 10000,
+        "fireGuard": 20,
+        "holyGuard": 20,
+        "lightGuard": 20,
+        "magicGuard": 20,
+        "physDamage": 71,
+        "physGuard": 35,
+        "strScale": 55
+      }
+    ]
+  },
   "base": {
     "elementID": 10000,
     "infusable": true,
     "maxUpgrades": 25,
     "name": "enderring:dagger",
-    "reinforceType": "enderring:standard",
+    "reinforceType": "enderring:heavy",
     "saturations": [
       0,
       0,
@@ -15,7 +29,7 @@
     "twoHandBonus": true
   },
   "damage": {
-    "physDamage": 74,
+    "physDamage": 71,
     "physDamageTypes": [
       "slash",
       "pierce"
@@ -33,8 +47,7 @@
     "strReq": 5
   },
   "scaling": {
-    "dexScale": 65,
-    "strScale": 35
+    "strScale": 55
   },
   "status": {}
 }

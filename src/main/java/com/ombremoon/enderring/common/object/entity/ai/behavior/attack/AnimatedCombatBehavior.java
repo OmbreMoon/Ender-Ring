@@ -76,7 +76,7 @@ public abstract class AnimatedCombatBehavior<E extends Mob> extends DelayedBehav
 
     @Override
     protected void stop(E entity) {
-        this.target = null;
+//        this.target = null;
     }
 
     @Override

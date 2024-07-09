@@ -147,7 +147,7 @@ public class CommonModEvents {
                 }
             }
         }
-        if (event.getSource().getEntity() instanceof AbstractArrow && event.getSource().getEntity() instanceof Player player) {
+        if (event.getSource().getEntity() instanceof AbstractArrow && event.getSource().getDirectEntity() instanceof Player player) {
             if (player.hasEffect(StatusEffectInit.ARROWS_STING_TALISMAN.get())) {
                 event.setAmount(event.getAmount() * 1.1F);
             }

@@ -52,9 +52,8 @@ public class DebugItem extends Item {
             } else if (pPlayer.isInWater()) {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
             } else {
-//                this.setStats(pPlayer);
+                this.setStats(pPlayer);
                 PlayerStatus playerStatus = EntityStatusUtil.getEntityStatus(pPlayer, PlayerStatus.class);
-                Constants.LOG.info(String.valueOf(pPlayer.getEntityData().hasItem(EntityStatus.BLOOD_LOSS)));
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
             }
             FlaskUtil.resetFlaskCooldowns(pPlayer);

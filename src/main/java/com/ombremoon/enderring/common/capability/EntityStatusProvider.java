@@ -54,8 +54,8 @@ public class EntityStatusProvider implements ICapabilityProvider, INBTSerializab
         return livingEntity.getCapability(ENTITY_STATUS).orElseThrow(NullPointerException::new);
     }
 
-    public static boolean isPresent(Player player) {
-        return player.getCapability(ENTITY_STATUS).isPresent();
+    public static boolean isPresent(LivingEntity livingEntity) {
+        return livingEntity.getCapability(ENTITY_STATUS).isPresent();
     }
 
     @Override
