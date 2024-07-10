@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.item.equipment.weapon;
 
+import com.google.common.collect.Maps;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.data.ScaledWeaponManager;
@@ -11,28 +12,34 @@ import java.util.Map;
 
 public interface Scalable {
 
-    //TODO: REMOVE
     ScaledWeapon getWeapon();
 
     void setWeapon(ScaledWeaponManager.Wrapper wrapper);
 
-    Map<ReinforceType, ScaledWeapon> getAffinity();
+    default Map<ReinforceType, ScaledWeapon> getAffinity() {
+        return Maps.newHashMap();
+    }
 
-    void setAffinities(ReinforceType type, ScaledWeaponManager.Wrapper wrapper);
+    default void setAffinities(ReinforceType type, ScaledWeaponManager.Wrapper wrapper) {
+        this.getAffinity().put(type, wrapper.getWeapon());
+    }
 
     default ScaledWeapon getModifiedWeapon(ItemStack stack) {
         CompoundTag nbt = stack.getTag();
-        if (nbt != null) {
+        if (nbt != null && nbt.contains("Weapon", 10)) {
             if (nbt.contains("Affinity", 8)) {
                 ReinforceType type = ReinforceType.getTypeFromLocation(ResourceLocation.tryParse(nbt.getString("Affinity")));
                 if (type != null) {
                     ScaledWeapon weapon = this.getAffinity().get(type);
-                    if (weapon != null) return weapon;
+                    if (weapon != null) {
+                        nbt.put("Weapon", weapon.serializeNBT());
+                        return weapon;
+                    }
                 }
-            } else if (nbt.contains("Weapon", 10)) {
-                return ScaledWeapon.create(nbt.getCompound("Weapon"));
             }
+            return ScaledWeapon.create(nbt.getCompound("Weapon"));
         }
+        stack.getOrCreateTag().put("Weapon", this.getWeapon().serializeNBT());
         return this.getWeapon();
     }
 

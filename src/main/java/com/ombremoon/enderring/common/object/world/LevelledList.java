@@ -28,4 +28,6 @@ public interface LevelledList extends ExtendableEnum {
     ResourceKey<Biome> getBiome();
 
     float getMaxHPMult();
+
+    float getDamageMult();
 }

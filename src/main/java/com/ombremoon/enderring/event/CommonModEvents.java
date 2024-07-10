@@ -5,8 +5,10 @@ import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
+import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.CatalystWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
+import com.ombremoon.enderring.common.object.world.LevelledLists;
 import com.ombremoon.enderring.common.object.world.ModDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
@@ -26,6 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -110,8 +113,26 @@ public class CommonModEvents {
     }
 
     @SubscribeEvent
-    public static void test(LivingEquipmentChangeEvent event) {
-//        Constants.LOG.info("Changed!");
+    public static void onLivingAttack(LivingHurtEvent event) {
+        LivingEntity livingEntity = event.getEntity();
+        if (livingEntity instanceof Player player) {
+            if (event.getSource().getEntity() instanceof LevelledMob) {
+                LevelledMob levelledMob = (LevelledMob) event.getSource().getEntity();
+                Optional<ResourceKey<Biome>> optional = player.level().getBiome(livingEntity.getOnPos()).unwrapKey();
+                float f = 1.0F;
+                /*if (optional.isPresent()) {
+                    ResourceKey<Biome> biome = optional.get();
+                    for (var levelledList : LevelledLists.values()) {
+                        if (levelledList.getBiome() == biome) {
+                            f = levelledList.getDamageMult();
+                            break;
+                        }
+                    }
+                }*/
+                levelledMob.scaleStats(player, (entity, list) -> event.setAmount(event.getAmount() * list.getDamageMult()));
+                event.setAmount(event.getAmount() * f);
+            }
+        }
     }
 
     @SubscribeEvent

@@ -37,6 +37,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements LevelledMob, SmartBrainOwner<ERMob<T>> {
@@ -158,7 +159,7 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        Optional<ResourceKey<Biome>> optional = pLevel.getBiome(this.getOnPos()).unwrapKey();
+        /*Optional<ResourceKey<Biome>> optional = pLevel.getBiome(this.getOnPos()).unwrapKey();
         if (optional.isPresent()) {
             ResourceKey<Biome> biome = optional.get();
             for (var levelledList : LevelledLists.values()) {
@@ -166,7 +167,8 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
                     this.scaleStats(levelledList);
                 }
             }
-        }
+        }*/
+        this.scaleStats(this, (livingEntity, levelledList) -> this.scaleStats(levelledList));
         this.populateDefaultEquipmentSlots(pLevel.getRandom(), pDifficulty);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }

@@ -59,8 +59,9 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            itemStack.getOrCreateTag().putString("Affinity", ReinforceType.STANDARD.getTypeId().toString());
-            Constants.LOG.info(String.valueOf(this.getModifiedWeapon(itemStack).serializeNBT()));
+            itemStack.getOrCreateTag().putString("Affinity", ReinforceType.FIRE.getTypeId().toString());
+            this.getModifiedWeapon(itemStack).serializeNBT();
+            Constants.LOG.info(String.valueOf(itemStack.getTag()));
         } else {
             CameraEngine cameraEngine = CameraEngine.getOrAssignEngine(pPlayer);
             cameraEngine.shakeScreen();
