@@ -14,8 +14,8 @@ import java.util.Set;
 public class ModDamageSource extends DamageSource {
     private final Set<PhysicalDamageType> damageTypes = new HashSet<>();
 
-    public ModDamageSource(Holder<DamageType> pType, @Nullable Entity pCausingEntity, @Nullable Entity pDirectEntity) {
-        super(pType, pCausingEntity, pDirectEntity);
+    public ModDamageSource(Holder<DamageType> pType, @Nullable Entity directEntity, @Nullable Entity ownerEntity) {
+        super(pType, directEntity, ownerEntity);
     }
 
     public ModDamageSource(Holder<DamageType> pType) {

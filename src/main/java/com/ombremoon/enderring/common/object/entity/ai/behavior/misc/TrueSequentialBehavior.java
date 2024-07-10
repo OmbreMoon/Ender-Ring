@@ -1,4 +1,3 @@
-/*
 package com.ombremoon.enderring.common.object.entity.ai.behavior.misc;
 
 import com.mojang.datafixers.util.Pair;
@@ -12,13 +11,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehaviour<E> {
+
     private Predicate<ExtendedBehaviour<? super E>> earlyResetPredicate = behaviour -> false;
     private int runningIndex = 0;
 
+    @SafeVarargs
     public TrueSequentialBehavior(Pair<ExtendedBehaviour<? super E>, Integer>... behaviours) {
         super(behaviours);
     }
 
+    @SafeVarargs
     public TrueSequentialBehavior(ExtendedBehaviour<? super E>... behaviours) {
         super(behaviours);
     }
@@ -31,7 +33,10 @@ public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehavio
 
     @Override
     protected boolean timedOut(long gameTime) {
-        return this.runningBehaviour == null || (this.runningBehaviour.timedOut(gameTime) && this.runningIndex >= this.behaviours.size());
+        if (this.runningBehaviour != null) {
+            return super.timedOut(gameTime) && this.runningIndex >= this.behaviours.size();
+        }
+        return super.timedOut(gameTime);
     }
 
     @Override
@@ -71,4 +76,3 @@ public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehavio
         this.runningIndex = 0;
     }
 }
-*/

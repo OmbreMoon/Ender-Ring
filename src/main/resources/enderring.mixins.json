@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "enderring.mixins.refmap.json",
   "mixins": [
+    "LivingEntityMixin",
     "DuckRangedAttribute",
     "BasicAttackMixin",
     "AirAttackMixin",

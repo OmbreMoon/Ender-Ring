@@ -689,6 +689,7 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
             status.scarletRot = this.scarletRot;
             status.bloodLoss = this.bloodLoss;
             status.frostBite = this.frostBite;
+            status.sleep = this.sleep;
             status.madness = this.madness;
             status.deathBlight = this.deathBlight;
             status.statusDuration = this.statusDuration;

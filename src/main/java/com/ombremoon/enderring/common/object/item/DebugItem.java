@@ -53,7 +53,7 @@ public class DebugItem extends Item {
             } else if (pPlayer.isInWater()) {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
             } else {
-//                this.setStats(pPlayer);
+                this.setStats(pPlayer);
                 Constants.LOG.info(ReinforceType.BLOOD.getName());
                 PlayerStatus playerStatus = EntityStatusUtil.getEntityStatus(pPlayer, PlayerStatus.class);
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
@@ -64,15 +64,15 @@ public class DebugItem extends Item {
     }
 
     private void setStats(Player player) {
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 1, true);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 2);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.RUNE_LEVEL.get(), 1);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 1, true);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 1);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 1);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 60);
+        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 60);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 2);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 1);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 1);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.RUNE_LEVEL.get(), 1);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.PHYS_NEGATE.get(), 0);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.HOLY_NEGATE.get(), 0);
     }

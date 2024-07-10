@@ -2,16 +2,22 @@ package com.ombremoon.enderring.common.object.entity.npc;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
 import com.ombremoon.enderring.common.object.entity.ERMonster;
 import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.misc.RepeatableBehaviour;
+import com.ombremoon.enderring.common.object.entity.ai.behavior.misc.TrueSequentialBehavior;
+import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
 import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -38,6 +44,8 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +64,15 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
     @Override
     public int getRuneReward(Level level, BlockPos blockPos) {
         return 1100;
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        /*if (!this.level().isClientSide) {
+            this.addEffect(new MobEffectInstance(StatusEffectInit.SLEEP.get(), 1200));
+            ((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).applyInstantaneousEffect(pPlayer, null, this);
+        }*/
+        return super.mobInteract(pPlayer, pHand);
     }
 
     @Override
@@ -88,7 +105,13 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
                 new InvalidateAttackTarget<>().invalidateIf((entity, target) -> !target.isAlive() || (target instanceof Player player && player.getAbilities().invulnerable) || distanceToSqr(target.position()) > Math.pow(getAttributeValue(Attributes.FOLLOW_RANGE), 2)),
                 new SetWalkTargetToAttackTarget<>()
                         .speedMod((entity, target) -> 1.25F),
-                new OneRandomBehaviour<>(
+                new TrueSequentialBehavior<>(
+//                        new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 2")),
+//                        new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 3"))
+                        new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME).whenStarting(mob -> Constants.LOG.info("slam 2")),
+                        new AnimatedMeleeBehavior<>(30).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 3"))
+                )
+//                new OneRandomBehaviour<>(
                         /*new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME),
                         new SequentialBehaviour<TestDummy>(
                                 new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_AIRSLASH),
@@ -103,14 +126,14 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
                                                 new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_DASH))
                                 )
                         ).stopIf(entity -> !entity.isWithinMeleeAttackRange(entity.getTarget()))*/
-                        new OneRandomBehaviour<>(
-//                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 1")),
-//                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_DASH).whenStarting(mob -> Constants.LOG.info("dash 1")),
-                                new SequentialBehaviour(
+                        /*new OneRandomBehaviour<>(
+                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 1")),
+                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_DASH).whenStarting(mob -> Constants.LOG.info("dash 1")),
+                                new TrueSequentialBehavior<>(
                                         new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME).whenStarting(mob -> Constants.LOG.info("slam 2")),
                                         new ConditionlessAttack<>(20).whenStarting(mob -> Constants.LOG.info("slam 3"))
                                 )
-                        )
+                        )*/
                         /*
                         new ContinuousBehaviour<TestDummy>(
                                 new AnimatedMeleeBehavior<>(30).behaviorAnim(Animations.TRIDENT_AUTO3).whenStarting(mob -> Constants.LOG.info("circle 1")),
@@ -130,7 +153,7 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
                                         )
                                 )
                         ).stopIf(entity -> entity.getTarget() == null || !entity.getSensing().hasLineOfSight(entity.getTarget()) || !entity.isWithinMeleeAttackRange(entity.getTarget()))*/
-                )
+//                )
         );
     }
 

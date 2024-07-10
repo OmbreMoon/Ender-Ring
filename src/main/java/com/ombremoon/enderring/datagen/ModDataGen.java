@@ -40,7 +40,18 @@ public class ModDataGen {
         generator.addProvider(includeServer, new DatapackRegistriesProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new ModDamageTypeTagsProvider(packOutput, lookupProviderWithOwn, existingFileHelper));
         generator.addProvider(includeServer, new AffinityProvider.StandardProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.HeavyProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.KeenProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.QualityProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new AffinityProvider.FireProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.FlameProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.LightningProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.SacredProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.MagicProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.ColdProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.PoisonProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.BloodProvider(packOutput, lookupProvider));
+        generator.addProvider(includeServer, new AffinityProvider.OccultProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new ScaledWeaponProvider(packOutput, lookupProvider));
         generator.addProvider(includeServer, new ArmorResistanceProvider(packOutput, lookupProvider));
         generator.addProvider(includeClient, new ModItemModelProvider(packOutput, existingFileHelper));

@@ -24,7 +24,7 @@ public class TickingEffect extends BuildUpStatusEffect {
             damageType = ModDamageTypes.POISON;
             if (this.scaledWeapon != null) {
                 ItemStack itemStack = this.scaledWeapon.getBaseStats().getItem();
-                if (itemStack.is(ItemInit.FETID_POT.get()) || itemStack.is(ItemInit.ROPED_FETID_WATER.get())) {
+                if (itemStack.is(ItemInit.FETID_POT.get()) || itemStack.is(ItemInit.ROPED_FETID_POT.get())) {
                     f = pLivingEntity.getMaxHealth() * 0.0014F + 0.8F;
                 } else {
                     f = pLivingEntity.getMaxHealth() * 0.0007F + 0.47F;

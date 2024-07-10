@@ -49,7 +49,7 @@ public abstract class AffinityDataProvider implements DataProvider {
     }
 
     public abstract static class StandardDataProvider extends AffinityDataProvider {
-        protected StandardDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+        public StandardDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
             super(packOutput, completableFuture, "standard");
         }
 
@@ -59,14 +59,135 @@ public abstract class AffinityDataProvider implements DataProvider {
         }
     }
 
+    public abstract static class HeavyDataProvider extends AffinityDataProvider {
+        public HeavyDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "heavy");
+        }
+
+        @Override
+        public String getName() {
+            return "Heavy Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class KeenDataProvider extends AffinityDataProvider {
+        public KeenDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "keen");
+        }
+
+        @Override
+        public String getName() {
+            return "Keen Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class QualityDataProvider extends AffinityDataProvider {
+        public QualityDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "quality");
+        }
+
+        @Override
+        public String getName() {
+            return "Quality Affinities: " + Constants.MOD_ID;
+        }
+    }
+
     public abstract static class FireDataProvider extends AffinityDataProvider {
-        protected FireDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+        public FireDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
             super(packOutput, completableFuture, "fire");
         }
 
         @Override
         public String getName() {
             return "Fire Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class FlameDataProvider extends AffinityDataProvider {
+        public FlameDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "flame");
+        }
+
+        @Override
+        public String getName() {
+            return "Flame Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class LightningDataProvider extends AffinityDataProvider {
+        public LightningDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "lightning");
+        }
+
+        @Override
+        public String getName() {
+            return "Lightning Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class SacredDataProvider extends AffinityDataProvider {
+        public SacredDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "sacred");
+        }
+
+        @Override
+        public String getName() {
+            return "Sacred Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class MagicDataProvider extends AffinityDataProvider {
+        public MagicDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "magic");
+        }
+
+        @Override
+        public String getName() {
+            return "Magic Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class ColdDataProvider extends AffinityDataProvider {
+        public ColdDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "cold");
+        }
+
+        @Override
+        public String getName() {
+            return "Cold Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class PoisonDataProvider extends AffinityDataProvider {
+        public PoisonDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "poison");
+        }
+
+        @Override
+        public String getName() {
+            return "Poison Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class BloodDataProvider extends AffinityDataProvider {
+        public BloodDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "blood");
+        }
+
+        @Override
+        public String getName() {
+            return "Blood Affinities: " + Constants.MOD_ID;
+        }
+    }
+
+    public abstract static class OccultDataProvider extends AffinityDataProvider {
+        public OccultDataProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(packOutput, completableFuture, "occult");
+        }
+
+        @Override
+        public String getName() {
+            return "Occult Affinities: " + Constants.MOD_ID;
         }
     }
 

@@ -26,6 +26,9 @@ public class TestDummyPatch extends SimpleHumanoidMobPatch<TestDummy> {
 
     @Override
     public StaticAnimation getHitAnimation(StunType stunType) {
+        if (stunType == StunType.SHORT) {
+            return Animations.BIPED_HIT_SHORT;
+        }
         return null;
     }
 }

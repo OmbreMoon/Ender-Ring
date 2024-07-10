@@ -4,8 +4,10 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
+import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.entity.LevelledMob;
+import com.ombremoon.enderring.common.object.entity.projectile.ThrowingPot;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.CatalystWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.common.object.world.LevelledLists;
@@ -107,30 +109,21 @@ public class CommonModEvents {
         LivingEntity livingEntity = event.getEntity();
         if (!(livingEntity instanceof Player)) {
             if (livingEntity.hasEffect(StatusEffectInit.SLEEP.get())) {
-                livingEntity.removeEffect(StatusEffectInit.SLEEP.get());
+                if (event.getSource().getDirectEntity() instanceof ThrowingPot throwingPot && throwingPot.getItem().is(ItemInit.SLEEP_POT.get())) {
+                    event.setCanceled(true);
+                } else {
+                    livingEntity.removeEffect(StatusEffectInit.SLEEP.get());
+                }
             }
         }
     }
 
     @SubscribeEvent
-    public static void onLivingAttack(LivingHurtEvent event) {
+    public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity livingEntity = event.getEntity();
-        if (livingEntity instanceof Player player) {
-            if (event.getSource().getEntity() instanceof LevelledMob) {
-                LevelledMob levelledMob = (LevelledMob) event.getSource().getEntity();
-                Optional<ResourceKey<Biome>> optional = player.level().getBiome(livingEntity.getOnPos()).unwrapKey();
-                float f = 1.0F;
-                /*if (optional.isPresent()) {
-                    ResourceKey<Biome> biome = optional.get();
-                    for (var levelledList : LevelledLists.values()) {
-                        if (levelledList.getBiome() == biome) {
-                            f = levelledList.getDamageMult();
-                            break;
-                        }
-                    }
-                }*/
-                levelledMob.scaleStats(player, (entity, list) -> event.setAmount(event.getAmount() * list.getDamageMult()));
-                event.setAmount(event.getAmount() * f);
+        if (livingEntity instanceof Player) {
+            if (event.getSource().getEntity() instanceof LevelledMob levelledMob) {
+                levelledMob.scaleStats((LivingEntity) levelledMob, (entity, list) -> event.setAmount(event.getAmount() * list.getDamageMult()));
             }
         }
     }
@@ -160,7 +153,7 @@ public class CommonModEvents {
                             }
                             float attr = (float) EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getDefenseAttribute());
                             float modifiedDamage = getDamageAfterDefense(event.getAmount(), attr);
-                            event.setAmount(modifiedDamage * negation);
+                            event.setAmount(Math.max(modifiedDamage * negation, 1.0F));
                             Constants.LOG.info(String.valueOf(event.getAmount()));
                         }
                         Constants.LOG.info(String.valueOf(event.getAmount()));

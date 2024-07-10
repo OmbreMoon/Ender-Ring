@@ -40,6 +40,7 @@ import yesman.epicfight.skill.SkillDataKeys;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.function.Consumer;
 
@@ -59,7 +60,9 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
-            itemStack.getOrCreateTag().putString("Affinity", ReinforceType.FIRE.getTypeId().toString());
+//            itemStack.getOrCreateTag().putString("Affinity", ReinforceType.FIRE.getTypeId().toString());
+//            itemStack.getOrCreateTag().putInt("WeaponLevel", 25);
+            serverPlayerPatch.applyStun(StunType.SHORT, 2);
             this.getModifiedWeapon(itemStack).serializeNBT();
             Constants.LOG.info(String.valueOf(itemStack.getTag()));
         } else {

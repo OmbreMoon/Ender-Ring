@@ -50,7 +50,7 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     public static final EntityDataAccessor<Integer> SLEEP = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MADNESS = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> DEATH_BLIGHT = SynchedEntityData.defineId(ERMob.class, EntityDataSerializers.INT);
-    protected static int IMMUNE = -1;
+    protected static final int IMMUNE = -1;
 
     protected ERMob(EntityType<? extends ERMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -159,15 +159,6 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        /*Optional<ResourceKey<Biome>> optional = pLevel.getBiome(this.getOnPos()).unwrapKey();
-        if (optional.isPresent()) {
-            ResourceKey<Biome> biome = optional.get();
-            for (var levelledList : LevelledLists.values()) {
-                if (levelledList.getBiome() == biome) {
-                    this.scaleStats(levelledList);
-                }
-            }
-        }*/
         this.scaleStats(this, (livingEntity, levelledList) -> this.scaleStats(levelledList));
         this.populateDefaultEquipmentSlots(pLevel.getRandom(), pDifficulty);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
@@ -179,7 +170,7 @@ public abstract class ERMob<T extends ERMob<T>> extends PathfinderMob implements
     }
 
     public static AttributeSupplier.Builder createERMobAttributes() {
-        return Mob.createMobAttributes()
+        return Mob.createMobAttributes().add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(EntityAttributeInit.RUNE_LEVEL.get()).add(EntityAttributeInit.VIGOR.get()).add(EntityAttributeInit.MIND.get()).add(EntityAttributeInit.ENDURANCE.get())
                 .add(EntityAttributeInit.STRENGTH.get()).add(EntityAttributeInit.DEXTERITY.get()).add(EntityAttributeInit.INTELLIGENCE.get()).add(EntityAttributeInit.FAITH.get()).add(EntityAttributeInit.ARCANE.get())
                 .add(EntityAttributeInit.PHYS_DEFENSE.get()).add(EntityAttributeInit.MAGIC_DEFENSE.get()).add(EntityAttributeInit.FIRE_DEFENSE.get()).add(EntityAttributeInit.LIGHT_DEFENSE.get()).add(EntityAttributeInit.HOLY_DEFENSE.get())

@@ -78,6 +78,10 @@ public class DamageUtil {
     }
 
     public static void conditionalHurt(ItemStack itemStack, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
+        conditionalHurt(itemStack, scaledWeapon, attackEntity, attackEntity, targetEntity, motionValue);
+    }
+
+    public static void conditionalHurt(ItemStack itemStack, ScaledWeapon scaledWeapon, Entity directEntity, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
         Scalable scalable = (Scalable) itemStack.getItem();
         for (WeaponDamage weaponDamage : WeaponDamage.values()) {
             DamageSource damageSource;
@@ -85,7 +89,7 @@ public class DamageUtil {
 
             //Ensures that type damage is 1 when between 0 and 1
             if (typeDamage > 0) {
-                damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), attackEntity, scaledWeapon.getDamage().getPhysDamageTypes());
+                damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), directEntity, attackEntity, scaledWeapon.getDamage().getPhysDamageTypes());
                 typeDamage = Math.max(typeDamage, 1.0F);
 
                 if (targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage)) {
@@ -138,12 +142,16 @@ public class DamageUtil {
         return moddedDamageSource(level, damageType, attackEntity, attackEntity);
     }
 
-    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity indirectEntity, LivingEntity attackEntity) {
-        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), indirectEntity, attackEntity);
+    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity directEntity, LivingEntity attackEntity) {
+        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity);
     }
 
     public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, LivingEntity attackEntity, PhysicalDamageType... damageTypes) {
-        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), attackEntity, attackEntity).addPhysicalDamage(damageTypes);
+        return moddedDamageSource(level, damageType, attackEntity, attackEntity, damageTypes);
+    }
+
+    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity directEntity, LivingEntity attackEntity, PhysicalDamageType... damageTypes) {
+        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity).addPhysicalDamage(damageTypes);
     }
 
     private static float calculateDamage(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, WeaponDamage weaponDamage) {
