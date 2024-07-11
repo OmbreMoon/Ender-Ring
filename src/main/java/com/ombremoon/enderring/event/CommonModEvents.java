@@ -10,8 +10,7 @@ import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.common.object.entity.projectile.ThrowingPot;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.CatalystWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
-import com.ombremoon.enderring.common.object.world.LevelledLists;
-import com.ombremoon.enderring.common.object.world.ModDamageSource;
+import com.ombremoon.enderring.common.object.world.ERDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
@@ -28,9 +27,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -130,7 +127,7 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent event) {
-        if (event.getSource() instanceof ModDamageSource damageSource) {
+        if (event.getSource() instanceof ERDamageSource damageSource) {
             Optional<ResourceKey<DamageType>> damageType = event.getSource().typeHolder().unwrapKey();
             if (damageType.isPresent()) {
                 if (damageType.get() == ModDamageTypes.FIRE) Constants.LOG.info("Hi");

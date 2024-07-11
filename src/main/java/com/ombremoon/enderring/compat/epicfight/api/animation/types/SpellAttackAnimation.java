@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
+import com.ombremoon.enderring.compat.epicfight.api.animation.AnimationProperties;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.world.InteractionHand;
@@ -42,11 +43,11 @@ public class SpellAttackAnimation extends AttackAnimation {
     protected Map<WeaponDamage, Float> getSpellDamage(Phase phase) {
         Map<WeaponDamage, Float> map = Maps.newEnumMap(WeaponDamage.class);
 
-        phase.getProperty(ERPhaseProperty.PHYS_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.PHYSICAL, valueModifier));
-        phase.getProperty(ERPhaseProperty.MAGIC_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.MAGICAL, valueModifier));
-        phase.getProperty(ERPhaseProperty.FIRE_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.FIRE, valueModifier));
-        phase.getProperty(ERPhaseProperty.LIGHT_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.LIGHTNING, valueModifier));
-        phase.getProperty(ERPhaseProperty.HOLY_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.HOLY, valueModifier));
+        phase.getProperty(AnimationProperties.ERPhaseProperty.PHYS_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.PHYSICAL, valueModifier));
+        phase.getProperty(AnimationProperties.ERPhaseProperty.MAGIC_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.MAGICAL, valueModifier));
+        phase.getProperty(AnimationProperties.ERPhaseProperty.FIRE_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.FIRE, valueModifier));
+        phase.getProperty(AnimationProperties.ERPhaseProperty.LIGHT_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.LIGHTNING, valueModifier));
+        phase.getProperty(AnimationProperties.ERPhaseProperty.HOLY_DAMAGE).ifPresent(valueModifier -> map.put(WeaponDamage.HOLY, valueModifier));
         return map;
     }
 
@@ -83,13 +84,5 @@ public class SpellAttackAnimation extends AttackAnimation {
                 }
             }
         }
-    }
-
-    public static class ERPhaseProperty<T> extends AnimationProperty.AttackPhaseProperty<T> {
-        public static final AttackPhaseProperty<Float> PHYS_DAMAGE = new AttackPhaseProperty<>();
-        public static final AttackPhaseProperty<Float> MAGIC_DAMAGE = new AttackPhaseProperty<>();
-        public static final AttackPhaseProperty<Float> FIRE_DAMAGE = new AttackPhaseProperty<>();
-        public static final AttackPhaseProperty<Float> LIGHT_DAMAGE = new AttackPhaseProperty<>();
-        public static final AttackPhaseProperty<Float> HOLY_DAMAGE = new AttackPhaseProperty<>();
     }
 }

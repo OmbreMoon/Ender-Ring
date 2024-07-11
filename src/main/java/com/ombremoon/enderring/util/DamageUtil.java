@@ -2,7 +2,6 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
-import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.StatusType;
 import com.ombremoon.enderring.common.WeaponDamage;
@@ -17,7 +16,7 @@ import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
 import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
-import com.ombremoon.enderring.common.object.world.ModDamageSource;
+import com.ombremoon.enderring.common.object.world.ERDamageSource;
 import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
 import com.ombremoon.enderring.event.custom.EventFactory;
@@ -143,7 +142,7 @@ public class DamageUtil {
     }
 
     public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity directEntity, LivingEntity attackEntity) {
-        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity);
+        return new ERDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity);
     }
 
     public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, LivingEntity attackEntity, PhysicalDamageType... damageTypes) {
@@ -151,27 +150,29 @@ public class DamageUtil {
     }
 
     public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity directEntity, LivingEntity attackEntity, PhysicalDamageType... damageTypes) {
-        return new ModDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity).addPhysicalDamage(damageTypes);
+        return new ERDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity).addPhysicalDamage(damageTypes);
     }
 
     private static float calculateDamage(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, WeaponDamage weaponDamage) {
-        float damage = getDamageUpgrade(weapon, weaponDamage, weaponLevel);
-        float f = 0;
+        float damage;
+        float scaledDamage = getDamageUpgrade(weapon, weaponDamage, weaponLevel);
         if (livingEntity instanceof Player || livingEntity instanceof IPlayerEnemy) {
             if (weapon.getRequirements().meetsRequirements(livingEntity, weapon, weaponDamage)) {
                 final var satList = createSaturationList(weapon, livingEntity, weaponDamage);
+                float f = 0;
                 for (var map : satList) {
                     for (var entry : map.entrySet()) {
-                        f += damage * getScalingUpgrade(weapon, entry.getKey(), weaponLevel) * entry.getValue();
+                        f += scaledDamage * getScalingUpgrade(weapon, entry.getKey(), weaponLevel) * entry.getValue();
                     }
                 }
-                return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, ((damage + f) / STAT_SCALE) * getApMultipliers(livingEntity, weaponDamage));
+                damage = ((scaledDamage + f) / STAT_SCALE) * getApMultipliers(livingEntity, weaponDamage);
             } else {
-                return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, ((damage + (damage * -0.4F)) / STAT_SCALE) * getApMultipliers(livingEntity, weaponDamage));
+                damage = ((scaledDamage + (scaledDamage * -0.4F)) / STAT_SCALE) * getApMultipliers(livingEntity, weaponDamage);
             }
         } else {
-            return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, damage * getApMultipliers(livingEntity, weaponDamage));
+            damage = scaledDamage * getApMultipliers(livingEntity, weaponDamage);
         }
+        return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, damage);
     }
 
     private static float getApMultipliers(LivingEntity entity, WeaponDamage weaponDamage) {
@@ -182,7 +183,6 @@ public class DamageUtil {
             && entity.getHealth() <= entity.getMaxHealth() * 0.2F) multiplier *= 1.2F;
         if (entity.hasEffect(StatusEffectInit.FLOCKS_CANVAS_TALISMAN.get()) && weaponDamage == WeaponDamage.HOLY) multiplier *= 1.08F;
         if (entity.hasEffect(StatusEffectInit.LANCE_TALISMAN.get()) && entity.isPassenger()) multiplier *= 1.15F;
-        if (entity.hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) && entity.fallDistance > 0) multiplier *= 1.15F;
         if (entity.hasEffect(StatusEffectInit.KINDRED_OF_ROTS_EXULTATION.get())) multiplier *= 1.20F;
         if (entity.hasEffect(StatusEffectInit.LORD_OF_BLOODS_EXULTATION.get())) multiplier *= 1.20F;
         if (entity.hasEffect(StatusEffectInit.ATTACK_POWER_BUFF.get())) {

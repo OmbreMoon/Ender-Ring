@@ -43,6 +43,7 @@ import net.tslat.smartbrainlib.api.core.sensor.custom.NearbyBlocksSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.registry.SBLMemoryTypes;
 import net.tslat.smartbrainlib.util.BrainUtils;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 
 import java.util.List;
 
@@ -158,6 +159,11 @@ public class Hewg extends MerchantNPCMob {
                 .add(EntityAttributeInit.FIRE_DEFENSE.get(), 6.7D)
                 .add(EntityAttributeInit.LIGHT_DEFENSE.get(), 6.7D)
                 .add(EntityAttributeInit.HOLY_DEFENSE.get(), 6.7D);
+    }
+
+    @Override
+    public ObjectArrayList<Pair<StaticAnimation, Float>> getAnimationDamage() {
+        return ObjectArrayList.of();
     }
 
     private static class HewgIdle extends HeldBehaviour<Hewg> {

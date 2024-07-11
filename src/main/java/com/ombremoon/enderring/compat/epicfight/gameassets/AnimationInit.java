@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.compat.epicfight.gameassets;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.compat.epicfight.api.animation.AnimationProperties;
 import com.ombremoon.enderring.compat.epicfight.api.animation.types.SpellAttackAnimation;
 import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,7 +38,7 @@ public class AnimationInit {
     private static void build() {
         HumanoidArmature biped = Armatures.BIPED;
         SPELL_HEAL = new StaticAnimation(false, "biped/spell/heal", biped);
-        CATCH_FLAME = new SpellAttackAnimation(0.08F, 0.0F, 0.70F, 0.8F, 1.2F, ColliderInit.CATCH_FLAME, biped.rootJoint, "biped/spell/catch_flame", biped).addProperty(SpellAttackAnimation.ERPhaseProperty.FIRE_DAMAGE, 12.0F).addEvents(AnimationEvent.TimeStampedEvent.create(0.75F, (livingEntityPatch, staticAnimation, objects) -> {
+        CATCH_FLAME = new SpellAttackAnimation(0.08F, 0.0F, 0.70F, 0.8F, 1.2F, ColliderInit.CATCH_FLAME, biped.rootJoint, "biped/spell/catch_flame", biped).addProperty(AnimationProperties.ERPhaseProperty.FIRE_DAMAGE, 12.0F).addEvents(AnimationEvent.TimeStampedEvent.create(0.75F, (livingEntityPatch, staticAnimation, objects) -> {
             LivingEntity livingEntity = livingEntityPatch.getOriginal();
             RandomSource random = livingEntity.getRandom();
             AABB aabb =  EFMUtil.getSpellColliderBB(livingEntityPatch, (SpellAttackAnimation) staticAnimation);

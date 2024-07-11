@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.ai.behavior.misc;
 
 import com.mojang.datafixers.util.Pair;
+import com.ombremoon.enderring.Constants;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
@@ -44,6 +45,7 @@ public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehavio
         this.runningBehaviour.tickOrStop(level, owner, gameTime);
 
         if (this.runningBehaviour.getStatus() == Status.STOPPED) {
+            Constants.LOG.info(String.valueOf(this.runningIndex));
             if (pickBehaviour(level, owner, gameTime, this.behaviours) != null)
                 return;
 
@@ -59,6 +61,9 @@ public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehavio
 
         ExtendedBehaviour<? super E> first = extendedBehaviours.get(this.runningIndex);
 
+        if (first != null && this.runningIndex == 1) {
+            Constants.LOG.info(String.valueOf(first.tryStart(level, entity, gameTime)));
+        }
         if (first != null && first.tryStart(level, entity, gameTime)) {
             this.runningBehaviour = first;
             this.runningIndex++;

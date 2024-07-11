@@ -2,7 +2,6 @@ package com.ombremoon.enderring.event;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.KeyBinds;
-import com.ombremoon.enderring.common.capability.EntityStatus;
 import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.capability.PlayerStatus;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
@@ -10,36 +9,27 @@ import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
-import com.ombremoon.enderring.common.object.world.ModDamageSource;
+import com.ombremoon.enderring.common.object.world.ERDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import com.ombremoon.enderring.util.FlaskUtil;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
-
-import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
 public class PlayerStatusManager {
@@ -85,7 +75,7 @@ public class PlayerStatusManager {
         }
 
         float damage = event.getAmount();
-        if (event.getSource() instanceof ModDamageSource damageSource && damageSource.isPhysicalDamage()) {
+        if (event.getSource() instanceof ERDamageSource damageSource && damageSource.isPhysicalDamage()) {
             if (player.hasEffect(StatusEffectInit.PHYSICAL_DAMAGE_NEGATION.get()))
                 damage *= 0.85F;
         }

@@ -1,14 +1,18 @@
 package com.ombremoon.enderring.common.object.entity;
 
+import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.common.StatusType;
 import com.ombremoon.enderring.common.object.world.LevelledList;
 import com.ombremoon.enderring.common.object.world.LevelledLists;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.biome.Biome;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -31,4 +35,6 @@ public interface LevelledMob {
             }
         }
     }
+
+    ObjectArrayList<Pair<StaticAnimation, Float>> getAnimationDamage();
 }

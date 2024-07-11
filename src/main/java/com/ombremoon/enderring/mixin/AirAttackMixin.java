@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.mixin;
 
+import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedWeaponCapability;
 import net.minecraft.network.FriendlyByteBuf;
@@ -22,9 +23,10 @@ public class AirAttackMixin {
     private void executeOnServer(ServerPlayerPatch playerPatch, FriendlyByteBuf args, CallbackInfo info) {
         ItemStack itemStack = playerPatch.getOriginal().getItemInHand(InteractionHand.MAIN_HAND);
         CapabilityItem cap = playerPatch.getHoldingItemCapability(InteractionHand.MAIN_HAND);
+        float bonus = playerPatch.getOriginal().hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) ? 1.15F : 1.0F;
         if (itemStack.getItem() instanceof MeleeWeapon && cap instanceof ExtendedWeaponCapability weaponCapability) {
             List<Float> motionValues = weaponCapability.getAutoMotionValues(playerPatch);
-            itemStack.getOrCreateTag().putFloat("MotionValue", motionValues.get(motionValues.size() - 1));
+            itemStack.getOrCreateTag().putFloat("MotionValue", motionValues.get(motionValues.size() - 1) * bonus);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.ai.behavior.attack;
 
 import com.mojang.datafixers.util.Pair;
+import com.ombremoon.enderring.Constants;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -64,6 +65,7 @@ public abstract class AnimatedCombatBehavior<E extends Mob> extends DelayedBehav
             throw new IllegalArgumentException("Entity " + entity.getName().getString() + " is not patched with Epic Fight!");
         }
         this.target = BrainUtils.getTargetOfEntity(entity);
+//        Constants.LOG.info(String.valueOf(BrainUtils.canSee(entity, this.target)));
         return BrainUtils.canSee(entity, this.target);
     }
 

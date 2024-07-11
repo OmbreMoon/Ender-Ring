@@ -10,7 +10,10 @@ import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
+import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
+import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
+import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
 import com.ombremoon.enderring.util.CurioHelper;
 import com.ombremoon.enderring.util.DamageUtil;
@@ -40,6 +43,7 @@ import yesman.epicfight.skill.SkillDataKeys;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.function.Consumer;
@@ -62,33 +66,39 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
             ServerPlayerPatch serverPlayerPatch = EpicFightCapabilities.getEntityPatch(pPlayer, ServerPlayerPatch.class);
 //            itemStack.getOrCreateTag().putString("Affinity", ReinforceType.FIRE.getTypeId().toString());
 //            itemStack.getOrCreateTag().putInt("WeaponLevel", 25);
-            serverPlayerPatch.applyStun(StunType.SHORT, 2);
+//            serverPlayerPatch.applyStun(StunType.SHORT, 2);
+            EpicFightDamageSource damageSource = new EpicFightDamageSource(DamageUtil.moddedDamageSource(pLevel, ModDamageTypes.PHYSICAL, pPlayer));
+            damageSource.addRuntimeTag(ModDamageTypes.FIRE);
+//            pPlayer.hurt(damageSource, 2);
             this.getModifiedWeapon(itemStack).serializeNBT();
             Constants.LOG.info(String.valueOf(itemStack.getTag()));
         } else {
             CameraEngine cameraEngine = CameraEngine.getOrAssignEngine(pPlayer);
-            cameraEngine.shakeScreen();
+//            cameraEngine.shakeScreen();
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }
 
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(pAttacker, PlayerPatch.class);
-        SkillContainer container = playerPatch.getSkill(EpicFightSkills.BASIC_ATTACK);
-        int combo = container.getDataManager().getDataValue(SkillDataKeys.COMBO_COUNTER.get());
         float motionValue = pStack.getTag().getFloat("MotionValue");
+        if (pAttacker instanceof LevelledMob && !(pAttacker instanceof IPlayerEnemy)) {
+            return false;
+        } else if (pAttacker instanceof Player player) {
+            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            SkillContainer container = playerPatch.getSkill(EpicFightSkills.BASIC_ATTACK);
+            int combo = container.getDataManager().getDataValue(SkillDataKeys.COMBO_COUNTER.get());
 
-        ServerPlayer player = (ServerPlayer) pAttacker;
-        IDynamicStackHandler stacks = CurioHelper.getTalismanStacks(player);
-        for (int i = 0; i < stacks.getSlots(); i++) {
-            ItemStack stack = stacks.getStackInSlot(i);
-            if (stack.is(ItemInit.WINGED_SWORD_INSIGNIA.get()) || stack.is(ItemInit.MILLICENTS_PROSTHESIS.get())    ) {
-                addWingedSwordEffect((ServerPlayer) pAttacker, combo == 1, stacks.getStackInSlot(i));
-                break;
+            IDynamicStackHandler stacks = CurioHelper.getTalismanStacks(player);
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                ItemStack stack = stacks.getStackInSlot(i);
+                if (stack.is(ItemInit.WINGED_SWORD_INSIGNIA.get()) || stack.is(ItemInit.MILLICENTS_PROSTHESIS.get())) {
+                    addWingedSwordEffect((ServerPlayer) pAttacker, combo == 1, stacks.getStackInSlot(i));
+                    break;
+                }
             }
+            LogUtils.getLogger().debug("Combo: " + combo);
         }
-        LogUtils.getLogger().debug("Combo: " + combo);
 
         DamageUtil.conditionalHurt(pStack, this.getModifiedWeapon(pStack), pAttacker, pTarget, motionValue);
         return true;

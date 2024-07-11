@@ -11,18 +11,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ModDamageSource extends DamageSource {
+public class ERDamageSource extends DamageSource {
     private final Set<PhysicalDamageType> damageTypes = new HashSet<>();
 
-    public ModDamageSource(Holder<DamageType> pType, @Nullable Entity directEntity, @Nullable Entity ownerEntity) {
+    public ERDamageSource(Holder<DamageType> pType, @Nullable Entity directEntity, @Nullable Entity ownerEntity) {
         super(pType, directEntity, ownerEntity);
     }
 
-    public ModDamageSource(Holder<DamageType> pType) {
-        super(pType);
-    }
-
-    public ModDamageSource addPhysicalDamage(PhysicalDamageType... damageTypes) {
+    public ERDamageSource addPhysicalDamage(PhysicalDamageType... damageTypes) {
         this.damageTypes.addAll(List.of(damageTypes));
         return this;
     }
