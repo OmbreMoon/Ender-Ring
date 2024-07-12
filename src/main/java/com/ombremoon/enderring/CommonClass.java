@@ -1,6 +1,7 @@
 package com.ombremoon.enderring;
 
 import com.ombremoon.enderring.common.init.*;
+import com.ombremoon.enderring.common.init.blocks.BlockEntityInit;
 import com.ombremoon.enderring.common.init.blocks.BlockInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.EntityInit;
@@ -16,9 +17,10 @@ public class CommonClass {
     public static void init(IEventBus modEventBus) {
         EntityAttributeInit.register(modEventBus);
         StatusEffectInit.register(modEventBus);
-        ItemInit.register(modEventBus);
         BlockInit.register(modEventBus);
+        ItemInit.register(modEventBus);
         EntityInit.register(modEventBus);
+        BlockEntityInit.register(modEventBus);
         MenuTypeInit.register(modEventBus);
         LootModifiersInit.register(modEventBus);
         ParticleInit.register(modEventBus);

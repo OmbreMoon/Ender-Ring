@@ -87,7 +87,7 @@ public class DamageUtil {
     private static void attemptBuildUp(LivingEntity attackEntity, LivingEntity targetEntity, ScaledWeapon scaledWeapon, SpellType<?> spellType, StatusType statusType, int buildUp) {
         BuildUpStatusEffect effect = statusType.getEffect().setScaledWeapon(scaledWeapon).setSpellType(spellType);
         if (!targetEntity.hasEffect(effect)) {
-            EntityDataAccessor<Integer> status = targetEntity instanceof Player ? statusType.getPlayerStatus() : statusType.getEntityStatus();
+            EntityDataAccessor<Integer> status = statusType.getPlayerStatus();
             Attribute resist = targetEntity instanceof Player ? statusType.getPlayerResist() : statusType.getEntityResist();
             int threshold = (int) EntityStatusUtil.getEntityAttribute(targetEntity, resist);
             int currentStatus = targetEntity.getEntityData().get(status);

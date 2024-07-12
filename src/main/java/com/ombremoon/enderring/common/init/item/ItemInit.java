@@ -1,8 +1,10 @@
 package com.ombremoon.enderring.common.init.item;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.init.blocks.BlockInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.item.*;
+import com.ombremoon.enderring.common.object.item.block.GraceSiteBlockItem;
 import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
 import com.ombremoon.enderring.common.object.item.equipment.SpiritCallingBellItem;
 import com.ombremoon.enderring.common.object.item.equipment.TorrentWhistleItem;
@@ -43,6 +45,7 @@ public class ItemInit {
 
     public static final RegistryObject<Item> DEBUG = registerItem("debug", () -> new DebugItem(itemProperties()));
 
+    public static final RegistryObject<Item> GRACE_SITE = registerGeneralItem("grace_site", () -> new GraceSiteBlockItem(BlockInit.GRACE_SITE.get(), itemProperties()));
     public static final RegistryObject<Item> SPIRIT_CALLING_BELL = registerGeneralItem("spirit_calling_bell", () -> new SpiritCallingBellItem(itemProperties()));
     public static final RegistryObject<Item> TORRENT_WHISTLE = registerGeneralItem("spectral_steed_whistle", () -> new TorrentWhistleItem(itemProperties()));
     public static final RegistryObject<Item> CRIMSON_FLASK = registerGeneralItem("flask_of_crimson_tears", () -> new FlaskItem(FlaskItem.Type.HP, itemProperties()));
@@ -61,7 +64,6 @@ public class ItemInit {
         }
     });
     public static final RegistryObject<Item> SACRED_TEAR = registerSimpleItem("sacred_tear", itemProperties().stacksTo(16));
-
 
     //KEEPSAKES
     public static final RegistryObject<Item> CRIMSON_AMBER_MEDALLION = registerTalisman("crimson_amber_medallion", StatusEffectInit.CRIMSON_AMBER_MEDALLION, 2);

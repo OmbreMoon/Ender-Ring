@@ -11,6 +11,7 @@ import com.ombremoon.enderring.client.render.entity.mob.TorrentRenderer;
 import com.ombremoon.enderring.client.render.entity.projectile.ThrowingPotRenderer;
 import com.ombremoon.enderring.client.render.entity.projectile.spell.GlintbladePhalanxRenderer;
 import com.ombremoon.enderring.client.render.entity.projectile.spell.GlintstoneArcRenderer;
+import com.ombremoon.enderring.common.init.blocks.BlockEntityInit;
 import com.ombremoon.enderring.common.init.entity.MobInit;
 import com.ombremoon.enderring.common.init.entity.ProjectileInit;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -36,6 +37,7 @@ public class CommonClientClass {
                 //SPELL PROJECTILES
                 new Renderers(ProjectileInit.GLINTSTONE_ARC, GlintstoneArcRenderer::new),
                 new Renderers(ProjectileInit.GLINTSTONE_PHALANX, GlintbladePhalanxRenderer::new)
+
         );
     }
 
