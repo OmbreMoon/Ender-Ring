@@ -26,7 +26,7 @@ public class AirAttackMixin {
         float bonus = playerPatch.getOriginal().hasEffect(StatusEffectInit.CLAW_TALISMAN.get()) ? 1.15F : 1.0F;
         if (itemStack.getItem() instanceof MeleeWeapon && cap instanceof ExtendedWeaponCapability weaponCapability) {
             List<Float> motionValues = weaponCapability.getAutoMotionValues(playerPatch);
-            itemStack.getOrCreateTag().putFloat("MotionValue", motionValues.get(motionValues.size() - 1) * bonus);
+            itemStack.getOrCreateTag().putFloat("MotionValue", motionValues.get(motionValues.size() - 1) * bonus / 1.5F);
         }
     }
 }

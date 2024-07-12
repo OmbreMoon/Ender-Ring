@@ -35,6 +35,8 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import yesman.epicfight.gameasset.EpicFightSkills;
+import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -115,6 +117,13 @@ public class CommonModEvents {
                 }
             }
         }
+        if (event.getSource().getEntity() instanceof Player player) {
+            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            SkillContainer container = playerPatch.getSkill(EpicFightSkills.BASIC_ATTACK);
+            if (!container.isDisabled()) {
+                Constants.LOG.info(String.valueOf(container.isActivated()));
+            }
+        }
     }
 
     @SubscribeEvent
@@ -132,7 +141,7 @@ public class CommonModEvents {
                 levelledMob.scaleStats((LivingEntity) levelledMob, (entity, list) -> event.setAmount(event.getAmount() * list.getDamageMult()));
                 Constants.LOG.info(String.valueOf(event.getAmount()));
             } else {
-                event.setAmount(event.getAmount()/* - f*/);
+                event.setAmount(event.getAmount() - f0);
             }
         }
     }

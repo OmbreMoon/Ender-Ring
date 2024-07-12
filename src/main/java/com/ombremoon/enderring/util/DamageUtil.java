@@ -2,6 +2,7 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
+import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.StatusType;
 import com.ombremoon.enderring.common.WeaponDamage;
@@ -142,6 +143,7 @@ public class DamageUtil {
         } else {
             damage = scaledDamage * getApMultipliers(livingEntity, weaponDamage);
         }
+//        Constants.LOG.info(String.valueOf(damage));
         return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, damage);
     }
 
