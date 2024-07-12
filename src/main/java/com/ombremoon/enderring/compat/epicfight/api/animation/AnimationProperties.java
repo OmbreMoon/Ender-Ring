@@ -10,6 +10,5 @@ public class AnimationProperties {
         public static final AttackPhaseProperty<Float> FIRE_DAMAGE = new AttackPhaseProperty<>();
         public static final AttackPhaseProperty<Float> LIGHT_DAMAGE = new AttackPhaseProperty<>();
         public static final AttackPhaseProperty<Float> HOLY_DAMAGE = new AttackPhaseProperty<>();
-        public static final AttackPhaseProperty<Boolean> SCALED_DAMAGE = new AttackPhaseProperty<>();
     }
 }

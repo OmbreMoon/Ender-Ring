@@ -20,7 +20,6 @@ import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.HitEntityList;
-import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.List;

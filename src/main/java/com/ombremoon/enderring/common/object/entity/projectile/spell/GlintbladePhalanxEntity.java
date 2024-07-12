@@ -1,18 +1,14 @@
 package com.ombremoon.enderring.common.object.entity.projectile.spell;
 
 import com.google.common.collect.ImmutableList;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.init.entity.ProjectileInit;
 import com.ombremoon.enderring.common.object.spell.sorcery.glintstone.GlintbladePhalanxSorcery;
-import com.ombremoon.enderring.common.object.spell.sorcery.glintstone.GlintstoneArcSorcery;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.List;
 

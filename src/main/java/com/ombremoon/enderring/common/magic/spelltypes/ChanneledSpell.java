@@ -1,9 +1,8 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.magic.Classification;
-import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -14,7 +13,6 @@ import net.minecraft.world.level.Level;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.function.Supplier;
 

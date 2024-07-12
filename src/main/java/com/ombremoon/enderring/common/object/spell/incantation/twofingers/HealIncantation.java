@@ -4,7 +4,7 @@ package com.ombremoon.enderring.common.object.spell.incantation.twofingers;
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.ConfigHandler;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.magic.MagicType;

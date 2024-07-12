@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.event.custom;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingEvent;

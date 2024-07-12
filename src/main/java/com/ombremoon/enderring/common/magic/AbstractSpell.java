@@ -4,8 +4,9 @@ import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.CommonClass;
 import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.event.custom.EventFactory;
@@ -14,10 +15,8 @@ import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -295,7 +294,7 @@ public abstract class AbstractSpell {
     }
 
     public static class Builder<T extends AbstractSpell> {
-        protected com.ombremoon.enderring.common.magic.Classification classification;
+        protected Classification classification;
         protected Set<Pair<WeaponScaling, Integer>> requiredStats = new LinkedHashSet<>();
         protected int duration = 1;
         protected int fpCost;
@@ -305,7 +304,7 @@ public abstract class AbstractSpell {
         protected boolean canCharge;
         protected SoundEvent castSound;
 
-        public Builder<T> setClassification(com.ombremoon.enderring.common.magic.Classification classification) {
+        public Builder<T> setClassification(Classification classification) {
             this.classification = classification;
             return this;
         }
@@ -357,6 +356,4 @@ public abstract class AbstractSpell {
             this.requiredStats.add(Pair.of(statType, requiredStat));
         }
     }
-
-    public record DamageInstance(ResourceKey<DamageType> damageType, float amount) {}
 }

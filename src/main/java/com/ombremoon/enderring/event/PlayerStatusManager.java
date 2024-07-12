@@ -8,6 +8,7 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
+import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.common.object.item.equipment.IQuickAccess;
 import com.ombremoon.enderring.common.object.world.ERDamageSource;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
@@ -19,6 +20,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -107,7 +109,7 @@ public class PlayerStatusManager {
             player.removeEffect(StatusEffectInit.SLEEP.get());
         }
         event.setAmount(damage);
-        Constants.LOG.info(String.valueOf(event.getAmount()));
+//        Constants.LOG.info(String.valueOf(event.getAmount()));
     }
 
     @SubscribeEvent

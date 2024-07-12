@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import net.minecraft.Util;

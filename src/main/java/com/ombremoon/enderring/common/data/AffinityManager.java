@@ -2,7 +2,6 @@ package com.ombremoon.enderring.common.data;
 
 import com.google.common.collect.ImmutableMap;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ScaledWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;

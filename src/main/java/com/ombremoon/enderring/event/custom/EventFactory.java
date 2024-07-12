@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.event.custom;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;

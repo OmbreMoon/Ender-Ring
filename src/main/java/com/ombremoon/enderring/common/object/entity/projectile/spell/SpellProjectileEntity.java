@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.projectile.spell;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
 import com.ombremoon.enderring.common.object.entity.projectile.PathConsumer;
 import net.minecraft.network.protocol.Packet;

@@ -1,4 +1,4 @@
-package com.ombremoon.enderring.common;
+package com.ombremoon.enderring.common.data;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;

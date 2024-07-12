@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.common.object.world.effect.buildup;
 
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;

@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.datagen.custom;
 
 import com.ombremoon.enderring.CommonClass;
-import com.ombremoon.enderring.common.ArmorResistance;
+import com.ombremoon.enderring.common.data.ArmorResistance;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 

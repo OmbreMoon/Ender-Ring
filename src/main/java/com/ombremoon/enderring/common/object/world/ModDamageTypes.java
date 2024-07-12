@@ -6,7 +6,12 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public interface ModDamageTypes {
+    Set<ResourceKey<DamageType>> DAMAGE_TYPES = new HashSet<>();
+
     ResourceKey<DamageType> PHYSICAL = register("physical");
     ResourceKey<DamageType> STRIKE = register("strike");
     ResourceKey<DamageType> SLASH = register("slash");
@@ -43,5 +48,14 @@ public interface ModDamageTypes {
         context.register(FROSTBITE, new DamageType("frostbite", 0.1F));
         context.register(MADNESS, new DamageType("madness", 0.1F));
         context.register(DEATH_BLIGHT, new DamageType("death_blight", 0.1F));
+
+        DAMAGE_TYPES.add(PHYSICAL);
+        DAMAGE_TYPES.add(STRIKE);
+        DAMAGE_TYPES.add(SLASH);
+        DAMAGE_TYPES.add(PIERCE);
+        DAMAGE_TYPES.add(MAGICAL);
+        DAMAGE_TYPES.add(FIRE);
+        DAMAGE_TYPES.add(LIGHTNING);
+        DAMAGE_TYPES.add(HOLY);
     }
 }

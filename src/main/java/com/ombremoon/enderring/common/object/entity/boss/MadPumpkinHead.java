@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.entity.boss;
 
 import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
@@ -156,15 +157,15 @@ public class MadPumpkinHead extends ERBoss<MadPumpkinHead> implements ISpiritAsh
         return Type.INSTANCE;
     }
 
+    @Override
+    public ObjectArrayList<Pair<StaticAnimation, List<DamageInstance>>> getAnimationDamage() {
+        return ObjectArrayList.of();
+    }
+
     public static AttributeSupplier.Builder createMadPumpkinHeadAttributes() {
         return createERMobAttributes().add(Attributes.MAX_HEALTH, 88.5D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ARMOR, 3.0D)
                 .add(EntityAttributeInit.PHYS_DEFENSE.get(), 6.8D).add(EntityAttributeInit.MAGIC_DEFENSE.get(), 6.8D).add(EntityAttributeInit.FIRE_DEFENSE.get(), 6.8D).add(EntityAttributeInit.LIGHT_DEFENSE.get(), 6.8D).add(EntityAttributeInit.HOLY_DEFENSE.get(), 6.8D)
                 .add(EntityAttributeInit.SLASH_NEGATE.get(), -10.0D).add(EntityAttributeInit.STRIKE_NEGATE.get(), 10.0).add(EntityAttributeInit.LIGHT_NEGATE.get(), -20.0D)
                 .add(EntityAttributeInit.POISON_RESIST.get(), 226).add(EntityAttributeInit.SCARLET_ROT_RESIST.get(), 226).add(EntityAttributeInit.HEMORRHAGE_RESIST.get(), 169).add(EntityAttributeInit.FROSTBITE_RESIST.get(), 169).add(EntityAttributeInit.SLEEP_RESIST.get(), 310).add(EntityAttributeInit.MADNESS_RESIST.get(), -1.0D);
-    }
-
-    @Override
-    public ObjectArrayList<Pair<StaticAnimation, Float>> getAnimationDamage() {
-        return ObjectArrayList.of();
     }
 }

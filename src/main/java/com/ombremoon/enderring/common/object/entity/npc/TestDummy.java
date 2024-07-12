@@ -2,8 +2,11 @@ package com.ombremoon.enderring.common.object.entity.npc;
 
 import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
+import com.ombremoon.enderring.common.init.item.EquipmentInit;
+import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
 import com.ombremoon.enderring.common.object.entity.ERMonster;
@@ -11,8 +14,10 @@ import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.misc.RepeatableBehaviour;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.misc.TrueSequentialBehavior;
+import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
 import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
+import it.unimi.dsi.fastutil.Arrays;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +29,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.scores.Team;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
@@ -110,8 +116,8 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
                 new TrueSequentialBehavior<>(
 //                        new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 2")),
 //                        new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 3"))
-                        new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME).whenStarting(mob -> Constants.LOG.info("slam 2")),
-                        new ConditionlessAttack<>(30)/*.behaviorAnim(Animations.GREATSWORD_DASH)*/.whenStarting(mob -> Constants.LOG.info("slam 3"))
+                        new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.TEST)/*.whenStarting(mob -> Constants.LOG.info("slam 2"))*/,
+                        new ConditionlessAttack<>(30)/*.behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 3"))*/
                 )
 //                new OneRandomBehaviour<>(
                         /*new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME),
@@ -189,15 +195,22 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
         return Type.INSTANCE;
     }
 
+    @Override
+    protected ItemStack getMainHandWeapon() {
+        return new ItemStack(EquipmentInit.SCIMITAR.get());
+    }
+
+    @Override
+    public ObjectArrayList<Pair<StaticAnimation, List<DamageInstance>>> getAnimationDamage() {
+        return ObjectArrayList.of(
+                Pair.of(AnimationInit.TEST, List.of(new DamageInstance(ModDamageTypes.PHYSICAL, 12.0F), new DamageInstance(ModDamageTypes.HOLY, 5.0F)))
+        );
+    }
+
     public static AttributeSupplier.Builder createTestDummyAttributes() {
         return createERMobAttributes().add(Attributes.MAX_HEALTH, 88.5D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ARMOR, 3.0D)
                 .add(EntityAttributeInit.PHYS_DEFENSE.get(), 6.8D).add(EntityAttributeInit.MAGIC_DEFENSE.get(), 6.8D).add(EntityAttributeInit.FIRE_DEFENSE.get(), 6.8D).add(EntityAttributeInit.LIGHT_DEFENSE.get(), 6.8D).add(EntityAttributeInit.HOLY_DEFENSE.get(), 6.8D)
                 .add(EntityAttributeInit.SLASH_NEGATE.get(), -10.0D).add(EntityAttributeInit.STRIKE_NEGATE.get(), 10.0).add(EntityAttributeInit.LIGHT_NEGATE.get(), -20.0D)
                 .add(EntityAttributeInit.POISON_RESIST.get(), 226).add(EntityAttributeInit.SCARLET_ROT_RESIST.get(), 226).add(EntityAttributeInit.HEMORRHAGE_RESIST.get(), 169).add(EntityAttributeInit.FROSTBITE_RESIST.get(), 169).add(EntityAttributeInit.SLEEP_RESIST.get(), 310).add(EntityAttributeInit.MADNESS_RESIST.get(), -1.0D);
-    }
-
-    @Override
-    public ObjectArrayList<Pair<StaticAnimation, Float>> getAnimationDamage() {
-        return ObjectArrayList.of();
     }
 }

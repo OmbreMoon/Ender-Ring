@@ -2,11 +2,8 @@ package com.ombremoon.enderring.common.object.entity.projectile;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.ProjectileInit;
-import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.entity.ERMob;
-import com.ombremoon.enderring.common.object.entity.projectile.spell.SpellProjectileEntity;
-import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
-import com.ombremoon.enderring.util.DamageUtil;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
@@ -64,7 +61,8 @@ public class ThrowingPot extends ThrowableItemProjectile {
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
-        DamageUtil.conditionalHurt(this.getItemRaw(), ((AbstractWeapon)this.getDefaultItem()).getModifiedWeapon(this.getItemRaw()), this, (LivingEntity) this.getOwner(), (LivingEntity) pResult.getEntity(), 1.0F);
+        Scalable scalable = (Scalable) this.getDefaultItem();
+        scalable.conditionalHurt(this.getItemRaw(), scalable.getModifiedWeapon(this.getItemRaw()), this, (LivingEntity) this.getOwner(), (LivingEntity) pResult.getEntity(), 1.0F);
         if (pResult.getEntity() instanceof ERMob<?> mob) {
             Constants.LOG.info(String.valueOf(mob.getEntityData().get(ERMob.SLEEP)));
         }

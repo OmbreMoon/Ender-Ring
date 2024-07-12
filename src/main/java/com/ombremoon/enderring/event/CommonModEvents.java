@@ -8,6 +8,7 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;
 import com.ombremoon.enderring.common.object.entity.LevelledMob;
 import com.ombremoon.enderring.common.object.entity.projectile.ThrowingPot;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.CatalystWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
 import com.ombremoon.enderring.common.object.world.ERDamageSource;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -117,10 +119,20 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-        LivingEntity livingEntity = event.getEntity();
-        if (livingEntity instanceof Player) {
-            if (event.getSource().getEntity() instanceof LevelledMob levelledMob) {
+        if (event.getSource() instanceof ERDamageSource source && source.getEntity() != null && source.getEntity() instanceof LivingEntity livingEntity) {
+            Constants.LOG.info(String.valueOf(event.getAmount()));
+            Scalable scalable = source.getScalable();
+            float f0 = scalable != null && source.isHandAnimation() ? scalable.getAttackDamage(livingEntity) : 1.0F;
+            if (livingEntity instanceof LevelledMob levelledMob && !levelledMob.isPlayerEnemy()) {
+                float f1 = event.getAmount() - f0;
+
+                //No clue why this is necessary, but if it isn't here, levelled mob damage is cut in half
+                event.setAmount(f1 * 2);
+                Constants.LOG.info(String.valueOf(event.getAmount()));
                 levelledMob.scaleStats((LivingEntity) levelledMob, (entity, list) -> event.setAmount(event.getAmount() * list.getDamageMult()));
+                Constants.LOG.info(String.valueOf(event.getAmount()));
+            } else {
+                event.setAmount(event.getAmount()/* - f*/);
             }
         }
     }
@@ -128,6 +140,7 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent event) {
         if (event.getSource() instanceof ERDamageSource damageSource) {
+//            Constants.LOG.info(String.valueOf(event.getAmount()));
             Optional<ResourceKey<DamageType>> damageType = event.getSource().typeHolder().unwrapKey();
             if (damageType.isPresent()) {
                 if (damageType.get() == ModDamageTypes.FIRE) Constants.LOG.info("Hi");
@@ -135,7 +148,7 @@ public class CommonModEvents {
                 for (WeaponDamage weaponDamage : WeaponDamage.values()) {
                     if (damageType.get() == weaponDamage.getDamageType()) {
                         if (livingEntity.getAttribute(weaponDamage.getDefenseAttribute()) != null) {
-                            float negation = 0;
+                            float negation = (float) (1 - (EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getNegateAttribute()) / 100));
                             if (weaponDamage.getDamageType() == ModDamageTypes.PHYSICAL) {
                                 var physicalDamageTypes = damageSource.getDamageTypes();
                                 if (physicalDamageTypes.size() > 0) {
@@ -146,14 +159,14 @@ public class CommonModEvents {
                                     negation = 1 - (negateAvg / physicalDamageTypes.size());
                                 }
                             } else {
-                                negation = EventFactory.calculateEntityNegation(livingEntity, weaponDamage, (float) (1 - (EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getNegateAttribute()) / 100)));
+                                negation = EventFactory.calculateEntityNegation(livingEntity, weaponDamage, negation);
                             }
                             float attr = (float) EntityStatusUtil.getEntityAttribute(livingEntity, weaponDamage.getDefenseAttribute());
                             float modifiedDamage = getDamageAfterDefense(event.getAmount(), attr);
                             event.setAmount(Math.max(modifiedDamage * negation, 1.0F));
-                            Constants.LOG.info(String.valueOf(event.getAmount()));
+//                            Constants.LOG.info(String.valueOf(event.getAmount()));
                         }
-                        Constants.LOG.info(String.valueOf(event.getAmount()));
+//                        Constants.LOG.info(String.valueOf(event.getAmount()));
                     }
                 }
             }

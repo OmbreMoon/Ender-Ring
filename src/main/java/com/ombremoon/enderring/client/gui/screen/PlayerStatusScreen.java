@@ -2,8 +2,7 @@ package com.ombremoon.enderring.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ombremoon.enderring.CommonClass;
-import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.Resistance;

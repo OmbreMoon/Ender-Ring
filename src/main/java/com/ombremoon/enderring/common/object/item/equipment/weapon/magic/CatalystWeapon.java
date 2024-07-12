@@ -2,7 +2,7 @@ package com.ombremoon.enderring.common.object.item.equipment.weapon.magic;
 
 import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.capability.EntityStatusProvider;
 import com.ombremoon.enderring.common.init.StatInit;
@@ -11,7 +11,6 @@ import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.melee.MeleeWeapon;
-import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.entitypatch.ExtendedServerPlayerPatch;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -22,19 +21,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class CatalystWeapon extends MeleeWeapon {

@@ -45,7 +45,7 @@ public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehavio
         this.runningBehaviour.tickOrStop(level, owner, gameTime);
 
         if (this.runningBehaviour.getStatus() == Status.STOPPED) {
-            Constants.LOG.info(String.valueOf(this.runningIndex));
+//            Constants.LOG.info(String.valueOf(this.runningIndex));
             if (pickBehaviour(level, owner, gameTime, this.behaviours) != null)
                 return;
 
@@ -62,7 +62,7 @@ public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehavio
         ExtendedBehaviour<? super E> first = extendedBehaviours.get(this.runningIndex);
 
         if (first != null && this.runningIndex == 1) {
-            Constants.LOG.info(String.valueOf(first.tryStart(level, entity, gameTime)));
+//            Constants.LOG.info(String.valueOf(first.tryStart(level, entity, gameTime)));
         }
         if (first != null && first.tryStart(level, entity, gameTime)) {
             this.runningBehaviour = first;

@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.mob.monster;
 
 import com.mojang.datafixers.util.Pair;
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
@@ -120,15 +121,15 @@ public class Runebear extends ERBoss<Runebear> {
         return Type.INSTANCE;
     }
 
-    public static AttributeSupplier.Builder createruneBearAttributes() {
+    @Override
+    public ObjectArrayList<Pair<StaticAnimation, List<DamageInstance>>> getAnimationDamage() {
+        return ObjectArrayList.of();
+    }
+
+    public static AttributeSupplier.Builder createRuneBearAttributes() {
         return createERMobAttributes().add(Attributes.MAX_HEALTH, 15.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.ARMOR, 3.0D)
                 .add(EntityAttributeInit.PHYS_DEFENSE.get(), 6.8D).add(EntityAttributeInit.MAGIC_DEFENSE.get(), 6.8D).add(EntityAttributeInit.FIRE_DEFENSE.get(), 6.8D).add(EntityAttributeInit.LIGHT_DEFENSE.get(), 6.8D).add(EntityAttributeInit.HOLY_DEFENSE.get(), 6.8D)
                 .add(EntityAttributeInit.STRIKE_NEGATE.get(), 35.0D).add(EntityAttributeInit.MAGIC_NEGATE.get(), 20.0D).add(EntityAttributeInit.FIRE_NEGATE.get(), 20.0D).add(EntityAttributeInit.LIGHT_NEGATE.get(), -20.0D)
                 .add(EntityAttributeInit.POISON_RESIST.get(), IMMUNE).add(EntityAttributeInit.SCARLET_ROT_RESIST.get(), IMMUNE).add(EntityAttributeInit.HEMORRHAGE_RESIST.get(), IMMUNE).add(EntityAttributeInit.FROSTBITE_RESIST.get(), IMMUNE).add(EntityAttributeInit.SLEEP_RESIST.get(), IMMUNE).add(EntityAttributeInit.MADNESS_RESIST.get(), IMMUNE);
-    }
-
-    @Override
-    public ObjectArrayList<Pair<StaticAnimation, Float>> getAnimationDamage() {
-        return ObjectArrayList.of();
     }
 }

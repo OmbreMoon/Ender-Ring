@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.common.magic.spelltypes;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.SpellType;

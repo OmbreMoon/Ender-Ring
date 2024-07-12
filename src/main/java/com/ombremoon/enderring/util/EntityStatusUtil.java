@@ -156,14 +156,14 @@ public class EntityStatusUtil {
             for (WeaponDamage weaponDamage : WeaponDamage.values()) {
                 if (weaponDamage != WeaponDamage.LIGHTNING) {
                     if (weaponDamage.getWeaponScaling().getAttribute() == attribute) {
-                        player.getAttribute(weaponDamage.getDefenseAttribute()).setBaseValue(Mth.floor(DamageUtil.calculateDefense(player, weaponDamage)));
+                        player.getAttribute(weaponDamage.getDefenseAttribute()).setBaseValue(DamageUtil.calculateDefense(player, weaponDamage));
                         break;
                     }
                 } else {
-                    player.getAttribute(EntityAttributeInit.LIGHT_DEFENSE.get()).setBaseValue(Mth.floor(DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING)));
+                    player.getAttribute(EntityAttributeInit.LIGHT_DEFENSE.get()).setBaseValue(DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING));
                 }
                 if (attribute == EntityAttributeInit.RUNE_LEVEL.get()) {
-                    player.getAttribute(weaponDamage.getDefenseAttribute()).setBaseValue(Mth.floor(DamageUtil.calculateDefense(player, weaponDamage)));
+                    player.getAttribute(weaponDamage.getDefenseAttribute()).setBaseValue(/*Mth.floor(*/DamageUtil.calculateDefense(player, weaponDamage));
                 }
             }
         }

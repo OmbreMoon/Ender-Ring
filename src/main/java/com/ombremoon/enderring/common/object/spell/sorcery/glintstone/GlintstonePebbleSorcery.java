@@ -1,20 +1,14 @@
 package com.ombremoon.enderring.common.object.spell.sorcery.glintstone;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.magic.Classifications;
-import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.ProjectileSpell;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.GlintstonePebbleEntity;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class GlintstonePebbleSorcery extends ProjectileSpell<GlintstonePebbleSorcery, GlintstonePebbleEntity> {
 

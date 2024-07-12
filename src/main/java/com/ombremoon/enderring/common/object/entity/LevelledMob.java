@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.object.entity;
 
 import com.mojang.datafixers.util.Pair;
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.StatusType;
 import com.ombremoon.enderring.common.object.world.LevelledList;
 import com.ombremoon.enderring.common.object.world.LevelledLists;
@@ -36,5 +37,9 @@ public interface LevelledMob {
         }
     }
 
-    ObjectArrayList<Pair<StaticAnimation, Float>> getAnimationDamage();
+    default boolean isPlayerEnemy() {
+        return this instanceof IPlayerEnemy;
+    }
+
+    ObjectArrayList<Pair<StaticAnimation, List<DamageInstance>>> getAnimationDamage();
 }

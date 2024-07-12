@@ -2,7 +2,7 @@ package com.ombremoon.enderring.util;
 
 import com.google.common.collect.Lists;
 import com.ombremoon.enderring.ConfigHandler;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.StatusType;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.WeaponScaling;
@@ -72,32 +72,6 @@ public class DamageUtil {
         return calculateMagicScaling(weapon, player, weaponLevel, WeaponDamage.HOLY);
     }
 
-    public static void conditionalHurt(ItemStack itemStack, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity) {
-        conditionalHurt(itemStack, scaledWeapon, attackEntity, targetEntity, 1.0F);
-    }
-
-    public static void conditionalHurt(ItemStack itemStack, ScaledWeapon scaledWeapon, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
-        conditionalHurt(itemStack, scaledWeapon, attackEntity, attackEntity, targetEntity, motionValue);
-    }
-
-    public static void conditionalHurt(ItemStack itemStack, ScaledWeapon scaledWeapon, Entity directEntity, LivingEntity attackEntity, LivingEntity targetEntity, float motionValue) {
-        Scalable scalable = (Scalable) itemStack.getItem();
-        for (WeaponDamage weaponDamage : WeaponDamage.values()) {
-            DamageSource damageSource;
-            float typeDamage = weaponDamage.getDamageFunction().apply(scaledWeapon, attackEntity, scalable.getWeaponLevel(itemStack));
-
-            //Ensures that type damage is 1 when between 0 and 1
-            if (typeDamage > 0) {
-                damageSource = moddedDamageSource(attackEntity.level(), weaponDamage.getDamageType(), directEntity, attackEntity, scaledWeapon.getDamage().getPhysDamageTypes());
-                typeDamage = Math.max(typeDamage, 1.0F);
-
-                if (targetEntity.hurt(damageSource, motionValue != 0 ? typeDamage * motionValue : typeDamage)) {
-                    handleStatusBuildUp(attackEntity, targetEntity, scaledWeapon, null, damageSource);
-                }
-            }
-        }
-    }
-
     public static void handleStatusBuildUp(LivingEntity attackEntity, LivingEntity targetEntity, ScaledWeapon scaledWeapon, SpellType<?> spellType, DamageSource damageSource) {
         var statusMap = scaledWeapon.getStatus().getStatusMap();
         for (var entry : statusMap.entrySet()) {
@@ -133,24 +107,20 @@ public class DamageUtil {
         }
     }
 
-    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType) {
+    public static ERDamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType) {
         return moddedDamageSource(level, damageType, null);
     }
 
-    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, LivingEntity attackEntity) {
+    public static ERDamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, LivingEntity attackEntity) {
         return moddedDamageSource(level, damageType, attackEntity, attackEntity);
     }
 
-    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity directEntity, LivingEntity attackEntity) {
+    public static ERDamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity directEntity, LivingEntity attackEntity) {
         return new ERDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity);
     }
 
-    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, LivingEntity attackEntity, PhysicalDamageType... damageTypes) {
-        return moddedDamageSource(level, damageType, attackEntity, attackEntity, damageTypes);
-    }
-
-    public static DamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity directEntity, LivingEntity attackEntity, PhysicalDamageType... damageTypes) {
-        return new ERDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity).addPhysicalDamage(damageTypes);
+    public static ERDamageSource moddedDamageSource(Level level, ResourceKey<DamageType> damageType, Entity directEntity, LivingEntity attackEntity, Scalable scalable, PhysicalDamageType... damageTypes) {
+        return new ERDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(damageType), directEntity, attackEntity).addPhysicalDamage(damageTypes).addScalable(scalable);
     }
 
     private static float calculateDamage(ScaledWeapon weapon, LivingEntity livingEntity, int weaponLevel, WeaponDamage weaponDamage) {

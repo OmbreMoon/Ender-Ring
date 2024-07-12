@@ -1,7 +1,7 @@
 package com.ombremoon.enderring.datagen.custom;
 
 import com.ombremoon.enderring.CommonClass;
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.data.AttackElement;
 import com.ombremoon.enderring.common.data.ReinforceType;
 import com.ombremoon.enderring.common.object.PhysicalDamageType;

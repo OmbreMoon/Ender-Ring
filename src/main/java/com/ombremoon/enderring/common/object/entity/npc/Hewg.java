@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.npc;
 
 import com.mojang.datafixers.util.Pair;
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.item.EquipmentInit;
 import com.ombremoon.enderring.common.object.entity.ERMob;
@@ -162,7 +163,7 @@ public class Hewg extends MerchantNPCMob {
     }
 
     @Override
-    public ObjectArrayList<Pair<StaticAnimation, Float>> getAnimationDamage() {
+    public ObjectArrayList<Pair<StaticAnimation, List<DamageInstance>>> getAnimationDamage() {
         return ObjectArrayList.of();
     }
 

@@ -2,6 +2,7 @@ package com.ombremoon.enderring.compat.epicfight.gameassets;
 
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.compat.epicfight.api.animation.AnimationProperties;
+import com.ombremoon.enderring.compat.epicfight.api.animation.types.ERAttackAnimation;
 import com.ombremoon.enderring.compat.epicfight.api.animation.types.SpellAttackAnimation;
 import com.ombremoon.enderring.compat.epicfight.util.EFMUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,14 +16,20 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tslat.smartbrainlib.util.RandomUtil;
 import yesman.epicfight.api.animation.property.AnimationEvent;
+import yesman.epicfight.api.animation.property.AnimationProperty;
+import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.forgeevent.AnimationRegistryEvent;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.model.armature.HumanoidArmature;
+import yesman.epicfight.world.damagesource.StunType;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AnimationInit {
 
+    public static StaticAnimation TEST;
     public static StaticAnimation SPELL_HEAL;
     public static StaticAnimation CATCH_FLAME;
 
@@ -51,5 +58,7 @@ public class AnimationInit {
             }
             livingEntity.level().playSound(livingEntity, livingEntity.getOnPos(), SoundEvents.GHAST_SHOOT, SoundSource.PLAYERS, 1.0F, random.nextFloat() * 0.4F + 0.8F);
         }, AnimationEvent.Side.CLIENT));
+        TEST = (new ERAttackAnimation(0.15F, 0.45F, 0.85F, 0.95F, 2.2F, (Collider)null, biped.toolR, "biped/combat/mob_greatsword1", biped, true)).addProperty(AnimationProperty.AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN).addProperty(AnimationProperty.StaticAnimationProperty.POSE_MODIFIER, Animations.ReusableSources.COMBO_ATTACK_DIRECTION_MODIFIER);
+
     }
 }

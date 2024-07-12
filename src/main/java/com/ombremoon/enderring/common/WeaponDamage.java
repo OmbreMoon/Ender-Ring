@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common;
 
 import com.ombremoon.enderring.common.data.Saturations;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.util.DamageUtil;

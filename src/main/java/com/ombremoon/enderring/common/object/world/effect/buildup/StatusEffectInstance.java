@@ -1,10 +1,8 @@
 package com.ombremoon.enderring.common.object.world.effect.buildup;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.magic.SpellType;
-import com.ombremoon.enderring.common.object.world.effect.buildup.BuildUpStatusEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.LivingEntity;
 
 public class StatusEffectInstance extends MobEffectInstance {
     private final ScaledWeapon weapon;

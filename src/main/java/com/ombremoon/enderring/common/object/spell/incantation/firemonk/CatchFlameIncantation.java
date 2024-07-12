@@ -1,11 +1,10 @@
 package com.ombremoon.enderring.common.object.spell.incantation.firemonk;
 
-import com.ombremoon.enderring.common.ScaledWeapon;
+import com.ombremoon.enderring.common.DamageInstance;
+import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
-import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.Classifications;
-import com.ombremoon.enderring.common.magic.MagicType;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.magic.spelltypes.AnimatedSpell;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
@@ -13,7 +12,6 @@ import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class CatchFlameIncantation extends AnimatedSpell {
 

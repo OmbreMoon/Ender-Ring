@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.spell.sorcery.glintstone;
 
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.WeaponScaling;
 import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.magic.Classifications;

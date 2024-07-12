@@ -2,7 +2,7 @@ package com.ombremoon.enderring.datagen.custom;
 
 import com.google.gson.JsonObject;
 import com.ombremoon.enderring.Constants;
-import com.ombremoon.enderring.common.ArmorResistance;
+import com.ombremoon.enderring.common.data.ArmorResistance;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
