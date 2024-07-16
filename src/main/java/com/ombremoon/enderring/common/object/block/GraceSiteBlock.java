@@ -49,6 +49,7 @@ public class GraceSiteBlock extends BaseEntityBlock implements EntityBlock {
         if (pLevel.isClientSide) {
             return InteractionResult.CONSUME;
         } else {
+            ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
             Vec3 vec3 = Vec3.atBottomCenterOf(pPos);
             List<Monster> list = pLevel.getEntitiesOfClass(Monster.class, new AABB(vec3.x() - 8.0D, vec3.y() - 5.0D, vec3.z() - 8.0D, vec3.x() + 8.0D, vec3.y() + 5.0D, vec3.z() + 8.0D));
             if (!list.isEmpty()) {
@@ -65,6 +66,7 @@ public class GraceSiteBlock extends BaseEntityBlock implements EntityBlock {
                         pPlayer.removeEffect(mobEffect);
                     }
                 }
+                serverPlayer.setRespawnPosition(pLevel.dimension(), pPos.north(), pPlayer.getYRot(), true, true);
                 ModNetworking.openGraceSiteScreen(Component.literal("Grace"), (ServerPlayer) pPlayer);
                 return InteractionResult.SUCCESS;
             }

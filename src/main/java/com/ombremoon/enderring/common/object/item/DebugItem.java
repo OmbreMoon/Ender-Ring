@@ -49,16 +49,11 @@ public class DebugItem extends Item {
         if (!pLevel.isClientSide) {
             ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
             if (pPlayer.isCrouching()) {
-//                ModNetworking.openGraceSiteScreen(Component.literal("Grace"),(ServerPlayer) pPlayer);
-            } else if (pPlayer.isInWater()) {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
             } else {
                 this.setStats(pPlayer);
-                Constants.LOG.info(ReinforceType.BLOOD.getName());
-                PlayerStatus playerStatus = EntityStatusUtil.getEntityStatus(pPlayer, PlayerStatus.class);
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
             }
-            FlaskUtil.resetFlaskCooldowns(pPlayer);
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }

@@ -163,7 +163,7 @@ public class EntityStatusUtil {
                     player.getAttribute(EntityAttributeInit.LIGHT_DEFENSE.get()).setBaseValue(DamageUtil.calculateDefense(player, WeaponDamage.LIGHTNING));
                 }
                 if (attribute == EntityAttributeInit.RUNE_LEVEL.get()) {
-                    player.getAttribute(weaponDamage.getDefenseAttribute()).setBaseValue(/*Mth.floor(*/DamageUtil.calculateDefense(player, weaponDamage));
+                    player.getAttribute(weaponDamage.getDefenseAttribute()).setBaseValue(DamageUtil.calculateDefense(player, weaponDamage));
                 }
             }
         }
