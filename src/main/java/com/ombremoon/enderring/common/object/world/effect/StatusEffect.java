@@ -52,6 +52,9 @@ public class StatusEffect extends MobEffect {
         } else if (this == StatusEffectInit.BLESSED_DEW_TALISMAN.get()) {
             pLivingEntity.heal(0.13F);
         }
+        else if(this == StatusEffectInit.SPECKLEDHARD_CRYSTAL.get()&& pLivingEntity instanceof Player player){
+            player.removeAllEffects();
+        }
     }
 
     @Override
