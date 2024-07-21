@@ -54,6 +54,7 @@ public class StatusEffectInit {
                             ()-> Attributes.MAX_HEALTH
                     ).build());
 
+
     public static final RegistryObject<MobEffect> CRIMSONBURST_CRYSTAL = registerSimpleEffect("crimsonburst_crystal_tear",
             new EffectBuilder(EffectType.HEALTH_REGEN)
                     .addAttribute(new AttributeModifier(
