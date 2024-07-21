@@ -27,11 +27,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public abstract class AbstractSpiritAsh <T extends ERMob<T>> extends ERMob<T> implements OwnableEntity {
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractSpiritAsh.class, EntityDataSerializers.OPTIONAL_UUID);
+public abstract class ERSpiritMob <T extends ERMob<T>> extends ERMob<T> implements OwnableEntity, ISpiritAsh {
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(ERSpiritMob.class, EntityDataSerializers.OPTIONAL_UUID);
     private int runeReward;
 
-    protected AbstractSpiritAsh(EntityType<? extends ERMob> pEntityType, Level pLevel, int runeReward) {
+    protected ERSpiritMob(EntityType<? extends ERMob> pEntityType, Level pLevel, int runeReward) {
         super(pEntityType, pLevel);
         this.runeReward = runeReward;
     }
@@ -107,12 +107,4 @@ public abstract class AbstractSpiritAsh <T extends ERMob<T>> extends ERMob<T> im
     public void setOwnerUUID(@Nullable UUID uuid) {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(uuid));
     }
-
-    /**
-     * Gets the amount of FP required to summon this spirit ash
-     * @return minimum FP to summon the spirit ash
-     */
-    abstract int getSummonCost();
-
-    abstract ResourceLocation getTextureLocation();
 }
