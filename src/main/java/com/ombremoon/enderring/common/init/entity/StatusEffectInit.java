@@ -6,6 +6,7 @@ import com.ombremoon.enderring.common.object.world.effect.ShabririWoeEffect;
 import com.ombremoon.enderring.common.object.world.effect.StatusEffect;
 import com.ombremoon.enderring.common.object.world.effect.buildup.*;
 import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
+import com.ombremoon.enderring.util.DamageUtil;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -50,7 +51,7 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("b9f71f4c-cc64-4b36-b086-7b8bdb40834"),
                                     "CRIMSONSPILL_CRYSTAL",
-                                    30F, AttributeModifier.Operation.ADDITION),
+                                    20F, AttributeModifier.Operation.ADDITION),
                             ()-> Attributes.MAX_HEALTH
                     ).build());
 
@@ -62,7 +63,7 @@ public class StatusEffectInit {
                                     "CRIMSONBURST_CRYSTAL",
                                     20F, AttributeModifier.Operation.ADDITION),
                             ()-> Attributes.MAX_HEALTH
-                    ).isInstantaneous().build());
+                    ).setApplyTick((time, amp) -> time % 20 == 0).build());
 
     public static final RegistryObject<MobEffect> GREENSPILL_CRYSTAL = registerSimpleEffect("greenspill_crystal_tear",
             new EffectBuilder(EffectType.STAMINA_REGEN)
@@ -71,23 +72,24 @@ public class StatusEffectInit {
                                     "GREENSPILL_CRYSTAL",
                                     10F, AttributeModifier.Operation.ADDITION),
                             EpicFightAttributes.MAX_STAMINA
-                    ).build());
+                    )
+                    .addTier("f8b61f3c-04cc-64b3-6b08-67b8bdb40834",1,0.15f).build());
 
     public static final RegistryObject<MobEffect> GREENBURST_CRYSTAL = registerSimpleEffect("greenburst_crystal_tear",
             new EffectBuilder(EffectType.STAMINA_REGEN)
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("f91d1f3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "GREENBURST_CRYSTAL",
-                                    15F, AttributeModifier.Operation.MULTIPLY_BASE),
+                                    0.15F, AttributeModifier.Operation.MULTIPLY_BASE),
                             EpicFightAttributes.STAMINA_REGEN
-                    ).isInstantaneous().build());
+                    ).build());
 
     public static final RegistryObject<MobEffect> STRENGTHKNOT_CRYSTAL = registerSimpleEffect("strengthknot_crystal_tear",
             new EffectBuilder(EffectType.AURA)
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("f51d1f3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "STRENGTHKNOT_CRYSTAL",
-                                    5F, AttributeModifier.Operation.ADDITION),
+                                    10F, AttributeModifier.Operation.ADDITION),
                             EntityAttributeInit.STRENGTH).build());
 
     public static final RegistryObject<MobEffect> DEXTERITYKNOT_CRYSTAL = registerSimpleEffect("dexterityknot_crystal_tear",
@@ -95,7 +97,7 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("f71d1f3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "DEXTERITYKNOT_CRYSTAL",
-                                    5F, AttributeModifier.Operation.ADDITION),
+                                    10F, AttributeModifier.Operation.ADDITION),
                             EntityAttributeInit.DEXTERITY).build());
 
     public static final RegistryObject<MobEffect> INTELLIGENCEKNOT_CRYSTAL = registerSimpleEffect("intelligenceknot_crystal_tear",
@@ -103,7 +105,7 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("f51d9f3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "INTELLIGENCEKNOT_CRYSTAL",
-                                    5F, AttributeModifier.Operation.ADDITION),
+                                    10F, AttributeModifier.Operation.ADDITION),
                             EntityAttributeInit.INTELLIGENCE
                     ).build());
 
@@ -112,7 +114,7 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("f54d1f3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "FAITHKNOT_CRYSTAL",
-                                    5F, AttributeModifier.Operation.ADDITION),
+                                    10F, AttributeModifier.Operation.ADDITION),
                             EntityAttributeInit.FAITH).build());
 
     public static final RegistryObject<MobEffect> OPALINEHARD_CRYSTAL = registerSimpleEffect("opalinehard_crystal_tear",
@@ -120,7 +122,7 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("d0b7d3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "OPALINEHARD_CRYSTAL",
-                                    8F, AttributeModifier.Operation.MULTIPLY_TOTAL),
+                                    0.15F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE,
                             EntityAttributeInit.FIRE_NEGATE,
                             EntityAttributeInit.HOLY_NEGATE,
@@ -136,7 +138,7 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("d8b7d3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "SPECKLEDHARD_CRYSTAL",
-                                    6F, AttributeModifier.Operation.ADDITION),
+                                    90F, AttributeModifier.Operation.ADDITION),
                             EntityAttributeInit.IMMUNITY
                     ).build());
 
@@ -151,40 +153,17 @@ public class StatusEffectInit {
 //                ).build());
 
     public static final RegistryObject<MobEffect> MAGICSHROUDING_CRACKED = registerSimpleEffect("magicshrouding_cracked_tear",
-            new EffectBuilder(EffectType.BUILD_UP)
-                    .addAttribute(new AttributeModifier(
-                                    UUID.fromString("d8b1d3c-04cc-64b3-6b08-67b8bdb40834"),
-                                    "MAGICSHROUDING_CRACKED",
-                                    7F, AttributeModifier.Operation.ADDITION),
-                            EntityAttributeInit.MAGIC_DAMAGE
-                    ).build());
+            new EffectBuilder(EffectType.BUILD_UP).build());
+
 
     public static final RegistryObject<MobEffect> FLAMESHROUDING_CRACKED = registerSimpleEffect("flameshrouding_cracked_tear",
-            new EffectBuilder(EffectType.BUILD_UP)
-                    .addAttribute(new AttributeModifier(
-                                    UUID.fromString("f8b1d3c-04cc-64b3-6b08-67b8bdb40834"),
-                                    "FLAMESHROUDING_CRACKED",
-                                    7F, AttributeModifier.Operation.ADDITION),
-                            EntityAttributeInit.FIRE_DAMAGE
-                    ).build());
+            new EffectBuilder(EffectType.BUILD_UP).build());
 
     public static final RegistryObject<MobEffect> HOLYSHROUDING_CRACKED = registerSimpleEffect("holyshrouding_cracked_tear",
-            new EffectBuilder(EffectType.BUILD_UP)
-                    .addAttribute(new AttributeModifier(
-                                    UUID.fromString("38b1d3c-04cc-64b3-6b08-67b8bdb40834"),
-                                    "HOLYSHROUDING_CRACKED",
-                                    7F, AttributeModifier.Operation.ADDITION),
-                            EntityAttributeInit.HOLY_DAMAGE
-                    ).build());
+            new EffectBuilder(EffectType.BUILD_UP).build());
 
     public static final RegistryObject<MobEffect> LIGHTNINGSHROUDING_CRACKED = registerSimpleEffect("lightningshrouding_cracked_tear",
-            new EffectBuilder(EffectType.BUILD_UP)
-                    .addAttribute(new AttributeModifier(
-                                    UUID.fromString("d8b1df3c-04cc-64b3-6b08-67b8bdb40834"),
-                                    "LIGHTNINGSHROUDING_CRACKED",
-                                    7F, AttributeModifier.Operation.ADDITION),
-                            EntityAttributeInit.LIGHT_DAMAGE
-                    ).build());
+            new EffectBuilder(EffectType.BUILD_UP).build());
 
     //TALISMANS
     public static final RegistryObject<MobEffect> CRIMSON_AMBER_MEDALLION = registerStatusEffect("crimson_amber_medallion",
