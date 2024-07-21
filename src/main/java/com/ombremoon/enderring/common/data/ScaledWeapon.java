@@ -3,6 +3,7 @@ package com.ombremoon.enderring.common.data;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.ombremoon.enderring.ConfigHandler;
 import com.ombremoon.enderring.common.StatusType;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.WeaponScaling;
@@ -439,9 +440,12 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
 
         public boolean meetsRequirements(LivingEntity livingEntity, ScaledWeapon weapon, WeaponDamage weaponDamage) {
             final var list = weapon.getBaseStats().getElementID().getListMap().get(weaponDamage);
+            if (!ConfigHandler.MUST_MEET_REQUIRE.get()) return true;
+
             if (getReqMap().size() != 0) {
                 for (var scaling : list) {
-                    if (EntityStatusUtil.getEntityAttribute(livingEntity, scaling.getAttribute()) < getReqMap().get(scaling)) {
+                    //TODO: TEST TEST TEST
+                    if (livingEntity.getAttribute(scaling.getAttribute()) != null && EntityStatusUtil.getEntityAttribute(livingEntity, scaling.getAttribute()) < getReqMap().get(scaling)) {
                         return false;
                     }
                 }
@@ -450,6 +454,8 @@ public class ScaledWeapon implements INBTSerializable<CompoundTag> {
         }
 
         public boolean meetsRequirements(LivingEntity livingEntity) {
+            if (!ConfigHandler.MUST_MEET_REQUIRE.get()) return true;
+
             for (var entry : this.getReqMap().entrySet()) {
                 if (EntityStatusUtil.getEntityAttribute(livingEntity, entry.getKey().getAttribute()) < entry.getValue()) {
                     return false;

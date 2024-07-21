@@ -117,13 +117,6 @@ public class CommonModEvents {
                 }
             }
         }
-        if (event.getSource().getEntity() instanceof Player player) {
-            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
-            SkillContainer container = playerPatch.getSkill(EpicFightSkills.BASIC_ATTACK);
-            if (!container.isDisabled()) {
-                Constants.LOG.info(String.valueOf(container.isActivated()));
-            }
-        }
     }
 
     @SubscribeEvent

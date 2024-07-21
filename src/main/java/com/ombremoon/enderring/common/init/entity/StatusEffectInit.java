@@ -283,22 +283,12 @@ public class StatusEffectInit {
     public static final RegistryObject<MobEffect> MAGIC_SCORPION_CHARM = registerStatusEffect("magic_scorpion_charm",
             new EffectBuilder(EffectType.PERSISTENT)
                     .addAttribute(new AttributeModifier(
-                            UUID.fromString("0e5a7192-845d-4b22-a086-91dbd2fe4d3f"),
-                            "Magic Scorpion Charm",
-                            0.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
-                            EntityAttributeInit.MAGIC_DAMAGE)
-                    .addAttribute(new AttributeModifier(
                             UUID.fromString("dabb5e21-b470-4a8b-ad42-2b630bee1a1c"),
                             "Magic Scorpion Charm",
                             -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE).build());
     public static final RegistryObject<MobEffect> FIRE_SCORPION_CHARM = registerStatusEffect("fire_scorpion_charm",
             new EffectBuilder(EffectType.PERSISTENT)
-                    .addAttribute(new AttributeModifier(
-                            UUID.fromString("5ef1281a-1a85-49b7-b716-53aa726d4019"),
-                            "Fire Scorpion Charm",
-                            0.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
-                            EntityAttributeInit.FIRE_DAMAGE)
                     .addAttribute(new AttributeModifier(
                             UUID.fromString("9a583800-cb26-45b1-9963-e53eb71d96c1"),
                             "Fire Scorpion Charm",
@@ -307,22 +297,12 @@ public class StatusEffectInit {
     public static final RegistryObject<MobEffect> LIGHTNING_SCORPION_CHARM = registerStatusEffect("lightning_scorpion_charm",
             new EffectBuilder(EffectType.PERSISTENT)
                     .addAttribute(new AttributeModifier(
-                            UUID.fromString("8a67de75-8618-4d9b-8d3c-59245627ec6a"),
-                            "Lightning Scorpion Charm",
-                            0.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
-                            EntityAttributeInit.LIGHT_DAMAGE)
-                    .addAttribute(new AttributeModifier(
                             UUID.fromString("51070744-054b-4cd4-bdff-272cde582566"),
                             "Lightning Scorpion Charm",
                             -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EntityAttributeInit.PHYS_NEGATE).build());
     public static final RegistryObject<MobEffect> SACRED_SCORPION_CHARM  = registerStatusEffect("sacred_scorpion_charm",
             new EffectBuilder(EffectType.PERSISTENT)
-                    .addAttribute(new AttributeModifier(
-                                    UUID.fromString("c1c461e0-1c81-4f1c-833f-8ef2dd785c0a"),
-                                    "Sacred Scorpion Charm",
-                                    0.12F, AttributeModifier.Operation.MULTIPLY_TOTAL),
-                            EntityAttributeInit.HOLY_DAMAGE)
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("1370a43c-ae66-464f-b78d-566660417a35"),
                                     "Sacred Scorpion Charm",

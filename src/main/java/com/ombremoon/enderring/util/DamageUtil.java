@@ -87,7 +87,7 @@ public class DamageUtil {
     private static void attemptBuildUp(LivingEntity attackEntity, LivingEntity targetEntity, ScaledWeapon scaledWeapon, SpellType<?> spellType, StatusType statusType, int buildUp) {
         BuildUpStatusEffect effect = statusType.getEffect().setScaledWeapon(scaledWeapon).setSpellType(spellType);
         if (!targetEntity.hasEffect(effect)) {
-            EntityDataAccessor<Integer> status = targetEntity instanceof Player ? statusType.getPlayerStatus() : statusType.getEntityStatus();
+            EntityDataAccessor<Integer> status = statusType.getPlayerStatus();
             Attribute resist = targetEntity instanceof Player ? statusType.getPlayerResist() : statusType.getEntityResist();
             int threshold = (int) EntityStatusUtil.getEntityAttribute(targetEntity, resist);
             int currentStatus = targetEntity.getEntityData().get(status);
@@ -147,19 +147,35 @@ public class DamageUtil {
         return EventFactory.calculateWeaponDamage(livingEntity, weaponDamage, weapon, damage);
     }
 
+    /**
+     * Gets the attack power multiplier to add to the damage based on the effects active
+     * @param entity The entity to check effects for
+     * @param weaponDamage The damage type being used
+     * @return damage multiplier
+     */
     private static float getApMultipliers(LivingEntity entity, WeaponDamage weaponDamage) {
         float multiplier = 1.0F;
         if (entity.hasEffect(StatusEffectInit.RITUAL_SWORD_TALISMAN.get())
             && entity.getHealth() >= entity.getMaxHealth()) multiplier *= 1.1F;
         if (entity.hasEffect(StatusEffectInit.RED_FEATHERED_BRANCHSWORD.get())
             && entity.getHealth() <= entity.getMaxHealth() * 0.2F) multiplier *= 1.2F;
-        if (entity.hasEffect(StatusEffectInit.FLOCKS_CANVAS_TALISMAN.get()) && weaponDamage == WeaponDamage.HOLY) multiplier *= 1.08F;
         if (entity.hasEffect(StatusEffectInit.LANCE_TALISMAN.get()) && entity.isPassenger()) multiplier *= 1.15F;
         if (entity.hasEffect(StatusEffectInit.KINDRED_OF_ROTS_EXULTATION.get())) multiplier *= 1.20F;
         if (entity.hasEffect(StatusEffectInit.LORD_OF_BLOODS_EXULTATION.get())) multiplier *= 1.20F;
         if (entity.hasEffect(StatusEffectInit.ATTACK_POWER_BUFF.get())) {
             int amp = entity.getEffect(StatusEffectInit.ATTACK_POWER_BUFF.get()).getAmplifier();
             multiplier *= ((StatusEffect) StatusEffectInit.ATTACK_POWER_BUFF.get()).getTier("none", amp);
+        }
+
+        if (weaponDamage == WeaponDamage.FIRE) {
+            if (entity.hasEffect(StatusEffectInit.FIRE_SCORPION_CHARM.get())) multiplier *= 1.12F;
+        } else if (weaponDamage == WeaponDamage.HOLY) {
+            if (entity.hasEffect(StatusEffectInit.FLOCKS_CANVAS_TALISMAN.get())) multiplier *= 1.08F;
+            if (entity.hasEffect(StatusEffectInit.SACRED_SCORPION_CHARM.get())) multiplier *= 1.12F;
+        } else if (weaponDamage == WeaponDamage.MAGICAL) {
+            if (entity.hasEffect(StatusEffectInit.MAGIC_SCORPION_CHARM.get())) multiplier *= 1.12F;
+        } else if (weaponDamage == WeaponDamage.LIGHTNING) {
+            if (entity.hasEffect(StatusEffectInit.LIGHTNING_SCORPION_CHARM.get())) multiplier *= 1.12F;
         }
 
         return multiplier;

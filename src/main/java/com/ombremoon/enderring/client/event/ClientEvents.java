@@ -4,8 +4,10 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.KeyBinds;
 import com.ombremoon.enderring.client.gui.QuickAccessOverlay;
 import com.ombremoon.enderring.client.gui.screen.*;
+import com.ombremoon.enderring.client.render.block.GraceSiteRenderer;
 import com.ombremoon.enderring.client.render.layer.MidasShoulderGuardLayer;
 import com.ombremoon.enderring.common.init.MenuTypeInit;
+import com.ombremoon.enderring.common.init.blocks.BlockEntityInit;
 import com.ombremoon.enderring.common.object.entity.NPCMob;
 import com.ombremoon.enderring.network.ModNetworking;
 import com.ombremoon.enderring.util.EntityStatusUtil;
@@ -35,6 +37,7 @@ public class ClientEvents {
                         event.registerEntityRenderer((EntityType<?>) renderers.type().get(), renderers.renderer());
                     }
             );
+            event.registerBlockEntityRenderer(BlockEntityInit.GRACE_SITE.get(), context -> new GraceSiteRenderer());
         }
 
         @SubscribeEvent

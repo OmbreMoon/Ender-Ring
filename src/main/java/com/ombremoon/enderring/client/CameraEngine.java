@@ -20,7 +20,6 @@ public class CameraEngine {
     private static final float MAX_INTENSITY = 1.0F;
     private static final Logger LOGGER = Constants.LOG;
     private final Player player;
-    private final Random random = new Random();
     private int seed;
     private int shakeDuration;
     private float shakeIntensity;

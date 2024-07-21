@@ -199,12 +199,12 @@ public abstract class AbstractSpell {
 
     protected void endSpell() {
         this.onSpellStop(this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon);
+        EventFactory.onSpellStop(this, this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon);
         this.init = false;
         this.isInactive = true;
         this.ticks = 0;
         this.wasCharged = false;
         this.channelTicks = 0;
-        EventFactory.onSpellStop(this, this.livingEntityPatch, this.level, this.blockPos, this.scaledWeapon);
     }
 
     protected void onSpellTick(LivingEntityPatch<?> playerPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {

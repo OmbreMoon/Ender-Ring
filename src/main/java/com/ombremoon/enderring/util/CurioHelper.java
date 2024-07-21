@@ -6,14 +6,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
 import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
+
+import java.util.Optional;
 
 public class CurioHelper {
     public static final String TALISMAN = "talismans";
     public static final String QUICK_ACCESS = "quick_access";
 
     private static IDynamicStackHandler getCurioStacks(Player player, String id) {
-        return player.getCapability(CuriosCapability.INVENTORY).orElseThrow(NullPointerException::new).getStacksHandler(id).get().getStacks();
+        Optional<ICurioStacksHandler> stacksHandler = player.getCapability(CuriosCapability.INVENTORY).orElseThrow(NullPointerException::new).getStacksHandler(id);
+        return stacksHandler.map(ICurioStacksHandler::getStacks).orElse(null);
     }
 
     public static IDynamicStackHandler getQuickAccessStacks(Player player) {

@@ -14,6 +14,7 @@ import com.ombremoon.enderring.common.init.item.ItemInit;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.item.equipment.FlaskItem;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -168,6 +169,7 @@ public class ModLangProvider extends LanguageProvider {
         add("item.enderring.prince_of_deaths_pustuleplus1", "Prince of Death's Cyst");
         add("tooltip.enderring.more_info", "Hold shift for more info.");
         add("curios.identifier.talismans", "Talismans");
+        add("block.enderring.grace_site.not_safe", "You may not rest now; there are monsters nearby");
     }
 
     protected void talismanTooltips() {
