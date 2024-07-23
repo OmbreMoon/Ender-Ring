@@ -53,6 +53,7 @@ public class DebugItem extends Item {
             } else {
                 this.setStats(pPlayer);
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
+                EntityStatusUtil.setSpiritSummon(serverPlayer, MobInit.SPIRIT_JELLYFISH.get());
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);

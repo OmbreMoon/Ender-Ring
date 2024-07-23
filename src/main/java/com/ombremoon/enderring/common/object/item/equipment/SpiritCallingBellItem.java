@@ -20,9 +20,11 @@ public class SpiritCallingBellItem extends Item implements IQuickAccess {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            EntityType<?> entityType = EntityStatusUtil.getSpiritSummon(pPlayer);
+            EntityType<? extends ISpiritAsh> entityType = EntityStatusUtil.getSpiritSummon(pPlayer);
             if (entityType != null) {
-                LivingEntity livingEntity = (LivingEntity) entityType.create(pLevel);
+                ISpiritAsh spiritAsh = entityType.create(pLevel);
+                spiritAsh.setOwnerUUID(pPlayer.getUUID());
+                LivingEntity livingEntity = (LivingEntity) spiritAsh;
                 if (this.canSpawnSummon(pPlayer, livingEntity)) {
                     pLevel.addFreshEntity(livingEntity);
                 }

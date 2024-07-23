@@ -1,6 +1,5 @@
 package com.ombremoon.enderring.common.object.entity;
 
-import com.ombremoon.enderring.common.object.entity.mob.creature.SpiritJellyfish;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.core.BlockPos;

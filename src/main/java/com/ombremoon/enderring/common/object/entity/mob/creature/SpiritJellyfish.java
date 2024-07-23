@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.entity.ERMob;
+import com.ombremoon.enderring.common.object.entity.ERSpiritMob;
 import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedRangedAttack;
@@ -40,24 +41,17 @@ import yesman.epicfight.gameasset.Animations;
 import java.util.List;
 import java.util.UUID;
 
-public class SpiritJellyfish extends ERMob<SpiritJellyfish> implements ISpiritAsh, RangedAttackMob {
+public class SpiritJellyfish extends ERSpiritMob<SpiritJellyfish> implements RangedAttackMob {
     public static final EntityDataAccessor<Boolean> IS_AGGRO = SynchedEntityData.defineId(SpiritJellyfish.class, EntityDataSerializers.BOOLEAN);
-    @Nullable
-    private UUID owner;
 
     public SpiritJellyfish(EntityType<? extends ERMob> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+        super(pEntityType, pLevel, 33);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(IS_AGGRO, false);
-    }
-
-    @Override
-    public int getRuneReward(Level level, BlockPos blockPos) {
-        return 33;
     }
 
     @Override
@@ -120,7 +114,6 @@ public class SpiritJellyfish extends ERMob<SpiritJellyfish> implements ISpiritAs
         this.entityData.set(IS_AGGRO, isAggro);
     }
 
-    @Override
     public int getSummonCost() {
         return 31;
     }
@@ -128,17 +121,6 @@ public class SpiritJellyfish extends ERMob<SpiritJellyfish> implements ISpiritAs
     @Override
     public ResourceLocation getTextureLocation() {
         return null;
-    }
-
-    @Nullable
-    @Override
-    public UUID getOwnerUUID() {
-        return this.owner;
-    }
-
-    @Override
-    public void setOwnerUUID(@Nullable UUID uuid) {
-        this.owner = uuid;
     }
 
     @Override

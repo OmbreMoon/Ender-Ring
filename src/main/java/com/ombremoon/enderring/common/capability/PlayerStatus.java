@@ -6,6 +6,7 @@ import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.ERMob;
+import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import com.ombremoon.enderring.event.custom.EventFactory;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
@@ -27,7 +28,7 @@ public class PlayerStatus extends EntityStatus<Player> {
     public static final EntityDataAccessor<Integer> RUNES = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     private Player player;
     private boolean channelling;
-    private EntityType<?> spiritSummon;
+    private EntityType<? extends ISpiritAsh> spiritSummon;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
     private int talismanPouches;
@@ -111,11 +112,11 @@ public class PlayerStatus extends EntityStatus<Player> {
         this.channelling = channelling;
     }
 
-    public EntityType<?> getSpiritSummon() {
+    public EntityType<? extends ISpiritAsh> getSpiritSummon() {
         return this.spiritSummon;
     }
 
-    public void setSpiritSummon(EntityType<?> spiritSummon) {
+    public void setSpiritSummon(EntityType<? extends ISpiritAsh> spiritSummon) {
         this.spiritSummon = spiritSummon;
     }
     

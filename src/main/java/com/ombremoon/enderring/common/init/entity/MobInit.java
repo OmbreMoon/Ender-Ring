@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.init.entity;
 
+import com.ombremoon.enderring.common.object.entity.mob.creature.SpiritJellyfish;
 import com.ombremoon.enderring.common.object.entity.npc.TestDummy;
 import com.ombremoon.enderring.common.object.entity.mob.creature.Torrent;
 import com.ombremoon.enderring.common.object.entity.npc.Hewg;
@@ -23,6 +24,9 @@ public class MobInit {
     }
 
     public static RegistryObject<EntityType<TestDummy>> TEST_DUMMY;
+
+    //Spirit Ashes
+    public static RegistryObject<EntityType<SpiritJellyfish>> SPIRIT_JELLYFISH = registerMob("spirit_jellyfish", SpiritJellyfish::new, MobCategory.CREATURE, 1f, 1f, 10, SpiritJellyfish::createSpiritJellyfishAttributes, false);
 
     //Creatures
     public static RegistryObject<EntityType<Torrent>> TORRENT = registerMob("torrent", Torrent::new, MobCategory.CREATURE, 1.65F, 2.0F, 10, Torrent::createTorrentAttributes, false);
