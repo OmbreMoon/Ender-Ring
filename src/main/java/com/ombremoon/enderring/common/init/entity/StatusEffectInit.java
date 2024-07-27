@@ -51,7 +51,7 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("b9f71f4c-cc64-4b36-b086-7b8bdb40834"),
                                     "CRIMSONSPILL_CRYSTAL",
-                                    20F, AttributeModifier.Operation.ADDITION),
+                                    10F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             ()-> Attributes.MAX_HEALTH
                     ).build());
 
@@ -70,17 +70,17 @@ public class StatusEffectInit {
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("f8b61f3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "GREENSPILL_CRYSTAL",
-                                    10F, AttributeModifier.Operation.ADDITION),
+                                    1F, AttributeModifier.Operation.MULTIPLY_TOTAL),
                             EpicFightAttributes.MAX_STAMINA
                     )
-                    .addTier("f8b61f3c-04cc-64b3-6b08-67b8bdb40834",1,0.15f).build());
+                    .build());
 
     public static final RegistryObject<MobEffect> GREENBURST_CRYSTAL = registerSimpleEffect("greenburst_crystal_tear",
             new EffectBuilder(EffectType.STAMINA_REGEN)
                     .addAttribute(new AttributeModifier(
                                     UUID.fromString("f91d1f3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "GREENBURST_CRYSTAL",
-                                    0.15F, AttributeModifier.Operation.MULTIPLY_BASE),
+                                    1F, AttributeModifier.Operation.MULTIPLY_BASE),
                             EpicFightAttributes.STAMINA_REGEN
                     ).build());
 
@@ -139,7 +139,10 @@ public class StatusEffectInit {
                                     UUID.fromString("d8b7d3c-04cc-64b3-6b08-67b8bdb40834"),
                                     "SPECKLEDHARD_CRYSTAL",
                                     90F, AttributeModifier.Operation.ADDITION),
-                            EntityAttributeInit.IMMUNITY
+                            EntityAttributeInit.IMMUNITY,
+                            EntityAttributeInit.ROBUSTNESS,
+                            EntityAttributeInit.VITALITY,
+                            EntityAttributeInit.FOCUS
                     ).build());
 
 //TODO: Uncomment and fix POISE
@@ -153,17 +156,17 @@ public class StatusEffectInit {
 //                ).build());
 
     public static final RegistryObject<MobEffect> MAGICSHROUDING_CRACKED = registerSimpleEffect("magicshrouding_cracked_tear",
-            new EffectBuilder(EffectType.BUILD_UP).build());
+            new EffectBuilder(EffectType.WEAPON).build());
 
 
     public static final RegistryObject<MobEffect> FLAMESHROUDING_CRACKED = registerSimpleEffect("flameshrouding_cracked_tear",
-            new EffectBuilder(EffectType.BUILD_UP).build());
+            new EffectBuilder(EffectType.WEAPON).build());
 
     public static final RegistryObject<MobEffect> HOLYSHROUDING_CRACKED = registerSimpleEffect("holyshrouding_cracked_tear",
-            new EffectBuilder(EffectType.BUILD_UP).build());
+            new EffectBuilder(EffectType.WEAPON).build());
 
     public static final RegistryObject<MobEffect> LIGHTNINGSHROUDING_CRACKED = registerSimpleEffect("lightningshrouding_cracked_tear",
-            new EffectBuilder(EffectType.BUILD_UP).build());
+            new EffectBuilder(EffectType.WEAPON).build());
 
     //TALISMANS
     public static final RegistryObject<MobEffect> CRIMSON_AMBER_MEDALLION = registerStatusEffect("crimson_amber_medallion",
