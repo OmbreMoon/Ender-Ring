@@ -1,14 +1,20 @@
 package com.ombremoon.enderring.common.object.world.effect;
 
 import com.ombremoon.enderring.Constants;
+import com.ombremoon.enderring.common.capability.EntityStatus;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.object.world.effect.stacking.EffectType;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +23,7 @@ import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.*;
@@ -25,6 +32,7 @@ public class StatusEffect extends MobEffect {
     protected static final Logger LOGGER = Constants.LOG;
     @Nullable public final Map<Integer, String> translationKeys;
     @Nullable private final Map<String, Map<Integer, Double>> tiers;
+    @Nullable private List<Supplier<? extends MobEffect>> buildUps;
     private final BiFunction<Integer, Integer, Boolean> applyTick;
     private final boolean instant;
     private final EffectType type;
@@ -41,6 +49,10 @@ public class StatusEffect extends MobEffect {
             this.applyTick = applyTick;
             this.instant = false;
         }
+        this.buildUps = List.of(StatusEffectInit.POISON,StatusEffectInit.SCARLET_ROT,
+                StatusEffectInit.BLOOD_LOSS
+        ,StatusEffectInit.FROSTBITE,StatusEffectInit.SLEEP,StatusEffectInit.MADNESS,
+                StatusEffectInit.DEATH_BLIGHT);
     }
 
     @Override
@@ -52,9 +64,18 @@ public class StatusEffect extends MobEffect {
         } else if (this == StatusEffectInit.BLESSED_DEW_TALISMAN.get()) {
             pLivingEntity.heal(0.13F);
         }
-        else if(this == StatusEffectInit.SPECKLEDHARD_CRYSTAL.get()&& pLivingEntity instanceof Player player
-                                 && this.getEffectType()==EffectType.BUILD_UP){
-            player.removeAllEffects();
+        else if(this == StatusEffectInit.SPECKLEDHARD_CRYSTAL.get() &&
+                pLivingEntity instanceof Player)
+        {
+            SynchedEntityData entityData = pLivingEntity.getEntityData();
+
+            entityData.set(EntityStatus.POISON, 0);
+            entityData.set(EntityStatus.SCARLET_ROT, 0);
+            entityData.set(EntityStatus.BLOOD_LOSS, 0);
+            entityData.set(EntityStatus.FROSTBITE, 0);
+            entityData.set(EntityStatus.SLEEP, 0);
+            entityData.set(EntityStatus.MADNESS, 0);
+            entityData.set(EntityStatus.DEATH_BLIGHT, 0);
         }
     }
 
