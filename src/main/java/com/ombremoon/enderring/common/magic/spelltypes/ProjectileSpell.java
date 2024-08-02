@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.magic.spelltypes;
 
 import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.common.object.entity.projectile.spell.SpellProjectileEntity;
@@ -82,7 +83,7 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
 
     @Override
     protected boolean shouldTickEffect(int duration) {
-        return this.isInstantSpell() ? duration == 2 : super.shouldTickEffect(duration);
+        return duration == 2;
     }
 
     public int getProjectileLifetime() {
@@ -156,8 +157,8 @@ public abstract class ProjectileSpell<S extends ProjectileSpell<S, T>, T extends
             return this;
         }
 
-        public Builder<T> canCharge() {
-            this.canCharge = true;
+        public Builder<T> setCastType(CastType castType) {
+            this.castType = castType;
             return this;
         }
 

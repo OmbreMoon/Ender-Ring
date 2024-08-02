@@ -52,7 +52,7 @@ public class DebugItem extends Item {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
             } else {
                 this.setStats(pPlayer);
-                EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
+                EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.GLINTSTONE_ARC.get());
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
@@ -62,8 +62,8 @@ public class DebugItem extends Item {
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 1, true);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 1);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 60);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 60);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 60);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 60);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 2);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 1);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 1);

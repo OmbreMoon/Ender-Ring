@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.magic.spelltypes;
 
 import com.ombremoon.enderring.common.data.ScaledWeapon;
 import com.ombremoon.enderring.common.WeaponScaling;
+import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.SpellType;
 import com.ombremoon.enderring.event.custom.EventFactory;
@@ -20,7 +21,7 @@ public abstract class ChanneledSpell extends AnimatedSpell {
     protected int fpTickCost;
 
     public static Builder<ChanneledSpell> createChannelledSpellBuilder() {
-        return new Builder<>();
+        return new Builder<>().setCastType(CastType.CHANNEL);
     }
 
     public ChanneledSpell(SpellType<?> spellType, Builder<ChanneledSpell> builder) {
@@ -48,11 +49,6 @@ public abstract class ChanneledSpell extends AnimatedSpell {
         super.onSpellStop(livingEntityPatch, level, blockPos, weapon);
         if (livingEntityPatch instanceof PlayerPatch<?> playerPatch)
             EntityStatusUtil.setChannelling((ServerPlayer) playerPatch.getOriginal(), false);
-    }
-
-    @Override
-    public boolean requiresConcentration() {
-        return true;
     }
 
     public static class Builder<T extends ChanneledSpell> extends AnimatedSpell.Builder<T> {
@@ -93,6 +89,11 @@ public abstract class ChanneledSpell extends AnimatedSpell {
 
         public Builder<T> setCastSound(SoundEvent castSound) {
             this.castSound = castSound;
+            return this;
+        }
+
+        public Builder<T> setCastType(CastType castType) {
+            this.castType = castType;
             return this;
         }
 

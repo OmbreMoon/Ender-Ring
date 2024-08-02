@@ -48,7 +48,7 @@ public class ClientEvents {
         }
 
         @SubscribeEvent
-        public static void registerLayerDefinitions(EntityRenderersEvent.AddLayers event) {
+        public static void registerEntityLayers(EntityRenderersEvent.AddLayers event) {
             for (final String skin : event.getSkins()) {
                 final LivingEntityRenderer<Player, PlayerModel<Player>> playerRenderer = event.getSkin(skin);
                 if (playerRenderer == null)

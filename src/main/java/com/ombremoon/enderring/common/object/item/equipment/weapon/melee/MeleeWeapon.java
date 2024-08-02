@@ -67,7 +67,7 @@ public class MeleeWeapon extends AbstractWeapon implements GeoItem {
 //            pPlayer.hurt(damageSource, 2);
         } else {
             CameraEngine cameraEngine = CameraEngine.getOrAssignEngine(pPlayer);
-//            cameraEngine.shakeScreen();
+            cameraEngine.shakeScreen();
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }

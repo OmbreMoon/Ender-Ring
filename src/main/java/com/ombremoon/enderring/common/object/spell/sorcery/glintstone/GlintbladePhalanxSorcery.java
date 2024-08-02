@@ -36,11 +36,6 @@ public class GlintbladePhalanxSorcery extends MultiProjectileSpell<GlintbladePha
     }
 
     @Override
-    public boolean isInstantSpell() {
-        return false;
-    }
-
-    @Override
     protected DamageInstance createDamageInstance() {
         return new DamageInstance(ModDamageTypes.MAGICAL, this.getScaledDamage());
     }

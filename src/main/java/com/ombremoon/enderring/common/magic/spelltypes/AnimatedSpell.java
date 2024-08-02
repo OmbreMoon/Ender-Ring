@@ -41,7 +41,6 @@ public abstract class AnimatedSpell extends AbstractSpell {
 
     @Override
     protected void onSpellStart(LivingEntityPatch<?> livingEntityPatch, Level level, BlockPos blockPos, ScaledWeapon weapon) {
-        super.onSpellStart(livingEntityPatch, level, blockPos, weapon);
         if (spellAnimation == null)
             return;
 
@@ -90,8 +89,8 @@ public abstract class AnimatedSpell extends AbstractSpell {
             return this;
         }
 
-        public Builder<T> canCharge() {
-            this.canCharge = true;
+        public Builder<T> setCastType(CastType castType) {
+            this.castType = castType;
             return this;
         }
 

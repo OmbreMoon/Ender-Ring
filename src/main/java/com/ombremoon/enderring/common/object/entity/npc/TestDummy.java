@@ -76,10 +76,8 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
 
     @Override
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        /*if (!this.level().isClientSide) {
-            this.addEffect(new MobEffectInstance(StatusEffectInit.SLEEP.get(), 1200));
-            ((BuildUpStatusEffect) StatusEffectInit.SLEEP.get()).applyInstantaneousEffect(pPlayer, null, this);
-        }*/
+        if (!this.level().isClientSide) {
+        }
         return super.mobInteract(pPlayer, pHand);
     }
 
