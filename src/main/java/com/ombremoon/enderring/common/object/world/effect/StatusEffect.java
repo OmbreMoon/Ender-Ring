@@ -15,6 +15,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,10 +23,7 @@ import org.slf4j.Logger;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.*;
 
 public class StatusEffect extends MobEffect {
@@ -64,18 +62,22 @@ public class StatusEffect extends MobEffect {
         } else if (this == StatusEffectInit.BLESSED_DEW_TALISMAN.get()) {
             pLivingEntity.heal(0.13F);
         }
-        else if(this == StatusEffectInit.SPECKLEDHARD_CRYSTAL.get() &&
-                pLivingEntity instanceof Player)
+        else if(this == StatusEffectInit.CRIMSONBURST_CRYSTAL.get())
         {
-            SynchedEntityData entityData = pLivingEntity.getEntityData();
+            pLivingEntity.heal(0.15f);
+        }
+        else if(this == StatusEffectInit.GREENBURST_CRYSTAL.get())
+        {
+            /** I too dont know what i did, was drunk
+             *
+            AttributeModifier modifier = new AttributeModifier(
+                    "GREENBURST_CRYSTAL",
+                    1F, AttributeModifier.Operation.MULTIPLY_TOTAL
 
-            entityData.set(EntityStatus.POISON, 0);
-            entityData.set(EntityStatus.SCARLET_ROT, 0);
-            entityData.set(EntityStatus.BLOOD_LOSS, 0);
-            entityData.set(EntityStatus.FROSTBITE, 0);
-            entityData.set(EntityStatus.SLEEP, 0);
-            entityData.set(EntityStatus.MADNESS, 0);
-            entityData.set(EntityStatus.DEATH_BLIGHT, 0);
+            );
+            Objects.requireNonNull(pLivingEntity
+                    .getAttribute(EpicFightAttributes.STAMINA_REGEN.get())).addTransientModifier(modifier);
+            **/
         }
     }
 
