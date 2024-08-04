@@ -61,7 +61,7 @@ public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehavio
 
         ExtendedBehaviour<? super E> first = extendedBehaviours.get(this.runningIndex);
 
-        if (first != null && this.runningIndex == 1) {
+        if (first != null && this.runningIndex == 0) {
 //            Constants.LOG.info(String.valueOf(first.tryStart(level, entity, gameTime)));
         }
         if (first != null && first.tryStart(level, entity, gameTime)) {

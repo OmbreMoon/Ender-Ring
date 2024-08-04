@@ -111,11 +111,9 @@ public class TestDummy extends ERBoss<TestDummy> implements ISpiritAsh {
                 new InvalidateAttackTarget<>().invalidateIf((entity, target) -> !target.isAlive() || (target instanceof Player player && player.getAbilities().invulnerable) || distanceToSqr(target.position()) > Math.pow(getAttributeValue(Attributes.FOLLOW_RANGE), 2)),
                 new SetWalkTargetToAttackTarget<>()
                         .speedMod((entity, target) -> 1.25F),
-                new TrueSequentialBehavior<>(
-//                        new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 2")),
-//                        new Idle<>().runFor(livingEntity -> 20).whenStarting(mob -> Constants.LOG.info("slam 3"))
-                        new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.TEST)/*.whenStarting(mob -> Constants.LOG.info("slam 2"))*/,
-                        new ConditionlessAttack<>(30)/*.behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 3"))*/
+                new SequentialBehaviour<TestDummy>(
+                        new AnimatedMeleeBehavior<>().behaviorAnim(AnimationInit.TEST).attackInterval(mob -> 0).whenStarting(mob -> Constants.LOG.info("slam 2")),
+                        new AnimatedMeleeBehavior<>(10).behaviorAnim(Animations.BIPED_JUMP).attackInterval(mob -> 40).whenStarting(mob -> Constants.LOG.info("slam 3"))
                 )
 //                new OneRandomBehaviour<>(
                         /*new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME),
