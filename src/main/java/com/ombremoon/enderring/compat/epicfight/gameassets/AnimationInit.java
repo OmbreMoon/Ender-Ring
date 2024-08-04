@@ -49,8 +49,6 @@ public class AnimationInit {
         SPELL_HEAL = new StaticAnimation(false, "biped/spell/heal", biped);
         CATCH_FLAME = new SpellAttackAnimation(0.08F, 0.0F, 0.70F, 0.8F, 1.2F, ColliderInit.CATCH_FLAME, biped.rootJoint, "biped/spell/catch_flame", biped).addProperty(AnimationProperties.ERPhaseProperty.FIRE_DAMAGE, 12.0F).addEvents(AnimationEvent.TimeStampedEvent.create(0.75F, (livingEntityPatch, staticAnimation, objects) -> {
             LivingEntity livingEntity = livingEntityPatch.getOriginal();
-            if (!(livingEntity instanceof Player player))
-                return;
 
             RandomSource random = livingEntity.getRandom();
             AABB aabb =  EFMUtil.getSpellColliderBB(livingEntityPatch, (SpellAttackAnimation) staticAnimation);

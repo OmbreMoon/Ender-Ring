@@ -98,7 +98,6 @@ public abstract class AnimatedCombatBehavior<E extends Mob> extends AggroBasedDe
     protected void doDelayedAction(E entity) {
         BrainUtils.setForgettableMemory(entity, MemoryModuleType.ATTACK_COOLING_DOWN, true, this.attackIntervalSupplier.apply(entity));
         if (this.animation != null) {
-            Constants.LOG.info(String.valueOf(this.delayTime));
             this.entityPatch.playAnimationSynchronized(animation, 0.0F, this.packetProvider);
         }
     }

@@ -142,7 +142,7 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent event) {
         if (event.getSource() instanceof ERDamageSource damageSource) {
-//            Constants.LOG.info(String.valueOf(event.getAmount()));
+            Constants.LOG.info(String.valueOf(event.getAmount()));
             Optional<ResourceKey<DamageType>> damageType = event.getSource().typeHolder().unwrapKey();
             if (damageType.isPresent()) {
                 if (damageType.get() == ModDamageTypes.FIRE) Constants.LOG.info("Hi");

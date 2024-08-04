@@ -1,16 +1,22 @@
 package com.ombremoon.enderring.compat.epicfight.api.animation.types;
 
 import com.google.common.collect.Maps;
+import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.WeaponDamage;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.object.entity.IPlayerEnemy;
+import com.ombremoon.enderring.common.object.entity.LevelledMob;
+import com.ombremoon.enderring.common.object.item.equipment.weapon.Scalable;
+import com.ombremoon.enderring.common.object.world.ERDamageSource;
 import com.ombremoon.enderring.compat.epicfight.api.animation.AnimationProperties;
 import com.ombremoon.enderring.util.DamageUtil;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.api.animation.Joint;
@@ -70,6 +76,21 @@ public class SpellAttackAnimation extends AttackAnimation {
                         AbstractSpell spell = EntityStatusUtil.getRecentlyActivatedSpell(entity);
                         if (entity instanceof Player || entity instanceof IPlayerEnemy) {
                             spell.checkHurt(trueEntity);
+                        } else if (entity instanceof LevelledMob levelledMob) {
+                            var attacks = levelledMob.getAnimationDamage();
+                            List<DamageInstance> instances = null;
+                            for (var pair : attacks) {
+                                if (pair.getFirst() == this) {
+                                    instances = pair.getSecond();
+                                    break;
+                                }
+                            }
+                            if (instances != null) {
+                                for (DamageInstance damage : instances) {
+                                    ERDamageSource source = DamageUtil.moddedDamageSource(entity.level(), damage.damageType(), entity);
+                                    trueEntity.hurt(source, damage.amount());
+                                }
+                            }
                         } else {
                             for (var entry : this.getSpellDamage(phase).entrySet()) {
                                 if (entry.getKey() != null) {
