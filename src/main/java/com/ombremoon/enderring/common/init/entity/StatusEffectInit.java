@@ -157,6 +157,7 @@ public class StatusEffectInit {
     public static final RegistryObject<MobEffect> LIGHTNINGSHROUDING_CRACKED = registerSimpleEffect("lightningshrouding_cracked_tear",
             new EffectBuilder(EffectType.UNIQUE).build());
     //TODO::FIXME
+    //this requires dodge which aint implemented yet soooo hmm.
     public static final RegistryObject<MobEffect> WINDY = registerSimpleEffect("windy_tear",
             new EffectBuilder(EffectType.DODGE_ROLL).addAttribute(new AttributeModifier(
                     UUID.fromString("f8b7d3c-04cc-64b3-6b08-67b8bdb40834"),
