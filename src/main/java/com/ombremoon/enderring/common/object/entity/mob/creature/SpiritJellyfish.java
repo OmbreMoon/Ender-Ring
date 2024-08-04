@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -27,6 +28,8 @@ import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.SequentialBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.WalkOrRunToWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
@@ -40,6 +43,7 @@ import yesman.epicfight.gameasset.Animations;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class SpiritJellyfish extends ERSpiritMob<SpiritJellyfish> implements RangedAttackMob {
     public static final EntityDataAccessor<Boolean> IS_AGGRO = SynchedEntityData.defineId(SpiritJellyfish.class, EntityDataSerializers.BOOLEAN);
@@ -66,7 +70,8 @@ public class SpiritJellyfish extends ERSpiritMob<SpiritJellyfish> implements Ran
     @Override
     public BrainActivityGroup<? extends ERMob<SpiritJellyfish>> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
-                new LookAtTarget<>()
+                new LookAtTarget<>(),
+                new WalkOrRunToWalkTarget<>()
         );
     }
 
@@ -74,6 +79,7 @@ public class SpiritJellyfish extends ERSpiritMob<SpiritJellyfish> implements Ran
     public BrainActivityGroup<? extends ERMob<SpiritJellyfish>> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new TargetOrRetaliate<>()
+                        .useMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER)
                         .attackablePredicate(neutralAttackCondition()),
                 new Idle<SpiritJellyfish>()
                         .whenStarting(spiritJellyfish -> {

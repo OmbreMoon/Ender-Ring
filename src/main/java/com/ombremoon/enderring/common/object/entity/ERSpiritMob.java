@@ -12,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.level.Level;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
@@ -69,16 +70,6 @@ public abstract class ERSpiritMob <T extends ERMob<T>> extends ERMob<T> implemen
     }
 
     /**
-     * The entities target condition
-     * @return targeting predicate
-     */
-    @Override
-    protected Predicate<LivingEntity> neutralAttackCondition() {
-        Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
-        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && (getOwnerUUID() == null || getOwnerUUID() != target.getUUID());
-    }
-
-    /**
      * Gets the amount of runes that the player is rewarded for defeating this entity
      * @param level the world the entity was killed in
      * @param blockPos the position of the entity on death
@@ -105,5 +96,14 @@ public abstract class ERSpiritMob <T extends ERMob<T>> extends ERMob<T> implemen
      */
     public void setOwnerUUID(@Nullable UUID uuid) {
         this.entityData.set(OWNER_UUID, Optional.ofNullable(uuid));
+    }
+
+
+    @Override
+    protected Predicate<LivingEntity> neutralAttackCondition() {
+        if (this.getBrain() == null) return livingEntity -> false;
+        Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
+        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID();
+        //return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && (getOwnerUUID() == null || getOwnerUUID() != target.getUUID());
     }
 }

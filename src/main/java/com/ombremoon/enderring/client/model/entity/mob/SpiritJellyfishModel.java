@@ -18,51 +18,11 @@ public class SpiritJellyfishModel<T extends Entity> extends HierarchicalModel<T>
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "spirit_jellyfish"), "main");
     private final ModelPart Root;
-    private final ModelPart Base;
-    private final ModelPart leftTentecles;
-    private final ModelPart leftFrontTentacles;
-    private final ModelPart leftFrontTentaclesS2;
-    private final ModelPart leftFrontTentaclesS3;
-    private final ModelPart leftBackTentacles;
-    private final ModelPart leftFrontTentaclesS4;
-    private final ModelPart leftFrontTentaclesS5;
-    private final ModelPart rightTentecles;
-    private final ModelPart rightFrontTentacles;
-    private final ModelPart rightFrontTentaclesS2;
-    private final ModelPart rightFrontTentaclesS3;
-    private final ModelPart rightBackTentacles;
-    private final ModelPart rightFrontTentaclesS4;
-    private final ModelPart rightFrontTentaclesS5;
-    private final ModelPart Head;
-    private final ModelPart FrontHeadFrills;
-    private final ModelPart BackHeadFrills;
-    private final ModelPart leftHeadFrills;
-    private final ModelPart rightHeadFrills;
 
 
 
     public SpiritJellyfishModel(ModelPart root) {
         this.Root = root.getChild("Root");
-        this.Base = this.Root.getChild("Base");
-        this.leftTentecles = root.getChild("leftTentecles");
-        this.leftFrontTentacles = root.getChild("leftFrontTentacles");
-        this.leftFrontTentaclesS2 = root.getChild("leftFrontTentaclesS2");
-        this.leftFrontTentaclesS3 = root.getChild("leftFrontTentaclesS3");
-        this.leftBackTentacles = root.getChild("leftBackTentacles");
-        this.leftFrontTentaclesS4 = root.getChild("leftFrontTentaclesS4");
-        this.leftFrontTentaclesS5 = root.getChild("leftFrontTentaclesS5");
-        this.rightTentecles = root.getChild("rightTentecles");
-        this.rightFrontTentacles = root.getChild("rightFrontTentacles");
-        this.rightFrontTentaclesS2 = root.getChild("rightFrontTentaclesS2");
-        this.rightFrontTentaclesS3 = root.getChild("rightFrontTentaclesS3");
-        this.rightBackTentacles = root.getChild("rightBackTentacles");
-        this.rightFrontTentaclesS4 = root.getChild("rightFrontTentaclesS4");
-        this.rightFrontTentaclesS5 = root.getChild("rightFrontTentaclesS5");
-        this.Head = root.getChild("Head");
-        this.FrontHeadFrills = root.getChild("FrontHeadFrills");
-        this.BackHeadFrills = root.getChild("BackHeadFrills");
-        this.leftHeadFrills = root.getChild("leftHeadFrills");
-        this.rightHeadFrills = root.getChild("rightHeadFrills");
     }
 
     public static LayerDefinition createBodyLayer() {
