@@ -59,6 +59,7 @@ public class PlayerStatusManager {
             for (Attribute attribute : EntityAttributeInit.PLAYER_ATTRIBUTES) {
                 EntityStatusUtil.setBaseStat(newPlayer, attribute, (int) oldPlayer.getAttributeBaseValue(attribute), true);
             }
+
             newPlayer.getAttributes().getInstance(Attributes.MAX_HEALTH).setBaseValue(oldPlayer.getAttributeBaseValue(Attributes.MAX_HEALTH));
             ModNetworking.updateMainAttributes(true);
         }
