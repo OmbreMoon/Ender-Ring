@@ -1,3 +1,4 @@
+/*
 package com.ombremoon.enderring.common.object.entity.ai.behavior.misc;
 
 import com.mojang.datafixers.util.Pair;
@@ -81,3 +82,4 @@ public class TrueSequentialBehavior<E extends LivingEntity> extends GroupBehavio
         this.runningIndex = 0;
     }
 }
+*/
