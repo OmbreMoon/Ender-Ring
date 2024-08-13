@@ -11,8 +11,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
+/**
+ * Group behaviour that runs the first behavior a set or random amount of times.<br>
+ * Restarts upon reaching the repeat limit
+ * @param <E> The entity
+ */
 public class RepeatableBehaviour<E extends LivingEntity> extends GroupBehaviour<E> {
-    protected Predicate<ExtendedBehaviour<E>> repeatPredicate = extendedBehaviour -> false;
+    protected Predicate<E> repeatPredicate = livingEntity -> true;
     private int repeatCount = 0;
     private int maxRepeat = 0;
 
@@ -27,7 +32,7 @@ public class RepeatableBehaviour<E extends LivingEntity> extends GroupBehaviour<
     /**
      * Adds a callback predicate to repeat the behaviour
      */
-    public RepeatableBehaviour<E> repeatIf(Predicate<ExtendedBehaviour<E>> predicate) {
+    public RepeatableBehaviour<E> repeatIf(Predicate<E> predicate) {
         this.repeatPredicate = predicate;
 
         return this;
@@ -56,10 +61,7 @@ public class RepeatableBehaviour<E extends LivingEntity> extends GroupBehaviour<
 
     @Override
     protected boolean timedOut(long gameTime) {
-        if (this.runningBehaviour != null) {
-            return super.timedOut(gameTime) && this.repeatCount >= this.maxRepeat;
-        }
-        return super.timedOut(gameTime);
+        return this.runningBehaviour != null ? super.timedOut(gameTime) && this.repeatCount >= this.maxRepeat : super.timedOut(gameTime);
     }
 
     @Override
@@ -76,13 +78,14 @@ public class RepeatableBehaviour<E extends LivingEntity> extends GroupBehaviour<
 
     @Override
     protected @Nullable ExtendedBehaviour<? super E> pickBehaviour(ServerLevel level, E entity, long gameTime, SBLShufflingList<ExtendedBehaviour<? super E>> extendedBehaviours) {
+        if (this.repeatCount >= this.maxRepeat)
+            return null;
+
         ExtendedBehaviour<? super E> repeat = extendedBehaviours.get(0);
 
-        if (repeat != null && repeat.tryStart(level, entity, gameTime)) {
-            if (this.repeatCount <= this.maxRepeat) {
-                this.runningBehaviour = repeat;
-                this.repeatCount++;
-            }
+        if (repeat != null && repeatPredicate.test(entity) && repeat.tryStart(level, entity, gameTime)) {
+            this.runningBehaviour = repeat;
+            this.repeatCount++;
 
             return this.runningBehaviour;
         }
