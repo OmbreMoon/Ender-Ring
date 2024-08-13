@@ -26,7 +26,7 @@ public class MobInit {
     public static RegistryObject<EntityType<TestDummy>> TEST_DUMMY;
 
     //Spirit Ashes
-    public static RegistryObject<EntityType<SpiritJellyfish>> SPIRIT_JELLYFISH = registerMob("spirit_jellyfish", SpiritJellyfish::new, MobCategory.CREATURE, 1f, 1f, 10, SpiritJellyfish::createSpiritJellyfishAttributes, false);
+    public static RegistryObject<EntityType<SpiritJellyfish>> SPIRIT_JELLYFISH = registerMob("spirit_jellyfish", SpiritJellyfish::new, MobCategory.CREATURE, 3f, 3f, 10, SpiritJellyfish::createSpiritJellyfishAttributes, false);
 
     //Creatures
     public static RegistryObject<EntityType<Torrent>> TORRENT = registerMob("torrent", Torrent::new, MobCategory.CREATURE, 1.65F, 2.0F, 10, Torrent::createTorrentAttributes, false);

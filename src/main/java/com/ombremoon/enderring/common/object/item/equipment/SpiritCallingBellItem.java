@@ -2,6 +2,7 @@ package com.ombremoon.enderring.common.object.item.equipment;
 
 import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import com.ombremoon.enderring.util.EntityStatusUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
@@ -26,6 +27,12 @@ public class SpiritCallingBellItem extends Item implements IQuickAccess {
                 spiritAsh.setOwnerUUID(pPlayer.getUUID());
                 LivingEntity livingEntity = (LivingEntity) spiritAsh;
                 if (this.canSpawnSummon(pPlayer, livingEntity)) {
+                    double rot = Math.toRadians(pPlayer.getYHeadRot());
+
+                    livingEntity.teleportTo(
+                            pPlayer.getX() - 5.0 *  Math.sin(rot),
+                            pPlayer.getY(),
+                            pPlayer.getZ() + 5.0 * Math.cos(rot));
                     pLevel.addFreshEntity(livingEntity);
                 }
             }

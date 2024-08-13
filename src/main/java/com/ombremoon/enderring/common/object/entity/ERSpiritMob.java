@@ -29,8 +29,14 @@ import java.util.function.Predicate;
 
 public abstract class ERSpiritMob <T extends ERMob<T>> extends ERMob<T> implements OwnableEntity, ISpiritAsh {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(ERSpiritMob.class, EntityDataSerializers.OPTIONAL_UUID);
-    private int runeReward;
+    private final int runeReward;
 
+    /**
+     * Represents a regular ERMob that can be summoned as a spirit ash
+     * @param pEntityType The entity type being created
+     * @param pLevel The game level
+     * @param runeReward The amount of runes to be awarded for defeating the mob, 0 if summoned
+     */
     protected ERSpiritMob(EntityType<? extends ERMob> pEntityType, Level pLevel, int runeReward) {
         super(pEntityType, pLevel);
         this.runeReward = runeReward;
@@ -99,6 +105,10 @@ public abstract class ERSpiritMob <T extends ERMob<T>> extends ERMob<T> implemen
     }
 
 
+    /**
+     * Predicate deciding whether a given LivingEntity can be targeted
+     * @return predicate returning true if entity is targetable, false otherwise
+     */
     @Override
     protected Predicate<LivingEntity> neutralAttackCondition() {
         if (this.getBrain() == null) return livingEntity -> false;
