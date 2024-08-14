@@ -64,7 +64,7 @@ public class StatusEffect extends MobEffect {
         }
         else if(this == StatusEffectInit.CRIMSONBURST_CRYSTAL.get())
         {
-            pLivingEntity.heal(0.15f);
+            pLivingEntity.heal(0.4666666666666667f);
         }
         else if(this == StatusEffectInit.GREENBURST_CRYSTAL.get())
         {
