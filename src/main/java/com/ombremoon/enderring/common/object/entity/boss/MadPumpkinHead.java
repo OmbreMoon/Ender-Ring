@@ -6,7 +6,8 @@ import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
-import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
+import com.ombremoon.enderring.common.object.entity.spirit.ERSpiritBoss;
+import com.ombremoon.enderring.common.object.entity.spirit.ISpiritAsh;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
 import com.ombremoon.enderring.common.object.entity.npc.TestDummy;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -39,18 +40,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class MadPumpkinHead extends ERBoss<MadPumpkinHead> implements ISpiritAsh {
+public class MadPumpkinHead extends ERSpiritBoss<MadPumpkinHead> {
     private final Predicate<TestDummy> MELEE_ATTACK_PREDICATE = entity -> entity.getTarget() == null || !entity.getSensing().hasLineOfSight(entity.getTarget()) || !entity.isWithinMeleeAttackRange(entity.getTarget());
-    @Nullable
-    private UUID owner;
 
     public MadPumpkinHead(EntityType<MadPumpkinHead> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
-    }
-
-    @Override
-    public int getRuneReward(Level level, BlockPos blockPos) {
-        return 1100;
+        super(pEntityType, pLevel, 1100);
     }
 
     @Override
@@ -140,16 +134,6 @@ public class MadPumpkinHead extends ERBoss<MadPumpkinHead> implements ISpiritAsh
     @Override
     public ResourceLocation getTextureLocation() {
         return null;
-    }
-
-    @Nullable
-    @Override
-    public UUID getOwnerUUID() {
-        return this.owner;
-    }
-
-    public void setOwnerUUID(UUID owner) {
-        this.owner = owner;
     }
 
     @Override

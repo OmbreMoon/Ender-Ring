@@ -1,28 +1,20 @@
-package com.ombremoon.enderring.common.object.entity;
+package com.ombremoon.enderring.common.object.entity.spirit;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.ResourceLocationException;
+import com.ombremoon.enderring.common.object.entity.ERMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.level.Level;
-import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -111,9 +103,8 @@ public abstract class ERSpiritMob <T extends ERMob<T>> extends ERMob<T> implemen
      */
     @Override
     protected Predicate<LivingEntity> neutralAttackCondition() {
-        if (this.getBrain() == null) return livingEntity -> false;
+        if (this.getBrain() == null) return livingEntity -> false; //this.getBrain() can be null don't believe the lies.
         Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
-        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID();
-        //return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && (getOwnerUUID() == null || getOwnerUUID() != target.getUUID());
+        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && (getOwnerUUID() == null || getOwnerUUID() != target.getUUID());
     }
 }
