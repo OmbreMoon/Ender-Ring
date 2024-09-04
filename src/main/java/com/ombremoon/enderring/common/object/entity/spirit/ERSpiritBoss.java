@@ -100,11 +100,12 @@ public abstract class ERSpiritBoss <T extends ERMonster<T>> extends ERBoss<T> im
     }
 
     /**
-     * Checks if a given entity is the owner of the spirit ash or is another spirit ash owned by the same player
-     * @param entity The entity to check if its friendly
-     * @return true if it is friendly, false otherwise.
+     * Checks if the target entity is allied
+     * @param entity the entity to check
+     * @return true if the target is allied, false otherwise
      */
-    protected boolean isFriendly(LivingEntity entity) {
+    @Override
+    public boolean isAlliedTo(Entity entity) {
         LivingEntity spiritOwner = this.getOwner();
         if (spiritOwner == null) return false;
 

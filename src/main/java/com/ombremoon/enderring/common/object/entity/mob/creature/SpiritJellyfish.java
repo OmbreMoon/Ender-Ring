@@ -133,7 +133,7 @@ public class SpiritJellyfish extends ERSpiritMob<SpiritJellyfish> implements Ran
     protected Predicate<LivingEntity> neutralAttackCondition() {
         if (this.getBrain() == null) return livingEntity -> false; //this.getBrain() is sometimes null don't believe the lies
         Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
-        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && !isFriendly(livingEntity);
+        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && !isAlliedTo(livingEntity);
     }
 
     @Override

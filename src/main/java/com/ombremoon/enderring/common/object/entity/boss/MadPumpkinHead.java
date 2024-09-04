@@ -66,7 +66,7 @@ public class MadPumpkinHead extends ERSpiritBoss<MadPumpkinHead> {
     public BrainActivityGroup<? extends ERMob<MadPumpkinHead>> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new TargetOrRetaliate<>()
-                        .attackablePredicate(target -> target.isAlive() && !isFriendly(target) && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(target)));
+                        .attackablePredicate(target -> target.isAlive() && !isAlliedTo(target) && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(target)));
     }
 
     @Override
