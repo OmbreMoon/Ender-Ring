@@ -1,6 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.spirit;
 
 import com.ombremoon.enderring.common.object.entity.ERMob;
+import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -96,15 +97,15 @@ public abstract class ERSpiritMob <T extends ERMob<T>> extends ERMob<T> implemen
         this.entityData.set(OWNER_UUID, Optional.ofNullable(uuid));
     }
 
-
     /**
-     * Predicate deciding whether a given LivingEntity can be targeted
-     * @return predicate returning true if entity is targetable, false otherwise
+     * Checks if a given entity is the owner of the spirit ash or is another spirit ash owned by the same player
+     * @param entity The entity to check if its friendly
+     * @return true if it is friendly, false otherwise.
      */
-    @Override
-    protected Predicate<LivingEntity> neutralAttackCondition() {
-        if (this.getBrain() == null) return livingEntity -> false; //this.getBrain() can be null don't believe the lies.
-        Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
-        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && (getOwnerUUID() == null || getOwnerUUID() != target.getUUID());
+    protected boolean isFriendly(LivingEntity entity) {
+        LivingEntity spiritOwner = this.getOwner();
+        if (spiritOwner == null) return false;
+
+        return entity.is(spiritOwner) || (entity instanceof ISpiritAsh ash && ash.getOwner() != null && ash.getOwner().is(getOwner()));
     }
 }

@@ -20,7 +20,7 @@ public class MobInit {
     public static final List<RegistryObject<? extends EntityType<?>>> MOBS = new ArrayList<>();
 
     public static void init() {
-        TEST_DUMMY = registerMob("test_dummy", TestDummy::new, MobCategory.MISC, 0.6F, 1.95F, 4, TestDummy::createTestDummyAttributes);
+        TEST_DUMMY = registerMob("test_dummy", TestDummy::new, MobCategory.MISC, 0.6F, 1.95F, 4, TestDummy::createMadPumpkinHeadAttributes);
     }
 
     public static RegistryObject<EntityType<TestDummy>> TEST_DUMMY;

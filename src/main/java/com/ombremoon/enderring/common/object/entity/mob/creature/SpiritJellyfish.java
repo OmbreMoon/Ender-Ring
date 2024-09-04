@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -37,6 +38,7 @@ import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.gameasset.Animations;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class SpiritJellyfish extends ERSpiritMob<SpiritJellyfish> implements RangedAttackMob {
     public static final EntityDataAccessor<Boolean> IS_AGGRO = SynchedEntityData.defineId(SpiritJellyfish.class, EntityDataSerializers.BOOLEAN);
@@ -125,6 +127,13 @@ public class SpiritJellyfish extends ERSpiritMob<SpiritJellyfish> implements Ran
     @Override
     public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
 
+    }
+
+    @Override
+    protected Predicate<LivingEntity> neutralAttackCondition() {
+        if (this.getBrain() == null) return livingEntity -> false; //this.getBrain() is sometimes null don't believe the lies
+        Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
+        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && !isFriendly(livingEntity);
     }
 
     @Override

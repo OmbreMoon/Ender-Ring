@@ -7,7 +7,6 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
 import com.ombremoon.enderring.common.object.entity.spirit.ERSpiritBoss;
-import com.ombremoon.enderring.common.object.entity.spirit.ISpiritAsh;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
 import com.ombremoon.enderring.common.object.entity.npc.TestDummy;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -67,8 +66,7 @@ public class MadPumpkinHead extends ERSpiritBoss<MadPumpkinHead> {
     public BrainActivityGroup<? extends ERMob<MadPumpkinHead>> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new TargetOrRetaliate<>()
-                        .useMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER)
-                        .attackablePredicate(target -> target.isAlive() && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(target)));
+                        .attackablePredicate(target -> target.isAlive() && !isFriendly(target) && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(target)));
     }
 
     @Override
@@ -126,12 +124,10 @@ public class MadPumpkinHead extends ERSpiritBoss<MadPumpkinHead> {
         return super.isAlliedTo(pTeam);
     }
 
-    @Override
     public int getSummonCost() {
-        return 110;
+        return 50;
     }
 
-    @Override
     public ResourceLocation getTextureLocation() {
         return null;
     }
