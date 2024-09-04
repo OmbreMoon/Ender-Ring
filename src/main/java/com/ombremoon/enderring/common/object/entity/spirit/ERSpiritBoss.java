@@ -1,9 +1,7 @@
 package com.ombremoon.enderring.common.object.entity.spirit;
 
 import com.ombremoon.enderring.common.object.entity.ERBoss;
-import com.ombremoon.enderring.common.object.entity.ERMob;
 import com.ombremoon.enderring.common.object.entity.ERMonster;
-import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,14 +11,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.level.Level;
-import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 public abstract class ERSpiritBoss <T extends ERMonster<T>> extends ERBoss<T> implements OwnableEntity, ISpiritAsh {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(ERSpiritBoss.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -100,11 +95,12 @@ public abstract class ERSpiritBoss <T extends ERMonster<T>> extends ERBoss<T> im
     }
 
     /**
-     * Checks if a given entity is the owner of the spirit ash or is another spirit ash owned by the same player
-     * @param entity The entity to check if its friendly
-     * @return true if it is friendly, false otherwise.
+     * Checks if the target entity is allied
+     * @param entity the entity to check
+     * @return true if the target is allied, false otherwise
      */
-    protected boolean isFriendly(LivingEntity entity) {
+    @Override
+    public boolean isAlliedTo(Entity entity) {
         LivingEntity spiritOwner = this.getOwner();
         if (spiritOwner == null) return false;
 

@@ -9,7 +9,7 @@ import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
-import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
+import com.ombremoon.enderring.common.object.entity.spirit.ISpiritAsh;
 import com.ombremoon.enderring.network.ModNetworking;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;

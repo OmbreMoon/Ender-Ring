@@ -1,6 +1,7 @@
-package com.ombremoon.enderring.common.object.entity;
+package com.ombremoon.enderring.common.object.entity.spirit;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 
 import javax.annotation.Nullable;

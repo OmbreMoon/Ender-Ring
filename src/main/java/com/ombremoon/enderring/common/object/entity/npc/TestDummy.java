@@ -63,7 +63,7 @@ public class TestDummy extends ERSpiritBoss<TestDummy> {
     public BrainActivityGroup<? extends ERMob<TestDummy>> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new TargetOrRetaliate<>()
-                        .attackablePredicate(target -> target.isAlive() && !isFriendly(target) && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(target)));
+                        .attackablePredicate(target -> target.isAlive() && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(target)));
     }
 
     @Override

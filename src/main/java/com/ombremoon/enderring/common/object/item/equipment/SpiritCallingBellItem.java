@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.common.object.item.equipment;
 
-import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
+import com.ombremoon.enderring.common.object.entity.spirit.ISpiritAsh;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
