@@ -9,6 +9,7 @@ public class ModelLocations {
 
     //MOBS
     public static final ModelLayerLocation TORRENT = new ModelLayerLocation(CommonClass.customLocation("torrent"), "main");
+    public static final ModelLayerLocation SPIRIT_JELLYFISH = new ModelLayerLocation(CommonClass.customLocation("spirit_jellyfish"), "main");
 
     //SPELLS
     public static final ModelLayerLocation GLINTSTONE_ARC = new ModelLayerLocation(CommonClass.customLocation("glintstone_arc"), "main");

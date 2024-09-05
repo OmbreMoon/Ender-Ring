@@ -4,16 +4,16 @@ import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.object.entity.ERMob;
-import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
+import com.ombremoon.enderring.common.object.entity.spirit.ERSpiritMob;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedRangedAttack;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,6 +26,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.SequentialBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.WalkOrRunToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
@@ -33,31 +34,23 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
-import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.gameasset.Animations;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.function.Predicate;
 
-public class SpiritJellyfish extends ERMob<SpiritJellyfish> implements ISpiritAsh, RangedAttackMob {
+public class SpiritJellyfish extends ERSpiritMob<SpiritJellyfish> implements RangedAttackMob {
     public static final EntityDataAccessor<Boolean> IS_AGGRO = SynchedEntityData.defineId(SpiritJellyfish.class, EntityDataSerializers.BOOLEAN);
-    @Nullable
-    private UUID owner;
 
     public SpiritJellyfish(EntityType<? extends ERMob> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+        super(pEntityType, pLevel, 33);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(IS_AGGRO, false);
-    }
-
-    @Override
-    public int getRuneReward(Level level, BlockPos blockPos) {
-        return 33;
     }
 
     @Override
@@ -72,7 +65,8 @@ public class SpiritJellyfish extends ERMob<SpiritJellyfish> implements ISpiritAs
     @Override
     public BrainActivityGroup<? extends ERMob<SpiritJellyfish>> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
-                new LookAtTarget<>()
+                new LookAtTarget<>(),
+                new WalkOrRunToWalkTarget<>()
         );
     }
 
@@ -80,6 +74,7 @@ public class SpiritJellyfish extends ERMob<SpiritJellyfish> implements ISpiritAs
     public BrainActivityGroup<? extends ERMob<SpiritJellyfish>> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new TargetOrRetaliate<>()
+                        .useMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER)
                         .attackablePredicate(neutralAttackCondition()),
                 new Idle<SpiritJellyfish>()
                         .whenStarting(spiritJellyfish -> {
@@ -120,7 +115,6 @@ public class SpiritJellyfish extends ERMob<SpiritJellyfish> implements ISpiritAs
         this.entityData.set(IS_AGGRO, isAggro);
     }
 
-    @Override
     public int getSummonCost() {
         return 31;
     }
@@ -130,20 +124,16 @@ public class SpiritJellyfish extends ERMob<SpiritJellyfish> implements ISpiritAs
         return null;
     }
 
-    @Nullable
-    @Override
-    public UUID getOwnerUUID() {
-        return this.owner;
-    }
-
-    @Override
-    public void setOwnerUUID(@Nullable UUID uuid) {
-        this.owner = uuid;
-    }
-
     @Override
     public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
 
+    }
+
+    @Override
+    protected Predicate<LivingEntity> neutralAttackCondition() {
+        if (this.getBrain() == null) return livingEntity -> false; //this.getBrain() is sometimes null don't believe the lies
+        Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
+        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && !isAlliedTo(livingEntity);
     }
 
     @Override

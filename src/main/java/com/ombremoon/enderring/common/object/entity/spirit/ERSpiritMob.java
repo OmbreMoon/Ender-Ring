@@ -1,37 +1,32 @@
-package com.ombremoon.enderring.common.object.entity;
+package com.ombremoon.enderring.common.object.entity.spirit;
 
-import com.ombremoon.enderring.common.object.entity.mob.creature.SpiritJellyfish;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.ResourceLocationException;
+import com.ombremoon.enderring.common.object.entity.ERMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.level.Level;
-import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
-import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
 
-public abstract class AbstractSpiritAsh <T extends ERMob<T>> extends ERMob<T> implements OwnableEntity {
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractSpiritAsh.class, EntityDataSerializers.OPTIONAL_UUID);
-    private int runeReward;
+public abstract class ERSpiritMob <T extends ERMob<T>> extends ERMob<T> implements OwnableEntity, ISpiritAsh {
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(ERSpiritMob.class, EntityDataSerializers.OPTIONAL_UUID);
+    private final int runeReward;
 
-    protected AbstractSpiritAsh(EntityType<? extends ERMob> pEntityType, Level pLevel, int runeReward) {
+    /**
+     * Represents a regular ERMob that can be summoned as a spirit ash
+     * @param pEntityType The entity type being created
+     * @param pLevel The game level
+     * @param runeReward The amount of runes to be awarded for defeating the mob, 0 if summoned
+     */
+    protected ERSpiritMob(EntityType<? extends ERMob> pEntityType, Level pLevel, int runeReward) {
         super(pEntityType, pLevel);
         this.runeReward = runeReward;
     }
@@ -70,16 +65,6 @@ public abstract class AbstractSpiritAsh <T extends ERMob<T>> extends ERMob<T> im
     }
 
     /**
-     * The entities target condition
-     * @return targeting predicate
-     */
-    @Override
-    protected Predicate<LivingEntity> neutralAttackCondition() {
-        Entity target = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
-        return livingEntity -> target != null && target.getUUID() == livingEntity.getUUID() && (getOwnerUUID() == null || getOwnerUUID() != target.getUUID());
-    }
-
-    /**
      * Gets the amount of runes that the player is rewarded for defeating this entity
      * @param level the world the entity was killed in
      * @param blockPos the position of the entity on death
@@ -109,10 +94,15 @@ public abstract class AbstractSpiritAsh <T extends ERMob<T>> extends ERMob<T> im
     }
 
     /**
-     * Gets the amount of FP required to summon this spirit ash
-     * @return minimum FP to summon the spirit ash
+     * Checks if the target entity is allied
+     * @param entity the entity to check
+     * @return true if the target is allied, false otherwise
      */
-    abstract int getSummonCost();
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        LivingEntity spiritOwner = this.getOwner();
+        if (spiritOwner == null) return false;
 
-    abstract ResourceLocation getTextureLocation();
+        return entity.is(spiritOwner) || (entity instanceof ISpiritAsh ash && ash.getOwner() != null && ash.getOwner().is(getOwner()));
+    }
 }

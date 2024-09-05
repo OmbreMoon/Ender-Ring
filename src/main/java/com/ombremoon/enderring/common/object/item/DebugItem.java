@@ -1,5 +1,6 @@
 package com.ombremoon.enderring.common.object.item;
 
+import com.mojang.logging.LogUtils;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.client.gui.screen.PlayerStatusScreen;
 import com.ombremoon.enderring.common.WeaponScaling;
@@ -52,6 +53,10 @@ public class DebugItem extends Item {
                 ModNetworking.selectOrigin(FirstSpawnEvent.CHARACTER_ORIGIN, (ServerPlayer) pPlayer);
             } else {
                 this.setStats(pPlayer);
+                EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.CATCH_FLAME.get());
+                EntityStatusUtil.setSpiritSummon(serverPlayer, MobInit.TEST_DUMMY.get());
+                LogUtils.getLogger().debug(EntityStatusUtil.getSpiritSummon(serverPlayer).getDescriptionId());
+                LogUtils.getLogger().debug(String.valueOf(EntityStatusUtil.getFP(serverPlayer)));
                 EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.GLINTSTONE_ARC.get());
             }
         }

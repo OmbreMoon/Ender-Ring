@@ -4,13 +4,9 @@ import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.StatusEffectInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
-import com.ombremoon.enderring.common.magic.SpellType;
-import com.ombremoon.enderring.common.object.entity.ERMob;
+import com.ombremoon.enderring.common.object.entity.spirit.ISpiritAsh;
 import com.ombremoon.enderring.event.custom.EventFactory;
-import com.ombremoon.enderring.util.EntityStatusUtil;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,14 +16,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.LinkedHashSet;
-
 public class PlayerStatus extends EntityStatus<Player> {
     public static final EntityDataAccessor<Float> FP = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Integer> RUNES = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
     private Player player;
     private boolean channelling;
-    private EntityType<?> spiritSummon;
+    private EntityType<? extends ISpiritAsh> spiritSummon;
     private boolean isTorrentSpawned;
     private double torrentHealth = 77;
     private int talismanPouches;
@@ -111,11 +105,11 @@ public class PlayerStatus extends EntityStatus<Player> {
         this.channelling = channelling;
     }
 
-    public EntityType<?> getSpiritSummon() {
+    public EntityType<? extends ISpiritAsh> getSpiritSummon() {
         return this.spiritSummon;
     }
 
-    public void setSpiritSummon(EntityType<?> spiritSummon) {
+    public void setSpiritSummon(EntityType<? extends ISpiritAsh> spiritSummon) {
         this.spiritSummon = spiritSummon;
     }
     

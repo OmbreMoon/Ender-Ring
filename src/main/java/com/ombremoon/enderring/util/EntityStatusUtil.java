@@ -9,6 +9,7 @@ import com.ombremoon.enderring.common.init.SpellInit;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.magic.AbstractSpell;
 import com.ombremoon.enderring.common.magic.SpellType;
+import com.ombremoon.enderring.common.object.entity.spirit.ISpiritAsh;
 import com.ombremoon.enderring.network.ModNetworking;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.nbt.CompoundTag;
@@ -256,11 +257,11 @@ public class EntityStatusUtil {
         ModNetworking.syncCap(player);
     }
 
-    public static EntityType<?> getSpiritSummon(Player player) {
+    public static EntityType<? extends ISpiritAsh> getSpiritSummon(Player player) {
         return getPlayerStatus(player).getSpiritSummon();
     }
 
-    public static void setSpiritSummon(ServerPlayer player, EntityType<?> spiritSummon) {
+    public static void setSpiritSummon(ServerPlayer player, EntityType<? extends ISpiritAsh> spiritSummon) {
         getPlayerStatus(player).setSpiritSummon(spiritSummon);
         ModNetworking.syncCap(player);
     }

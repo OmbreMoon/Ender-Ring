@@ -1,6 +1,6 @@
 package com.ombremoon.enderring.common.object.item.equipment;
 
-import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
+import com.ombremoon.enderring.common.object.entity.spirit.ISpiritAsh;
 import com.ombremoon.enderring.util.EntityStatusUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,10 +20,18 @@ public class SpiritCallingBellItem extends Item implements IQuickAccess {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            EntityType<?> entityType = EntityStatusUtil.getSpiritSummon(pPlayer);
+            EntityType<? extends ISpiritAsh> entityType = EntityStatusUtil.getSpiritSummon(pPlayer);
             if (entityType != null) {
-                LivingEntity livingEntity = (LivingEntity) entityType.create(pLevel);
+                ISpiritAsh spiritAsh = entityType.create(pLevel);
+                spiritAsh.setOwnerUUID(pPlayer.getUUID());
+                LivingEntity livingEntity = (LivingEntity) spiritAsh;
                 if (this.canSpawnSummon(pPlayer, livingEntity)) {
+                    double rot = Math.toRadians(pPlayer.getYHeadRot());
+
+                    livingEntity.teleportTo(
+                            pPlayer.getX() - 5.0 *  Math.sin(rot),
+                            pPlayer.getY(),
+                            pPlayer.getZ() + 5.0 * Math.cos(rot));
                     pLevel.addFreshEntity(livingEntity);
                 }
             }
