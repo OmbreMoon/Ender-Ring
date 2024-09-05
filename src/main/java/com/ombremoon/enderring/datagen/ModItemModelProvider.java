@@ -22,6 +22,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     private final Predicate<Item> exclusionPredicate = item -> !Arrays.stream(EXCLUSION_LIST).toList().contains(item);
     private final Predicate<Item> equipExclusionPredicate = item -> !Arrays.stream(EQUIP_EXCLUSION_LIST).toList().contains(item);
     private final Predicate<Item> exclusionPredicate1 = item -> !Arrays.stream(EXCLUSION_LIST_1).toList().contains(item);
+    private final Predicate<Item> exclusionPredicate2 = item -> !Arrays.stream(EXCLUSION_LIST_2).toList().contains(item);
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, Constants.MOD_ID, existingFileHelper);
     }
@@ -37,15 +38,15 @@ public class ModItemModelProvider extends ItemModelProvider {
     }
 
     private void registerItemModels(Collection<RegistryObject<? extends Item>> registryObjects) {
-        registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate).forEach(this::simpleGeneratedModel);
+        registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate).filter(exclusionPredicate1).forEach(this::simpleGeneratedModel);
     }
 
     private void registerEquipModels(Collection<RegistryObject<? extends Item>> registryObjects) {
-        registryObjects.stream().map(RegistryObject::get).filter(equipExclusionPredicate).filter(exclusionPredicate1).forEach(this::simpleHandHeldModel);
+        registryObjects.stream().map(RegistryObject::get).filter(equipExclusionPredicate).filter(exclusionPredicate2).forEach(this::simpleHandHeldModel);
     }
 
     private void registerTempHandModels(Collection<RegistryObject<? extends Item>> registryObjects) {
-        registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate1).forEach(this::tempItem);
+        registryObjects.stream().map(RegistryObject::get).filter(exclusionPredicate2).forEach(this::tempItem);
     }
 
     protected ItemModelBuilder simpleGeneratedModel(Item item) {
@@ -86,6 +87,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     static final Item[] EXCLUSION_LIST = {
             ItemInit.DEBUG.get(),
+            ItemInit.TEST_CATALYST.get(),
             ItemInit.SPIRIT_CALLING_BELL.get(),
             ItemInit.TORRENT_WHISTLE.get(),
             ItemInit.SACRED_TEAR.get(),
@@ -183,7 +185,6 @@ public class ModItemModelProvider extends ItemModelProvider {
             EquipmentInit.BLACK_KNIFE.get(),
             EquipmentInit.SHORT_SWORD.get(),
             EquipmentInit.LONGSWORD.get(),
-            EquipmentInit.BROADSWORD.get(),
             EquipmentInit.ESTOC.get(),
             EquipmentInit.CLUB.get(),
             EquipmentInit.SHORT_SPEAR.get(),
@@ -208,10 +209,16 @@ public class ModItemModelProvider extends ItemModelProvider {
     };
 
     static final Item[] EXCLUSION_LIST_1 = {
+            ItemInit.GRACE_SITE.get()
+    };
+
+    static final Item[] EXCLUSION_LIST_2 = {
             EquipmentInit.SCIMITAR.get(),
             EquipmentInit.BATTLE_AXE.get(),
+            EquipmentInit.BROADSWORD.get(),
             EquipmentInit.HALBERD.get(),
             EquipmentInit.UCHIGATANA.get(),
+            EquipmentInit.CLUB.get(),
             EquipmentInit.GLINTSTONE_STAFF.get(),
             EquipmentInit.ASTROLOGER_STAFF.get(),
             EquipmentInit.GUARDIAN_SWORDSPEAR.get(),

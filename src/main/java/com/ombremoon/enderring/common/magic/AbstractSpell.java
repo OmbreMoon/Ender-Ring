@@ -40,7 +40,8 @@ public abstract class AbstractSpell {
     private final int duration;
     private final float motionValue;
     private final float chargedMotionValue;
-    private final boolean canCharge;
+    private final int chargeTick;
+    private final CastType castType;
     private final SoundEvent castSound;
     protected Level level;
     protected ScaledWeapon scaledWeapon;
@@ -71,7 +72,8 @@ public abstract class AbstractSpell {
         this.duration = builder.duration;
         this.motionValue = builder.motionValue;
         this.chargedMotionValue = builder.chargedMotionValue;
-        this.canCharge = builder.canCharge;
+        this.chargeTick = builder.chargeTick;
+        this.castType = builder.castType;
         this.castSound = builder.castSound;
     }
 
@@ -113,20 +115,16 @@ public abstract class AbstractSpell {
         return this.chargedMotionValue;
     }
 
-    public boolean canCharge() {
-        return this.canCharge;
+    public int getChargeTick() {
+        return this.chargeTick;
     }
 
     protected SoundEvent getCastSound() {
         return this.castSound;
     }
 
-    public boolean isInstantSpell() {
-        return true;
-    }
-
-    public boolean requiresConcentration() {
-        return false;
+    public CastType getCastType() {
+        return this.castType;
     }
 
     public abstract int getCastTime();
@@ -173,7 +171,7 @@ public abstract class AbstractSpell {
                 if (this.shouldTickEffect(ticks)) {
                     this.tickSpell();
                 }
-                if (!this.requiresConcentration() && ticks % duration == 0) {
+                if (this.getCastType() != CastType.CHANNEL && ticks % duration == 0) {
                     this.endSpell();
                 }
             }
@@ -250,7 +248,7 @@ public abstract class AbstractSpell {
     }
 
     public static float getPowerForTime(AbstractSpell spell, int pCharge) {
-        if (spell.canCharge()) {
+        if (spell.getCastType() == CastType.CHARGING) {
             float f = (float) pCharge / 20.0F;
             f = (f * f + f * 2.0F) / 3.0F;
             if (f > 1.0F) {
@@ -301,7 +299,9 @@ public abstract class AbstractSpell {
         protected int staminaCost;
         protected float motionValue;
         protected float chargedMotionValue;
+        protected int chargeTick;
         protected boolean canCharge;
+        protected CastType castType = CastType.INSTANT;
         protected SoundEvent castSound;
 
         public Builder<T> setClassification(Classification classification) {
@@ -339,8 +339,13 @@ public abstract class AbstractSpell {
             return this;
         }
 
-        public Builder<T> canCharge() {
-            this.canCharge = true;
+        public Builder<T> setChargeTick(int chargeTick) {
+            this.chargeTick = chargeTick;
+            return this;
+        }
+
+        public Builder<T> setCastType(CastType castType) {
+            this.castType = castType;
             return this;
         }
 
@@ -355,5 +360,9 @@ public abstract class AbstractSpell {
             }
             this.requiredStats.add(Pair.of(statType, requiredStat));
         }
+    }
+
+    public enum CastType {
+        INSTANT, CHARGING, CHANNEL
     }
 }

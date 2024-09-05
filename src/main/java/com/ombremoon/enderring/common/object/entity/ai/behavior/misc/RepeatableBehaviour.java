@@ -11,8 +11,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
+/**
+ * Group behaviour that runs the first behavior a set or random amount of times.<br>
+ * Restarts upon reaching the repeat limit
+ * @param <E> The entity
+ */
 public class RepeatableBehaviour<E extends LivingEntity> extends GroupBehaviour<E> {
-    protected Predicate<ExtendedBehaviour<? super E>> repeatPredicate = extendedBehaviour -> false;
+    protected Predicate<E> repeatPredicate = livingEntity -> true;
     private int repeatCount = 0;
     private int maxRepeat = 0;
 
@@ -27,7 +32,7 @@ public class RepeatableBehaviour<E extends LivingEntity> extends GroupBehaviour<
     /**
      * Adds a callback predicate to repeat the behaviour
      */
-    public RepeatableBehaviour<E> repeatIf(Predicate<ExtendedBehaviour<? super E>> predicate) {
+    public RepeatableBehaviour<E> repeatIf(Predicate<E> predicate) {
         this.repeatPredicate = predicate;
 
         return this;
@@ -50,18 +55,47 @@ public class RepeatableBehaviour<E extends LivingEntity> extends GroupBehaviour<
     }
 
     @Override
+    protected boolean shouldKeepRunning(E entity) {
+        return this.runningBehaviour != null && this.runningBehaviour.getStatus() != Status.STOPPED;
+    }
+
+    @Override
+    protected boolean timedOut(long gameTime) {
+        return this.runningBehaviour != null ? super.timedOut(gameTime) && this.repeatCount >= this.maxRepeat : super.timedOut(gameTime);
+    }
+
+    @Override
+    protected void tick(ServerLevel level, E owner, long gameTime) {
+        this.runningBehaviour.tickOrStop(level, owner, gameTime);
+
+        if (this.runningBehaviour.getStatus() == Status.STOPPED) {
+            if (pickBehaviour(level, owner, gameTime, this.behaviours) != null)
+                return;
+
+            doStop(level, owner, gameTime);
+        }
+    }
+
+    @Override
     protected @Nullable ExtendedBehaviour<? super E> pickBehaviour(ServerLevel level, E entity, long gameTime, SBLShufflingList<ExtendedBehaviour<? super E>> extendedBehaviours) {
-        for (ExtendedBehaviour<? super E> behaviour : extendedBehaviours) {
-            if (behaviour.tryStart(level, entity, gameTime)) {
-                if (this.repeatCount <= this.maxRepeat) {
-                    this.repeatCount++;
-                    return behaviour;
-                }
-                return null;
-            }
+        if (this.repeatCount >= this.maxRepeat)
             return null;
+
+        ExtendedBehaviour<? super E> repeat = extendedBehaviours.get(0);
+
+        if (repeat != null && repeatPredicate.test(entity) && repeat.tryStart(level, entity, gameTime)) {
+            this.runningBehaviour = repeat;
+            this.repeatCount++;
+
+            return this.runningBehaviour;
         }
 
         return null;
+    }
+
+    @Override
+    protected void stop(ServerLevel level, E entity, long gameTime) {
+        super.stop(level, entity, gameTime);
+        this.repeatCount = 0;
     }
 }

@@ -3,7 +3,7 @@ package com.ombremoon.enderring.common.init.item;
 import com.ombremoon.enderring.common.magic.Classification;
 import com.ombremoon.enderring.common.magic.Classifications;
 import com.ombremoon.enderring.common.object.item.MidasGauntletItem;
-import com.ombremoon.enderring.common.object.item.equipment.ModdedArmor;
+import com.ombremoon.enderring.common.object.item.equipment.ERArmor;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.AbstractWeapon;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.ranged.AbstractArrowItem;
 import com.ombremoon.enderring.common.object.item.equipment.weapon.magic.CatalystWeapon;
@@ -85,10 +85,10 @@ public class EquipmentInit extends ItemInit {
     public static final RegistryObject<AbstractShield> RED_THORN_ROUNDSHIELD = registerSmallShield("red_thorn_roundshield");
 
     //Armor Sets
-    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_COWL = registerArmor("blue_cloth_cowl", ArmorInit.BLUE_CLOTH, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_VEST = registerArmor("blue_cloth_vest", ArmorInit.BLUE_CLOTH, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_LEGGINGS = registerArmor("blue_cloth_leggings", ArmorInit.BLUE_CLOTH, ArmorItem.Type.LEGGINGS);
-    public static final RegistryObject<ModdedArmor> BLUE_CLOTH_GREAVES = registerArmor("blue_cloth_greaves", ArmorInit.BLUE_CLOTH, ArmorItem.Type.BOOTS);
+    public static final RegistryObject<ERArmor> BLUE_CLOTH_COWL = registerArmor("blue_cloth_cowl", ArmorInit.BLUE_CLOTH, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> BLUE_CLOTH_VEST = registerArmor("blue_cloth_vest", ArmorInit.BLUE_CLOTH, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> BLUE_CLOTH_LEGGINGS = registerArmor("blue_cloth_leggings", ArmorInit.BLUE_CLOTH, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ERArmor> BLUE_CLOTH_GREAVES = registerArmor("blue_cloth_greaves", ArmorInit.BLUE_CLOTH, ArmorItem.Type.BOOTS);
 
     //AMMUNITION
     public static final RegistryObject<Item> BONE_ARROW = registerBoneArrow("bone_arrow");
@@ -184,11 +184,11 @@ public class EquipmentInit extends ItemInit {
         return registerMeleeWeapon(name, () -> new DaggerWeapon(itemProperties()));
     }
 
-    protected static RegistryObject<ModdedArmor> registerArmor(String name, ArmorMaterial armorMaterial, ArmorItem.Type type) {
-        return registerArmor(name, () -> new ModdedArmor(armorMaterial, type, itemProperties()));
+    protected static RegistryObject<ERArmor> registerArmor(String name, ArmorMaterial armorMaterial, ArmorItem.Type type) {
+        return registerArmor(name, () -> new ERArmor(armorMaterial, type, itemProperties()));
     }
 
-    private static <T extends ModdedArmor> RegistryObject<T> registerArmor(String name, Supplier<T> armor) {
+    private static <T extends ERArmor> RegistryObject<T> registerArmor(String name, Supplier<T> armor) {
         return registerItem(name, armor, EQUIPMENT_LIST, SIMPLE_ITEM_LIST);
     }
 

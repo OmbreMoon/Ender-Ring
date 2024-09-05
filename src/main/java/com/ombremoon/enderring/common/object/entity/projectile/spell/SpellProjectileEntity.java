@@ -304,9 +304,7 @@ public abstract class SpellProjectileEntity<T extends ProjectileSpell<?, ?>> ext
     }
 
     protected PathConsumer getCustomPath() {
-        return spellProjectileEntity -> {
-
-        };
+        return spellProjectileEntity -> {};
     }
 
     protected Vec3 getTargetVector(LivingEntity target) {

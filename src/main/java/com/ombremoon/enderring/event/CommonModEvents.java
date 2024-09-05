@@ -122,7 +122,7 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         if (event.getSource() instanceof ERDamageSource source && source.getEntity() != null && source.getEntity() instanceof LivingEntity livingEntity) {
-            Constants.LOG.info(String.valueOf(event.getAmount()));
+//            Constants.LOG.info(String.valueOf(event.getAmount()));
             Scalable scalable = source.getScalable();
             float f0 = scalable != null && source.isHandAnimation() ? scalable.getAttackDamage(livingEntity) : 1.0F;
             if (livingEntity instanceof LevelledMob levelledMob && !levelledMob.isPlayerEnemy()) {
@@ -130,9 +130,9 @@ public class CommonModEvents {
 
                 //No clue why this is necessary, but if it isn't here, levelled mob damage is cut in half
                 event.setAmount(f1 * 2);
-                Constants.LOG.info(String.valueOf(event.getAmount()));
+//                Constants.LOG.info(String.valueOf(event.getAmount()));
                 levelledMob.scaleStats((LivingEntity) levelledMob, (entity, list) -> event.setAmount(event.getAmount() * list.getDamageMult()));
-                Constants.LOG.info(String.valueOf(event.getAmount()));
+//                Constants.LOG.info(String.valueOf(event.getAmount()));
             } else {
                 event.setAmount(event.getAmount() - f0);
             }
@@ -142,7 +142,7 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent event) {
         if (event.getSource() instanceof ERDamageSource damageSource) {
-//            Constants.LOG.info(String.valueOf(event.getAmount()));
+            Constants.LOG.info(String.valueOf(event.getAmount()));
             Optional<ResourceKey<DamageType>> damageType = event.getSource().typeHolder().unwrapKey();
             if (damageType.isPresent()) {
                 if (damageType.get() == ModDamageTypes.FIRE) Constants.LOG.info("Hi");

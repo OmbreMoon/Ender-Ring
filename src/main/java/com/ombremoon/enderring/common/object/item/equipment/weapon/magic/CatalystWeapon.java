@@ -54,8 +54,15 @@ public class CatalystWeapon extends MeleeWeapon {
         if (EntityStatusUtil.isChannelling(pPlayer)) {
             return InteractionResultHolder.pass(itemStack);
         }
-        if (pUsedHand == InteractionHand.MAIN_HAND && spell != null && spell.createSpell().getMagicType() == this.magicType) {
-            return ItemUtils.startUsingInstantly(pLevel, pPlayer, pUsedHand);
+
+        if (spell != null) {
+            AbstractSpell abstractSpell = spell.createSpell();
+            if (abstractSpell != null){
+                itemStack.getOrCreateTag().putInt("CastTime", abstractSpell.getCastTime());
+
+                pPlayer.startUsingItem(pUsedHand);
+                return InteractionResultHolder.consume(itemStack);
+            }
         }
         return InteractionResultHolder.pass(itemStack);
     }
@@ -66,10 +73,6 @@ public class CatalystWeapon extends MeleeWeapon {
         if (stack.getTag() != null) {
             float scaling = DamageUtil.calculateMagicScaling(this.getModifiedWeapon(stack), player, this.getWeaponLevel(stack), this.magicType.getWeaponDamage());
             stack.getTag().putInt(this.magicType.getName(), Mth.floor(scaling));
-            if (EntityStatusProvider.isPresent(player)) {
-                SpellType<?> spellType = EntityStatusUtil.getSelectedSpell(player);
-                stack.getTag().putString("Spell", spellType != null ? spellType.getResourceLocation().toString() : "Empty");
-            }
             return;
         }
 
@@ -83,19 +86,7 @@ public class CatalystWeapon extends MeleeWeapon {
 
     @Override
     public int getUseDuration(ItemStack pStack) {
-        SpellType<?> spellType = EntityStatusUtil.getSpellByName(EntityStatusUtil.getSpellId(pStack.getTag(), "Spell"));
-        return spellType != null ? spellType.createSpell().getCastTime() : 1;
-    }
-
-    @Override
-    public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pRemainingUseDuration) {
-        super.onUseTick(pLevel, pLivingEntity, pStack, pRemainingUseDuration);
-        /*if (!pLevel.isClientSide) {
-            if (pRemainingUseDuration == this.getUseDuration(pStack)) {
-                LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(pLivingEntity, LivingEntityPatch.class);
-                livingEntityPatch.playAnimationSynchronized(livingEntityPatch.getHitAnimation(StunType.SHORT), 0.0F);
-            }
-        }*/
+        return pStack.getOrCreateTag().getInt("CastTime");
     }
 
     @Override
@@ -114,21 +105,16 @@ public class CatalystWeapon extends MeleeWeapon {
                 if (this.canCastSpell((ServerPlayer) player, pStack, spell)) {
                     int i = this.getWeaponLevel(pStack);
                     WeaponDamage weaponDamage = this.magicType.getWeaponDamage();
-                    spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage), spell.canCharge(), this.classifications, this.spellBoost);
+                    spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, i, weaponDamage), spell.getCastType() == AbstractSpell.CastType.CHARGING, this.classifications, this.spellBoost);
 
-                    if (spell.canCharge())
+                    if (spell.getCastType() == AbstractSpell.CastType.CHARGING)
                         spell.setChargeAmount(1.0F);
 
-                    if (spell.requiresConcentration())
+                    if (spell.getCastType() == AbstractSpell.CastType.CHANNEL)
                         EntityStatusUtil.setChannelling((ServerPlayer) player, true);
 
                     player.awardStat(Stats.ITEM_USED.get(this));
                     player.awardStat(this.magicType == MagicType.SORCERY ? StatInit.SORCERIES_CAST.get() : StatInit.INCANTATIONS_CAST.get());
-
-                    /*ItemCooldowns cooldowns = player.getCooldowns();
-                    if (!cooldowns.isOnCooldown(this) && this.canCastSpell((ServerPlayer) player, pStack, spell)) {
-                        cooldowns.addCooldown(this, spell.isInstantSpell() ? 10 : spell.getCastTime());
-                    }*/
                 }
             }
         }
@@ -143,12 +129,12 @@ public class CatalystWeapon extends MeleeWeapon {
         ScaledWeapon weapon = this.getModifiedWeapon(pStack);
         if (!pLevel.isClientSide && spellType != null) {
             AbstractSpell recentSpell = EntityStatusUtil.getRecentlyActivatedSpell(player);
-            if (recentSpell != null && recentSpell.requiresConcentration())
+            if (recentSpell != null && recentSpell.getCastType() == AbstractSpell.CastType.CHANNEL)
                 return;
 
             ExtendedServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ExtendedServerPlayerPatch.class);
             AbstractSpell spell = spellType.createSpell();
-            if (playerPatch != null && spell != null && spell.canCharge()) {
+            if (playerPatch != null && spell != null && spell.getCastType() == AbstractSpell.CastType.CHARGING) {
                 int i = this.getUseDuration(pStack) - pTimeCharged;
                 if (i < 0) return;
 
@@ -157,16 +143,11 @@ public class CatalystWeapon extends MeleeWeapon {
                     float f = AbstractSpell.getPowerForTime(spell, i);
                     WeaponDamage weaponDamage = this.magicType.getWeaponDamage();
                     if (!((double)f < 0.1D)) {
-                        spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, level, weaponDamage), false, this.classifications, this.spellBoost);
+                        spell.initSpell(playerPatch, pLevel, pLivingEntity.getOnPos(), this.getModifiedWeapon(pStack), DamageUtil.calculateMagicScaling(weapon, player, level, weaponDamage), spell.getCastType() == AbstractSpell.CastType.CHARGING && i <= spell.getChargeTick(), this.classifications, this.spellBoost);
                         spell.setChargeAmount(f);
 
                         player.awardStat(Stats.ITEM_USED.get(this));
                         player.awardStat(this.magicType == MagicType.SORCERY ? StatInit.SORCERIES_CAST.get() : StatInit.INCANTATIONS_CAST.get());
-
-                        /*ItemCooldowns cooldowns = player.getCooldowns();
-                        if (!cooldowns.isOnCooldown(this) && this.canCastSpell((ServerPlayer) player, pStack, spell)) {
-                            cooldowns.addCooldown(this, spell.isInstantSpell() ? 10 : spell.getCastTime());
-                        }*/
                     }
                 }
             }
@@ -181,7 +162,7 @@ public class CatalystWeapon extends MeleeWeapon {
         ExtendedServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(player, ExtendedServerPlayerPatch.class);
         if (ConfigHandler.REQUIRES_BATTLE_MODE.get() && !playerPatch.isBattleMode()) {
             return false;
-        } else if (this.canCastSpell(player, abstractSpell) && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), abstractSpell, false) && playerPatch.consumeStamina(abstractSpell.getStaminaCost(player), false) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player)) {
+        } else if (this.canCastSpell(player, abstractSpell) && this.magicType == abstractSpell.getMagicType() && EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), abstractSpell, false) && playerPatch.consumeStamina(abstractSpell.getStaminaCost(player), false) && this.getModifiedWeapon(itemStack).getRequirements().meetsRequirements(player)) {
             EntityStatusUtil.consumeFP(player, abstractSpell.getFpCost(player), abstractSpell, true);
             playerPatch.consumeStamina(abstractSpell.getStaminaCost(player), true);
             return true;

@@ -11,6 +11,7 @@ import com.ombremoon.enderring.common.object.item.equipment.weapon.Resistance;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.Util;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -36,7 +37,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class ModdedArmor extends ArmorItem implements GeoItem, Resistance {
+public class ERArmor extends ArmorItem implements GeoItem, Resistance {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private ArmorResistance armorResistance = new ArmorResistance();
     private static final EnumMap<Type, UUID> ARMOR_MODIFIER_UUID_PER_TYPE = Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266744_) -> {
@@ -46,7 +47,7 @@ public class ModdedArmor extends ArmorItem implements GeoItem, Resistance {
         p_266744_.put(ArmorItem.Type.HELMET, UUID.fromString("75445161-a8c7-43f5-9312-037e5c11e2cf"));
     });
 
-    public ModdedArmor(ArmorMaterial pMaterial, Type pType, Properties pProperties) {
+    public ERArmor(ArmorMaterial pMaterial, Type pType, Properties pProperties) {
         super(pMaterial, pType, pProperties);
     }
 
@@ -95,7 +96,7 @@ public class ModdedArmor extends ArmorItem implements GeoItem, Resistance {
         }
 
         for (Item item : armorSet) {
-            if (!(item instanceof ModdedArmor armor && armor.getMaterial() == this.getMaterial())) {
+            if (!(item instanceof ERArmor armor && armor.getMaterial() == this.getMaterial())) {
                 return false;
             }
         }

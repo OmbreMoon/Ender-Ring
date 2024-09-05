@@ -4,12 +4,17 @@ import com.mojang.datafixers.util.Pair;
 import com.ombremoon.enderring.Constants;
 import com.ombremoon.enderring.common.DamageInstance;
 import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
+import com.ombremoon.enderring.common.init.item.EquipmentInit;
 import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
+import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
-import com.ombremoon.enderring.common.object.entity.spirit.ERSpiritBoss;
+import com.ombremoon.enderring.common.object.world.ModDamageTypes;
+import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -40,7 +45,19 @@ public class TestDummy extends ERSpiritBoss<TestDummy> {
     private final Predicate<TestDummy> MELEE_ATTACK_PREDICATE = entity -> entity.getTarget() == null || !entity.getSensing().hasLineOfSight(entity.getTarget()) || !entity.isWithinMeleeAttackRange(entity.getTarget());
 
     public TestDummy(EntityType<TestDummy> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 1100);
+        super(pEntityType, pLevel);
+    }
+
+    @Override
+    public int getRuneReward(Level level, BlockPos blockPos) {
+        return 1100;
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        if (!this.level().isClientSide) {
+        }
+        return super.mobInteract(pPlayer, pHand);
     }
 
     @Override
@@ -73,45 +90,46 @@ public class TestDummy extends ERSpiritBoss<TestDummy> {
                 new SetWalkTargetToAttackTarget<>()
                         .speedMod((entity, target) -> 1.25F),
                 new OneRandomBehaviour<>(
-                        /*new AnimatedMeleeBehavior<>(20).behaviorAnim(AnimationInit.CATCH_FLAME),
+                        new AnimatedMeleeBehavior<>().attackInterval(mob -> 60).behaviorAnim(AnimationInit.CATCH_FLAME),
                         new SequentialBehaviour<TestDummy>(
-                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_AIRSLASH),
-                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_AIRSLASH)
-                        ).stopIf(entity -> entity.getTarget() == null || !entity.getSensing().hasLineOfSight(entity.getTarget()) || !entity.isWithinMeleeAttackRange(entity.getTarget())),
-                        new AllApplicableBehaviours<TestDummy>(
-                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH),
-                                new SequentialBehaviour(
-                                        new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.FIST_AUTO1),
-                                        new OneRandomBehaviour(
-                                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH),
-                                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_DASH))
-                                )
-                        ).stopIf(entity -> !entity.isWithinMeleeAttackRange(entity.getTarget()))*/
+                                new AnimatedMeleeBehavior<>().behaviorAnim(Animations.AXE_AIRSLASH),
+                                new AnimatedMeleeBehavior<>().attackInterval(mob -> 60).behaviorAnim(Animations.AXE_AIRSLASH)
+                        ),
                         new OneRandomBehaviour<>(
-                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 1")),
-                                new SequentialBehaviour(
-                                        new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 2")),
-                                        new AnimatedMeleeBehavior<>(30).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 3"))
-                                )
-                        )
-                        /*new ContinuousBehaviour<TestDummy>(
-                                new AnimatedMeleeBehavior<>(30).behaviorAnim(Animations.TRIDENT_AUTO3).whenStarting(mob -> Constants.LOG.info("circle 1")),
-                                new TrueOneRandomBehaviour(
-                                        new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH),
-                                        new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.AXE_DASH),
-                                        new ContinuousBehaviour(
+                                new SequentialBehaviour<>(
+                                        new AnimatedMeleeBehavior<>().behaviorAnim(Animations.GREATSWORD_DASH),
+                                        shortCombo()
+                                ),
+                                shortCombo()
+                        ),
+                        new SequentialBehaviour<TestDummy>(
+                                new AnimatedMeleeBehavior<>().behaviorAnim(Animations.TRIDENT_AUTO3).whenStarting(mob -> Constants.LOG.info("circle 1")),
+                                new OneRandomBehaviour<>(
+                                        new AnimatedMeleeBehavior<>().behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("2nd")),
+                                        new AnimatedMeleeBehavior<>().behaviorAnim(Animations.AXE_DASH).whenStarting(mob -> Constants.LOG.info("3rd")),
+                                        new SequentialBehaviour<>(
                                                 new RepeatableBehaviour<TestDummy>(
-                                                    new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.TRIDENT_AUTO3)
-                                                ).repeat(3, 5).whenStarting(mob -> LOGGER.info("1")),
-                                                new AnimatedMeleeBehavior<>(20).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 1")),
+                                                    new AnimatedMeleeBehavior<>().behaviorAnim(Animations.TRIDENT_AUTO3).whenStarting(mob -> LOGGER.info("repeat"))
+                                                ).repeat(3, 5),
+                                                new AnimatedMeleeBehavior<>().behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 1")),
                                                 new OneRandomBehaviour(
-                                                        new AnimatedMeleeBehavior<>(30).behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 2")),
-                                                        new AnimatedMeleeBehavior<>(30).behaviorAnim(Animations.AXE_DASH).whenStarting(mob -> Constants.LOG.info("big swing")),
-                                                        new AnimatedMeleeBehavior<>(30).behaviorAnim(Animations.TRIDENT_AUTO3).whenStarting(mob -> Constants.LOG.info("circle 2"))
+                                                        new AnimatedMeleeBehavior<>().behaviorAnim(Animations.GREATSWORD_DASH).whenStarting(mob -> Constants.LOG.info("slam 2")),
+                                                        new AnimatedMeleeBehavior<>().behaviorAnim(Animations.AXE_DASH).whenStarting(mob -> Constants.LOG.info("big swing")),
+                                                        new AnimatedMeleeBehavior<>().behaviorAnim(Animations.TRIDENT_AUTO3).whenStarting(mob -> Constants.LOG.info("circle 2"))
                                                 )
                                         )
                                 )
-                        ).stopIf(entity -> entity.getTarget() == null || !entity.getSensing().hasLineOfSight(entity.getTarget()) || !entity.isWithinMeleeAttackRange(entity.getTarget()))*/
+                        )
+                )
+        );
+    }
+
+    private SequentialBehaviour<TestDummy> shortCombo() {
+        return new SequentialBehaviour(
+                new AnimatedMeleeBehavior<>().behaviorAnim(Animations.FIST_AUTO1),
+                new OneRandomBehaviour(
+                        new AnimatedMeleeBehavior<>().behaviorAnim(Animations.GREATSWORD_DASH).attackInterval(mob -> 60),
+                        new AnimatedMeleeBehavior<>().behaviorAnim(Animations.AXE_DASH).attackInterval(mob -> 60)
                 )
         );
     }
@@ -136,7 +154,10 @@ public class TestDummy extends ERSpiritBoss<TestDummy> {
 
     @Override
     public ObjectArrayList<Pair<StaticAnimation, List<DamageInstance>>> getAnimationDamage() {
-        return ObjectArrayList.of();
+        return ObjectArrayList.of(
+                Pair.of(AnimationInit.TEST, List.of(new DamageInstance(ModDamageTypes.PHYSICAL, 12.0F), new DamageInstance(ModDamageTypes.HOLY, 5.0F))),
+                Pair.of(AnimationInit.CATCH_FLAME, List.of(new DamageInstance(ModDamageTypes.FIRE, 12.0F)))
+        );
     }
 
     public static AttributeSupplier.Builder createMadPumpkinHeadAttributes() {

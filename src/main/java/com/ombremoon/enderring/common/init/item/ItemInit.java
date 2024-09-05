@@ -44,6 +44,7 @@ public class ItemInit {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Constants.MOD_ID);
 
     public static final RegistryObject<Item> DEBUG = registerItem("debug", () -> new DebugItem(itemProperties()));
+    public static final RegistryObject<Item> TEST_CATALYST = registerItem("test_catalyst", () -> new TestCatalystItem(itemProperties()));
 
     public static final RegistryObject<Item> GRACE_SITE = registerGeneralItem("grace_site", () -> new GraceSiteBlockItem(BlockInit.GRACE_SITE.get(), itemProperties()));
     public static final RegistryObject<Item> SPIRIT_CALLING_BELL = registerGeneralItem("spirit_calling_bell", () -> new SpiritCallingBellItem(itemProperties()));

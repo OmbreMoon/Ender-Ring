@@ -57,6 +57,7 @@ public class DebugItem extends Item {
                 EntityStatusUtil.setSpiritSummon(serverPlayer, MobInit.TEST_DUMMY.get());
                 LogUtils.getLogger().debug(EntityStatusUtil.getSpiritSummon(serverPlayer).getDescriptionId());
                 LogUtils.getLogger().debug(String.valueOf(EntityStatusUtil.getFP(serverPlayer)));
+                EntityStatusUtil.setSelectedSpell(serverPlayer, SpellInit.GLINTSTONE_ARC.get());
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
@@ -66,8 +67,8 @@ public class DebugItem extends Item {
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.VIGOR.get(), 1, true);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.MIND.get(), 1);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ENDURANCE.get(), 1);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 60);
-        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 60);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.STRENGTH.get(), 60);
+//        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.DEXTERITY.get(), 60);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.INTELLIGENCE.get(), 2);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.FAITH.get(), 1);
 //        EntityStatusUtil.setBaseStat(player, EntityAttributeInit.ARCANE.get(), 1);

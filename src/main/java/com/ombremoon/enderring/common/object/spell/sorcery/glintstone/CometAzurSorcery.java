@@ -44,6 +44,6 @@ public class CometAzurSorcery extends ChanneledSpell {
 
     @Override
     public int getCastTime() {
-        return 10;
+        return 32;
     }
 }
