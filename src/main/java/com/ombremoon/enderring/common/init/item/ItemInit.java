@@ -102,20 +102,20 @@ public class ItemInit {
     public static final RegistryObject<Item> CERULEAN_CRYSTAL = registerCrystalTear("cerulean_crystal_tear", StatusEffectInit.CERULEAN_CRYSTAL, 1);
     public static final RegistryObject<Item> OPALINE_BUBBLE = registerCrystalTear("opaline_bubble_tear", StatusEffectInit.OPALINE_BUBBLE, 3600);
     public static final RegistryObject<Item> CERULEAN_HIDDEN = registerCrystalTear("cerulean_hidden_tear", StatusEffectInit.CERULEAN_HIDDEN, 300);
-    public static final RegistryObject<Item> CRIMSONSPILL_CRYSTAL = registerCrystalTear("crimsonspill_crystal_tear", StatusEffectInit.CRIMSONSPILL_CRYSTAL, 300);
-    public static final RegistryObject<Item> CRIMSONBURST_CRYSTAL = registerCrystalTear("crimsonburst_crystal_tear", StatusEffectInit.CRIMSONBURST_CRYSTAL, 300);
-    public static final RegistryObject<Item> GREENSPILL_CRYSTAL = registerCrystalTear("greenspill_crystal_tear", StatusEffectInit.GREENSPILL_CRYSTAL, 300);
-    public static final RegistryObject<Item> GREENBURST_CRYSTAL = registerCrystalTear("greenburst_crystal_tear", StatusEffectInit.GREENBURST_CRYSTAL, 300);
-    public static final RegistryObject<Item> STRENGTHKNOT_CRYSTAL = registerCrystalTear("strengthknot_crystal_tear", StatusEffectInit.STRENGTHKNOT_CRYSTAL, 300);
-    public static final RegistryObject<Item> DEXTERITYKNOT_CRYSTAL = registerCrystalTear("dexterityknot_crystal_tear", StatusEffectInit.DEXTERITYKNOT_CRYSTAL, 300);
-    public static final RegistryObject<Item> INTELLIGENCEKNOT_CRYSTAL = registerCrystalTear("intelligenceknot_crystal_tear", StatusEffectInit.INTELLIGENCEKNOT_CRYSTAL, 300);
-    public static final RegistryObject<Item> FAITHKNOT_CRYSTAL = registerCrystalTear("faithknot_crystal_tear", StatusEffectInit.FAITHKNOT_CRYSTAL, 300);
-    public static final RegistryObject<Item> OPALINEHARD_CRYSTAL = registerCrystalTear("opalinehard_crystal_tear", StatusEffectInit.OPALINEHARD_CRYSTAL, 300);
-    public static final RegistryObject<Item> SPECKLEDHARD_CRYSTAL = registerCrystalTear("speckledhard_crystal_tear", StatusEffectInit.SPECKLEDHARD_CRYSTAL, 300);
-    public static final RegistryObject<Item> MAGICSHROUDING_CRACKED = registerCrystalTear("magicshrouding_cracked_tear", StatusEffectInit.MAGICSHROUDING_CRACKED, 300);
-    public static final RegistryObject<Item> FLAMESHROUDING_CRACKED = registerCrystalTear("flameshrouding_cracked_tear", StatusEffectInit.FLAMESHROUDING_CRACKED, 300);
-    public static final RegistryObject<Item> LIGHTNINGSHROUDING_CRACKED = registerCrystalTear("lightningshrouding_cracked_tear", StatusEffectInit.LIGHTNINGSHROUDING_CRACKED, 300);
-    public static final RegistryObject<Item> HOLYSHROUDING_CRACKED = registerCrystalTear("holyshrouding_cracked_tear", StatusEffectInit.HOLYSHROUDING_CRACKED, 300);
+    public static final RegistryObject<Item> CRIMSONSPILL_CRYSTAL = registerCrystalTear("crimsonspill_crystal_tear", StatusEffectInit.CRIMSONSPILL_CRYSTAL, 3600);
+    public static final RegistryObject<Item> CRIMSONBURST_CRYSTAL = registerCrystalTear("crimsonburst_crystal_tear", StatusEffectInit.CRIMSONBURST_CRYSTAL, 3600);
+    public static final RegistryObject<Item> GREENSPILL_CRYSTAL = registerCrystalTear("greenspill_crystal_tear", StatusEffectInit.GREENSPILL_CRYSTAL, 3600);
+    public static final RegistryObject<Item> GREENBURST_CRYSTAL = registerCrystalTear("greenburst_crystal_tear", StatusEffectInit.GREENBURST_CRYSTAL, 3600);
+    public static final RegistryObject<Item> STRENGTHKNOT_CRYSTAL = registerCrystalTear("strengthknot_crystal_tear", StatusEffectInit.STRENGTHKNOT_CRYSTAL, 3600);
+    public static final RegistryObject<Item> DEXTERITYKNOT_CRYSTAL = registerCrystalTear("dexterityknot_crystal_tear", StatusEffectInit.DEXTERITYKNOT_CRYSTAL, 3600);
+    public static final RegistryObject<Item> INTELLIGENCEKNOT_CRYSTAL = registerCrystalTear("intelligenceknot_crystal_tear", StatusEffectInit.INTELLIGENCEKNOT_CRYSTAL, 3600);
+    public static final RegistryObject<Item> FAITHKNOT_CRYSTAL = registerCrystalTear("faithknot_crystal_tear", StatusEffectInit.FAITHKNOT_CRYSTAL, 3600);
+    public static final RegistryObject<Item> OPALINEHARD_CRYSTAL = registerCrystalTear("opalinehard_crystal_tear", StatusEffectInit.OPALINEHARD_CRYSTAL, 3600);
+    public static final RegistryObject<Item> SPECKLEDHARD_CRYSTAL = registerCrystalTear("speckledhard_crystal_tear", StatusEffectInit.SPECKLEDHARD_CRYSTAL, 3600);
+    public static final RegistryObject<Item> MAGICSHROUDING_CRACKED = registerCrystalTear("magicshrouding_cracked_tear", StatusEffectInit.MAGICSHROUDING_CRACKED, 3600);
+    public static final RegistryObject<Item> FLAMESHROUDING_CRACKED = registerCrystalTear("flameshrouding_cracked_tear", StatusEffectInit.FLAMESHROUDING_CRACKED, 3600);
+    public static final RegistryObject<Item> LIGHTNINGSHROUDING_CRACKED = registerCrystalTear("lightningshrouding_cracked_tear", StatusEffectInit.LIGHTNINGSHROUDING_CRACKED, 3600);
+    public static final RegistryObject<Item> HOLYSHROUDING_CRACKED = registerCrystalTear("holyshrouding_cracked_tear", StatusEffectInit.HOLYSHROUDING_CRACKED, 3600);
 
     //MISC
     public static final RegistryObject<Item> CLAY_POT = registerSimpleItem("clay_pot");

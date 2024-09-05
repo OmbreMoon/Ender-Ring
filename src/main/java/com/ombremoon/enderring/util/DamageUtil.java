@@ -169,13 +169,17 @@ public class DamageUtil {
 
         if (weaponDamage == WeaponDamage.FIRE) {
             if (entity.hasEffect(StatusEffectInit.FIRE_SCORPION_CHARM.get())) multiplier *= 1.12F;
+            if(entity.hasEffect(StatusEffectInit.FLAMESHROUDING_CRACKED.get())) multiplier*=1.2f;
         } else if (weaponDamage == WeaponDamage.HOLY) {
             if (entity.hasEffect(StatusEffectInit.FLOCKS_CANVAS_TALISMAN.get())) multiplier *= 1.08F;
             if (entity.hasEffect(StatusEffectInit.SACRED_SCORPION_CHARM.get())) multiplier *= 1.12F;
+            if(entity.hasEffect(StatusEffectInit.HOLYSHROUDING_CRACKED.get())) multiplier*=1.2f;
         } else if (weaponDamage == WeaponDamage.MAGICAL) {
             if (entity.hasEffect(StatusEffectInit.MAGIC_SCORPION_CHARM.get())) multiplier *= 1.12F;
+            if(entity.hasEffect(StatusEffectInit.MAGICSHROUDING_CRACKED.get())) multiplier*=1.2f;
         } else if (weaponDamage == WeaponDamage.LIGHTNING) {
             if (entity.hasEffect(StatusEffectInit.LIGHTNING_SCORPION_CHARM.get())) multiplier *= 1.12F;
+            if(entity.hasEffect(StatusEffectInit.LIGHTNINGSHROUDING_CRACKED.get())) multiplier*=1.2f;
         }
 
         return multiplier;
