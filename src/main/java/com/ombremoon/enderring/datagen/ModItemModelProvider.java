@@ -172,7 +172,8 @@ public class ModItemModelProvider extends ItemModelProvider {
             ItemInit.LIGHTNINGSHROUDING_CRACKED.get(),
             ItemInit.HOLYSHROUDING_CRACKED.get(),
             ItemInit.FLAMESHROUDING_CRACKED.get(),
-            ItemInit.MAGICSHROUDING_CRACKED.get()
+            ItemInit.MAGICSHROUDING_CRACKED.get(),
+            ItemInit.GRACE_SITE.get()
 
     };
 
@@ -205,6 +206,50 @@ public class ModItemModelProvider extends ItemModelProvider {
             EquipmentInit.BLUE_CLOTH_GREAVES.get(),
             EquipmentInit.BONE_ARROW.get(),
             EquipmentInit.BONE_BOLT.get(),
+            // Astrologer Set
+            EquipmentInit.ASTROLOGER_HOOD.get(),
+            EquipmentInit.ASTROLOGER_ROBE.get(),
+            EquipmentInit.ASTROLOGER_GLOVES.get(),
+            EquipmentInit.ASTROLOGER_TROUSERS.get(),
+
+            // Bandit Set
+            EquipmentInit.BANDIT_MASK.get(),
+            EquipmentInit.BANDIT_GARBS.get(),
+            EquipmentInit.BANDIT_BRACERS.get(),
+            EquipmentInit.BANDIT_BOOTS.get(),
+
+            // Confessor Set
+            EquipmentInit.CONFESSOR_HOOD.get(),
+            EquipmentInit.CONFESSOR_ARMOR.get(),
+            EquipmentInit.CONFESSOR_GAUNTLETS.get(),
+            EquipmentInit.CONFESSOR_BOOTS.get(),
+
+            // Hero Set
+            EquipmentInit.HERO_HELM.get(),
+            EquipmentInit.HERO_ARMOR.get(),
+            EquipmentInit.HERO_GAUNTLETS.get(),
+            EquipmentInit.HERO_BOOTS.get(),
+
+            // Prisoner Set
+            EquipmentInit.PRISONER_IRON_MASK.get(),
+            EquipmentInit.PRISONER_CLOTHING.get(),
+
+            // Prophet Set
+            EquipmentInit.PROPHET_BLINDFOLD.get(),
+            EquipmentInit.PROPHET_ROBE.get(),
+            EquipmentInit.PROPHET_TROUSERS.get(),
+
+            // Land of Reeds Set
+            EquipmentInit.LAND_OF_REEDS_HELM.get(),
+            EquipmentInit.LAND_OF_REEDS_ARMOR.get(),
+            EquipmentInit.LAND_OF_REEDS_GAUNTLETS.get(),
+            EquipmentInit.LAND_OF_REEDS_LEGGINGS.get(),
+
+            // Vagabond Set
+            EquipmentInit.VAGABOND_KNIGHT_HELM.get(),
+            EquipmentInit.VAGABOND_KNIGHT_ARMOR.get(),
+            EquipmentInit.VAGABOND_KNIGHT_GAUNTLETS.get(),
+            EquipmentInit.VAGABOND_KNIGHT_GREAVES.get(),
     };
 
     static final Item[] EXCLUSION_LIST_1 = {
