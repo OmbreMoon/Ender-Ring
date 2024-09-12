@@ -29,72 +29,71 @@ public enum ArmorInit implements ArmorMaterial {
     VAGABOND("vagabond", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
         type.put(ArmorItem.Type.HELMET, 3);
         type.put(ArmorItem.Type.CHESTPLATE, 5);
-        type.put(ArmorItem.Type.LEGGINGS, 3);
-        type.put(ArmorItem.Type.BOOTS, 2);
-        // Enchantability, Toughness, Knockback Resistance
+        type.put(ArmorItem.Type.LEGGINGS, 4);
+        type.put(ArmorItem.Type.BOOTS, 3);
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     }),
+
     LAND_OF_REEDS("land_of_reeds", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
         type.put(ArmorItem.Type.HELMET, 3);
         type.put(ArmorItem.Type.CHESTPLATE, 5);
         type.put(ArmorItem.Type.LEGGINGS, 3);
         type.put(ArmorItem.Type.BOOTS, 2);
-        // Enchantability, Toughness, Knockback Resistance
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     }),
+
     PRISONER("prisoner", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
-        type.put(ArmorItem.Type.HELMET, 3);
-        type.put(ArmorItem.Type.CHESTPLATE, 5);
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 4);
         type.put(ArmorItem.Type.LEGGINGS, 3);
         type.put(ArmorItem.Type.BOOTS, 2);
-        // Enchantability, Toughness, Knockback Resistance
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     }),
+
     BANDIT("bandit", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
-        type.put(ArmorItem.Type.HELMET, 3);
-        type.put(ArmorItem.Type.CHESTPLATE, 5);
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 4);
         type.put(ArmorItem.Type.LEGGINGS, 3);
         type.put(ArmorItem.Type.BOOTS, 2);
-        // Enchantability, Toughness, Knockback Resistance
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     }),
+
     CONFESSOR("confessor", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
-        type.put(ArmorItem.Type.HELMET, 3);
-        type.put(ArmorItem.Type.CHESTPLATE, 5);
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 4);
         type.put(ArmorItem.Type.LEGGINGS, 3);
         type.put(ArmorItem.Type.BOOTS, 2);
-        // Enchantability, Toughness, Knockback Resistance
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     }),
+
     ASTROLOGER("astrologer", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
-        type.put(ArmorItem.Type.HELMET, 3);
-        type.put(ArmorItem.Type.CHESTPLATE, 5);
-        type.put(ArmorItem.Type.LEGGINGS, 3);
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 4);
+        type.put(ArmorItem.Type.LEGGINGS, 2);
         type.put(ArmorItem.Type.BOOTS, 2);
-        // Enchantability, Toughness, Knockback Resistance
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     }),
+
     PROPHET("prophet", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
-        type.put(ArmorItem.Type.HELMET, 3);
-        type.put(ArmorItem.Type.CHESTPLATE, 5);
-        type.put(ArmorItem.Type.LEGGINGS, 3);
-        type.put(ArmorItem.Type.BOOTS, 2);
-        // Enchantability, Toughness, Knockback Resistance
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 3);
+        type.put(ArmorItem.Type.LEGGINGS, 2);
+        type.put(ArmorItem.Type.BOOTS, 1);
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     }),
+
     HERO("hero", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
         type.put(ArmorItem.Type.HELMET, 3);
         type.put(ArmorItem.Type.CHESTPLATE, 5);
-        type.put(ArmorItem.Type.LEGGINGS, 3);
-        type.put(ArmorItem.Type.BOOTS, 2);
-        // Enchantability, Toughness, Knockback Resistance
+        type.put(ArmorItem.Type.LEGGINGS, 4);
+        type.put(ArmorItem.Type.BOOTS, 3);
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     });
