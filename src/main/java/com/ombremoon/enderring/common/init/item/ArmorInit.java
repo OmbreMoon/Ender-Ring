@@ -11,17 +11,89 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 import java.util.function.Supplier;
 
 public enum ArmorInit implements ArmorMaterial {
-    BLUE_CLOTH("blue_cloth", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (p_266655_) -> {
-        p_266655_.put(ArmorItem.Type.HELMET, 3);
-        p_266655_.put(ArmorItem.Type.CHESTPLATE, 5);
-        p_266655_.put(ArmorItem.Type.LEGGINGS, 3);
-        p_266655_.put(ArmorItem.Type.BOOTS, 2);
+    BLUE_CLOTH("blue_cloth", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 3);
+        type.put(ArmorItem.Type.CHESTPLATE, 5);
+        type.put(ArmorItem.Type.LEGGINGS, 3);
+        type.put(ArmorItem.Type.BOOTS, 2);
         // Enchantability, Toughness, Knockback Resistance
+    }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
+        return Ingredient.of(Items.AMETHYST_SHARD);
+    }),
+    VAGABOND("vagabond", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 3);
+        type.put(ArmorItem.Type.CHESTPLATE, 5);
+        type.put(ArmorItem.Type.LEGGINGS, 4);
+        type.put(ArmorItem.Type.BOOTS, 3);
+    }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
+        return Ingredient.of(Items.AMETHYST_SHARD);
+    }),
+
+    LAND_OF_REEDS("land_of_reeds", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 3);
+        type.put(ArmorItem.Type.CHESTPLATE, 5);
+        type.put(ArmorItem.Type.LEGGINGS, 3);
+        type.put(ArmorItem.Type.BOOTS, 2);
+    }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
+        return Ingredient.of(Items.AMETHYST_SHARD);
+    }),
+
+    PRISONER("prisoner", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 4);
+        type.put(ArmorItem.Type.LEGGINGS, 3);
+        type.put(ArmorItem.Type.BOOTS, 2);
+    }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
+        return Ingredient.of(Items.AMETHYST_SHARD);
+    }),
+
+    BANDIT("bandit", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 4);
+        type.put(ArmorItem.Type.LEGGINGS, 3);
+        type.put(ArmorItem.Type.BOOTS, 2);
+    }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
+        return Ingredient.of(Items.AMETHYST_SHARD);
+    }),
+
+    CONFESSOR("confessor", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 4);
+        type.put(ArmorItem.Type.LEGGINGS, 3);
+        type.put(ArmorItem.Type.BOOTS, 2);
+    }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
+        return Ingredient.of(Items.AMETHYST_SHARD);
+    }),
+
+    ASTROLOGER("astrologer", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 4);
+        type.put(ArmorItem.Type.LEGGINGS, 2);
+        type.put(ArmorItem.Type.BOOTS, 2);
+    }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
+        return Ingredient.of(Items.AMETHYST_SHARD);
+    }),
+
+    PROPHET("prophet", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 2);
+        type.put(ArmorItem.Type.CHESTPLATE, 3);
+        type.put(ArmorItem.Type.LEGGINGS, 2);
+        type.put(ArmorItem.Type.BOOTS, 1);
+    }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
+        return Ingredient.of(Items.AMETHYST_SHARD);
+    }),
+
+    HERO("hero", 52, Util.make(new EnumMap<>(ArmorItem.Type.class), (type) -> {
+        type.put(ArmorItem.Type.HELMET, 3);
+        type.put(ArmorItem.Type.CHESTPLATE, 5);
+        type.put(ArmorItem.Type.LEGGINGS, 4);
+        type.put(ArmorItem.Type.BOOTS, 3);
     }), 0, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.2F, () -> {
         return Ingredient.of(Items.AMETHYST_SHARD);
     });
@@ -42,7 +114,7 @@ public enum ArmorInit implements ArmorMaterial {
     private final float knockbackResistance;
     private final LazyLoadedValue<Ingredient> repairIngredient;
 
-    private ArmorInit(String name, int durabilityMultiplier, EnumMap<ArmorItem.Type, Integer> protectionFunction, int enchantmentValue, SoundEvent sound, float toughness, float knockbackResistance, Supplier<Ingredient> ingredient) {
+    ArmorInit(String name, int durabilityMultiplier, EnumMap<ArmorItem.Type, Integer> protectionFunction, int enchantmentValue, SoundEvent sound, float toughness, float knockbackResistance, Supplier<Ingredient> ingredient) {
         this.name = name;
         this.durabilityMultiplier = durabilityMultiplier;
         this.protectionFunctionForType = protectionFunction;
@@ -70,17 +142,17 @@ public enum ArmorInit implements ArmorMaterial {
     }
 
     @Override
-    public SoundEvent getEquipSound() {
+    public @NotNull SoundEvent getEquipSound() {
         return this.sound;
     }
 
     @Override
-    public Ingredient getRepairIngredient() {
+    public @NotNull Ingredient getRepairIngredient() {
         return this.repairIngredient.get();
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return Constants.MOD_ID + ":" + this.name;
     }
 

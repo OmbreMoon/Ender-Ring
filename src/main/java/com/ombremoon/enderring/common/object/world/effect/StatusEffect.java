@@ -30,7 +30,6 @@ public class StatusEffect extends MobEffect {
     protected static final Logger LOGGER = Constants.LOG;
     @Nullable public final Map<Integer, String> translationKeys;
     @Nullable private final Map<String, Map<Integer, Double>> tiers;
-    @Nullable private List<Supplier<? extends MobEffect>> buildUps;
     private final BiFunction<Integer, Integer, Boolean> applyTick;
     private final boolean instant;
     private final EffectType type;
@@ -47,10 +46,6 @@ public class StatusEffect extends MobEffect {
             this.applyTick = applyTick;
             this.instant = false;
         }
-        this.buildUps = List.of(StatusEffectInit.POISON,StatusEffectInit.SCARLET_ROT,
-                StatusEffectInit.BLOOD_LOSS
-        ,StatusEffectInit.FROSTBITE,StatusEffectInit.SLEEP,StatusEffectInit.MADNESS,
-                StatusEffectInit.DEATH_BLIGHT);
     }
 
     @Override
