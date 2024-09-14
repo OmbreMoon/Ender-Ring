@@ -8,7 +8,6 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.entity.ai.MemoryTypeInit;
 import com.ombremoon.enderring.common.init.entity.ai.SensorsInit;
 import com.ombremoon.enderring.common.magic.Classification;
-import com.ombremoon.enderring.common.object.item.equipment.ModdedArmor;
 import com.ombremoon.enderring.common.object.world.LevelledList;
 import com.ombremoon.enderring.compat.epicfight.gameassets.SkillInit;
 import com.ombremoon.enderring.compat.epicfight.world.capabilities.item.ExtendedSkillCategories;

@@ -131,6 +131,18 @@ public class ArmorResistanceProvider extends ArmorResistanceDataProvider {
         addArmor(CommonClass.customLocation("prophet_trousers"), ArmorResistance.Builder.create()
                 .negation(3.1F, 3.2F, 2.8F, 3.0F, 4.0F, 4.2F, 4.3F, 3.5F)
                 .resistance(20, 16, 25, 18).build());
-
+        // Astrologer Set
+        addArmor(CommonClass.customLocation("astrologer_hood"), ArmorResistance.Builder.create()
+                .negation(2.2F, 2.2F, 2.0F, 2.0F, 2.5F, 2.7F, 3.1F, 2.1F)
+                .resistance(12, 10, 14, 10).build());
+        addArmor(CommonClass.customLocation("astrologer_robe"), ArmorResistance.Builder.create()
+                .negation(6.0F, 6.2F, 5.8F, 5.8F, 7.5F, 7.8F, 7.9F, 6.5F)
+                .resistance(38, 30, 45, 30).build());
+        addArmor(CommonClass.customLocation("astrologer_gloves"), ArmorResistance.Builder.create()
+                .negation(1.8F, 1.8F, 1.7F, 1.7F, 2.0F, 2.3F, 2.6F, 1.8F)
+                .resistance(8, 6, 10, 8).build());
+        addArmor(CommonClass.customLocation("astrologer_trousers"), ArmorResistance.Builder.create()
+                .negation(3.4F, 3.6F, 3.3F, 3.3F, 4.5F, 4.6F, 4.8F, 3.8F)
+                .resistance(25, 20, 35, 20).build());
     }
 }

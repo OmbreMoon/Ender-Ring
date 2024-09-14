@@ -7,11 +7,13 @@ import com.ombremoon.enderring.common.init.entity.EntityAttributeInit;
 import com.ombremoon.enderring.common.init.item.EquipmentInit;
 import com.ombremoon.enderring.common.object.entity.ERBoss;
 import com.ombremoon.enderring.common.object.entity.ERMob;
-import com.ombremoon.enderring.common.object.entity.ISpiritAsh;
 import com.ombremoon.enderring.common.object.entity.ai.behavior.attack.AnimatedMeleeBehavior;
+import com.ombremoon.enderring.common.object.entity.ai.behavior.misc.RepeatableBehaviour;
+import com.ombremoon.enderring.common.object.entity.spirit.ERSpiritBoss;
 import com.ombremoon.enderring.common.object.world.ModDamageTypes;
 import com.ombremoon.enderring.compat.epicfight.gameassets.AnimationInit;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -45,7 +47,8 @@ public class TestDummy extends ERSpiritBoss<TestDummy> {
     private final Predicate<TestDummy> MELEE_ATTACK_PREDICATE = entity -> entity.getTarget() == null || !entity.getSensing().hasLineOfSight(entity.getTarget()) || !entity.isWithinMeleeAttackRange(entity.getTarget());
 
     public TestDummy(EntityType<TestDummy> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+        //UHH SORRY DUCKY FOR SOME REASON IT SHOWED ERROR
+        super(pEntityType, pLevel,0);
     }
 
     @Override
