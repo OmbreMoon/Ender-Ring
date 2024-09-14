@@ -91,49 +91,49 @@ public class EquipmentInit extends ItemInit {
     public static final RegistryObject<ERArmor> BLUE_CLOTH_GREAVES = registerArmor("blue_cloth_greaves", ArmorInit.BLUE_CLOTH, ArmorItem.Type.BOOTS);
 
     // Astrologer Set
-    public static final RegistryObject<ModdedArmor> ASTROLOGER_HOOD = registerArmor("astrologer_hood", ArmorInit.ASTROLOGER, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> ASTROLOGER_ROBE = registerArmor("astrologer_robe", ArmorInit.ASTROLOGER, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> ASTROLOGER_GLOVES = registerArmor("astrologer_gloves", ArmorInit.ASTROLOGER, ArmorItem.Type.LEGGINGS);
-    public static final RegistryObject<ModdedArmor> ASTROLOGER_TROUSERS = registerArmor("astrologer_trousers", ArmorInit.ASTROLOGER, ArmorItem.Type.BOOTS);
+    public static final RegistryObject<ERArmor> ASTROLOGER_HOOD = registerArmor("astrologer_hood", ArmorInit.ASTROLOGER, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> ASTROLOGER_ROBE = registerArmor("astrologer_robe", ArmorInit.ASTROLOGER, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> ASTROLOGER_GLOVES = registerArmor("astrologer_gloves", ArmorInit.ASTROLOGER, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ERArmor> ASTROLOGER_TROUSERS = registerArmor("astrologer_trousers", ArmorInit.ASTROLOGER, ArmorItem.Type.BOOTS);
 
     // Bandit Set
-    public static final RegistryObject<ModdedArmor> BANDIT_MASK = registerArmor("bandit_mask", ArmorInit.BANDIT, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> BANDIT_GARBS = registerArmor("bandit_garbs", ArmorInit.BANDIT, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> BANDIT_BRACERS = registerArmor("bandit_bracers", ArmorInit.BANDIT, ArmorItem.Type.LEGGINGS);
-    public static final RegistryObject<ModdedArmor> BANDIT_BOOTS = registerArmor("bandit_boots", ArmorInit.BANDIT, ArmorItem.Type.BOOTS);
+    public static final RegistryObject<ERArmor> BANDIT_MASK = registerArmor("bandit_mask", ArmorInit.BANDIT, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> BANDIT_GARBS = registerArmor("bandit_garbs", ArmorInit.BANDIT, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> BANDIT_BRACERS = registerArmor("bandit_bracers", ArmorInit.BANDIT, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ERArmor> BANDIT_BOOTS = registerArmor("bandit_boots", ArmorInit.BANDIT, ArmorItem.Type.BOOTS);
 
     // Confessor Set
-    public static final RegistryObject<ModdedArmor> CONFESSOR_HOOD = registerArmor("confessor_hood", ArmorInit.CONFESSOR, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> CONFESSOR_ARMOR = registerArmor("confessor_armor", ArmorInit.CONFESSOR, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> CONFESSOR_GAUNTLETS = registerArmor("confessor_gauntlets", ArmorInit.CONFESSOR, ArmorItem.Type.LEGGINGS);
-    public static final RegistryObject<ModdedArmor> CONFESSOR_BOOTS = registerArmor("confessor_boots", ArmorInit.CONFESSOR, ArmorItem.Type.BOOTS);
+    public static final RegistryObject<ERArmor> CONFESSOR_HOOD = registerArmor("confessor_hood", ArmorInit.CONFESSOR, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> CONFESSOR_ARMOR = registerArmor("confessor_armor", ArmorInit.CONFESSOR, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> CONFESSOR_GAUNTLETS = registerArmor("confessor_gauntlets", ArmorInit.CONFESSOR, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ERArmor> CONFESSOR_BOOTS = registerArmor("confessor_boots", ArmorInit.CONFESSOR, ArmorItem.Type.BOOTS);
 
     // Hero Set
-    public static final RegistryObject<ModdedArmor> HERO_HELM = registerArmor("hero_helm", ArmorInit.HERO, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> HERO_ARMOR = registerArmor("hero_armor", ArmorInit.HERO, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> HERO_GAUNTLETS = registerArmor("hero_gauntlets", ArmorInit.HERO, ArmorItem.Type.LEGGINGS);
-    public static final RegistryObject<ModdedArmor> HERO_BOOTS = registerArmor("hero_boots", ArmorInit.HERO, ArmorItem.Type.BOOTS);
+    public static final RegistryObject<ERArmor> HERO_HELM = registerArmor("hero_helm", ArmorInit.HERO, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> HERO_ARMOR = registerArmor("hero_armor", ArmorInit.HERO, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> HERO_GAUNTLETS = registerArmor("hero_gauntlets", ArmorInit.HERO, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ERArmor> HERO_BOOTS = registerArmor("hero_boots", ArmorInit.HERO, ArmorItem.Type.BOOTS);
 
     // Prisoner Set
-    public static final RegistryObject<ModdedArmor> PRISONER_IRON_MASK = registerArmor("prisoner_iron_mask", ArmorInit.PRISONER, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> PRISONER_CLOTHING = registerArmor("prisoner_clothing", ArmorInit.PRISONER, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> PRISONER_IRON_MASK = registerArmor("prisoner_iron_mask", ArmorInit.PRISONER, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> PRISONER_CLOTHING = registerArmor("prisoner_clothing", ArmorInit.PRISONER, ArmorItem.Type.CHESTPLATE);
 
     // Prophet Set
-    public static final RegistryObject<ModdedArmor> PROPHET_BLINDFOLD = registerArmor("prophet_blindfold", ArmorInit.PROPHET, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> PROPHET_ROBE = registerArmor("prophet_robe", ArmorInit.PROPHET, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> PROPHET_TROUSERS = registerArmor("prophet_trousers", ArmorInit.PROPHET, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ERArmor> PROPHET_BLINDFOLD = registerArmor("prophet_blindfold", ArmorInit.PROPHET, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> PROPHET_ROBE = registerArmor("prophet_robe", ArmorInit.PROPHET, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> PROPHET_TROUSERS = registerArmor("prophet_trousers", ArmorInit.PROPHET, ArmorItem.Type.LEGGINGS);
 
     // Land of Reeds Set
-    public static final RegistryObject<ModdedArmor> LAND_OF_REEDS_HELM = registerArmor("land_of_reeds_helm", ArmorInit.LAND_OF_REEDS, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> LAND_OF_REEDS_ARMOR = registerArmor("land_of_reeds_armor", ArmorInit.LAND_OF_REEDS, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> LAND_OF_REEDS_GAUNTLETS = registerArmor("land_of_reeds_gauntlets", ArmorInit.LAND_OF_REEDS, ArmorItem.Type.LEGGINGS);
-    public static final RegistryObject<ModdedArmor> LAND_OF_REEDS_LEGGINGS = registerArmor("land_of_reeds_leggings", ArmorInit.LAND_OF_REEDS, ArmorItem.Type.BOOTS);
+    public static final RegistryObject<ERArmor> LAND_OF_REEDS_HELM = registerArmor("land_of_reeds_helm", ArmorInit.LAND_OF_REEDS, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> LAND_OF_REEDS_ARMOR = registerArmor("land_of_reeds_armor", ArmorInit.LAND_OF_REEDS, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> LAND_OF_REEDS_GAUNTLETS = registerArmor("land_of_reeds_gauntlets", ArmorInit.LAND_OF_REEDS, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ERArmor> LAND_OF_REEDS_LEGGINGS = registerArmor("land_of_reeds_leggings", ArmorInit.LAND_OF_REEDS, ArmorItem.Type.BOOTS);
 
     // Vagabond Set
-    public static final RegistryObject<ModdedArmor> VAGABOND_KNIGHT_HELM = registerArmor("vagabond_knight_helm", ArmorInit.VAGABOND, ArmorItem.Type.HELMET);
-    public static final RegistryObject<ModdedArmor> VAGABOND_KNIGHT_ARMOR = registerArmor("vagabond_knight_armor", ArmorInit.VAGABOND, ArmorItem.Type.CHESTPLATE);
-    public static final RegistryObject<ModdedArmor> VAGABOND_KNIGHT_GAUNTLETS = registerArmor("vagabond_knight_gauntlets", ArmorInit.VAGABOND, ArmorItem.Type.LEGGINGS);
-    public static final RegistryObject<ModdedArmor> VAGABOND_KNIGHT_GREAVES = registerArmor("vagabond_knight_greaves", ArmorInit.VAGABOND, ArmorItem.Type.BOOTS);
+    public static final RegistryObject<ERArmor> VAGABOND_KNIGHT_HELM = registerArmor("vagabond_knight_helm", ArmorInit.VAGABOND, ArmorItem.Type.HELMET);
+    public static final RegistryObject<ERArmor> VAGABOND_KNIGHT_ARMOR = registerArmor("vagabond_knight_armor", ArmorInit.VAGABOND, ArmorItem.Type.CHESTPLATE);
+    public static final RegistryObject<ERArmor> VAGABOND_KNIGHT_GAUNTLETS = registerArmor("vagabond_knight_gauntlets", ArmorInit.VAGABOND, ArmorItem.Type.LEGGINGS);
+    public static final RegistryObject<ERArmor> VAGABOND_KNIGHT_GREAVES = registerArmor("vagabond_knight_greaves", ArmorInit.VAGABOND, ArmorItem.Type.BOOTS);
 
     //AMMUNITION
     public static final RegistryObject<Item> BONE_ARROW = registerBoneArrow("bone_arrow");

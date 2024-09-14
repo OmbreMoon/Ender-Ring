@@ -30,6 +30,7 @@ public class ModEntityLootTables extends EntityLootSubProvider {
     public void generate() {
         dropSingleWithChance(MobInit.TEST_DUMMY.get(), EpicFightItems.DIAMOND_DAGGER.get(), 0.5F);
         dropSingleWithChance(MobInit.HEWG.get(), EpicFightItems.DIAMOND_DAGGER.get(), 0.5F);
+        dropSingle(MobInit.SPIRIT_JELLYFISH.get(),EpicFightItems.DIAMOND_DAGGER.get());
     }
 
     private void multiDrops(EntityType<?> type, LootEntry... entries) {
